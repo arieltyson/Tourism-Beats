@@ -14,6 +14,11 @@
 		AF23D1C72C211F2500A3406D /* Tourism_BeatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1C62C211F2500A3406D /* Tourism_BeatsTests.swift */; };
 		AF23D1D12C211F2500A3406D /* Tourism_BeatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D02C211F2500A3406D /* Tourism_BeatsUITests.swift */; };
 		AF23D1D32C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */; };
+		AF23D1E12C21210B00A3406D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E02C21210B00A3406D /* MapKit.framework */; };
+		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
+		AF653D652C212FD4002F7EFE /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF653D642C212FD4002F7EFE /* .gitignore */; };
+		AF653D662C212FD4002F7EFE /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF653D642C212FD4002F7EFE /* .gitignore */; };
+		AF653D672C212FD4002F7EFE /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF653D642C212FD4002F7EFE /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +49,9 @@
 		AF23D1CC2C211F2500A3406D /* Tourism BeatsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tourism BeatsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF23D1D02C211F2500A3406D /* Tourism_BeatsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tourism_BeatsUITests.swift; sourceTree = "<group>"; };
 		AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tourism_BeatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AF23D1E02C21210B00A3406D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AF653D642C212FD4002F7EFE /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +59,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */,
+				AF23D1E12C21210B00A3406D /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +88,7 @@
 				AF23D1C52C211F2500A3406D /* Tourism BeatsTests */,
 				AF23D1CF2C211F2500A3406D /* Tourism BeatsUITests */,
 				AF23D1B32C211F2400A3406D /* Products */,
+				AF23D1DF2C21210B00A3406D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -98,6 +109,7 @@
 				AF23D1B72C211F2400A3406D /* ContentView.swift */,
 				AF23D1B92C211F2500A3406D /* Assets.xcassets */,
 				AF23D1BB2C211F2500A3406D /* Preview Content */,
+				AF653D642C212FD4002F7EFE /* .gitignore */,
 			);
 			path = "Tourism Beats";
 			sourceTree = "<group>";
@@ -125,6 +137,15 @@
 				AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */,
 			);
 			path = "Tourism BeatsUITests";
+			sourceTree = "<group>";
+		};
+		AF23D1DF2C21210B00A3406D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AF23D1E22C21213900A3406D /* AVFoundation.framework */,
+				AF23D1E02C21210B00A3406D /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF23D1BD2C211F2500A3406D /* Preview Assets.xcassets in Resources */,
+				AF653D652C212FD4002F7EFE /* .gitignore in Resources */,
 				AF23D1BA2C211F2500A3406D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF653D662C212FD4002F7EFE /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF653D672C212FD4002F7EFE /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
