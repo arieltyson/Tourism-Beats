@@ -26,6 +26,7 @@
 		AF653D8D2C213E5E002F7EFE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D8C2C213E5E002F7EFE /* UIKit.framework */; };
 		AF653D8F2C213E64002F7EFE /* MusicKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D8E2C213E64002F7EFE /* MusicKit.framework */; };
 		AF653D912C213E7E002F7EFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D902C213E7E002F7EFE /* QuartzCore.framework */; };
+		AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D922C213FEC002F7EFE /* EarthSceneView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		AF653D8C2C213E5E002F7EFE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AF653D8E2C213E64002F7EFE /* MusicKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MusicKit.framework; path = System/Library/Frameworks/MusicKit.framework; sourceTree = SDKROOT; };
 		AF653D902C213E7E002F7EFE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AF653D922C213FEC002F7EFE /* EarthSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthSceneView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 			children = (
 				AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */,
 				AF653D7B2C2139CB002F7EFE /* HomePageView.swift */,
+				AF653D922C213FEC002F7EFE /* EarthSceneView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
