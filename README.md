@@ -18,6 +18,9 @@ This project leverages the powerful combination of Swift and SwiftUI, along with
 - [x] CoreLocation
 - [x] AVFoundation
 - [x] CoreAnimation
+- [x] SceneKit
+- [x] UIKit
+- [x] StoreKit
 
 ## Skills Demonstrated 🥋
 
