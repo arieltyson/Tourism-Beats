@@ -11,7 +11,7 @@ import SwiftUI
 struct Tourism_BeatsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomePageView()
         }
     }
 }
