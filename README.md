@@ -11,13 +11,13 @@
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/627d1c2c-29e9-41de-896e-ff7163a28add" alt="TourismBeatsHome" width="300" height="600">
+        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/627d1c2c-29e9-41de-896e-ff7163a28add" alt="TourismBeatsHome" width="250" height="500">
     </kbd>
     <kbd>
-        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/ea5664c5-6f40-4d5c-b654-49f99fd4b140" alt="TourismBeatsMap" width="300" height="600">
+        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/ea5664c5-6f40-4d5c-b654-49f99fd4b140" alt="TourismBeatsMap" width="250" height="500">
     </kbd>
     <kbd>
-        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/ee23a122-9497-455a-8d36-02bb7eec0062" alt="TourismBeatsLondon" width="300" height="600">
+        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/ee23a122-9497-455a-8d36-02bb7eec0062" alt="TourismBeatsLondon" width="250" height="500">
     </kbd>
 </div>
 
