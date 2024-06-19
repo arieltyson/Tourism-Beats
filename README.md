@@ -1,12 +1,14 @@
+<div align="center">
+
 # Tourism Beats 🌍🎶
 
 ## Project Description 🎨
 
 "Tourism Beats" is an innovative iOS application built using SwiftUI that offers users an immersive experience of exploring cities through their most famous landmarks and the latest trending music. Users can select from six iconic cities on a map, view dynamic animated backgrounds of famous landmarks, and listen to the top trending song in the city’s native language. Additionally, the app provides a curated list of the top 10 attractions in each city.
 
-
-<img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/4c0254ee-c2ef-41ac-9419-b01f0d5fc813" alt="tourismBeatsLogo" width="300"/>
-
+<kbd>
+    <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/4c0254ee-c2ef-41ac-9419-b01f0d5fc813" alt="tourismBeatsLogo" width="300">
+</kbd>
 
 ## Technologies Used 💻
 
@@ -27,13 +29,10 @@ This project leverages the powerful combination of Swift and SwiftUI, along with
 
 This project showcases a wide array of skills necessary for developing a feature-rich mobile application. The following skills were demonstrated:
 
-- **LAYOUT**: Efficient use of SwiftUI views to create a visually appealing and user-friendly interface.
-
-- **USER EXPERIENCE**: Crafting an engaging experience with dynamic backgrounds and interactive elements.
-
-- **USER INTERFACE**: Building an intuitive interface that allows easy navigation and interaction.
-
-- **MOBILE DESIGN**: Combining creativity and functionality to deliver a unique and immersive user experience.
+- [x] **LAYOUT**: Efficient use of SwiftUI views to create a visually appealing and user-friendly interface.
+- [x] **USER EXPERIENCE**: Crafting an engaging experience with dynamic backgrounds and interactive elements.
+- [x] **USER INTERFACE**: Building an intuitive interface that allows easy navigation and interaction.
+- [x] **MOBILE DESIGN**: Combining creativity and functionality to deliver a unique and immersive user experience.
 
 ## Contributing ⚙️
 
@@ -41,6 +40,6 @@ We welcome contributions from developers and enthusiasts who are passionate abou
 
 ## License 🪪
 
-This project is licensed under the [MIT License](LICENSE), allowing you to modify, distribute, and use the code with proper attribution to the original creators. Let's keep the spirit of open-source collaboration alive!
+This project is licensed under the MIT License, allowing you to modify, distribute, and use the code with proper attribution to the original creators. Let's keep the spirit of open-source collaboration alive!
 
----
+</div>
