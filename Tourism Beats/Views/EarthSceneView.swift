@@ -30,7 +30,7 @@ struct EarthSceneView: UIViewRepresentable {
         // Rotate the Earth node
         let rotation = CABasicAnimation(keyPath: "rotation")
         rotation.toValue = NSValue(scnVector4: SCNVector4(0, 1, 0, CGFloat.pi * 2))
-        rotation.duration = 60 // One full rotation in 60 seconds
+        rotation.duration = 60
         rotation.repeatCount = .infinity
         earthNode.addAnimation(rotation, forKey: "rotation")
 
@@ -40,7 +40,7 @@ struct EarthSceneView: UIViewRepresentable {
     private func createEarthNode() -> SCNNode {
         let earth = SCNSphere(radius: 1.0)
         let earthMaterial = SCNMaterial()
-        earthMaterial.diffuse.contents = UIImage(named: "earth_night.jpg") // Ensure you have this image in your assets
+        earthMaterial.diffuse.contents = UIImage(named: "earth_night.jpg")
         earth.firstMaterial = earthMaterial
 
         let earthNode = SCNNode(geometry: earth)
