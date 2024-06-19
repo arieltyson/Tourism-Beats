@@ -12,7 +12,7 @@ struct HomePageView: View {
         NavigationView {
             ZStack {
                 EarthSceneView()
-                    .edgesIgnoringSafeArea(.all) // Make the scene view full screen
+                    .edgesIgnoringSafeArea(.all)
                 VStack(spacing: 20) {
                     VStack {
                         Text("Tourism Beats")
@@ -33,12 +33,12 @@ struct HomePageView: View {
                         Text("Choose a City")
                             .font(.title)
                             .padding()
-                            .background(Color.black.opacity(0.5)) // Transparent background
+                            .background(Color.black.opacity(0.5))
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.white, lineWidth: 2) // White border for visibility
+                                    .stroke(Color.white, lineWidth: 2)
                             )
                     }
                     
@@ -46,10 +46,10 @@ struct HomePageView: View {
                 }
                 .padding()
             }
-            .edgesIgnoringSafeArea(.all) // Ensure the entire ZStack ignores the safe area
-            .navigationTitle("") // Empty navigation title for better appearance
+            .edgesIgnoringSafeArea(.all)
+            .navigationTitle("")
         }
-        .navigationViewStyle(StackNavigationViewStyle()) // Ensures proper behavior on iPad
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
