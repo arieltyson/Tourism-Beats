@@ -49,7 +49,7 @@ struct CitySelectionView: View {
                         .foregroundColor(.white)
                 }
             }
-            .background(Color.black.edgesIgnoringSafeArea(.all)) // Ensure background covers safe area
+            .background(Color.black.edgesIgnoringSafeArea(.all))
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Explore \(selectedCity ?? "")?"),
@@ -60,7 +60,6 @@ struct CitySelectionView: View {
                         navigateToAttraction = true
                     }),
                     secondaryButton: .cancel(Text("No"), action: {
-                        // Handle the action for canceling
                         print("No tapped for \(selectedCity ?? "")")
                         selectedCity = nil
                     })

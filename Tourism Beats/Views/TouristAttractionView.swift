@@ -10,26 +10,51 @@ import SwiftUI
 struct TouristAttractionView: View {
     var cityName: String
     var videoName: String
-
+    
+    @State private var navigateBack = false
+    
     var body: some View {
-        ZStack {
-            VideoPlayerView(videoName: videoName)
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                Text(cityName)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .italic()
-                    .foregroundColor(.white)
-                    .padding(.top, 50)
-
-                Spacer()
+        NavigationStack {
+            ZStack {
+                VideoPlayerView(videoName: videoName)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Text(cityName)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .italic()
+                        .foregroundColor(.white)
+                        .padding(.top, 50)
+                    
+                    Spacer()
+                    
+                    NavigationLink(value: "CitySelection") {
+                        EmptyView()
+                    }.hidden()
+                }
+                .padding()
             }
-            .padding()
-        }
-        //.navigationBarBackButtonHidden(true)
-        .onAppear {
-            print("TouristAttractionView appeared for \(cityName)")
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        navigateBack = true
+                    }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                    }
+                }
+            }
+            
+            .onAppear {
+                print("TouristAttractionView appeared for \(cityName)")
+            }
+            .navigationDestination(isPresented: $navigateBack) {
+                CitySelectionView()
+            }
         }
     }
 }
