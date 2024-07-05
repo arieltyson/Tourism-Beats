@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomePageView: View {
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 EarthSceneView()
                     .edgesIgnoringSafeArea(.all)
@@ -49,7 +49,6 @@ struct HomePageView: View {
             .edgesIgnoringSafeArea(.all)
             .navigationTitle("")
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
