@@ -27,6 +27,9 @@ struct TouristAttractionView: View {
                         .foregroundColor(.white)
                         .padding(.top, 50)
                     
+                    TimeWidgetView(cityName: cityName)
+                        .padding(.top, 20)
+                    
                     Spacer()
                     
                     NavigationLink(value: "CitySelection") {
