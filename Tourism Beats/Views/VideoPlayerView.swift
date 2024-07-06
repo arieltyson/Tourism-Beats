@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import Combine
 
 struct VideoPlayerView: UIViewRepresentable {
     var videoName: String
@@ -22,17 +23,17 @@ struct VideoPlayerView: UIViewRepresentable {
         private var playerLayer = AVPlayerLayer()
         private var playerLooper: AVPlayerLooper?
         private var queuePlayer = AVQueuePlayer()
+        private var cancellables = Set<AnyCancellable>()
 
         init(frame: CGRect, videoName: String) {
             super.init(frame: frame)
             setupPlayer(videoName: videoName)
         }
-
+        
         required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            setupPlayer(videoName: "")
+            fatalError("init(coder:) has not been implemented")
         }
-
+        
         private func setupPlayer(videoName: String) {
             guard let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") else {
                 print("Video URL not found for \(videoName).mp4")
@@ -48,17 +49,21 @@ struct VideoPlayerView: UIViewRepresentable {
 
             queuePlayer.play()
 
-            NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: queuePlayer.currentItem)
-        }
-
-        @objc private func playerItemDidReachEnd(notification: Notification) {
-            queuePlayer.seek(to: .zero)
-            queuePlayer.play()
+            NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime, object: queuePlayer.currentItem)
+                .sink { [weak self] _ in
+                    self?.queuePlayer.seek(to: .zero)
+                    self?.queuePlayer.play()
+                }
+                .store(in: &cancellables)
         }
 
         override func layoutSubviews() {
             super.layoutSubviews()
             playerLayer.frame = bounds
+        }
+        
+        deinit {
+            cancellables.forEach { $0.cancel() }
         }
     }
 }
