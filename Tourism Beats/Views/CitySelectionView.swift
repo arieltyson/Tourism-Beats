@@ -63,7 +63,7 @@ struct CitySelectionView: View {
         "Athens": "Greece",
         "Bangkok": "Thailand"
         ]
-    
+  
     var body: some View {
         NavigationStack {
             VStack {
@@ -73,7 +73,7 @@ struct CitySelectionView: View {
                     .foregroundColor(.white)
                 
                 MapView(selectedCity: $selectedCity, showAlert: $showAlert)
-                    .edgesIgnoringSafeArea(.all) // Ignore safe area
+                    .edgesIgnoringSafeArea(.all)
                 
                 if let city = selectedCity {
                     Text("Selected City: \(city), \(cityCountries[city] ?? "")")
@@ -88,7 +88,6 @@ struct CitySelectionView: View {
                     title: Text("Explore \(selectedCity ?? "")?"),
                     message: Text("Would you like to explore \(selectedCity ?? ""), \(cityCountries[selectedCity ?? ""] ?? "")?"),
                     primaryButton: .default(Text("Yes"), action: {
-                        // Handle the action for exploring the city
                         print("Yes tapped for \(selectedCity ?? "")")
                         navigateToAttraction = true
                     }),

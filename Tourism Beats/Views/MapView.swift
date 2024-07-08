@@ -39,7 +39,7 @@ struct MapView: UIViewRepresentable {
                 let span = MKCoordinateSpan(latitudeDelta: 20.0, longitudeDelta: 20.0)
                 let region = MKCoordinateRegion(center: europeCenter, span: span)
                 mapView.setRegion(region, animated: false)
-        
+
         for city in cities {
             let annotation = MKPointAnnotation()
             annotation.title = city.0
