@@ -23,7 +23,7 @@ struct VideoPlayerView: UIViewRepresentable {
         private var playerLayer = AVPlayerLayer()
         private var playerLooper: AVPlayerLooper?
         private var queuePlayer = AVQueuePlayer()
-        private var cancellables = Set<AnyCancellable>()
+        private var cancellable: AnyCancellable?
 
         init(frame: CGRect, videoName: String) {
             super.init(frame: frame)
@@ -39,6 +39,8 @@ struct VideoPlayerView: UIViewRepresentable {
                 print("Video URL not found for \(videoName).mp4")
                 return
             }
+            
+            print("Video URL found: \(url)")
 
             let playerItem = AVPlayerItem(url: url)
             playerLooper = AVPlayerLooper(player: queuePlayer, templateItem: playerItem)
@@ -47,6 +49,7 @@ struct VideoPlayerView: UIViewRepresentable {
             playerLayer.videoGravity = .resizeAspectFill
             layer.addSublayer(playerLayer)
 
+            queuePlayer.isMuted = true
             queuePlayer.play()
 
             NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime, object: queuePlayer.currentItem)
@@ -54,7 +57,6 @@ struct VideoPlayerView: UIViewRepresentable {
                     self?.queuePlayer.seek(to: .zero)
                     self?.queuePlayer.play()
                 }
-                .store(in: &cancellables)
         }
 
         override func layoutSubviews() {
@@ -63,7 +65,7 @@ struct VideoPlayerView: UIViewRepresentable {
         }
         
         deinit {
-            cancellables.forEach { $0.cancel() }
+            cancellable?.cancel()
         }
     }
 }

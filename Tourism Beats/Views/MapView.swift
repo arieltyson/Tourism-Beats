@@ -17,15 +17,28 @@ struct MapView: UIViewRepresentable {
         ("Paris", CLLocationCoordinate2D(latitude: 48.8566, longitude: 2.3522)),
         ("Tokyo", CLLocationCoordinate2D(latitude: 35.6895, longitude: 139.6917)),
         ("Berlin", CLLocationCoordinate2D(latitude: 52.5200, longitude: 13.4050)),
-        ("Madrid", CLLocationCoordinate2D(latitude: 40.4168, longitude: -3.7038)),
-        ("Rome", CLLocationCoordinate2D(latitude: 41.9028, longitude: 12.4964))
+        ("Barcelona", CLLocationCoordinate2D(latitude: 41.3851, longitude: 2.1734)),
+        ("Rome", CLLocationCoordinate2D(latitude: 41.9028, longitude: 12.4964)),
+        ("Beijing", CLLocationCoordinate2D(latitude: 39.9042, longitude: 116.4074)),
+        ("Cairo", CLLocationCoordinate2D(latitude: 30.0444, longitude: 31.2357)),
+        ("New Delhi", CLLocationCoordinate2D(latitude: 28.6139, longitude: 77.2090)),
+        ("Rio De Janeiro", CLLocationCoordinate2D(latitude: -22.9068, longitude: -43.1729)),
+        ("Moscow", CLLocationCoordinate2D(latitude: 55.7558, longitude: 37.6176)),
+        ("Amsterdam", CLLocationCoordinate2D(latitude: 52.3676, longitude: 4.9041)),
+        ("Athens", CLLocationCoordinate2D(latitude: 37.9838, longitude: 23.7275)),
+        ("Bangkok", CLLocationCoordinate2D(latitude: 13.7563, longitude: 100.5018))
     ]
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        mapView.mapType = .standard // Use standard map type for night mode
-        mapView.overrideUserInterfaceStyle = .dark // Set dark mode
+        mapView.mapType = .standard
+        mapView.overrideUserInterfaceStyle = .dark
+
+        let europeCenter = CLLocationCoordinate2D(latitude: 54.5260, longitude: 15.2551)
+                let span = MKCoordinateSpan(latitudeDelta: 20.0, longitudeDelta: 20.0)
+                let region = MKCoordinateRegion(center: europeCenter, span: span)
+                mapView.setRegion(region, animated: false)
 
         for city in cities {
             let annotation = MKPointAnnotation()
