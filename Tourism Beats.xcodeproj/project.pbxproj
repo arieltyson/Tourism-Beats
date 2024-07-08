@@ -35,8 +35,6 @@
 		AFC7931C2C3BC52E002240EB /* big_ben1_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7931B2C3BC52E002240EB /* big_ben1_video.mp4 */; };
 		AFC793262C3BD323002240EB /* great_wall_of_china_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793252C3BD323002240EB /* great_wall_of_china_video.mp4 */; };
 		AFC793282C3BD32B002240EB /* grand_palace_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793272C3BD32B002240EB /* grand_palace_video.mp4 */; };
-		AFC7932C2C3BD470002240EB /* van_gogh_museum_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7932B2C3BD470002240EB /* van_gogh_museum_video.mp4 */; };
-		AFC7932E2C3BD579002240EB /* kremlin_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7932D2C3BD579002240EB /* kremlin_video.mp4 */; };
 		AFC793302C3BD776002240EB /* christ_the_redeemer_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7932F2C3BD776002240EB /* christ_the_redeemer_video.mp4 */; };
 		AFC793322C3BD781002240EB /* colosseum_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793312C3BD781002240EB /* colosseum_video.mp4 */; };
 		AFC793342C3BD7E1002240EB /* india_gate_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793332C3BD7E1002240EB /* india_gate_video.mp4 */; };
@@ -44,7 +42,7 @@
 		AFC793382C3BDB0E002240EB /* sagrada_familia_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793372C3BDB0E002240EB /* sagrada_familia_video.mp4 */; };
 		AFC7933A2C3BDB17002240EB /* the_acropolis_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793392C3BDB17002240EB /* the_acropolis_video.mp4 */; };
 		AFC7933C2C3BDB1F002240EB /* tokyo_tower_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7933B2C3BDB1F002240EB /* tokyo_tower_video.mp4 */; };
-		AFF1355B2C3BBC8800DCA13B /* berlin_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFF1355A2C3BBC8800DCA13B /* berlin_video.mp4 */; };
+		AFC7933E2C3BDFC2002240EB /* kremlin_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7933D2C3BDFC2002240EB /* kremlin_video.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,8 +93,6 @@
 		AFC7931B2C3BC52E002240EB /* big_ben1_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = big_ben1_video.mp4; path = ../../../pics/big_ben1_video.mp4; sourceTree = "<group>"; };
 		AFC793252C3BD323002240EB /* great_wall_of_china_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = great_wall_of_china_video.mp4; sourceTree = "<group>"; };
 		AFC793272C3BD32B002240EB /* grand_palace_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = grand_palace_video.mp4; sourceTree = "<group>"; };
-		AFC7932B2C3BD470002240EB /* van_gogh_museum_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = van_gogh_museum_video.mp4; sourceTree = "<group>"; };
-		AFC7932D2C3BD579002240EB /* kremlin_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = kremlin_video.mp4; sourceTree = "<group>"; };
 		AFC7932F2C3BD776002240EB /* christ_the_redeemer_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = christ_the_redeemer_video.mp4; sourceTree = "<group>"; };
 		AFC793312C3BD781002240EB /* colosseum_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = colosseum_video.mp4; sourceTree = "<group>"; };
 		AFC793332C3BD7E1002240EB /* india_gate_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = india_gate_video.mp4; sourceTree = "<group>"; };
@@ -104,7 +100,7 @@
 		AFC793372C3BDB0E002240EB /* sagrada_familia_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = sagrada_familia_video.mp4; path = ../../../pics/sagrada_familia_video.mp4; sourceTree = "<group>"; };
 		AFC793392C3BDB17002240EB /* the_acropolis_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = the_acropolis_video.mp4; path = ../../../pics/the_acropolis_video.mp4; sourceTree = "<group>"; };
 		AFC7933B2C3BDB1F002240EB /* tokyo_tower_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = tokyo_tower_video.mp4; path = ../../../pics/tokyo_tower_video.mp4; sourceTree = "<group>"; };
-		AFF1355A2C3BBC8800DCA13B /* berlin_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = berlin_video.mp4; sourceTree = "<group>"; };
+		AFC7933D2C3BDFC2002240EB /* kremlin_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = kremlin_video.mp4; path = ../../../pics/kremlin_video.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,16 +216,14 @@
 				AFC7931B2C3BC52E002240EB /* big_ben1_video.mp4 */,
 				AF653DA62C22C289002F7EFE /* eiffel_tower_video.mp4 */,
 				AFC7933B2C3BDB1F002240EB /* tokyo_tower_video.mp4 */,
-				AFF1355A2C3BBC8800DCA13B /* berlin_video.mp4 */,
 				AFC793252C3BD323002240EB /* great_wall_of_china_video.mp4 */,
 				AFC793272C3BD32B002240EB /* grand_palace_video.mp4 */,
-				AFC7932B2C3BD470002240EB /* van_gogh_museum_video.mp4 */,
-				AFC7932D2C3BD579002240EB /* kremlin_video.mp4 */,
 				AFC7932F2C3BD776002240EB /* christ_the_redeemer_video.mp4 */,
 				AFC793332C3BD7E1002240EB /* india_gate_video.mp4 */,
 				AFC793312C3BD781002240EB /* colosseum_video.mp4 */,
 				AFC793352C3BD82B002240EB /* great_pyramid_of_giza_video.mp4 */,
 				AFC793372C3BDB0E002240EB /* sagrada_familia_video.mp4 */,
+				AFC7933D2C3BDFC2002240EB /* kremlin_video.mp4 */,
 				AFC793392C3BDB17002240EB /* the_acropolis_video.mp4 */,
 			);
 			path = Resources;
@@ -370,13 +364,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFC7932E2C3BD579002240EB /* kremlin_video.mp4 in Resources */,
-				AFC7932C2C3BD470002240EB /* van_gogh_museum_video.mp4 in Resources */,
 				AFC793282C3BD32B002240EB /* grand_palace_video.mp4 in Resources */,
 				AF653DA72C22C289002F7EFE /* eiffel_tower_video.mp4 in Resources */,
 				AFC793302C3BD776002240EB /* christ_the_redeemer_video.mp4 in Resources */,
 				AFC793322C3BD781002240EB /* colosseum_video.mp4 in Resources */,
-				AFF1355B2C3BBC8800DCA13B /* berlin_video.mp4 in Resources */,
 				AFC7933C2C3BDB1F002240EB /* tokyo_tower_video.mp4 in Resources */,
 				AF23D1BD2C211F2500A3406D /* Preview Assets.xcassets in Resources */,
 				AFC7933A2C3BDB17002240EB /* the_acropolis_video.mp4 in Resources */,
@@ -385,6 +376,7 @@
 				AF653D842C213B8C002F7EFE /* .gitignore in Resources */,
 				AFC7931C2C3BC52E002240EB /* big_ben1_video.mp4 in Resources */,
 				AFC793362C3BD82B002240EB /* great_pyramid_of_giza_video.mp4 in Resources */,
+				AFC7933E2C3BDFC2002240EB /* kremlin_video.mp4 in Resources */,
 				AFC793342C3BD7E1002240EB /* india_gate_video.mp4 in Resources */,
 				AF653D7F2C213AFA002F7EFE /* Assets.xcassets in Resources */,
 			);
