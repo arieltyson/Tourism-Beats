@@ -98,8 +98,8 @@ struct CitySelectionView: View {
                 )
             }
             .navigationDestination(isPresented: $navigateToAttraction) {
-                if let city = selectedCity, let video = cityVideos[city] {
-                    TouristAttractionView(cityName: city, videoName: video)
+                if let city = selectedCity, let video = cityVideos[city], let country = cityCountries[city] {
+                    TouristAttractionView(cityName: city, countryName: country, videoName: video)
                 } else {
                     EmptyView()
                 }
