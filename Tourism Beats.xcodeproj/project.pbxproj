@@ -43,6 +43,7 @@
 		AFC7933A2C3BDB17002240EB /* the_acropolis_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC793392C3BDB17002240EB /* the_acropolis_video.mp4 */; };
 		AFC7933C2C3BDB1F002240EB /* tokyo_tower_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7933B2C3BDB1F002240EB /* tokyo_tower_video.mp4 */; };
 		AFC7933E2C3BDFC2002240EB /* kremlin_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7933D2C3BDFC2002240EB /* kremlin_video.mp4 */; };
+		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		AFC793392C3BDB17002240EB /* the_acropolis_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = the_acropolis_video.mp4; path = ../../../pics/the_acropolis_video.mp4; sourceTree = "<group>"; };
 		AFC7933B2C3BDB1F002240EB /* tokyo_tower_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = tokyo_tower_video.mp4; path = ../../../pics/tokyo_tower_video.mp4; sourceTree = "<group>"; };
 		AFC7933D2C3BDFC2002240EB /* kremlin_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = kremlin_video.mp4; path = ../../../pics/kremlin_video.mp4; sourceTree = "<group>"; };
+		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +250,7 @@
 			children = (
 				AF653D822C213B8C002F7EFE /* .gitignore */,
 				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
+				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				AFC7933A2C3BDB17002240EB /* the_acropolis_video.mp4 in Resources */,
 				AFC793382C3BDB0E002240EB /* sagrada_familia_video.mp4 in Resources */,
 				AFC793262C3BD323002240EB /* great_wall_of_china_video.mp4 in Resources */,
+				AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */,
 				AF653D842C213B8C002F7EFE /* .gitignore in Resources */,
 				AFC7931C2C3BC52E002240EB /* big_ben1_video.mp4 in Resources */,
 				AFC793362C3BD82B002240EB /* great_pyramid_of_giza_video.mp4 in Resources */,
@@ -584,6 +588,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = SplashScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -617,6 +622,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = SplashScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
