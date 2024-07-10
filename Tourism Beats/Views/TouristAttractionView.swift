@@ -31,6 +31,9 @@ struct TouristAttractionView: View {
                     TimeWidgetView(cityName: cityName)
                         .padding(.top, 20)
                     
+                    WeatherWidgetView(cityName: cityName)
+                        .padding(.top, 20)
+                    
                     Spacer()
                     
                     NavigationLink(value: "CitySelection") {

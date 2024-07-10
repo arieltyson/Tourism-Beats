@@ -30,6 +30,9 @@
 		AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D982C2153AD002F7EFE /* TouristAttractionView.swift */; };
 		AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D9E2C22A6CE002F7EFE /* VideoPlayerView.swift */; };
 		AF653DA72C22C289002F7EFE /* eiffel_tower_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AF653DA62C22C289002F7EFE /* eiffel_tower_video.mp4 */; };
+		AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF75C7C02C3E809300E16A1D /* WeatherFetcherService.swift */; };
+		AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */; };
+		AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */; };
 		AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */; };
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
 		AFC7931C2C3BC52E002240EB /* big_ben1_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AFC7931B2C3BC52E002240EB /* big_ben1_video.mp4 */; };
@@ -89,6 +92,10 @@
 		AF653D982C2153AD002F7EFE /* TouristAttractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouristAttractionView.swift; sourceTree = "<group>"; };
 		AF653D9E2C22A6CE002F7EFE /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		AF653DA62C22C289002F7EFE /* eiffel_tower_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = eiffel_tower_video.mp4; sourceTree = "<group>"; };
+		AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Tourism Beats.entitlements"; sourceTree = "<group>"; };
+		AF75C7C02C3E809300E16A1D /* WeatherFetcherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherFetcherService.swift; sourceTree = "<group>"; };
+		AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetView.swift; sourceTree = "<group>"; };
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
 		AFC7931B2C3BC52E002240EB /* big_ben1_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = big_ben1_video.mp4; path = ../../../pics/big_ben1_video.mp4; sourceTree = "<group>"; };
@@ -162,6 +169,8 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
+				AF75C7BF2C3E807A00E16A1D /* Services */,
+				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
 				AFAD155D2C394B4F00CEB4BB /* ViewModels */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
 				AF653D6F2C2136E3002F7EFE /* Views */,
@@ -241,6 +250,7 @@
 				AF653D982C2153AD002F7EFE /* TouristAttractionView.swift */,
 				AF653D9E2C22A6CE002F7EFE /* VideoPlayerView.swift */,
 				AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */,
+				AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -255,10 +265,19 @@
 			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
+		AF75C7BF2C3E807A00E16A1D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AF75C7C02C3E809300E16A1D /* WeatherFetcherService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		AFAD155D2C394B4F00CEB4BB /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */,
+				AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -409,7 +428,10 @@
 			files = (
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
+				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
+				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
+				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
@@ -577,6 +599,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tourism Beats/Preview Content\"";
@@ -611,6 +634,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tourism Beats/Preview Content\"";
