@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TouristAttractionView: View {
     var cityName: String
+    var countryName: String
     var videoName: String
     
     @State private var navigateBack = false
@@ -20,7 +21,7 @@ struct TouristAttractionView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text(cityName)
+                    Text("\(cityName), \(countryName)")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .italic()
@@ -64,6 +65,6 @@ struct TouristAttractionView: View {
 
 struct TouristAttractionView_Previews: PreviewProvider {
     static var previews: some View {
-        TouristAttractionView(cityName: "London", videoName: "big_ben_video")
+        TouristAttractionView(cityName: "London", countryName: "England", videoName: "big_ben_video")
     }
 }

@@ -23,7 +23,7 @@ struct VideoPlayerView: UIViewRepresentable {
         private var playerLayer = AVPlayerLayer()
         private var playerLooper: AVPlayerLooper?
         private var queuePlayer = AVQueuePlayer()
-        private var cancellable: AnyCancellable?
+        private var cancellables = Set<AnyCancellable>()
 
         init(frame: CGRect, videoName: String) {
             super.init(frame: frame)
@@ -57,6 +57,7 @@ struct VideoPlayerView: UIViewRepresentable {
                     self?.queuePlayer.seek(to: .zero)
                     self?.queuePlayer.play()
                 }
+                .store(in: &cancellables)
         }
 
         override func layoutSubviews() {
@@ -65,7 +66,7 @@ struct VideoPlayerView: UIViewRepresentable {
         }
         
         deinit {
-            cancellable?.cancel()
+            cancellables.forEach { $0.cancel() }
         }
     }
 }
