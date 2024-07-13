@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 18.0, *)
 struct HomePageView: View {
     var body: some View {
         NavigationStack {
@@ -52,6 +53,7 @@ struct HomePageView: View {
     }
 }
 
+@available(iOS 18.0, *)
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
         HomePageView()

@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+@available(iOS 18.0, *)
 struct CitySelectionView: View {
     @State private var selectedCity: String? = nil
     @State private var showAlert = false
@@ -98,8 +99,9 @@ struct CitySelectionView: View {
                 )
             }
             .navigationDestination(isPresented: $navigateToAttraction) {
-                if let city = selectedCity, let video = cityVideos[city], let country = cityCountries[city] {
-                    TouristAttractionView(cityName: city, countryName: country, videoName: video)
+                if let city = selectedCity, let _ = cityVideos[city], let country = cityCountries[city] {
+                    TouristAttractionView(cityName: city, countryName: country//, videoName: video
+                    )
                 } else {
                     EmptyView()
                 }
@@ -108,6 +110,7 @@ struct CitySelectionView: View {
     }
 }
 
+@available(iOS 18.0, *)
 struct CitySelectionView_Previews: PreviewProvider {
     static var previews: some View {
         CitySelectionView()

@@ -7,17 +7,34 @@
 
 import SwiftUI
 
+@available(iOS 18.0, *)
 struct TouristAttractionView: View {
     var cityName: String
     var countryName: String
-    var videoName: String
+    //var videoName: String
+    let meshGradient = GradientProvider.gradients.randomElement() ?? MeshGradient(
+            width: 3,
+            height: 3,
+            points: [
+                [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
+                [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+            ],
+            colors: [
+                .red, .purple, .indigo,
+                .orange, .white, .blue,
+                .yellow, .green, .mint
+            ]
+        )
     
     @State private var navigateBack = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                VideoPlayerView(videoName: videoName)
+                //VideoPlayerView(videoName: videoName)
+                Rectangle()
+                    .fill(meshGradient)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
@@ -50,12 +67,14 @@ struct TouristAttractionView: View {
                     }) {
                         HStack {
                             Image(systemName: "chevron.left")
+                                .foregroundColor(.white)
                             Text("Back")
+                                .foregroundColor(.white)
                         }
                     }
                 }
             }
-            
+            .toolbarBackground(Color.black.opacity(0.5), for: .navigationBar)
             .onAppear {
                 print("TouristAttractionView appeared for \(cityName)")
             }
@@ -66,8 +85,10 @@ struct TouristAttractionView: View {
     }
 }
 
+@available(iOS 18.0, *)
 struct TouristAttractionView_Previews: PreviewProvider {
     static var previews: some View {
-        TouristAttractionView(cityName: "London", countryName: "England", videoName: "big_ben_video")
+        TouristAttractionView(cityName: "London", countryName: "England"//, videoName: "big_ben_video"
+        )
     }
 }

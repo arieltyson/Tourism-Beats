@@ -13,6 +13,7 @@
 		AF23D1D32C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */; };
 		AF23D1E12C21210B00A3406D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E02C21210B00A3406D /* MapKit.framework */; };
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
+		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF653D6D2C213263002F7EFE /* HomePageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */; };
 		AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */; };
 		AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7B2C2139CB002F7EFE /* HomePageView.swift */; };
@@ -76,6 +77,7 @@
 		AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tourism_BeatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AF23D1E02C21210B00A3406D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewTests.swift; sourceTree = "<group>"; };
 		AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionView.swift; sourceTree = "<group>"; };
 		AF653D7B2C2139CB002F7EFE /* HomePageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				AF653D822C213B8C002F7EFE /* .gitignore */,
 				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
 				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
+				AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
 				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
+				AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
