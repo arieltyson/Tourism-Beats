@@ -9,46 +9,55 @@ import SwiftUI
 
 @available(iOS 18.0, *)
 struct TouristAttractionView: View {
-    var cityName: String
-    var countryName: String
-    //var videoName: String
-    let meshGradient = GradientProvider.gradients.randomElement() ?? MeshGradient(
-            width: 3,
-            height: 3,
-            points: [
-                [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
-                [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
-            ],
-            colors: [
-                .red, .purple, .indigo,
-                .orange, .white, .blue,
-                .yellow, .green, .mint
-            ]
-        )
+    var city: City
     
     @State private var navigateBack = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                //VideoPlayerView(videoName: videoName)
-                Rectangle()
-                    .fill(meshGradient)
-                    .edgesIgnoringSafeArea(.all)
+                GradientProvider.gradients.randomElement()?.edgesIgnoringSafeArea(.all)
                 
                 VStack {
-                    Text("\(cityName), \(countryName)")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .italic()
-                        .foregroundColor(.white)
+                    HStack{
+                        VStack(alignment: .leading) {
+                            Text("\(city.name), \(city.country.name)  \(city.country.flag)" )
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .italic()
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 24)
+                                .fill(.purple)
+                                .visualEffect({ content, proxy in
+                                    content
+                                        .hueRotation(Angle(degrees: proxy.frame(in: .global).origin.y / 10))
+                                })
+                        )
                         .padding(.top, 50)
+                        
+                    }
+                    .padding(.horizontal)
                     
-                    TimeWidgetView(cityName: cityName)
+                    VStack(alignment: .leading, spacing: 20) {
+                        Image(city.imageName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .cornerRadius(15)
+                            .padding(.all)
+                    }
+                    .padding()
+                    .background(Rectangle().foregroundColor(.white))
+                    .cornerRadius(15)
+                    .shadow(radius: 15)
+                    .padding()
+                    
+                    TimeWidgetView(cityName: city.name)
                         .padding(.top, 20)
                     
-                    WeatherWidgetView(cityName: cityName)
+                    WeatherWidgetView(cityName: city.name)
                         .padding(.top, 20)
                     
                     Spacer()
@@ -76,7 +85,7 @@ struct TouristAttractionView: View {
             }
             .toolbarBackground(Color.black.opacity(0.5), for: .navigationBar)
             .onAppear {
-                print("TouristAttractionView appeared for \(cityName)")
+                print("TouristAttractionView appeared for \(city.name)")
             }
             .navigationDestination(isPresented: $navigateBack) {
                 CitySelectionView()
@@ -88,7 +97,6 @@ struct TouristAttractionView: View {
 @available(iOS 18.0, *)
 struct TouristAttractionView_Previews: PreviewProvider {
     static var previews: some View {
-        TouristAttractionView(cityName: "London", countryName: "England"//, videoName: "big_ben_video"
-        )
+        TouristAttractionView(city: CityData.cities.first!)
     }
 }
