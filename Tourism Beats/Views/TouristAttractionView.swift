@@ -10,8 +10,9 @@ import SwiftUI
 @available(iOS 18.0, *)
 struct TouristAttractionView: View {
     var city: City
-    
     @State private var navigateBack = false
+    @State private var showTip = true
+    private let highlightTip = HighlightTip()
     
     var body: some View {
         NavigationStack {
@@ -54,10 +55,13 @@ struct TouristAttractionView: View {
                             .padding(.all)
                         
                     }
+                    .popoverTip(highlightTip, arrowEdge: .bottom)
                     .padding(1)
                     .background(Rectangle().foregroundColor(.white))
                     .cornerRadius(15)
                     .shadow(radius: 15)
+                    
+                    Spacer()
                     
                     HStack {
                         TimeWidgetView(cityName: city.name)
@@ -69,11 +73,24 @@ struct TouristAttractionView: View {
                     
                     Spacer()
                     
+                    VStack {
+                        Image(systemName: "chevron.up.2")
+                            .resizable()
+                            .frame(width: 10, height: 10)
+                            .foregroundColor(.white)
+                            .padding(.bottom, 5)
+                        
+                        Text("Swipe up")
+                            .font(.subheadline)
+                            .foregroundColor(.white)
+                    }
+                    
                     NavigationLink(value: "CitySelection") {
                         EmptyView()
                     }.hidden()
                 }
                 .padding()
+                .popoverTip(HighlightTip(), arrowEdge: .bottom)
             }
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -93,6 +110,13 @@ struct TouristAttractionView: View {
             .toolbarBackground(Color.black.opacity(0.5), for: .navigationBar)
             .onAppear {
                 print("TouristAttractionView appeared for \(city.name)")
+                
+                if UserDefaults.standard.bool(forKey: "TouristAttractionViewShown") {
+                    showTip = false
+                } else {
+                    showTip = true
+                    UserDefaults.standard.set(true, forKey: "TouristAttractionViewShown")
+                }
             }
             .navigationDestination(isPresented: $navigateBack) {
                 CitySelectionView()

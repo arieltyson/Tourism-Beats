@@ -29,29 +29,24 @@ struct ClockFaceView: View {
     var second: Int
     
     var body: some View {
-        let currentTime = CurrentTime(hour: hour, minute: minute, second: second)
-        
-        return ZStack {
+        ZStack {
             Circle()
                 .fill(Color.white)
                 .shadow(radius: 10)
             
             // Hour Hand
-            ClockHand(length: 40, thickness: 6, angle: currentTime.hourAngle)
+            ClockHand(length: 30, thickness: 5, angle: .degrees(Double(hour % 12) / 12 * 360 + Double(minute) / 60 * 30))
                 .stroke(Color.black)
-                .rotationEffect(currentTime.hourAngle)
             
             // Minute Hand
-            ClockHand(length: 60, thickness: 4, angle: currentTime.minuteAngle)
+            ClockHand(length: 40, thickness: 4, angle: .degrees(Double(minute) / 60 * 360))
                 .stroke(Color.black)
-                .rotationEffect(currentTime.minuteAngle)
             
             // Second Hand
-            ClockHand(length: 80, thickness: 2, angle: currentTime.secondAngle)
+            ClockHand(length: 50, thickness: 2, angle: .degrees(Double(second) / 60 * 360))
                 .stroke(Color.red)
-                .rotationEffect(currentTime.secondAngle)
         }
-        .frame(width: 175, height: 175)
+        .frame(width: 100, height: 100)
         }
     }
 

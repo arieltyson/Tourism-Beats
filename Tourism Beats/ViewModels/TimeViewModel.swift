@@ -29,6 +29,7 @@ class TimeViewModel: ObservableObject {
         let gmtOffset = timeZone.secondsFromGMT() / 3600
         let gmtOffsetString = gmtOffset >= 0 ? "GMT +\(gmtOffset)" : "GMT \(gmtOffset)"
         self.currentTime = "\(timeString) (\(gmtOffsetString))"
+        
         let calendar = Calendar.current
         let components = calendar.dateComponents(in: timeZone, from: Date())
         currentHour = components.hour ?? 0
@@ -56,6 +57,22 @@ class TimeViewModel: ObservableObject {
             return TimeZone(identifier: "Europe/Madrid")!
         case "Rome":
             return TimeZone(identifier: "Europe/Rome")!
+        case "Beijing":
+            return TimeZone(identifier: "Asia/Shanghai")!
+        case "Cairo":
+            return TimeZone(identifier: "Africa/Cairo")!
+        case "New Delhi":
+            return TimeZone(identifier: "Asia/Kolkata")!
+        case "Rio De Janeiro":
+            return TimeZone(identifier: "America/Sao_Paulo")!
+        case "Moscow":
+            return TimeZone(identifier: "Europe/Moscow")!
+        case "Amsterdam":
+            return TimeZone(identifier: "Europe/Amsterdam")!
+        case "Athens":
+            return TimeZone(identifier: "Europe/Athens")!
+        case "Bangkok":
+            return TimeZone(identifier: "Asia/Bangkok")!
         default:
             return TimeZone.current
         }
