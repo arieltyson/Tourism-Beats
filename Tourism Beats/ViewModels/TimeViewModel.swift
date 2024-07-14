@@ -57,6 +57,22 @@ class TimeViewModel: ObservableObject {
             return TimeZone(identifier: "Europe/Madrid")!
         case "Rome":
             return TimeZone(identifier: "Europe/Rome")!
+        case "Beijing":
+            return TimeZone(identifier: "Asia/Shanghai")!
+        case "Cairo":
+            return TimeZone(identifier: "Africa/Cairo")!
+        case "New Delhi":
+            return TimeZone(identifier: "Asia/Kolkata")!
+        case "Rio De Janeiro":
+            return TimeZone(identifier: "America/Sao_Paulo")!
+        case "Moscow":
+            return TimeZone(identifier: "Europe/Moscow")!
+        case "Amsterdam":
+            return TimeZone(identifier: "Europe/Amsterdam")!
+        case "Athens":
+            return TimeZone(identifier: "Europe/Athens")!
+        case "Bangkok":
+            return TimeZone(identifier: "Asia/Bangkok")!
         default:
             return TimeZone.current
         }
