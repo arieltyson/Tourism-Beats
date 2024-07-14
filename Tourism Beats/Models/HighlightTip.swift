@@ -5,7 +5,7 @@
 //  Created by Ariel Tyson on 14/7/24.
 //
 
-import Foundation
+import SwiftUI
 import TipKit
 
 @available(iOS 17.0, *)
@@ -16,8 +16,8 @@ struct HighlightTip: Tip {
     }
     
     var message: Text? {
-        Text("Swipe up to explore top tourist activities in the selected city.")
-            .foregroundStyle(.white)
+        Text("Swipe up to explore top tourist activities.")
+            .foregroundStyle(.black)
     }
     
     var image: Image? {
