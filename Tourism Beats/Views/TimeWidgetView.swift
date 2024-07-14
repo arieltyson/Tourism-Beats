@@ -21,25 +21,22 @@ struct TimeWidgetView: View {
                 minute: viewModel.currentMinute,
                 second: viewModel.currentSecond
             )
-                .frame(width: 175, height: 175)
-                .padding(.bottom, 20)
+                .frame(width: 100, height: 100)
+                .padding(.bottom, 10)
             
             Text(viewModel.currentTime)
                 .font(.headline)
                 .foregroundColor(.white)
                 .padding()
-                .background(Color.black.opacity(0.7))
                 .cornerRadius(15)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.white, lineWidth: 2)
-                )
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
                 .fixedSize(horizontal: false, vertical: true)
         }
+        .frame(width: 175, height: 250)
         .padding(5)
-        .background(RoundedRectangle(cornerRadius: 15).fill(Color.black).shadow(radius: 5))
+        .background(RoundedRectangle(cornerRadius: 15)
+            .fill(Color.black.opacity(0.5)).shadow(radius: 5))
         .padding()
     }
 }

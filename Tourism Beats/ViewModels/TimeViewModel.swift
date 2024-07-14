@@ -29,6 +29,7 @@ class TimeViewModel: ObservableObject {
         let gmtOffset = timeZone.secondsFromGMT() / 3600
         let gmtOffsetString = gmtOffset >= 0 ? "GMT +\(gmtOffset)" : "GMT \(gmtOffset)"
         self.currentTime = "\(timeString) (\(gmtOffsetString))"
+        
         let calendar = Calendar.current
         let components = calendar.dateComponents(in: timeZone, from: Date())
         currentHour = components.hour ?? 0
