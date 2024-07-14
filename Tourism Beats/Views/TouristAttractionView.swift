@@ -13,7 +13,6 @@ struct TouristAttractionView: View {
     var city: City
     @State private var navigateBack = false
     @State private var showFutureUpdates = false
-    @State private var showTip = true
     private let highlightTip = HighlightTip()
     
     var body: some View {
@@ -85,13 +84,6 @@ struct TouristAttractionView: View {
                             .font(.subheadline)
                             .foregroundColor(.white)
                     }
-                    .popoverTip(highlightTip, arrowEdge: .bottom)
-                    .onAppear {
-                        if UserDefaults.standard.bool(forKey: "HasSeenTip") == false {
-                            showTip = true
-                            UserDefaults.standard.set(true, forKey: "HasSeenTip")
-                        }
-                    }
                     .gesture(
                         DragGesture(minimumDistance: 50, coordinateSpace: .local)
                             .onEnded { value in if value.translation.height < 0 {
@@ -123,17 +115,15 @@ struct TouristAttractionView: View {
                         }
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(.white)
+                            .popoverTip(highlightTip, arrowEdge: .top)
+                }
             }
             .toolbarBackground(Color.black.opacity(0.5), for: .navigationBar)
             .onAppear {
                 print("TouristAttractionView appeared for \(city.name)")
-                
-                if UserDefaults.standard.bool(forKey: "TouristAttractionViewShown") {
-                    showTip = false
-                } else {
-                    showTip = true
-                    UserDefaults.standard.set(true, forKey: "TouristAttractionViewShown")
-                }
             }
             .navigationDestination(isPresented: $navigateBack) {
                 CitySelectionView()
