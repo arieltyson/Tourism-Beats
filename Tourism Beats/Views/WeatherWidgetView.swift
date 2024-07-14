@@ -16,16 +16,30 @@ struct WeatherWidgetView: View {
     
     var body: some View {
         VStack {
-            Text(viewModel.weatherDescription)
+            Text(viewModel.weatherCondition)
                 .font(.headline)
                 .foregroundColor(.white)
-                .padding()
-                .background(Color.black.opacity(0.5))
-                .cornerRadius(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.white, lineWidth: 2)
-                )
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .padding(.top, 10)
+            
+            Image(systemName: viewModel.weatherIconName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40, height: 40)
+                .foregroundColor(.white)
+                .padding(.vertical, 10)
+            
+            Text(viewModel.temperature)
+                .font(.body)
+                .foregroundColor(.white)
+                .padding(.bottom, 10)
         }
+        .frame(width: 175, height: 250)
+        .padding(5)
+        .background(RoundedRectangle(cornerRadius: 15)
+            .fill(Color.black.opacity(0.5))
+            .shadow(radius: 5))
+        .padding()
     }
 }
