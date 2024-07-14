@@ -10,6 +10,9 @@ import Combine
 
 class TimeViewModel: ObservableObject {
     @Published var currentTime: String = ""
+    @Published var currentHour: Int = 0
+    @Published var currentMinute: Int = 0
+    @Published var currentSecond: Int = 0
     private var timer: AnyCancellable?
     
     init(cityName: String) {
@@ -21,10 +24,16 @@ class TimeViewModel: ObservableObject {
         let timeZone = getTimeZone(for: cityName)
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = timeZone
-        dateFormatter.dateFormat = "hh:mm:ss a"
+        dateFormatter.dateFormat = "hh:mm a"
         let timeString = dateFormatter.string(from: Date())
-        let timeZoneString = timeZone.abbreviation() ?? ""
-        self.currentTime = "\(timeString)\nTime Zone: \(timeZoneString)"
+        let gmtOffset = timeZone.secondsFromGMT() / 3600
+        let gmtOffsetString = gmtOffset >= 0 ? "GMT +\(gmtOffset)" : "GMT \(gmtOffset)"
+        self.currentTime = "\(timeString) (\(gmtOffsetString))"
+        let calendar = Calendar.current
+        let components = calendar.dateComponents(in: timeZone, from: Date())
+        currentHour = components.hour ?? 0
+        currentMinute = components.minute ?? 0
+        currentSecond = components.second ?? 0
     }
     
     private func startTimer(for cityName: String) {
