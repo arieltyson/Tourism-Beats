@@ -26,6 +26,9 @@ struct TouristAttractionView: View {
                                 .fontWeight(.bold)
                                 .italic()
                                 .foregroundColor(.white)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding()
                         .background(
@@ -36,10 +39,12 @@ struct TouristAttractionView: View {
                                         .hueRotation(Angle(degrees: proxy.frame(in: .global).origin.y / 10))
                                 })
                         )
-                        .padding(.top, 50)
+                        .padding(.top, 40)
                         
                     }
                     .padding(.horizontal)
+                    
+                    Spacer()
                     
                     VStack(alignment: .leading, spacing: 20) {
                         Image(city.imageName)
@@ -47,18 +52,20 @@ struct TouristAttractionView: View {
                             .aspectRatio(contentMode: .fit)
                             .cornerRadius(15)
                             .padding(.all)
+                        
                     }
-                    .padding()
+                    .padding(1)
                     .background(Rectangle().foregroundColor(.white))
                     .cornerRadius(15)
                     .shadow(radius: 15)
-                    .padding()
                     
-                    TimeWidgetView(cityName: city.name)
-                        .padding(.top, 20)
-                    
-                    WeatherWidgetView(cityName: city.name)
-                        .padding(.top, 20)
+                    HStack {
+                        TimeWidgetView(cityName: city.name)
+                            .frame(maxWidth: .infinity)
+                        
+                        WeatherWidgetView(cityName: city.name)
+                            .frame(maxWidth: .infinity)
+                    }
                     
                     Spacer()
                     

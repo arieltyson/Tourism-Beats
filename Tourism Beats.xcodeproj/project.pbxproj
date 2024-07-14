@@ -14,6 +14,7 @@
 		AF23D1E12C21210B00A3406D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E02C21210B00A3406D /* MapKit.framework */; };
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
+		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
 		AF653D6D2C213263002F7EFE /* HomePageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */; };
 		AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */; };
 		AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7B2C2139CB002F7EFE /* HomePageView.swift */; };
@@ -67,6 +68,7 @@
 		AF23D1E02C21210B00A3406D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
+		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewTests.swift; sourceTree = "<group>"; };
 		AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionView.swift; sourceTree = "<group>"; };
 		AF653D7B2C2139CB002F7EFE /* HomePageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
@@ -150,11 +152,11 @@
 			isa = PBXGroup;
 			children = (
 				AF981A1F2C4242B900992DD2 /* Models */,
-				AF75C7BF2C3E807A00E16A1D /* Services */,
 				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
 				AFAD155D2C394B4F00CEB4BB /* ViewModels */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
 				AF653D6F2C2136E3002F7EFE /* Views */,
+				AF75C7BF2C3E807A00E16A1D /* Services */,
 				AF653D6E2C213692002F7EFE /* Resources */,
 				AF23D1BB2C211F2500A3406D /* Preview Content */,
 			);
@@ -220,6 +222,7 @@
 				AF653D9E2C22A6CE002F7EFE /* VideoPlayerView.swift */,
 				AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */,
 				AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */,
+				AF5FC79E2C435CE70036940B /* ClockFaceView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -228,8 +231,8 @@
 			isa = PBXGroup;
 			children = (
 				AF653D822C213B8C002F7EFE /* .gitignore */,
-				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
 				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
+				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
 				AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */,
 			);
 			path = SupportingFiles;
@@ -403,6 +406,7 @@
 				AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
+				AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */,
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
 				AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */,
