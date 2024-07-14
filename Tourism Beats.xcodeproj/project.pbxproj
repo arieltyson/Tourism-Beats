@@ -39,6 +39,8 @@
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
+		AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */; };
+		AFD09D7C2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +96,8 @@
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
+		AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesView.swift; sourceTree = "<group>"; };
+		AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesViewControllerWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +229,7 @@
 				AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */,
 				AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */,
 				AF5FC79E2C435CE70036940B /* ClockFaceView.swift */,
+				AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -260,6 +265,7 @@
 		AFAD155D2C394B4F00CEB4BB /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */,
 				AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */,
 				AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */,
 			);
@@ -401,6 +407,7 @@
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
 				AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */,
+				AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
@@ -413,6 +420,7 @@
 				AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */,
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
+				AFD09D7C2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift in Sources */,
 				AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

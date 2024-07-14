@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import TipKit
 
 @available(iOS 18.0, *)
 struct TouristAttractionView: View {
     var city: City
     @State private var navigateBack = false
+    @State private var showFutureUpdates = false
     @State private var showTip = true
     private let highlightTip = HighlightTip()
     
@@ -55,7 +57,6 @@ struct TouristAttractionView: View {
                             .padding(.all)
                         
                     }
-                    .popoverTip(highlightTip, arrowEdge: .bottom)
                     .padding(1)
                     .background(Rectangle().foregroundColor(.white))
                     .cornerRadius(15)
@@ -84,13 +85,29 @@ struct TouristAttractionView: View {
                             .font(.subheadline)
                             .foregroundColor(.white)
                     }
+                    .popoverTip(highlightTip, arrowEdge: .bottom)
+                    .onAppear {
+                        if UserDefaults.standard.bool(forKey: "HasSeenTip") == false {
+                            showTip = true
+                            UserDefaults.standard.set(true, forKey: "HasSeenTip")
+                        }
+                    }
+                    .gesture(
+                        DragGesture(minimumDistance: 50, coordinateSpace: .local)
+                            .onEnded { value in if value.translation.height < 0 {
+                                showFutureUpdates = true
+                            }
+                        }
+                    )
                     
                     NavigationLink(value: "CitySelection") {
                         EmptyView()
                     }.hidden()
                 }
                 .padding()
-                .popoverTip(HighlightTip(), arrowEdge: .bottom)
+                .sheet(isPresented: $showFutureUpdates) {
+                    FutureUpdatesViewControllerWrapper()
+                }
             }
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -129,5 +146,20 @@ struct TouristAttractionView: View {
 struct TouristAttractionView_Previews: PreviewProvider {
     static var previews: some View {
         TouristAttractionView(city: CityData.cities.first!)
+    }
+}
+
+struct FutureUpdatesView: View {
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.3).edgesIgnoringSafeArea(.all)
+            VStack {
+                Text("More Good Vybes Coming Soon ...")
+                    .font(.largeTitle)
+                    .italic()
+                    .foregroundColor(.white)
+                    .padding()
+            }
+        }
     }
 }
