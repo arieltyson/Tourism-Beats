@@ -43,7 +43,7 @@ struct ClockFaceView: View {
                 .stroke(Color.black)
             
             // Second Hand
-            ClockHand(length: 50, thickness: 2, angle: .degrees(Double(second) / 60 * 360))
+            ClockHand(length: 45, thickness: 2, angle: .degrees(Double(second) / 60 * 360))
                 .stroke(Color.red)
         }
         .frame(width: 100, height: 100)
