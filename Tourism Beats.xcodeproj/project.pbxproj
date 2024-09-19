@@ -11,7 +11,6 @@
 		AF23D1C72C211F2500A3406D /* Tourism_BeatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1C62C211F2500A3406D /* Tourism_BeatsTests.swift */; };
 		AF23D1D12C211F2500A3406D /* Tourism_BeatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D02C211F2500A3406D /* Tourism_BeatsUITests.swift */; };
 		AF23D1D32C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */; };
-		AF23D1E12C21210B00A3406D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E02C21210B00A3406D /* MapKit.framework */; };
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
@@ -110,7 +109,6 @@
 				AF653D862C213DDA002F7EFE /* SceneKit.framework in Frameworks */,
 				AF653D872C213E2F002F7EFE /* MapKit.framework in Frameworks */,
 				AF653D8D2C213E5E002F7EFE /* UIKit.framework in Frameworks */,
-				AF23D1E12C21210B00A3406D /* MapKit.framework in Frameworks */,
 				AF653D8F2C213E64002F7EFE /* MusicKit.framework in Frameworks */,
 				AF653D912C213E7E002F7EFE /* QuartzCore.framework in Frameworks */,
 			);
@@ -336,7 +334,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					AF23D1B12C211F2400A3406D = {
 						CreatedOnToolsVersion = 15.4;
@@ -519,6 +517,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -574,6 +573,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -651,7 +651,6 @@
 		AF23D1DA2C211F2500A3406D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -671,7 +670,6 @@
 		AF23D1DB2C211F2500A3406D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -691,7 +689,6 @@
 		AF23D1DD2C211F2500A3406D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2MPMKAF986;
@@ -709,7 +706,6 @@
 		AF23D1DE2C211F2500A3406D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2MPMKAF986;
