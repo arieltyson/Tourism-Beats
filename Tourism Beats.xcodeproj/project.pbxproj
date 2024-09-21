@@ -34,6 +34,7 @@
 		AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */; };
 		AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */; };
 		AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF981A202C4242CF00992DD2 /* CityModel.swift */; };
+		AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */; };
 		AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */; };
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
@@ -91,8 +92,10 @@
 		AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherWidgetView.swift; sourceTree = "<group>"; };
 		AF981A202C4242CF00992DD2 /* CityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityModel.swift; sourceTree = "<group>"; };
+		AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationView.swift; sourceTree = "<group>"; };
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
+		AFC2C1C02C9E39C500404703 /* Tourism-Beats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Tourism-Beats-Info.plist"; sourceTree = SOURCE_ROOT; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
 		AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesView.swift; sourceTree = "<group>"; };
@@ -155,14 +158,15 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
-				AF981A1F2C4242B900992DD2 /* Models */,
-				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
-				AFAD155D2C394B4F00CEB4BB /* ViewModels */,
-				AF653D802C213B28002F7EFE /* SupportingFiles */,
-				AF653D6F2C2136E3002F7EFE /* Views */,
-				AF75C7BF2C3E807A00E16A1D /* Services */,
-				AF653D6E2C213692002F7EFE /* Resources */,
+				AFC2C1C02C9E39C500404703 /* Tourism-Beats-Info.plist */,
 				AF23D1BB2C211F2500A3406D /* Preview Content */,
+				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
+				AF653D6E2C213692002F7EFE /* Resources */,
+				AF653D802C213B28002F7EFE /* SupportingFiles */,
+				AF75C7BF2C3E807A00E16A1D /* Services */,
+				AF981A1F2C4242B900992DD2 /* Models */,
+				AF653D6F2C2136E3002F7EFE /* Views */,
+				AFAD155D2C394B4F00CEB4BB /* ViewModels */,
 			);
 			path = "Tourism Beats";
 			sourceTree = "<group>";
@@ -228,6 +232,7 @@
 				AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */,
 				AF5FC79E2C435CE70036940B /* ClockFaceView.swift */,
 				AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */,
+				AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -409,6 +414,7 @@
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
+				AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */,
 				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
@@ -590,8 +596,10 @@
 				DEVELOPMENT_TEAM = 2MPMKAF986;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Tourism-Beats-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Tourism Beats";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Please authorize Apple Music to continue";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -625,8 +633,10 @@
 				DEVELOPMENT_TEAM = 2MPMKAF986;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Tourism-Beats-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Tourism Beats";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Please authorize Apple Music to continue";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
