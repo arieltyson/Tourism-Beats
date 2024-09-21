@@ -12,7 +12,7 @@ import TipKit
 struct TouristAttractionView: View {
     var city: City
     @State private var navigateBack = false
-    @State private var showFutureUpdates = false
+    @State private var showMusicRecommendations = false
     private let highlightTip = HighlightTip()
     
     var body: some View {
@@ -42,7 +42,6 @@ struct TouristAttractionView: View {
                                 })
                         )
                         .padding(.top, 40)
-                        
                     }
                     .padding(.horizontal)
                     
@@ -85,20 +84,16 @@ struct TouristAttractionView: View {
                             .foregroundColor(.white)
                     }
                     .gesture(
-                        DragGesture(minimumDistance: 50, coordinateSpace: .local)
+                        DragGesture(minimumDistance: 50)
                             .onEnded { value in if value.translation.height < 0 {
-                                showFutureUpdates = true
+                                showMusicRecommendations = true
                             }
                         }
                     )
-                    
-                    NavigationLink(value: "CitySelection") {
-                        EmptyView()
-                    }.hidden()
                 }
                 .padding()
-                .sheet(isPresented: $showFutureUpdates) {
-                    FutureUpdatesViewControllerWrapper()
+                .navigationDestination(isPresented: $showMusicRecommendations) {
+                    MusicRecommendationView(city: city)
                 }
             }
             .navigationBarBackButtonHidden(true)
@@ -127,28 +122,6 @@ struct TouristAttractionView: View {
             }
             .navigationDestination(isPresented: $navigateBack) {
                 CitySelectionView()
-            }
-        }
-    }
-}
-
-@available(iOS 18.0, *)
-struct TouristAttractionView_Previews: PreviewProvider {
-    static var previews: some View {
-        TouristAttractionView(city: CityData.cities.first!)
-    }
-}
-
-struct FutureUpdatesView: View {
-    var body: some View {
-        ZStack {
-            Color.black.opacity(0.3).edgesIgnoringSafeArea(.all)
-            VStack {
-                Text("More Good Vybes Coming Soon ...")
-                    .font(.largeTitle)
-                    .italic()
-                    .foregroundColor(.white)
-                    .padding()
             }
         }
     }
