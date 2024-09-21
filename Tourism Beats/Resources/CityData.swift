@@ -96,7 +96,7 @@ extension CityModel {
         case "Lima": return CLLocationCoordinate2D(latitude: -12.0464, longitude: -77.0428)
         case "Bogota": return CLLocationCoordinate2D(latitude: 4.7110, longitude: -74.0721)
         case "Caracas": return CLLocationCoordinate2D(latitude: 10.4806, longitude: -66.9036)
-        case "Port of Spain": return CLLocationCoordinate2D(latitude: 10.6918, longitude: -61.2225)
+        case "Port of Spain": return CLLocationCoordinate2D(latitude: 10.6520, longitude: -61.5157)
         case "Kingston": return CLLocationCoordinate2D(latitude: 17.9714, longitude: -76.7936)
         case "Mexico City": return CLLocationCoordinate2D(latitude: 19.4326, longitude: -99.1332)
         case "Los Angeles": return CLLocationCoordinate2D(latitude: 34.0522, longitude: -118.2437)
