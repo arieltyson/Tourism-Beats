@@ -10,13 +10,21 @@ import TipKit
 
 @available(iOS 17.0, *)
 struct HighlightTip: Tip {
+    static let didVisitMusicRecommendation = Event(id: "didVisitMusicRecommendation")
+    
+    var rules: [Rule] {
+        #Rule(Self.didVisitMusicRecommendation) {
+            $0.donations.count == 0
+        }
+    }
+    
     var title: Text {
-        Text("Swipe Up")
+        Text("Swipe left")
             .foregroundStyle(.cyan)
     }
     
     var message: Text? {
-        Text("Swipe up to explore top tourist activities.")
+        Text("Swipe left to discover the city's top tune.")
             .foregroundStyle(.black)
     }
     

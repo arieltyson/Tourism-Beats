@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,15 +39,12 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Qgt-sg-9eO">
-                                <rect key="frame" x="167" y="444" width="59" height="67"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="67" id="SrY-wG-OOC"/>
-                                </constraints>
-                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </activityIndicatorView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="globe.europe.africa" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="uF6-uu-mLZ">
-                                <rect key="frame" x="114" y="224" width="165" height="72"/>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RqI-0y-g2c">
+                                <rect key="frame" x="129" y="532" width="150" height="4"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="globe.europe.africa" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="uF6-uu-mLZ">
+                                <rect key="frame" x="114" y="274.66666666666663" width="165" height="72"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="73.333333333333329" id="FdG-R4-Jcf"/>
                                 </constraints>
@@ -59,14 +56,11 @@
                         <constraints>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
                             <constraint firstItem="uF6-uu-mLZ" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="114" id="KbA-DK-yu3"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Qgt-sg-9eO" secondAttribute="centerX" id="PW5-vA-P9h"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
                             <constraint firstItem="uF6-uu-mLZ" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="fa7-UB-8av"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="Qgt-sg-9eO" secondAttribute="bottom" constant="307" id="ggN-FT-apd"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="trailing" secondItem="obG-Y5-kRd" secondAttribute="trailing" id="iFs-JZ-d0w"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="obG-Y5-kRd" secondAttribute="leading" id="oQY-Yf-faK"/>
-                            <constraint firstItem="Qgt-sg-9eO" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="167" id="oYX-HE-ePS"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" constant="56" id="rBP-Lt-V3u"/>
                             <constraint firstItem="uF6-uu-mLZ" firstAttribute="top" secondItem="GJd-Yh-RWb" secondAttribute="bottom" constant="65" id="wYZ-gN-aYb"/>
                         </constraints>
@@ -80,7 +74,7 @@
     <resources>
         <image name="globe.europe.africa" catalog="system" width="128" height="123"/>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

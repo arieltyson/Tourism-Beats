@@ -19,9 +19,9 @@ struct Tourism_BeatsApp: App {
     
     init() {
         do {
-            try Tips.configure()
+            try Tips.configure([.displayFrequency(.daily)])
             print("Tips successfuly initialized !")
-            try? Tips.resetDatastore()
+            //try? Tips.resetDatastore()
         } catch {
             print("Error initializing tips: \(error)")
         }

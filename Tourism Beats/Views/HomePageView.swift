@@ -48,7 +48,7 @@ struct HomePageView: View {
                 .padding()
             }
             .edgesIgnoringSafeArea(.all)
-            .navigationTitle("")
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
