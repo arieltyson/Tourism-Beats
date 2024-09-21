@@ -54,6 +54,7 @@
 		AFC2C1DE2C9E8A2C00404703 /* SafetyAdvisoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */; };
 		AFC2C1E02C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DF2C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift */; };
 		AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */; };
+		AFC2C1E42C9EA00F00404703 /* CustomNavigationTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
 		AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */; };
@@ -130,6 +131,7 @@
 		AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyAdvisoryView.swift; sourceTree = "<group>"; };
 		AFC2C1DF2C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelAdvisoryAPIResponse.swift; sourceTree = "<group>"; };
 		AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyServiceProtocol.swift; sourceTree = "<group>"; };
+		AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationTitle.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
 		AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesView.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 		AF653D802C213B28002F7EFE /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */,
 				AF653D822C213B8C002F7EFE /* .gitignore */,
 				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
 				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
@@ -477,6 +480,7 @@
 				AFC2C1E02C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift in Sources */,
 				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
 				AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */,
+				AFC2C1E42C9EA00F00404703 /* CustomNavigationTitle.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */,

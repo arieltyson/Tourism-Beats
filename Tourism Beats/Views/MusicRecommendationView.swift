@@ -47,6 +47,7 @@ struct MusicRecommendationView: View {
             
             Spacer()
         }
+        .customNavigationTitle("Apple Music Local 🌆")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
             LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.7), Color.indigo.opacity(0.7), Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)

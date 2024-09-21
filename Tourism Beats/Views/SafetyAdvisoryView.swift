@@ -13,7 +13,7 @@ struct SafetyAdvisoryView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Travel Safety Advisory")
-                .font(.headline)
+                .font(.largeTitle)
             
             if viewModel.isLoading {
                 ProgressView()
@@ -26,7 +26,7 @@ struct SafetyAdvisoryView: View {
                     .font(.title2)
                     .bold()
                 if let advisory = safetyData.advisory {
-                    Text("Risk Level: \(String(format: "%.1f", advisory.score)) / 5")
+                    Text("Risk Level: \(String(format: "", advisory.score)) / 5")
                         .font(.title3)
                     Text(advisory.message)
                         .font(.body)
