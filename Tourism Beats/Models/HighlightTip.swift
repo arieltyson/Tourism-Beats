@@ -25,10 +25,10 @@ struct HighlightTip: Tip {
     
     var message: Text? {
         Text("Swipe left to discover the city's top tune.")
-            .foregroundStyle(.black)
+            .foregroundStyle(.white)
     }
     
     var image: Image? {
-        Image(systemName: "hand.point.up.left.fill")
+        Image(systemName: "hand.draw.fill")
     }
 }
