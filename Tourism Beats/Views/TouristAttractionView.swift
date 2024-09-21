@@ -10,7 +10,7 @@ import TipKit
 
 @available(iOS 18.0, *)
 struct TouristAttractionView: View {
-    var city: City
+    var city: CityModel
     @State private var navigateBack = false
     @State private var showMusicRecommendations = false
     private let highlightTip = HighlightTip()
@@ -93,7 +93,7 @@ struct TouristAttractionView: View {
                 }
                 .padding()
                 .navigationDestination(isPresented: $showMusicRecommendations) {
-                    MusicRecommendationView(city: city)
+                    MusicRecommendationView(viewModel: MusicRecommendationViewModel(city: city))
                 }
             }
             .navigationBarBackButtonHidden(true)

@@ -10,15 +10,11 @@ import MusicKit
 
 @available(iOS 18.0, *)
 struct MusicRecommendationView: View {
-    var city: City
-    @State private var songTitle: String = "Loading..."
-    @State private var artistName: String = "Loading..."
-    @State private var songImage: URL?
-    @State private var isAuthorized: Bool = false
+    @ObservedObject var viewModel: MusicRecommendationViewModel
     
     var body: some View {
         VStack {
-            if let songImage = songImage {
+            if let songImage = viewModel.songImage {
                 AsyncImage(url: songImage) { image in
                     image
                         .resizable()
@@ -34,17 +30,21 @@ struct MusicRecommendationView: View {
                     .frame(width: 300, height: 300)
             }
             
-            Text(songTitle)
+            Text(viewModel.songTitle)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
                 .padding(.top, 20)
             
-            Text(artistName)
+            Text(viewModel.artistName)
                 .font(.subheadline)
                 .foregroundColor(.white)
                 .padding(.top, 5)
-
+            
+            Spacer()
+            
+            VisaCheckerView(viewModel: VisaCheckerViewModel(city: viewModel.city))
+            
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -52,41 +52,5 @@ struct MusicRecommendationView: View {
             LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.7), Color.indigo.opacity(0.7), Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
         )
-        .onAppear {
-            checkMusicAuthorization()
-        }
-    }
-    
-    private func checkMusicAuthorization() {
-        Task {
-            let status = await MusicAuthorization.request()
-            isAuthorized = (status == .authorized)
-            
-            if isAuthorized {
-                fetchPopularSong(for: city.name)
-            } else {
-                print("Music access not authorized.")
-            }
-        }
-    }
-    
-    private func fetchPopularSong(for city: String) {
-        Task {
-            do {
-                let request = MusicCatalogSearchRequest(term: city, types: [Song.self])
-                let response = try await request.response()
-                
-                if let song = response.songs.first {
-                    songTitle = song.title
-                    artistName = song.artistName
-                    songImage = song.artwork?.url(width: 300, height: 300)
-                } else {
-                    songTitle = "No song found"
-                    artistName = ""
-                }
-            } catch {
-                print("Error fetching song data: \(error)")
-            }
-        }
     }
 }

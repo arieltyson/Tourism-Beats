@@ -37,6 +37,17 @@
 		AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */; };
 		AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */; };
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
+		AFC2C1C22C9E48D600404703 /* VisaCheckerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C12C9E48D600404703 /* VisaCheckerView.swift */; };
+		AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C32C9E559100404703 /* CountryModel.swift */; };
+		AFC2C1C62C9E55D100404703 /* VisaCheckerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C52C9E55D100404703 /* VisaCheckerViewModel.swift */; };
+		AFC2C1C82C9E561500404703 /* CountryDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C72C9E561500404703 /* CountryDataService.swift */; };
+		AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C92C9E665E00404703 /* CountryData.swift */; };
+		AFC2C1CC2C9E686600404703 /* CityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1CB2C9E686600404703 /* CityData.swift */; };
+		AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */; };
+		AFC2C1D02C9E6E7800404703 /* VisaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1CF2C9E6E7800404703 /* VisaService.swift */; };
+		AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D12C9E6ED700404703 /* MusicService.swift */; };
+		AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */; };
+		AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
 		AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */; };
@@ -96,6 +107,17 @@
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
 		AFC2C1C02C9E39C500404703 /* Tourism-Beats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Tourism-Beats-Info.plist"; sourceTree = SOURCE_ROOT; };
+		AFC2C1C12C9E48D600404703 /* VisaCheckerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckerView.swift; sourceTree = "<group>"; };
+		AFC2C1C32C9E559100404703 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
+		AFC2C1C52C9E55D100404703 /* VisaCheckerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckerViewModel.swift; sourceTree = "<group>"; };
+		AFC2C1C72C9E561500404703 /* CountryDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDataService.swift; sourceTree = "<group>"; };
+		AFC2C1C92C9E665E00404703 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
+		AFC2C1CB2C9E686600404703 /* CityData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityData.swift; sourceTree = "<group>"; };
+		AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationViewModel.swift; sourceTree = "<group>"; };
+		AFC2C1CF2C9E6E7800404703 /* VisaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaService.swift; sourceTree = "<group>"; };
+		AFC2C1D12C9E6ED700404703 /* MusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicService.swift; sourceTree = "<group>"; };
+		AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceProtocol.swift; sourceTree = "<group>"; };
+		AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceProtocol.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
 		AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesView.swift; sourceTree = "<group>"; };
@@ -215,6 +237,8 @@
 			isa = PBXGroup;
 			children = (
 				AF653D7E2C213AFA002F7EFE /* Assets.xcassets */,
+				AFC2C1C92C9E665E00404703 /* CountryData.swift */,
+				AFC2C1CB2C9E686600404703 /* CityData.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -233,6 +257,7 @@
 				AF5FC79E2C435CE70036940B /* ClockFaceView.swift */,
 				AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */,
 				AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */,
+				AFC2C1C12C9E48D600404703 /* VisaCheckerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -244,6 +269,8 @@
 				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
 				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
 				AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */,
+				AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */,
+				AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -252,6 +279,9 @@
 			isa = PBXGroup;
 			children = (
 				AF75C7C02C3E809300E16A1D /* WeatherFetcherService.swift */,
+				AFC2C1C72C9E561500404703 /* CountryDataService.swift */,
+				AFC2C1CF2C9E6E7800404703 /* VisaService.swift */,
+				AFC2C1D12C9E6ED700404703 /* MusicService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -261,6 +291,7 @@
 			children = (
 				AF981A202C4242CF00992DD2 /* CityModel.swift */,
 				AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */,
+				AFC2C1C32C9E559100404703 /* CountryModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -271,6 +302,8 @@
 				AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */,
 				AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */,
 				AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */,
+				AFC2C1C52C9E55D100404703 /* VisaCheckerViewModel.swift */,
+				AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -410,16 +443,27 @@
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
 				AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */,
+				AFC2C1C62C9E55D100404703 /* VisaCheckerViewModel.swift in Sources */,
 				AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
+				AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
+				AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */,
+				AFC2C1CC2C9E686600404703 /* CityData.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
+				AFC2C1C22C9E48D600404703 /* VisaCheckerView.swift in Sources */,
 				AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */,
+				AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */,
 				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
+				AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
+				AFC2C1D02C9E6E7800404703 /* VisaService.swift in Sources */,
+				AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */,
+				AFC2C1C82C9E561500404703 /* CountryDataService.swift in Sources */,
+				AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
 				AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */,
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
