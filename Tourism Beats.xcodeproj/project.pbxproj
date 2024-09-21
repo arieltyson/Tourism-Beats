@@ -48,6 +48,12 @@
 		AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D12C9E6ED700404703 /* MusicService.swift */; };
 		AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */; };
 		AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */; };
+		AFC2C1D82C9E89BE00404703 /* SafetyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D72C9E89BE00404703 /* SafetyService.swift */; };
+		AFC2C1DA2C9E89F600404703 /* SafetyDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D92C9E89F600404703 /* SafetyDataModel.swift */; };
+		AFC2C1DC2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DB2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift */; };
+		AFC2C1DE2C9E8A2C00404703 /* SafetyAdvisoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */; };
+		AFC2C1E02C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DF2C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift */; };
+		AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
 		AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */; };
@@ -118,6 +124,12 @@
 		AFC2C1D12C9E6ED700404703 /* MusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicService.swift; sourceTree = "<group>"; };
 		AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceProtocol.swift; sourceTree = "<group>"; };
 		AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceProtocol.swift; sourceTree = "<group>"; };
+		AFC2C1D72C9E89BE00404703 /* SafetyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyService.swift; sourceTree = "<group>"; };
+		AFC2C1D92C9E89F600404703 /* SafetyDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyDataModel.swift; sourceTree = "<group>"; };
+		AFC2C1DB2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyAdvisoryViewModel.swift; sourceTree = "<group>"; };
+		AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyAdvisoryView.swift; sourceTree = "<group>"; };
+		AFC2C1DF2C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelAdvisoryAPIResponse.swift; sourceTree = "<group>"; };
+		AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyServiceProtocol.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
 		AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesView.swift; sourceTree = "<group>"; };
@@ -258,6 +270,7 @@
 				AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */,
 				AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */,
 				AFC2C1C12C9E48D600404703 /* VisaCheckerView.swift */,
+				AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -271,6 +284,7 @@
 				AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */,
 				AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */,
 				AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */,
+				AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -282,6 +296,7 @@
 				AFC2C1C72C9E561500404703 /* CountryDataService.swift */,
 				AFC2C1CF2C9E6E7800404703 /* VisaService.swift */,
 				AFC2C1D12C9E6ED700404703 /* MusicService.swift */,
+				AFC2C1D72C9E89BE00404703 /* SafetyService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -289,9 +304,11 @@
 		AF981A1F2C4242B900992DD2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AFC2C1DF2C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift */,
 				AF981A202C4242CF00992DD2 /* CityModel.swift */,
 				AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */,
 				AFC2C1C32C9E559100404703 /* CountryModel.swift */,
+				AFC2C1D92C9E89F600404703 /* SafetyDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -304,6 +321,7 @@
 				AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */,
 				AFC2C1C52C9E55D100404703 /* VisaCheckerViewModel.swift */,
 				AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */,
+				AFC2C1DB2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -447,6 +465,8 @@
 				AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
 				AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */,
+				AFC2C1DC2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift in Sources */,
+				AFC2C1DA2C9E89F600404703 /* SafetyDataModel.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */,
 				AFC2C1CC2C9E686600404703 /* CityData.swift in Sources */,
@@ -454,13 +474,16 @@
 				AFC2C1C22C9E48D600404703 /* VisaCheckerView.swift in Sources */,
 				AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */,
 				AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */,
+				AFC2C1E02C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift in Sources */,
 				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
 				AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
+				AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */,
 				AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
 				AFC2C1D02C9E6E7800404703 /* VisaService.swift in Sources */,
+				AFC2C1D82C9E89BE00404703 /* SafetyService.swift in Sources */,
 				AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */,
 				AFC2C1C82C9E561500404703 /* CountryDataService.swift in Sources */,
 				AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */,
@@ -470,6 +493,7 @@
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
 				AFD09D7C2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift in Sources */,
 				AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */,
+				AFC2C1DE2C9E8A2C00404703 /* SafetyAdvisoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

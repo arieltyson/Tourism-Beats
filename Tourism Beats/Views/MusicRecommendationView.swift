@@ -43,7 +43,7 @@ struct MusicRecommendationView: View {
             
             Spacer()
             
-            VisaCheckerView(viewModel: VisaCheckerViewModel(city: viewModel.city))
+            SafetyAdvisoryView(viewModel: SafetyAdvisoryViewModel(city: viewModel.city))
             
             Spacer()
         }
