@@ -10,9 +10,14 @@ import MapKit
 
 @available(iOS 18.0, *)
 struct CitySelectionView: View {
-    @State private var selectedCity: City? = nil
+    @State private var selectedCity: CityModel? = nil
     @State private var showAlert = false
     @State private var navigateToAttraction = false
+    
+    let countryDataService = CountryDataService()
+    var cities: [CityModel] {
+            CityData.cities(countryDataService: countryDataService)
+        }
     
     var body: some View {
         NavigationStack {
@@ -22,7 +27,7 @@ struct CitySelectionView: View {
                     .padding()
                     .foregroundColor(.white)
                 
-                MapView(selectedCity: $selectedCity, showAlert: $showAlert)
+                MapView(selectedCity: $selectedCity, showAlert: $showAlert, cities: cities)
                     .edgesIgnoringSafeArea(.all)
                 
                 if let city = selectedCity {

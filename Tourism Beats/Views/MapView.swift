@@ -9,10 +9,9 @@ import SwiftUI
 import MapKit
 
 struct MapView: UIViewRepresentable {
-    @Binding var selectedCity: City?
+    @Binding var selectedCity: CityModel?
     @Binding var showAlert: Bool
-
-    private let cities = CityData.cities
+    let cities: [CityModel]
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -21,9 +20,9 @@ struct MapView: UIViewRepresentable {
         mapView.overrideUserInterfaceStyle = .dark
 
         let europeCenter = CLLocationCoordinate2D(latitude: 54.5260, longitude: 15.2551)
-                let span = MKCoordinateSpan(latitudeDelta: 20.0, longitudeDelta: 20.0)
-                let region = MKCoordinateRegion(center: europeCenter, span: span)
-                mapView.setRegion(region, animated: false)
+        let span = MKCoordinateSpan(latitudeDelta: 20.0, longitudeDelta: 20.0)
+        let region = MKCoordinateRegion(center: europeCenter, span: span)
+        mapView.setRegion(region, animated: false)
 
         for city in cities {
             let annotation = MKPointAnnotation()
@@ -58,7 +57,7 @@ struct MapView: UIViewRepresentable {
     }
 }
 
-extension City {
+extension CityModel {
     var coordinate: CLLocationCoordinate2D {
         switch self.name {
         case "London": return CLLocationCoordinate2D(latitude: 51.5074, longitude: -0.1278)
