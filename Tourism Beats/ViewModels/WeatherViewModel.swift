@@ -26,7 +26,7 @@ class WeatherViewModel: ObservableObject {
                 self.weatherCondition = weather.currentWeather.condition.description
                 self.weatherIconName = self.getWeatherIconName(for: weather.currentWeather.condition)
                 let roundedTemperature = Int(weather.currentWeather.temperature.value.rounded())
-                self.temperature = "\(roundedTemperature)° \(weather.currentWeather.temperature.unit.symbol)"
+                self.temperature = "\(roundedTemperature) \(weather.currentWeather.temperature.unit.symbol)"
             }
         }
     }

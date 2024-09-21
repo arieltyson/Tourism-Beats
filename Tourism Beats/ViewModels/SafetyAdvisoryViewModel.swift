@@ -44,11 +44,11 @@ class SafetyAdvisoryViewModel: ObservableObject {
     var riskLevelText: String? {
         guard let score = safetyData?.advisory?.score else { return nil }
         switch score {
-        case ..<2.5:
+        case ..<3:
             return "LOW"
-        case 2.5..<3.5:
+        case 3..<4:
             return "MED"
-        case 3.5...:
+        case 4...:
             return "HIGH"
         default:
             return "Unknown"
@@ -58,11 +58,11 @@ class SafetyAdvisoryViewModel: ObservableObject {
     var riskLevelColor: Color? {
         guard let score = safetyData?.advisory?.score else { return nil }
         switch score {
-        case ..<2.5:
+        case ..<3:
             return .green
-        case 2.5..<3.5:
+        case 3..<4:
             return .yellow
-        case 3.5...:
+        case 4...:
             return .red
         default:
             return .gray
