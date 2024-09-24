@@ -21,6 +21,7 @@ class TimeViewModel: ObservableObject {
         "Tokyo": "Asia/Tokyo",
         "Berlin": "Europe/Berlin",
         "Madrid": "Europe/Madrid",
+        "Barcelona": "Europe/Madrid",
         "Rome": "Europe/Rome",
         "Beijing": "Asia/Shanghai",
         "Cairo": "Africa/Cairo",

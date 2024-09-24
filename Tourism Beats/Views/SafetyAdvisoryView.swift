@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SafetyAdvisoryView: View {
-    @ObservedObject var viewModel: SafetyAdvisoryViewModel
+    @StateObject var viewModel: SafetyAdvisoryViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {

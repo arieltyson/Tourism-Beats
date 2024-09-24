@@ -86,7 +86,7 @@ struct TouristAttractionView: View {
             }
             .padding()
             .navigationDestination(isPresented: $showMusicRecommendations) {
-                MusicRecommendationView(viewModel: MusicRecommendationViewModel(city: city))
+                MusicRecommendationView(viewModel: MusicRecommendationViewModel(city: city),fallbackView: FallbackMusicCardView())
             }
             .navigationDestination(isPresented: $showCitySelectionView) {
                 CitySelectionView()

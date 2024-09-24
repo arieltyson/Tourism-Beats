@@ -7,13 +7,13 @@
 
 import Foundation
 import MusicKit
-import SwiftUI
 
 class MusicRecommendationViewModel: ObservableObject {
     @Published var songTitle: String = "Loading..."
     @Published var artistName: String = ""
     @Published var songImage: URL?
     @Published var isAuthorized: Bool = false
+    @Published var isMusicFeatureAvailable: Bool = true
 
     let city: CityModel
     private let musicService: MusicServiceProtocol
@@ -21,32 +21,36 @@ class MusicRecommendationViewModel: ObservableObject {
     init(city: CityModel, musicService: MusicServiceProtocol = MusicService()) {
         self.city = city
         self.musicService = musicService
-        checkMusicAuthorization()
     }
+    
+    // Check and request for authorization only when necessary to allow normal functioning of app (App Store Connect: 5.1.1 Legal: Privacy - Data Collection and Storage)
+    func requestMusicAccessIfNeeded() async {
+        let status = await MusicAuthorization.request()
 
-    func checkMusicAuthorization() {
-        Task {
-            let status = await MusicAuthorization.request()
+        await MainActor.run {
             self.isAuthorized = (status == .authorized)
-
-            if isAuthorized {
-                await fetchPopularSong()
-            } else {
-                print("Music access not authorized.")
-            }
+            self.isMusicFeatureAvailable = self.isAuthorized
+        }
+        
+        if isAuthorized {
+            await loadhPopularSong()
         }
     }
 
-    @MainActor
-    private func fetchPopularSong() async {
+    private func loadhPopularSong() async {
         do {
             let song = try await musicService.fetchPopularSong(for: city.name)
-            self.songTitle = song.title
-            self.artistName = song.artistName
-            self.songImage = song.artwork?.url(width: 300, height: 300)
+            
+            await MainActor.run {
+                self.songTitle = song.title
+                self.artistName = song.artistName
+                self.songImage = song.artwork?.url(width: 300, height: 300)
+            }
         } catch {
-            self.songTitle = "No song found"
-            self.artistName = ""
+            await MainActor.run {
+                self.songTitle = "No song found"
+                self.artistName = ""
+            }
             print("Error fetching song data: \(error)")
         }
     }

@@ -13,11 +13,10 @@ class MusicService: MusicServiceProtocol {
         let request = MusicCatalogSearchRequest(term: city, types: [Song.self])
         let response = try await request.response()
 
-        if let song = response.songs.first {
-            return song
-        } else {
+        guard let song = response.songs.first else {
             throw MusicServiceError.noSongFound
         }
+            return song
     }
 
     enum MusicServiceError: Error {

@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  HomePageView.swift
 //  Tourism Beats
 //
 //  Created by Ariel Tyson on 17/6/24.
