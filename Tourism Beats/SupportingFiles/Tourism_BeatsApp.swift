@@ -8,22 +8,28 @@
 import SwiftUI
 import TipKit
 
-@available(iOS 18.0, *)
 @main
 struct Tourism_BeatsApp: App {
     var body: some Scene {
         WindowGroup {
-            HomePageView()
+            if #available(iOS 16.0, *) {
+                HomePageView()
+            } else {
+                UnsupportedOSViewControllerWrapper()
+                    .edgesIgnoringSafeArea(.all)
+            }
         }
     }
     
     init() {
-        do {
-            try Tips.configure([.displayFrequency(.daily)])
-            print("Tips successfuly initialized !")
-            //try? Tips.resetDatastore()
-        } catch {
-            print("Error initializing tips: \(error)")
+        if #available(iOS 17.0, *) {
+            do {
+                try Tips.configure([.displayFrequency(.daily)])
+                print("Tips successfuly initialized !")
+                //try? Tips.resetDatastore()
+            } catch {
+                print("Error initializing tips: \(error)")
+            }
         }
     }
 }

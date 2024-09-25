@@ -25,7 +25,7 @@ struct HighlightTip: Tip {
     
     var message: Text? {
         Text("Swipe left to discover the city's top tune.")
-            .foregroundStyle(.white)
+            .foregroundStyle(.indigo)
     }
     
     var image: Image? {

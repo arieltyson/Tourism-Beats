@@ -8,7 +8,6 @@
 import SwiftUI
 import MusicKit
 
-@available(iOS 18.0, *)
 struct MusicRecommendationView: View {
     @ObservedObject var viewModel: MusicRecommendationViewModel
     var fallbackView: FallbackMusicCardView

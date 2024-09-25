@@ -14,6 +14,12 @@
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
+		AF60E1EF2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1EE2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift */; };
+		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
+		AF60E1F32CA3D96200E5EFF1 /* UIKitGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */; };
+		AF60E1F52CA42EED00E5EFF1 /* ContentSetupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */; };
+		AF60E1F72CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F62CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift */; };
+		AF60E1F92CA43F1A00E5EFF1 /* GradientBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F82CA43F1A00E5EFF1 /* GradientBackgroundView.swift */; };
 		AF653D6D2C213263002F7EFE /* HomePageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */; };
 		AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */; };
 		AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7B2C2139CB002F7EFE /* HomePageView.swift */; };
@@ -58,7 +64,7 @@
 		AFC5E3DE2CA1D4A80049B5CC /* FallbackMusicCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
-		AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */; };
+		AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D792C43F24F00BB5EBA /* FutureUpdatesViewController.swift */; };
 		AFD09D7C2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +97,12 @@
 		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
+		AF60E1EE2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
+		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
+		AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackground.swift; sourceTree = "<group>"; };
+		AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSetupProvider.swift; sourceTree = "<group>"; };
+		AF60E1F62CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
+		AF60E1F82CA43F1A00E5EFF1 /* GradientBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackgroundView.swift; sourceTree = "<group>"; };
 		AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewTests.swift; sourceTree = "<group>"; };
 		AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionView.swift; sourceTree = "<group>"; };
 		AF653D7B2C2139CB002F7EFE /* HomePageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
@@ -136,7 +148,7 @@
 		AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackMusicCardView.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
-		AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesView.swift; sourceTree = "<group>"; };
+		AFD09D792C43F24F00BB5EBA /* FutureUpdatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesViewController.swift; sourceTree = "<group>"; };
 		AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FutureUpdatesViewControllerWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +217,7 @@
 				AF981A1F2C4242B900992DD2 /* Models */,
 				AF653D6F2C2136E3002F7EFE /* Views */,
 				AFAD155D2C394B4F00CEB4BB /* ViewModels */,
+				AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */,
 			);
 			path = "Tourism Beats";
 			sourceTree = "<group>";
@@ -249,6 +262,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */,
+				AF60E1EE2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift */,
+				AF60E1F62CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift */,
+			);
+			name = Wrappers;
+			sourceTree = "<group>";
+		};
 		AF653D6E2C213692002F7EFE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,11 +294,13 @@
 				AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */,
 				AF75C7C42C3E80BF00E16A1D /* WeatherWidgetView.swift */,
 				AF5FC79E2C435CE70036940B /* ClockFaceView.swift */,
-				AFD09D792C43F24F00BB5EBA /* FutureUpdatesView.swift */,
+				AFD09D792C43F24F00BB5EBA /* FutureUpdatesViewController.swift */,
 				AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */,
 				AFC2C1C12C9E48D600404703 /* VisaCheckerView.swift */,
 				AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */,
 				AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */,
+				AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */,
+				AF60E1F82CA43F1A00E5EFF1 /* GradientBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -283,14 +308,16 @@
 		AF653D802C213B28002F7EFE /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */,
 				AF653D822C213B8C002F7EFE /* .gitignore */,
 				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
 				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
+				AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */,
 				AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */,
 				AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */,
 				AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */,
 				AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */,
+				AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */,
+				AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -322,7 +349,6 @@
 		AFAD155D2C394B4F00CEB4BB /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				AFD09D7B2C4464BD00BB5EBA /* FutureUpdatesViewControllerWrapper.swift */,
 				AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */,
 				AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */,
 				AFC2C1C52C9E55D100404703 /* VisaCheckerViewModel.swift */,
@@ -467,10 +493,12 @@
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
 				AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */,
+				AF60E1F72CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift in Sources */,
 				AFC2C1C62C9E55D100404703 /* VisaCheckerViewModel.swift in Sources */,
-				AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesView.swift in Sources */,
+				AFD09D7A2C43F24F00BB5EBA /* FutureUpdatesViewController.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
 				AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */,
+				AF60E1F92CA43F1A00E5EFF1 /* GradientBackgroundView.swift in Sources */,
 				AFC2C1DC2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift in Sources */,
 				AFC2C1DA2C9E89F600404703 /* SafetyDataModel.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
@@ -482,17 +510,21 @@
 				AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */,
 				AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */,
 				AFC2C1E02C9E8CCA00404703 /* TravelAdvisoryAPIResponse.swift in Sources */,
+				AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */,
 				AF75C7C52C3E80BF00E16A1D /* WeatherWidgetView.swift in Sources */,
 				AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */,
 				AFC2C1E42C9EA00F00404703 /* CustomNavigationTitle.swift in Sources */,
+				AF60E1F32CA3D96200E5EFF1 /* UIKitGradientBackground.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */,
+				AF60E1EF2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift in Sources */,
 				AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
 				AFC2C1D02C9E6E7800404703 /* VisaService.swift in Sources */,
 				AFC2C1D82C9E89BE00404703 /* SafetyService.swift in Sources */,
 				AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */,
+				AF60E1F52CA42EED00E5EFF1 /* ContentSetupProvider.swift in Sources */,
 				AFC2C1C82C9E561500404703 /* CountryDataService.swift in Sources */,
 				AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
@@ -667,7 +699,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Tourism Beats/Preview Content\"";
 				DEVELOPMENT_TEAM = 2MPMKAF986;
 				ENABLE_PREVIEWS = YES;
@@ -688,7 +720,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -708,7 +740,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"Tourism Beats/Preview Content\"";
 				DEVELOPMENT_TEAM = 2MPMKAF986;
 				ENABLE_PREVIEWS = YES;
@@ -729,7 +761,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

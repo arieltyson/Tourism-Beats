@@ -8,7 +8,6 @@
 import SwiftUI
 import MapKit
 
-@available(iOS 18.0, *)
 struct CitySelectionView: View {
     @State private var selectedCity: CityModel? = nil
     @State private var showAlert = false

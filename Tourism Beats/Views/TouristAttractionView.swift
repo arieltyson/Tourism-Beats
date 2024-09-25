@@ -7,18 +7,22 @@
 
 import SwiftUI
 import TipKit
+import UIKit
 
-@available(iOS 18.0, *)
 struct TouristAttractionView: View {
     var city: CityModel
     @State private var navigateBack = false
     @State private var showMusicRecommendations = false
     @State private var showCitySelectionView = false
-    private let highlightTip = HighlightTip()
     
     var body: some View {
         ZStack {
-            GradientProvider.gradients.randomElement()?.edgesIgnoringSafeArea(.all)
+            if #available(iOS 18.0, *) {
+                GradientProvider.gradients.randomElement()?.edgesIgnoringSafeArea(.all)
+            } else {
+                UIKitGradientBackgroundWrapper()
+                    .edgesIgnoringSafeArea(.all)
+            }
             
             VStack {
                 HStack{
@@ -33,15 +37,6 @@ struct TouristAttractionView: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(.purple)
-                            .visualEffect({ content, proxy in
-                                content
-                                    .hueRotation(Angle(degrees: proxy.frame(in: .global).origin.y / 10))
-                            })
-                    )
-                    .padding(.top, 40)
                 }
                 .padding(.horizontal)
                 
@@ -95,10 +90,10 @@ struct TouristAttractionView: View {
         .gesture(
             DragGesture(minimumDistance: 20)
                 .onEnded { value in
-                    if value.translation.width < -50 {
-                        showMusicRecommendations = true // Left swipe
-                    } else if value.translation.width > 50 {
-                        showCitySelectionView = true  // Right swipe
+                    if value.translation.width < -50 { // Left swipe
+                        showMusicRecommendations = true
+                    } else if value.translation.width > 50 { // Right swipe
+                        showCitySelectionView = true
                     }
                 }
         )
@@ -116,10 +111,13 @@ struct TouristAttractionView: View {
                     }
                 }
             }
-            ToolbarItem(placement: .topBarTrailing) {
+            
+            if #available(iOS 18.0, *) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Image(systemName: "info.circle")
                         .foregroundColor(.white)
-                        .popoverTip(highlightTip, arrowEdge: .top)
+                        .popoverTip(HighlightTip(), arrowEdge: .top)
+                }
             }
         }
         .toolbarBackground(Color.black.opacity(0.5), for: .navigationBar)
