@@ -1,17 +1,20 @@
 <div align="center">
 
 # Tourism Beats 🌍🎶 
+
+## App Store  : https://apps.apple.com/app/tourism-beats/id6708221715
+
 <kbd>
-    <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/4c0254ee-c2ef-41ac-9419-b01f0d5fc813" alt="tourismBeatsLogo" width="200" height="200">
+    <img src="https://github.com/user-attachments/assets/c50c5b7e-6a21-4e9b-8add-94d30cbbf579" alt="tourismBeatsLogo" width="1000" height="800">
 </kbd>
 
 ## Project Description 🎨
 
 "Tourism Beats" is an innovative iOS application built using SwiftUI that offers users an immersive experience of exploring cities through their most famous landmarks while learning data about the city in the form of current times and weather. Users can select from multiple iconic cities on a map, view dynamic animated backgrounds of famous landmarks, and gain insight into what it is currently like in other parts of the world. Additionally, the app will be extended to provide a curated list of the top 10 tourist activities in each city, allowing users to leave reviews and gain access to free vouchers and coupons in future iterations of the app !
 
-## Demo: (App will be available publicly on Apple AppStore when iOS 18 is officially released)
+## Demo:
 
-https://github.com/user-attachments/assets/652d085c-9cc5-4651-bb03-6d090dde4125
+https://github.com/user-attachments/assets/3a3bb3ef-37f9-4175-8461-12a94f0077f9
 
 ## Screenshots:
 
@@ -39,6 +42,17 @@ https://github.com/user-attachments/assets/652d085c-9cc5-4651-bb03-6d090dde4125
     </kbd>
 </div>
 
+<div style="display: flex; justify-content: center; align-items: center;">
+    <kbd>
+        <img src="https://github.com/user-attachments/assets/7305bc84-17fa-4531-8e23-5a6d97a2d462" alt="TourismBeatsTipView" width="250" height="500">
+    </kbd>
+    <kbd>
+        <img src="https://github.com/user-attachments/assets/8ebce170-c44d-41e2-9c4a-caf4a9000df4" alt="TourismBeatsMeshGradientBackground" width="250" height="500">
+    </kbd>
+    <kbd>
+        <img src="https://github.com/user-attachments/assets/57218034-1571-4b3a-b5d7-2008f2167995" alt="TourismBeatsFuture UpdatesView" width="250" height="500">
+    </kbd>
+</div>
 
 ## Technologies Used 💻
 
@@ -51,10 +65,14 @@ This project leverages the powerful combination of Swift and SwiftUI, along with
 - [x] MapKit
 - [x] Combine
 - [x] SwiftUI
+- [x] MusicKit
 - [x] SceneKit
 - [x] WeatherKit
+- [x] SwiftUICore
 - [x] CoreLocation
+- [x] VisaDB (REST API)
 - [x] Storyboard (SplashScreen)
+- [x] Travel-Advisory (REST API)
 - [x] Foundation (DateFormatter, Calendar, TimeZone)
 
 ## Skills Demonstrated 🥋
