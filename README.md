@@ -10,7 +10,7 @@
 
 ## Project Description 🎨
 
-"Tourism Beats" is an innovative iOS application built using SwiftUI that offers users an immersive experience of exploring cities through their most famous landmarks while learning data about the city in the form of current times and weather. Users can select from multiple iconic cities on a map, view dynamic animated backgrounds of famous landmarks, and gain insight into what it is currently like in other parts of the world. Additionally, the app will be extended to provide a curated list of the top 10 tourist activities in each city, allowing users to leave reviews and gain access to free vouchers and coupons in future iterations of the app !
+"Tourism Beats" is an innovative iOS application built using SwiftUI that offers users an immersive experience of exploring cities through their most famous landmarks while learning data about the city in the form of current times and weather. Users can select from multiple iconic cities on a map, view dynamic animated backgrounds of famous landmarks, and gain insight into what it is currently like in other parts of the world. The application also integrates with Apple Music through the Music Kit API to display trending songs in the selected city. Additionally, the app sends GET requests to a RESTful API provided by Travel-Advisory to update the view with safety risk in each city.
 
 ## Demo:
 
@@ -84,6 +84,7 @@ This project showcases a wide array of skills necessary for developing a feature
 - [x] **USER EXPERIENCE**: Crafting an engaging experience with dynamic backgrounds and interactive elements.
 - [x] **USER INTERFACE**: Building an intuitive interface that allows easy navigation and interaction.
 - [x] **MOBILE DESIGN**: Combining creativity and functionality to deliver a unique and immersive user experience.
+- [x] **REST APIs**: Making network requests to an API to import online data into the application
 
 ## Contributing ⚙️
 
