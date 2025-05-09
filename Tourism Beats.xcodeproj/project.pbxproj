@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF23D1BD2C211F2500A3406D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF23D1BC2C211F2500A3406D /* Preview Assets.xcassets */; };
 		AF23D1C72C211F2500A3406D /* Tourism_BeatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1C62C211F2500A3406D /* Tourism_BeatsTests.swift */; };
 		AF23D1D12C211F2500A3406D /* Tourism_BeatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D02C211F2500A3406D /* Tourism_BeatsUITests.swift */; };
 		AF23D1D32C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */; };
@@ -25,7 +24,6 @@
 		AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7B2C2139CB002F7EFE /* HomePageView.swift */; };
 		AF653D7F2C213AFA002F7EFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF653D7E2C213AFA002F7EFE /* Assets.xcassets */; };
 		AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */; };
-		AF653D842C213B8C002F7EFE /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = AF653D822C213B8C002F7EFE /* .gitignore */; };
 		AF653D862C213DDA002F7EFE /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D852C213DDA002F7EFE /* SceneKit.framework */; };
 		AF653D872C213E2F002F7EFE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E02C21210B00A3406D /* MapKit.framework */; };
 		AF653D892C213E4A002F7EFE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D882C213E4A002F7EFE /* CoreLocation.framework */; };
@@ -87,7 +85,6 @@
 
 /* Begin PBXFileReference section */
 		AF23D1B22C211F2400A3406D /* Tourism Beats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tourism Beats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF23D1BC2C211F2500A3406D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AF23D1C22C211F2500A3406D /* Tourism BeatsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tourism BeatsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF23D1C62C211F2500A3406D /* Tourism_BeatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tourism_BeatsTests.swift; sourceTree = "<group>"; };
 		AF23D1CC2C211F2500A3406D /* Tourism BeatsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tourism BeatsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,7 +123,6 @@
 		AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationView.swift; sourceTree = "<group>"; };
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
-		AFC2C1C02C9E39C500404703 /* Tourism-Beats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Tourism-Beats-Info.plist"; sourceTree = SOURCE_ROOT; };
 		AFC2C1C12C9E48D600404703 /* VisaCheckerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckerView.swift; sourceTree = "<group>"; };
 		AFC2C1C32C9E559100404703 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
 		AFC2C1C52C9E55D100404703 /* VisaCheckerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCheckerViewModel.swift; sourceTree = "<group>"; };
@@ -208,8 +204,6 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
-				AFC2C1C02C9E39C500404703 /* Tourism-Beats-Info.plist */,
-				AF23D1BB2C211F2500A3406D /* Preview Content */,
 				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
 				AF653D6E2C213692002F7EFE /* Resources */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
@@ -220,14 +214,6 @@
 				AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */,
 			);
 			path = "Tourism Beats";
-			sourceTree = "<group>";
-		};
-		AF23D1BB2C211F2500A3406D /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				AF23D1BC2C211F2500A3406D /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		AF23D1C52C211F2500A3406D /* Tourism BeatsTests */ = {
@@ -462,9 +448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF23D1BD2C211F2500A3406D /* Preview Assets.xcassets in Resources */,
 				AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */,
-				AF653D842C213B8C002F7EFE /* .gitignore in Resources */,
 				AF653D7F2C213AFA002F7EFE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,11 +684,11 @@
 				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_ASSET_PATHS = "\"Tourism Beats/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 2MPMKAF986;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Tourism-Beats-Info.plist";
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_CFBundleDisplayName = "Tourism Beats";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "“Tourism Beats” would like to access Apple Music to show you the top songs in your selected city. This feature is optional, and you can still use other parts of the app without granting access.";
@@ -741,11 +725,11 @@
 				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_ASSET_PATHS = "\"Tourism Beats/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 2MPMKAF986;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Tourism-Beats-Info.plist";
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_CFBundleDisplayName = "Tourism Beats";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "“Tourism Beats” would like to access Apple Music to show you the top songs in your selected city. This feature is optional, and you can still use other parts of the app without granting access.";
