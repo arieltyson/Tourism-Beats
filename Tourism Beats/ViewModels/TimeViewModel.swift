@@ -1,10 +1,3 @@
-//
-//  TimeViewModel.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 6/7/24.
-//
-
 import Foundation
 import Combine
 

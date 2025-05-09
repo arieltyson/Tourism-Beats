@@ -1,10 +1,3 @@
-//
-//  GradientBackgroundView.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 25/9/24.
-//
-
 import UIKit
 
 class GradientBackgroundView: UIView {

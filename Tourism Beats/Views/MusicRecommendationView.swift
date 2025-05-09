@@ -1,10 +1,3 @@
-//
-//  MusicRecommendationView.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 19/9/24.
-//
-
 import SwiftUI
 import MusicKit
 

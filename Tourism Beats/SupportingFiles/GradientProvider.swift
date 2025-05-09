@@ -1,10 +1,3 @@
-//
-//  GradientProvider.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 12/7/24.
-//
-
 import SwiftUI
 
 @available(iOS 18.0, *)

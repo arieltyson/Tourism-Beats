@@ -1,10 +1,3 @@
-//
-//  UnsupportedOSViewControllerWrapper.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 24/9/24.
-//
-
 import SwiftUI
 
 struct UnsupportedOSViewControllerWrapper: UIViewControllerRepresentable {

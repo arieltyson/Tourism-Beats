@@ -1,10 +1,3 @@
-//
-//  ClockFaceView.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 13/7/24.
-//
-
 import Foundation
 import Combine
 import SwiftUI

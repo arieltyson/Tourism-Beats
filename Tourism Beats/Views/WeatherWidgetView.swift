@@ -1,10 +1,3 @@
-//
-//  WeatherWidgetView.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 10/7/24.
-//
-
 import SwiftUI
 
 struct WeatherWidgetView: View {

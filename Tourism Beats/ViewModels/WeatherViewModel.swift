@@ -1,10 +1,3 @@
-//
-//  WeatherViewModel.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 10/7/24.
-//
-
 import Foundation
 import WeatherKit
 

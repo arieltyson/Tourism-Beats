@@ -1,10 +1,3 @@
-//
-//  VideoPlayerView.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 18/6/24.
-//
-
 import SwiftUI
 import TipKit
 import UIKit

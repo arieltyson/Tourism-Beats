@@ -1,10 +1,3 @@
-//
-//  FallbackMusicCardView.swift
-//  Tourism Beats
-//
-//  Created by Ariel Tyson on 23/9/24.
-//
-
 import SwiftUI
 
 struct FallbackMusicCardView: View {
