@@ -51,7 +51,6 @@
 		AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */; };
 		AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D12C9E6ED700404703 /* MusicService.swift */; };
 		AFC2C1D42C9E717C00404703 /* MusicServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */; };
-		AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */; };
 		AFC2C1DC2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DB2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift */; };
 		AFC2C1DE2C9E8A2C00404703 /* SafetyAdvisoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */; };
 		AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */; };
@@ -127,7 +126,6 @@
 		AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationViewModel.swift; sourceTree = "<group>"; };
 		AFC2C1D12C9E6ED700404703 /* MusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicService.swift; sourceTree = "<group>"; };
 		AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceProtocol.swift; sourceTree = "<group>"; };
-		AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceProtocol.swift; sourceTree = "<group>"; };
 		AFC2C1DB2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyAdvisoryViewModel.swift; sourceTree = "<group>"; };
 		AFC2C1DD2C9E8A2C00404703 /* SafetyAdvisoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyAdvisoryView.swift; sourceTree = "<group>"; };
 		AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyServiceProtocol.swift; sourceTree = "<group>"; };
@@ -286,7 +284,6 @@
 				AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */,
 				AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */,
 				AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */,
-				AFC2C1D52C9E733F00404703 /* VisaServiceProtocol.swift */,
 				AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */,
 				AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */,
 				AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */,
@@ -464,7 +461,6 @@
 				AF60E1F72CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift in Sources */,
 				AF0C6B412DCF15E600F6ED43 /* GPISafetyDataModel.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
-				AFC2C1D62C9E733F00404703 /* VisaServiceProtocol.swift in Sources */,
 				AF60E1F92CA43F1A00E5EFF1 /* GradientBackgroundView.swift in Sources */,
 				AFC2C1DC2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
