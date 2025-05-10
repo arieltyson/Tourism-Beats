@@ -191,7 +191,6 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
-				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
 				AF653D6E2C213692002F7EFE /* Resources */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
 				AF75C7BF2C3E807A00E16A1D /* Services */,
@@ -287,6 +286,7 @@
 				AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */,
 				AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */,
 				AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */,
+				AF75C7BD2C3E7FDF00E16A1D /* Tourism Beats.entitlements */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -657,7 +657,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/SupportingFiles/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "";
@@ -697,7 +697,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/Tourism Beats.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/SupportingFiles/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "";
