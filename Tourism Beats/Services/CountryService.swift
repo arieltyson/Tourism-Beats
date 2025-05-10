@@ -1,10 +1,3 @@
-import Foundation
-
-protocol CountryDataServiceProtocol {
-    func fetchAllCountries() -> [CountryModel]
-    func getCountryByName(_ name: String) -> CountryModel?
-}
-
 class CountryDataService: CountryDataServiceProtocol {
     private let countries: [CountryModel]
 
