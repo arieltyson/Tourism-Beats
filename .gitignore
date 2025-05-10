@@ -139,7 +139,6 @@ playground.xcworkspace
 Packages/
 Package.pins
 Package.resolved
-*.xcodeproj
 .swiftpm
 .build/
 
@@ -246,7 +245,6 @@ playground.xcworkspace
 Packages/
 # Package.pins
 Package.resolved
-*.xcodeproj
 # Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
 # hence it is not needed unless you have added a package configuration file to your project
 .swiftpm
@@ -399,3 +397,24 @@ node_modules/
 
 # Alternative workspace-specific pattern
 *.xcworkspace/xcuserdata/
+
+# Xcode user data and workspace state
+*.xcuserdatad
+*.xcscmblueprint
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Ignore user-specific files inside .xcodeproj
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+
+**/xcuserdata/
+

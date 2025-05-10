@@ -42,8 +42,8 @@
 		AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */; };
 		AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */; };
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
-		AFB82B092DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B072DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift */; };
-		AFB82B0A2DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B082DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift */; };
+		AFB82B0D2DCFEC1E0037CDF0 /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B0B2DCFEC1E0037CDF0 /* UIKitGradientBackgroundWrapper.swift */; };
+		AFB82B0E2DCFEC1E0037CDF0 /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B0C2DCFEC1E0037CDF0 /* UnsupportedOSViewControllerWrapper.swift */; };
 		AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C32C9E559100404703 /* CountryModel.swift */; };
 		AFC2C1C82C9E561500404703 /* CountryDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C72C9E561500404703 /* CountryDataService.swift */; };
 		AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C92C9E665E00404703 /* CountryData.swift */; };
@@ -117,8 +117,8 @@
 		AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationView.swift; sourceTree = "<group>"; };
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
-		AFB82B072DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
-		AFB82B082DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
+		AFB82B0B2DCFEC1E0037CDF0 /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
+		AFB82B0C2DCFEC1E0037CDF0 /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
 		AFC2C1C32C9E559100404703 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
 		AFC2C1C72C9E561500404703 /* CountryDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDataService.swift; sourceTree = "<group>"; };
 		AFC2C1C92C9E665E00404703 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
@@ -237,8 +237,8 @@
 		AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */ = {
 			isa = PBXGroup;
 			children = (
-				AFB82B072DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift */,
-				AFB82B082DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift */,
+				AFB82B0B2DCFEC1E0037CDF0 /* UIKitGradientBackgroundWrapper.swift */,
+				AFB82B0C2DCFEC1E0037CDF0 /* UnsupportedOSViewControllerWrapper.swift */,
 			);
 			name = Wrappers;
 			sourceTree = "<group>";
@@ -489,8 +489,8 @@
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
 				AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */,
-				AFB82B092DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift in Sources */,
-				AFB82B0A2DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift in Sources */,
+				AFB82B0D2DCFEC1E0037CDF0 /* UIKitGradientBackgroundWrapper.swift in Sources */,
+				AFB82B0E2DCFEC1E0037CDF0 /* UnsupportedOSViewControllerWrapper.swift in Sources */,
 				AFC2C1DE2C9E8A2C00404703 /* SafetyAdvisoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
