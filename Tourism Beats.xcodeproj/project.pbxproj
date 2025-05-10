@@ -103,7 +103,6 @@
 		AF653D7B2C2139CB002F7EFE /* HomePageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 		AF653D7E2C213AFA002F7EFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tourism_BeatsApp.swift; sourceTree = "<group>"; };
-		AF653D822C213B8C002F7EFE /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		AF653D852C213DDA002F7EFE /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		AF653D882C213E4A002F7EFE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		AF653D8C2C213E5E002F7EFE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -282,7 +281,6 @@
 		AF653D802C213B28002F7EFE /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				AF653D822C213B8C002F7EFE /* .gitignore */,
 				AFC793452C3E714A002240EB /* SplashScreen.storyboard */,
 				AF653D812C213B8C002F7EFE /* Tourism_BeatsApp.swift */,
 				AFC2C1E32C9EA00F00404703 /* CustomNavigationTitle.swift */,
