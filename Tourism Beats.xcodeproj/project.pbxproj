@@ -16,11 +16,9 @@
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
-		AF60E1EF2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1EE2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift */; };
 		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
 		AF60E1F32CA3D96200E5EFF1 /* UIKitGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */; };
 		AF60E1F52CA42EED00E5EFF1 /* ContentSetupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */; };
-		AF60E1F72CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F62CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift */; };
 		AF60E1F92CA43F1A00E5EFF1 /* GradientBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F82CA43F1A00E5EFF1 /* GradientBackgroundView.swift */; };
 		AF653D6D2C213263002F7EFE /* HomePageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */; };
 		AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */; };
@@ -44,6 +42,8 @@
 		AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */; };
 		AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */; };
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
+		AFB82B092DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B072DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift */; };
+		AFB82B0A2DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B082DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift */; };
 		AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C32C9E559100404703 /* CountryModel.swift */; };
 		AFC2C1C82C9E561500404703 /* CountryDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C72C9E561500404703 /* CountryDataService.swift */; };
 		AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C92C9E665E00404703 /* CountryData.swift */; };
@@ -91,11 +91,9 @@
 		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
-		AF60E1EE2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
 		AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackground.swift; sourceTree = "<group>"; };
 		AF60E1F42CA42EED00E5EFF1 /* ContentSetupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSetupProvider.swift; sourceTree = "<group>"; };
-		AF60E1F62CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
 		AF60E1F82CA43F1A00E5EFF1 /* GradientBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackgroundView.swift; sourceTree = "<group>"; };
 		AF653D6C2C213263002F7EFE /* HomePageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewTests.swift; sourceTree = "<group>"; };
 		AF653D7A2C2139CB002F7EFE /* CitySelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionView.swift; sourceTree = "<group>"; };
@@ -119,6 +117,8 @@
 		AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationView.swift; sourceTree = "<group>"; };
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
+		AFB82B072DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
+		AFB82B082DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
 		AFC2C1C32C9E559100404703 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
 		AFC2C1C72C9E561500404703 /* CountryDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDataService.swift; sourceTree = "<group>"; };
 		AFC2C1C92C9E665E00404703 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
@@ -237,8 +237,8 @@
 		AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */ = {
 			isa = PBXGroup;
 			children = (
-				AF60E1EE2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift */,
-				AF60E1F62CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift */,
+				AFB82B072DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift */,
+				AFB82B082DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift */,
 			);
 			name = Wrappers;
 			sourceTree = "<group>";
@@ -458,7 +458,6 @@
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
 				AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */,
-				AF60E1F72CA430D600E5EFF1 /* UIKitGradientBackgroundWrapper.swift in Sources */,
 				AF0C6B412DCF15E600F6ED43 /* GPISafetyDataModel.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherFetcherService.swift in Sources */,
 				AF60E1F92CA43F1A00E5EFF1 /* GradientBackgroundView.swift in Sources */,
@@ -478,7 +477,6 @@
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */,
-				AF60E1EF2CA3D70900E5EFF1 /* UnsupportedOSViewControllerWrapper.swift in Sources */,
 				AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */,
 				AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */,
 				AFC2C1D22C9E6ED700404703 /* MusicService.swift in Sources */,
@@ -491,6 +489,8 @@
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
 				AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */,
+				AFB82B092DCFDD150037CDF0 /* UIKitGradientBackgroundWrapper.swift in Sources */,
+				AFB82B0A2DCFDD150037CDF0 /* UnsupportedOSViewControllerWrapper.swift in Sources */,
 				AFC2C1DE2C9E8A2C00404703 /* SafetyAdvisoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
