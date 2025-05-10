@@ -42,7 +42,7 @@
 		AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */; };
 		AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */; };
 		AFAD15612C394BCA00CEB4BB /* TimeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */; };
-		AFB82B112DCFF5CA0037CDF0 /* CountryDataServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B102DCFF5CA0037CDF0 /* CountryDataServiceProtocol.swift */; };
+		AFB82B112DCFF5CA0037CDF0 /* CountryServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB82B102DCFF5CA0037CDF0 /* CountryServiceProtocol.swift */; };
 		AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C32C9E559100404703 /* CountryModel.swift */; };
 		AFC2C1C82C9E561500404703 /* CountryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C72C9E561500404703 /* CountryService.swift */; };
 		AFC2C1CA2C9E665E00404703 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC2C1C92C9E665E00404703 /* CountryData.swift */; };
@@ -57,6 +57,8 @@
 		AFC5E3DE2CA1D4A80049B5CC /* FallbackMusicCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
+		AFE166F32DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE166F12DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift */; };
+		AFE166F42DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE166F22DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,7 +118,7 @@
 		AFA7507C2C9D03DD0076D233 /* MusicRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicRecommendationView.swift; sourceTree = "<group>"; };
 		AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewModel.swift; sourceTree = "<group>"; };
 		AFAD15602C394BCA00CEB4BB /* TimeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWidgetView.swift; sourceTree = "<group>"; };
-		AFB82B102DCFF5CA0037CDF0 /* CountryDataServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDataServiceProtocol.swift; sourceTree = "<group>"; };
+		AFB82B102DCFF5CA0037CDF0 /* CountryServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryServiceProtocol.swift; sourceTree = "<group>"; };
 		AFC2C1C32C9E559100404703 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
 		AFC2C1C72C9E561500404703 /* CountryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryService.swift; sourceTree = "<group>"; };
 		AFC2C1C92C9E665E00404703 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
@@ -131,6 +133,8 @@
 		AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackMusicCardView.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
+		AFE166F12DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
+		AFE166F22DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +242,8 @@
 		AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */ = {
 			isa = PBXGroup;
 			children = (
+				AFE166F12DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift */,
+				AFE166F22DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift */,
 			);
 			name = Wrappers;
 			sourceTree = "<group>";
@@ -319,7 +325,7 @@
 		AFB82B0F2DCFF5B10037CDF0 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				AFB82B102DCFF5CA0037CDF0 /* CountryDataServiceProtocol.swift */,
+				AFB82B102DCFF5CA0037CDF0 /* CountryServiceProtocol.swift */,
 				AFC2C1E12C9E8E2800404703 /* SafetyServiceProtocol.swift */,
 				AFC2C1D32C9E717C00404703 /* MusicServiceProtocol.swift */,
 			);
@@ -486,7 +492,9 @@
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AFC5E3DE2CA1D4A80049B5CC /* FallbackMusicCardView.swift in Sources */,
 				AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */,
-				AFB82B112DCFF5CA0037CDF0 /* CountryDataServiceProtocol.swift in Sources */,
+				AFE166F32DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift in Sources */,
+				AFE166F42DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift in Sources */,
+				AFB82B112DCFF5CA0037CDF0 /* CountryServiceProtocol.swift in Sources */,
 				AFC2C1CC2C9E686600404703 /* CityData.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
 				AFA7507D2C9D03DD0076D233 /* MusicRecommendationView.swift in Sources */,
