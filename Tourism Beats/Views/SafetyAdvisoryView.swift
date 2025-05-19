@@ -23,13 +23,17 @@ struct SafetyAdvisoryView: View {
                     .font(.title2)
                     .bold()
 
-                Text("Risk Level: \(viewModel.riskLevelScoreText ?? "")")
-                    .font(.title3)
+                HStack {
+                    Text("Risk Level: \(viewModel.riskLevelScoreText ?? "")")
+                        .font(.title3)
 
-                Text(viewModel.riskLevelText ?? "")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(viewModel.riskLevelColor)
+                    Spacer()
+
+                    Text(viewModel.riskLevelText ?? "")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(viewModel.riskLevelColor)
+                }
 
             } else {
                 Text("No advisory information available.")

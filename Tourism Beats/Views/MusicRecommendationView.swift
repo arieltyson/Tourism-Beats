@@ -1,10 +1,10 @@
-import SwiftUI
 import MusicKit
+import SwiftUI
 
 struct MusicRecommendationView: View {
     @ObservedObject var viewModel: MusicRecommendationViewModel
     var fallbackView: FallbackMusicCardView
-    
+
     var body: some View {
         VStack {
             if viewModel.isMusicFeatureAvailable {
@@ -23,13 +23,13 @@ struct MusicRecommendationView: View {
                     ProgressView()
                         .frame(width: 300, height: 300)
                 }
-                
+
                 Text(viewModel.songTitle)
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding(.top, 20)
-                
+
                 Text(viewModel.artistName)
                     .font(.subheadline)
                     .foregroundColor(.white)
@@ -37,19 +37,28 @@ struct MusicRecommendationView: View {
             } else {
                 // Fallback UI if music access is denied
                 fallbackView
-                }
-                
-                Spacer()
-                
-                SafetyAdvisoryView(viewModel: SafetyAdvisoryViewModel(city: viewModel.city))
-                
-                Spacer()
+            }
+
+            Spacer()
+
+            SafetyAdvisoryView(
+                viewModel: SafetyAdvisoryViewModel(city: viewModel.city)
+            )
+
+            Spacer()
         }
         .customNavigationTitle("Apple Music Local 🌆")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
-            LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.7), Color.indigo.opacity(0.7), Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                .edgesIgnoringSafeArea(.all)
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.blue.opacity(0.7), Color.indigo.opacity(0.7),
+                    Color.blue,
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .edgesIgnoringSafeArea(.all)
         )
         .onAppear {
             Task {
