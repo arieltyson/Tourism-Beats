@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AF0C6B412DCF15E600F6ED43 /* SafetyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C6B402DCF15E600F6ED43 /* SafetyModel.swift */; };
-		AF0C6B432DCF161000F6ED43 /* GPISafetyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C6B422DCF161000F6ED43 /* GPISafetyService.swift */; };
+		AF0C6B432DCF161000F6ED43 /* SafetyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C6B422DCF161000F6ED43 /* SafetyService.swift */; };
 		AF0C6B452DCF27F800F6ED43 /* gpi_data_2024.json in Resources */ = {isa = PBXBuildFile; fileRef = AF0C6B442DCF27F800F6ED43 /* gpi_data_2024.json */; };
 		AF23D1C72C211F2500A3406D /* Tourism_BeatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1C62C211F2500A3406D /* Tourism_BeatsTests.swift */; };
 		AF23D1D12C211F2500A3406D /* Tourism_BeatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D02C211F2500A3406D /* Tourism_BeatsUITests.swift */; };
@@ -17,7 +17,7 @@
 		AF2647B02DDAFDBB007AAC75 /* visa_requirements_2025.json in Resources */ = {isa = PBXBuildFile; fileRef = AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */; };
 		AF2647B22DDAFEC3007AAC75 /* VisaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */; };
 		AF2647B42DDB02D8007AAC75 /* VisaServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B32DDB02D8007AAC75 /* VisaServiceProtocol.swift */; };
-		AF2647B62DDB0397007AAC75 /* VisaServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B52DDB0397007AAC75 /* VisaServiceError.swift */; };
+		AF2647B62DDB0397007AAC75 /* VisaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B52DDB0397007AAC75 /* VisaService.swift */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
 		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
@@ -82,7 +82,7 @@
 
 /* Begin PBXFileReference section */
 		AF0C6B402DCF15E600F6ED43 /* SafetyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyModel.swift; sourceTree = "<group>"; };
-		AF0C6B422DCF161000F6ED43 /* GPISafetyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPISafetyService.swift; sourceTree = "<group>"; };
+		AF0C6B422DCF161000F6ED43 /* SafetyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyService.swift; sourceTree = "<group>"; };
 		AF0C6B442DCF27F800F6ED43 /* gpi_data_2024.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = gpi_data_2024.json; sourceTree = "<group>"; };
 		AF23D1B22C211F2400A3406D /* Tourism Beats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tourism Beats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF23D1C22C211F2500A3406D /* Tourism BeatsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tourism BeatsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +95,7 @@
 		AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = visa_requirements_2025.json; sourceTree = "<group>"; };
 		AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaModel.swift; sourceTree = "<group>"; };
 		AF2647B32DDB02D8007AAC75 /* VisaServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceProtocol.swift; sourceTree = "<group>"; };
-		AF2647B52DDB0397007AAC75 /* VisaServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceError.swift; sourceTree = "<group>"; };
+		AF2647B52DDB0397007AAC75 /* VisaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaService.swift; sourceTree = "<group>"; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
@@ -292,8 +292,8 @@
 		AF75C7BF2C3E807A00E16A1D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				AF2647B52DDB0397007AAC75 /* VisaServiceError.swift */,
-				AF0C6B422DCF161000F6ED43 /* GPISafetyService.swift */,
+				AF2647B52DDB0397007AAC75 /* VisaService.swift */,
+				AF0C6B422DCF161000F6ED43 /* SafetyService.swift */,
 				AF75C7C02C3E809300E16A1D /* WeatherService.swift */,
 				AFC2C1C72C9E561500404703 /* CountryService.swift */,
 				AFC2C1D12C9E6ED700404703 /* MusicService.swift */,
@@ -511,7 +511,7 @@
 				AFC2C1E42C9EA00F00404703 /* CustomNavigationTitle.swift in Sources */,
 				AF60E1F32CA3D96200E5EFF1 /* UIKitGradientBackground.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
-				AF2647B62DDB0397007AAC75 /* VisaServiceError.swift in Sources */,
+				AF2647B62DDB0397007AAC75 /* VisaService.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */,
 				AF2647B42DDB02D8007AAC75 /* VisaServiceProtocol.swift in Sources */,
@@ -523,7 +523,7 @@
 				AFC2C1C42C9E559100404703 /* CountryModel.swift in Sources */,
 				AF653D832C213B8C002F7EFE /* Tourism_BeatsApp.swift in Sources */,
 				AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */,
-				AF0C6B432DCF161000F6ED43 /* GPISafetyService.swift in Sources */,
+				AF0C6B432DCF161000F6ED43 /* SafetyService.swift in Sources */,
 				AF653D992C2153AD002F7EFE /* TouristAttractionView.swift in Sources */,
 				AF653D7D2C2139CB002F7EFE /* HomePageView.swift in Sources */,
 				AF653D9F2C22A6CE002F7EFE /* VideoPlayerView.swift in Sources */,

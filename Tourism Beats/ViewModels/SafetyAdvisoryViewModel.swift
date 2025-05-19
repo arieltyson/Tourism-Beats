@@ -2,7 +2,7 @@ import SwiftUICore
 
 @MainActor
 class SafetyAdvisoryViewModel: ObservableObject {
-    @Published var safetyData: GPISafetyDataModel?
+    @Published var safetyData: SafetyModel?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
@@ -11,7 +11,7 @@ class SafetyAdvisoryViewModel: ObservableObject {
 
     init(
         city: CityModel,
-        safetyService: SafetyServiceProtocol = GPISafetyService()
+        safetyService: SafetyServiceProtocol = SafetyService()
     ) {
         self.city = city
         self.safetyService = safetyService
