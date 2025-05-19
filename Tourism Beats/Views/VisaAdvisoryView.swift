@@ -5,40 +5,58 @@ struct VisaAdvisoryView: View {
     private let allCountries = CountryData.allCountries
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Travel Visa Advisory")
-                .font(.largeTitle)
-                .italic()
-                .foregroundColor(.blue)
+        NeumorphicCard {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Travel Visa Advisory")
+                    .font(.title2.italic())
+                    .foregroundColor(.blue)
 
-            Picker("Passport", selection: $viewModel.passportCode) {
-                ForEach(allCountries, id: \.code) { c in
-                    Text("\(c.flag) \(c.name)").tag(c.code)
+                // Picker + requirement on one line
+                HStack(alignment: .center) {
+                    Picker("", selection: $viewModel.passportCode) {
+                        ForEach(allCountries, id: \.code) { c in
+                            Text("\(c.flag) \(c.name)").tag(c.code)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .background(
+                        Capsule()
+                            .fill(Color.accentColor.opacity(0.2))
+                            .shadow(
+                                color: Color.accentColor.opacity(0.3),
+                                radius: 4,
+                                x: 2,
+                                y: 2
+                            )
+                    )
+                    .onChange(of: viewModel.passportCode) {
+                        viewModel.updatePassport(to: $0)
+                    }
+
+                    Spacer()
+
+                    Group {
+                        if viewModel.isLoading {
+                            ProgressView()
+                        } else if let err = viewModel.errorMessage {
+                            Text("Error")
+                                .foregroundColor(.red)
+                        } else if viewModel.requirement != nil {
+                            Text(viewModel.summaryText)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(viewModel.requirementColor)
+                        } else {
+                            Text("No info")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding()
                 }
             }
-            .pickerStyle(MenuPickerStyle())
-            .onChange(of: viewModel.passportCode) {
-                viewModel.updatePassport(to: $0)
-            }
-
-            if viewModel.isLoading {
-                ProgressView().padding(.top, 8)
-
-            } else if let err = viewModel.errorMessage {
-                Text("Error: \(err)").foregroundColor(.red)
-
-            } else if viewModel.requirement != nil {
-                Text(viewModel.summaryText)
-                    .font(.title3)
-                    .foregroundColor(.primary)
-
-            } else {
-                Text("No visa information available.")
-            }
         }
-        .padding()
-        .background(Color(.systemBackground).opacity(0.8))
-        .cornerRadius(10)
         .padding()
     }
 }

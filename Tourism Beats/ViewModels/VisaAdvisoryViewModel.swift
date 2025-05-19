@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 @MainActor
@@ -5,10 +6,8 @@ class VisaAdvisoryViewModel: ObservableObject {
     @Published var requirement: VisaModel?
     @Published var isLoading = false
     @Published var errorMessage: String?
-
     @Published var passportCode: String
     let destinationCode: String
-
     private let service: VisaServiceProtocol
 
     init(
@@ -25,6 +24,7 @@ class VisaAdvisoryViewModel: ObservableObject {
     func fetchRequirement() {
         isLoading = true
         errorMessage = nil
+
         Task {
             do {
                 requirement = try await service.fetchVisaRequirement(
@@ -44,7 +44,27 @@ class VisaAdvisoryViewModel: ObservableObject {
     }
 
     var summaryText: String {
-        guard let r = requirement else { return "" }
-        return r.requirement
+        requirement?.requirement ?? ""
+    }
+
+    /// Color–code based on the text of `requirement`
+    var requirementColor: Color {
+        guard let req = requirement?.requirement.lowercased() else {
+            return .gray
+        }
+        if req.contains("banned") {
+            return .red
+        } else if req.contains("visa required") {
+            return .orange
+        } else if req.contains("visa-on-arrival") {
+            return .yellow
+        } else if req.contains("eta") {
+            return .purple
+        } else if req.contains("visa-free") {
+            // any visa-free (for X days or open)
+            return .green
+        } else {
+            return .gray
+        }
     }
 }

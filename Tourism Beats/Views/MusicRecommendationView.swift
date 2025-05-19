@@ -53,6 +53,7 @@ struct MusicRecommendationView: View {
                     destinationCode: viewModel.city.country.code
                 )
             )
+
             Spacer()
         }
         .customNavigationTitle("Apple Music Local 🌆")
@@ -60,18 +61,17 @@ struct MusicRecommendationView: View {
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color.blue.opacity(0.7), Color.indigo.opacity(0.7),
+                    Color.blue.opacity(0.7),
+                    Color.indigo.opacity(0.7),
                     Color.blue,
                 ]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
-            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea()
         )
         .onAppear {
-            Task {
-                await viewModel.requestMusicAccessIfNeeded()
-            }
+            Task { await viewModel.requestMusicAccessIfNeeded() }
         }
     }
 }
