@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF0C6B412DCF15E600F6ED43 /* GPISafetyDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C6B402DCF15E600F6ED43 /* GPISafetyDataModel.swift */; };
+		AF0C6B412DCF15E600F6ED43 /* SafetyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C6B402DCF15E600F6ED43 /* SafetyModel.swift */; };
 		AF0C6B432DCF161000F6ED43 /* GPISafetyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C6B422DCF161000F6ED43 /* GPISafetyService.swift */; };
 		AF0C6B452DCF27F800F6ED43 /* gpi_data_2024.json in Resources */ = {isa = PBXBuildFile; fileRef = AF0C6B442DCF27F800F6ED43 /* gpi_data_2024.json */; };
 		AF23D1C72C211F2500A3406D /* Tourism_BeatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1C62C211F2500A3406D /* Tourism_BeatsTests.swift */; };
@@ -15,6 +15,7 @@
 		AF23D1D32C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */; };
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
 		AF2647B02DDAFDBB007AAC75 /* visa_requirements_2025.json in Resources */ = {isa = PBXBuildFile; fileRef = AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */; };
+		AF2647B22DDAFEC3007AAC75 /* VisaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
 		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
@@ -78,7 +79,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AF0C6B402DCF15E600F6ED43 /* GPISafetyDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPISafetyDataModel.swift; sourceTree = "<group>"; };
+		AF0C6B402DCF15E600F6ED43 /* SafetyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyModel.swift; sourceTree = "<group>"; };
 		AF0C6B422DCF161000F6ED43 /* GPISafetyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPISafetyService.swift; sourceTree = "<group>"; };
 		AF0C6B442DCF27F800F6ED43 /* gpi_data_2024.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = gpi_data_2024.json; sourceTree = "<group>"; };
 		AF23D1B22C211F2400A3406D /* Tourism Beats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tourism Beats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +91,7 @@
 		AF23D1E02C21210B00A3406D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = visa_requirements_2025.json; sourceTree = "<group>"; };
+		AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaModel.swift; sourceTree = "<group>"; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
@@ -297,7 +299,8 @@
 		AF981A1F2C4242B900992DD2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				AF0C6B402DCF15E600F6ED43 /* GPISafetyDataModel.swift */,
+				AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */,
+				AF0C6B402DCF15E600F6ED43 /* SafetyModel.swift */,
 				AF981A202C4242CF00992DD2 /* CityModel.swift */,
 				AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */,
 				AFC2C1C32C9E559100404703 /* CountryModel.swift */,
@@ -483,12 +486,13 @@
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
 				AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */,
-				AF0C6B412DCF15E600F6ED43 /* GPISafetyDataModel.swift in Sources */,
+				AF0C6B412DCF15E600F6ED43 /* SafetyModel.swift in Sources */,
 				AF75C7C12C3E809300E16A1D /* WeatherService.swift in Sources */,
 				AF60E1F92CA43F1A00E5EFF1 /* GradientBackgroundView.swift in Sources */,
 				AFC2C1DC2C9E8A1000404703 /* SafetyAdvisoryViewModel.swift in Sources */,
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AFC5E3DE2CA1D4A80049B5CC /* FallbackMusicCardView.swift in Sources */,
+				AF2647B22DDAFEC3007AAC75 /* VisaModel.swift in Sources */,
 				AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */,
 				AFB82B112DCFF5CA0037CDF0 /* CountryServiceProtocol.swift in Sources */,
 				AFC2C1CC2C9E686600404703 /* CityData.swift in Sources */,
