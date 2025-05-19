@@ -57,8 +57,6 @@
 		AFC5E3DE2CA1D4A80049B5CC /* FallbackMusicCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */; };
 		AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFC793452C3E714A002240EB /* SplashScreen.storyboard */; };
 		AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */; };
-		AFE166F32DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE166F12DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift */; };
-		AFE166F42DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE166F22DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,8 +131,6 @@
 		AFC5E3DD2CA1D4A80049B5CC /* FallbackMusicCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackMusicCardView.swift; sourceTree = "<group>"; };
 		AFC793452C3E714A002240EB /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
-		AFE166F12DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackgroundWrapper.swift; sourceTree = "<group>"; };
-		AFE166F22DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewControllerWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,7 +198,6 @@
 				AF981A1F2C4242B900992DD2 /* Models */,
 				AF653D6F2C2136E3002F7EFE /* Views */,
 				AFAD155D2C394B4F00CEB4BB /* ViewModels */,
-				AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */,
 			);
 			path = "Tourism Beats";
 			sourceTree = "<group>";
@@ -237,15 +232,6 @@
 				AF23D1E02C21210B00A3406D /* MapKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AF60E1ED2CA3D5E700E5EFF1 /* Wrappers */ = {
-			isa = PBXGroup;
-			children = (
-				AFE166F12DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift */,
-				AFE166F22DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift */,
-			);
-			name = Wrappers;
 			sourceTree = "<group>";
 		};
 		AF653D6E2C213692002F7EFE /* Resources */ = {
@@ -492,8 +478,6 @@
 				AF75C7C32C3E80AA00E16A1D /* WeatherViewModel.swift in Sources */,
 				AFC5E3DE2CA1D4A80049B5CC /* FallbackMusicCardView.swift in Sources */,
 				AFC2C1CE2C9E6D6200404703 /* MusicRecommendationViewModel.swift in Sources */,
-				AFE166F32DCFFB2300911CAB /* UIKitGradientBackgroundWrapper.swift in Sources */,
-				AFE166F42DCFFB2300911CAB /* UnsupportedOSViewControllerWrapper.swift in Sources */,
 				AFB82B112DCFF5CA0037CDF0 /* CountryServiceProtocol.swift in Sources */,
 				AFC2C1CC2C9E686600404703 /* CityData.swift in Sources */,
 				AF653D7C2C2139CB002F7EFE /* CitySelectionView.swift in Sources */,
