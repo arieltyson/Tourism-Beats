@@ -17,6 +17,7 @@
 		AF2647B02DDAFDBB007AAC75 /* visa_requirements_2025.json in Resources */ = {isa = PBXBuildFile; fileRef = AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */; };
 		AF2647B22DDAFEC3007AAC75 /* VisaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */; };
 		AF2647B42DDB02D8007AAC75 /* VisaServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B32DDB02D8007AAC75 /* VisaServiceProtocol.swift */; };
+		AF2647B62DDB0397007AAC75 /* VisaServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B52DDB0397007AAC75 /* VisaServiceError.swift */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
 		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
@@ -94,6 +95,7 @@
 		AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = visa_requirements_2025.json; sourceTree = "<group>"; };
 		AF2647B12DDAFEC3007AAC75 /* VisaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaModel.swift; sourceTree = "<group>"; };
 		AF2647B32DDB02D8007AAC75 /* VisaServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceProtocol.swift; sourceTree = "<group>"; };
+		AF2647B52DDB0397007AAC75 /* VisaServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceError.swift; sourceTree = "<group>"; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 		AF75C7BF2C3E807A00E16A1D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AF2647B52DDB0397007AAC75 /* VisaServiceError.swift */,
 				AF0C6B422DCF161000F6ED43 /* GPISafetyService.swift */,
 				AF75C7C02C3E809300E16A1D /* WeatherService.swift */,
 				AFC2C1C72C9E561500404703 /* CountryService.swift */,
@@ -508,6 +511,7 @@
 				AFC2C1E42C9EA00F00404703 /* CustomNavigationTitle.swift in Sources */,
 				AF60E1F32CA3D96200E5EFF1 /* UIKitGradientBackground.swift in Sources */,
 				AF981A212C4242CF00992DD2 /* CityModel.swift in Sources */,
+				AF2647B62DDB0397007AAC75 /* VisaServiceError.swift in Sources */,
 				AF653D972C214911002F7EFE /* MapView.swift in Sources */,
 				AFC2C1E22C9E8E2800404703 /* SafetyServiceProtocol.swift in Sources */,
 				AF2647B42DDB02D8007AAC75 /* VisaServiceProtocol.swift in Sources */,
