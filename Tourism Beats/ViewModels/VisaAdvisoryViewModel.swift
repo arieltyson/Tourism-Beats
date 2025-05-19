@@ -44,11 +44,17 @@ class VisaAdvisoryViewModel: ObservableObject {
     }
 
     var summaryText: String {
-        requirement?.requirement ?? ""
+        if passportCode.uppercased() == destinationCode.uppercased() {
+            return "Welcome Home 🏡"
+        }
+        return requirement?.requirement ?? ""
     }
 
     /// Color–code based on the text of `requirement`
     var requirementColor: Color {
+        if passportCode.uppercased() == destinationCode.uppercased() {
+            return .green
+        }
         guard let req = requirement?.requirement.lowercased() else {
             return .gray
         }

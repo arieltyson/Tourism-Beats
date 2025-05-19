@@ -11,8 +11,7 @@ struct VisaAdvisoryView: View {
                     .font(.title2.italic())
                     .foregroundColor(.blue)
 
-                // Picker + requirement on one line
-                HStack(alignment: .center) {
+                HStack(alignment: .top) {
                     Picker("", selection: $viewModel.passportCode) {
                         ForEach(allCountries, id: \.code) { c in
                             Text("\(c.flag) \(c.name)").tag(c.code)
@@ -35,8 +34,6 @@ struct VisaAdvisoryView: View {
                         viewModel.updatePassport(to: $0)
                     }
 
-                    Spacer()
-
                     Group {
                         if viewModel.isLoading {
                             ProgressView()
@@ -53,7 +50,9 @@ struct VisaAdvisoryView: View {
                                 .foregroundColor(.gray)
                         }
                     }
-                    .padding()
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
                 }
             }
         }
