@@ -1,6 +1,6 @@
 import Foundation
 
-struct GPISafetyDataModel: Codable, Identifiable {
+struct SafetyModel: Codable, Identifiable {
     var id: String { countryCode }
 
     let countryName: String
