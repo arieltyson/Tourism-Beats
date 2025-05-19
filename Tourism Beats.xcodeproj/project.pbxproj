@@ -14,6 +14,7 @@
 		AF23D1D12C211F2500A3406D /* Tourism_BeatsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D02C211F2500A3406D /* Tourism_BeatsUITests.swift */; };
 		AF23D1D32C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */; };
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
+		AF2647B02DDAFDBB007AAC75 /* visa_requirements_2025.json in Resources */ = {isa = PBXBuildFile; fileRef = AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
 		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
@@ -88,6 +89,7 @@
 		AF23D1D22C211F2500A3406D /* Tourism_BeatsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tourism_BeatsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AF23D1E02C21210B00A3406D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AF23D1E22C21213900A3406D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = visa_requirements_2025.json; sourceTree = "<group>"; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 		AF653D6E2C213692002F7EFE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AF2647AF2DDAFDBB007AAC75 /* visa_requirements_2025.json */,
 				AF653D7E2C213AFA002F7EFE /* Assets.xcassets */,
 				AFC2C1C92C9E665E00404703 /* CountryData.swift */,
 				AFC2C1CB2C9E686600404703 /* CityData.swift */,
@@ -450,6 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFC793462C3E714A002240EB /* SplashScreen.storyboard in Resources */,
+				AF2647B02DDAFDBB007AAC75 /* visa_requirements_2025.json in Resources */,
 				AF653D7F2C213AFA002F7EFE /* Assets.xcassets in Resources */,
 				AF0C6B452DCF27F800F6ED43 /* gpi_data_2024.json in Resources */,
 			);
