@@ -12,7 +12,7 @@ struct SafetyAdvisoryView: View {
 
             if viewModel.isLoading {
                 ProgressView()
-                    .padding(.top, 10)
+                    .padding(.top, 8)
 
             } else if let errorMessage = viewModel.errorMessage {
                 Text("Error: \(errorMessage)")

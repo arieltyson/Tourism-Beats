@@ -5,7 +5,7 @@ struct VisaAdvisoryView: View {
     private let allCountries = CountryData.allCountries
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("Travel Visa Advisory")
                 .font(.largeTitle)
                 .italic()
@@ -28,10 +28,6 @@ struct VisaAdvisoryView: View {
                 Text("Error: \(err)").foregroundColor(.red)
 
             } else if viewModel.requirement != nil {
-                Text("Destination: \(viewModel.destinationCode)")
-                    .font(.title2)
-                    .bold()
-
                 Text(viewModel.summaryText)
                     .font(.title3)
                     .foregroundColor(.primary)
@@ -43,6 +39,6 @@ struct VisaAdvisoryView: View {
         .padding()
         .background(Color(.systemBackground).opacity(0.8))
         .cornerRadius(10)
-        .padding(.horizontal)
+        .padding()
     }
 }

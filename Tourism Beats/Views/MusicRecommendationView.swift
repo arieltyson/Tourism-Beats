@@ -46,6 +46,14 @@ struct MusicRecommendationView: View {
             )
 
             Spacer()
+
+            VisaAdvisoryView(
+                viewModel: VisaAdvisoryViewModel(
+                    passportCode: "TT",
+                    destinationCode: viewModel.city.country.code
+                )
+            )
+            Spacer()
         }
         .customNavigationTitle("Apple Music Local 🌆")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
