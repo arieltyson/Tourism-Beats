@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -133,6 +133,10 @@
 		AFD09D772C43ED1C00BB5EBA /* HighlightTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTip.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AF2647AA2DDACD15007AAC75 /* Wrappers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Wrappers; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		AF23D1AF2C211F2400A3406D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -189,6 +193,7 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
+				AF2647AA2DDACD15007AAC75 /* Wrappers */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
 				AF653D6E2C213692002F7EFE /* Resources */,
 				AFB82B132DCFF7F20037CDF0 /* ViewControllers */,
@@ -351,6 +356,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AF2647AA2DDACD15007AAC75 /* Wrappers */,
 			);
 			name = "Tourism Beats";
 			productName = "Tourism Beats";
