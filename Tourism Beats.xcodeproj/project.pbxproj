@@ -19,6 +19,7 @@
 		AF2647B42DDB02D8007AAC75 /* VisaServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B32DDB02D8007AAC75 /* VisaServiceProtocol.swift */; };
 		AF2647B62DDB0397007AAC75 /* VisaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2647B52DDB0397007AAC75 /* VisaService.swift */; };
 		AF32C88F2C422E6D0078B8CB /* GradientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */; };
+		AF4B459F2DDB0753005F3B5A /* VisaAdvisoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4B459E2DDB0753005F3B5A /* VisaAdvisoryViewModel.swift */; };
 		AF5FC79F2C435CE70036940B /* ClockFaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5FC79E2C435CE70036940B /* ClockFaceView.swift */; };
 		AF60E1F12CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */; };
 		AF60E1F32CA3D96200E5EFF1 /* UIKitGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */; };
@@ -97,6 +98,7 @@
 		AF2647B32DDB02D8007AAC75 /* VisaServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaServiceProtocol.swift; sourceTree = "<group>"; };
 		AF2647B52DDB0397007AAC75 /* VisaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaService.swift; sourceTree = "<group>"; };
 		AF32C88E2C422E6D0078B8CB /* GradientProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientProvider.swift; sourceTree = "<group>"; };
+		AF4B459E2DDB0753005F3B5A /* VisaAdvisoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaAdvisoryViewModel.swift; sourceTree = "<group>"; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
 		AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackground.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 		AFAD155D2C394B4F00CEB4BB /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				AF4B459E2DDB0753005F3B5A /* VisaAdvisoryViewModel.swift */,
 				AFAD155E2C394B7000CEB4BB /* TimeViewModel.swift */,
 				AF75C7C22C3E80AA00E16A1D /* WeatherViewModel.swift */,
 				AFC2C1CD2C9E6D6200404703 /* MusicRecommendationViewModel.swift */,
@@ -489,6 +492,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF4B459F2DDB0753005F3B5A /* VisaAdvisoryViewModel.swift in Sources */,
 				AF653D932C213FEC002F7EFE /* EarthSceneView.swift in Sources */,
 				AFAD155F2C394B7000CEB4BB /* TimeViewModel.swift in Sources */,
 				AFD09D782C43ED1C00BB5EBA /* HighlightTip.swift in Sources */,
