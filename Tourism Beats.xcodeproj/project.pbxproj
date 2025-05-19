@@ -103,6 +103,7 @@
 		AF4B459E2DDB0753005F3B5A /* VisaAdvisoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaAdvisoryViewModel.swift; sourceTree = "<group>"; };
 		AF4B45A02DDB081C005F3B5A /* VisaAdvisoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaAdvisoryView.swift; sourceTree = "<group>"; };
 		AF4B45A22DDB1328005F3B5A /* NeumorphicCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicCard.swift; sourceTree = "<group>"; };
+		AF4B45A42DDB1C7F005F3B5A /* Tourism-Beats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Tourism-Beats-Info.plist"; sourceTree = SOURCE_ROOT; };
 		AF5FC79E2C435CE70036940B /* ClockFaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockFaceView.swift; sourceTree = "<group>"; };
 		AF60E1F02CA3D7B000E5EFF1 /* UnsupportedOSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedOSViewController.swift; sourceTree = "<group>"; };
 		AF60E1F22CA3D96200E5EFF1 /* UIKitGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitGradientBackground.swift; sourceTree = "<group>"; };
@@ -207,6 +208,7 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
+				AF4B45A42DDB1C7F005F3B5A /* Tourism-Beats-Info.plist */,
 				AF2647AA2DDACD15007AAC75 /* Wrappers */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
 				AF653D6E2C213692002F7EFE /* Resources */,
@@ -707,12 +709,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/SupportingFiles/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "";
+				INFOPLIST_FILE = "Tourism-Beats-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Tourism Beats";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "“Tourism Beats” would like to access Apple Music to show you the top songs in your selected city. This feature is optional, and you can still use other parts of the app without granting access.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -727,7 +730,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -747,12 +750,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Tourism Beats/SupportingFiles/Tourism Beats.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "";
+				INFOPLIST_FILE = "Tourism-Beats-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Tourism Beats";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "“Tourism Beats” would like to access Apple Music to show you the top songs in your selected city. This feature is optional, and you can still use other parts of the app without granting access.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -767,7 +771,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -40,7 +40,7 @@ struct VisaAdvisoryView: View {
                     Group {
                         if viewModel.isLoading {
                             ProgressView()
-                        } else if let err = viewModel.errorMessage {
+                        } else if viewModel.errorMessage != nil {
                             Text("Error")
                                 .foregroundColor(.red)
                         } else if viewModel.requirement != nil {
