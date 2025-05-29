@@ -1,72 +1,84 @@
+import CoreLocation
 import Foundation
 import WeatherKit
 
+@MainActor
 class WeatherViewModel: ObservableObject {
-    @Published var weatherCondition: String = ""
-    @Published var weatherIconName: String = ""
-    @Published var temperature: String = ""
-    
-    private var weatherFetcherService = WeatherFetcherService()
-    
-    init(cityName: String) {
-        fetchWeather(for: cityName)
+    struct WeatherDisplayInfo {
+        let condition: String
+        let iconName: String
+        let temperature: String
     }
-    
-    private func fetchWeather(for cityName: String) {
-        weatherFetcherService.fetchWeather(for: cityName) { [weak self] weather in
-            guard let self = self, let weather = weather else { return }
-            DispatchQueue.main.async {
-                self.weatherCondition = weather.currentWeather.condition.description
-                self.weatherIconName = self.getWeatherIconName(for: weather.currentWeather.condition)
-                let roundedTemperature = Int(weather.currentWeather.temperature.value.rounded())
-                self.temperature = "\(roundedTemperature) \(weather.currentWeather.temperature.unit.symbol)"
+
+    @Published var weatherInfo: WeatherDisplayInfo?
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+
+    private let fetcher = WeatherFetcherService()
+
+    /// Kick off load as soon as you have the coordinate
+    init(coordinate: CLLocationCoordinate2D) {
+        loadWeather(at: coordinate)
+    }
+
+    /// Public trigger in case you want to reload
+    func loadWeather(at coordinate: CLLocationCoordinate2D) {
+        isLoading = true
+        errorMessage = nil
+        weatherInfo = nil
+
+        Task {
+            do {
+                let weather = try await fetcher.fetchWeather(at: coordinate)
+                weatherInfo = processWeather(weather)
+            } catch {
+                errorMessage = "Weather unavailable."
             }
+            isLoading = false
         }
     }
-    
-    private func getWeatherIconName(for condition: WeatherCondition) -> String {
+
+    private func processWeather(_ weather: Weather) -> WeatherDisplayInfo {
+        let current = weather.currentWeather
+        let condition = current.condition.description
+        let iconName = iconName(for: current.condition)
+        let temp = Int(current.temperature.value.rounded())
+        let tempStr = "\(temp) \(current.temperature.unit.symbol)"
+        return .init(
+            condition: condition,
+            iconName: iconName,
+            temperature: tempStr
+        )
+    }
+
+    private func iconName(for condition: WeatherCondition) -> String {
         switch condition {
-        case .clear:
-            return "sun.max.fill"
-        case .mostlyClear, .partlyCloudy, .mostlyCloudy:
+        case .clear: return "sun.max.fill"
+        case .mostlyClear, .partlyCloudy,
+            .mostlyCloudy:
             return "cloud.sun.fill"
-        case .cloudy:
-            return "cloud.fill"
-        case .foggy:
-            return "cloud.fog.fill"
-        case .haze:
-            return "sun.haze.fill"
-        case .drizzle, .rain:
-            return "cloud.rain.fill"
-        case .thunderstorms:
-            return "cloud.bolt.fill"
-        case .snow, .sleet, .freezingRain, .hail:
+        case .cloudy: return "cloud.fill"
+        case .foggy: return "cloud.fog.fill"
+        case .haze: return "sun.haze.fill"
+        case .drizzle, .rain: return "cloud.rain.fill"
+        case .thunderstorms: return "cloud.bolt.fill"
+        case .snow, .sleet, .freezingRain,
+            .hail:
             return "snow"
-        case .blizzard:
-            return "wind.snow"
-        case .blowingDust:
-            return "sun.dust.fill"
-        case .blowingSnow:
-            return "wind.snow"
-        case .breezy, .windy:
-            return "wind"
-        case .hot:
-            return "sun.max.fill"
-        case .flurries, .sunFlurries:
-            return "cloud.snow.fill"
-        case .frigid:
-            return "thermometer.snowflake"
-        case .heavyRain:
-            return "cloud.heavyrain.fill"
-        case .hurricane, .tropicalStorm:
-            return "hurricane"
-        case .isolatedThunderstorms, .scatteredThunderstorms:
+        case .blizzard: return "wind.snow"
+        case .blowingDust: return "sun.dust.fill"
+        case .blowingSnow: return "wind.snow"
+        case .breezy, .windy: return "wind"
+        case .hot: return "sun.max.fill"
+        case .flurries, .sunFlurries: return "cloud.snow.fill"
+        case .frigid: return "thermometer.snowflake"
+        case .heavyRain: return "cloud.heavyrain.fill"
+        case .hurricane, .tropicalStorm: return "hurricane"
+        case .isolatedThunderstorms,
+            .scatteredThunderstorms:
             return "cloud.sun.bolt.fill"
-        case .smoky:
-            return "smoke.fill"
-        default:
-            return "cloud"
+        case .smoky: return "smoke.fill"
+        default: return "cloud"
         }
     }
 }
-
