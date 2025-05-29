@@ -16,12 +16,10 @@ class WeatherViewModel: ObservableObject {
 
     private let fetcher = WeatherFetcherService()
 
-    /// Kick off load as soon as you have the coordinate
     init(coordinate: CLLocationCoordinate2D) {
         loadWeather(at: coordinate)
     }
 
-    /// Public trigger in case you want to reload
     func loadWeather(at coordinate: CLLocationCoordinate2D) {
         isLoading = true
         errorMessage = nil

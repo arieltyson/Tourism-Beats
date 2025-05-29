@@ -1,35 +1,47 @@
 import SwiftUI
 
 struct TimeWidgetView: View {
-    @ObservedObject var viewModel: TimeViewModel
-    
+    @StateObject private var viewModel: TimeViewModel
+
     init(cityName: String) {
-        self.viewModel = TimeViewModel(cityName: cityName)
+        _viewModel = StateObject(
+            wrappedValue: TimeViewModel(cityName: cityName)
+        )
     }
-    
+
     var body: some View {
-        VStack {
-            ClockFaceView (
-                hour: viewModel.currentHour,
-                minute: viewModel.currentMinute,
-                second: viewModel.currentSecond
-            )
-                .frame(width: 100, height: 100)
-                .padding(.bottom, 10)
-            
-            Text(viewModel.currentTime)
-                .font(.headline)
-                .foregroundColor(.white)
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            VStack {
+
+                Spacer()
+
+                // -- Analog clock --
+                ClockFaceView(
+                    date: context.date,
+                    timeZone: viewModel.timeZone
+                )
+                .frame(width: 120, height: 120)
                 .padding()
-                .cornerRadius(15)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-                .fixedSize(horizontal: false, vertical: true)
+
+                // -- Digital clock --
+                Text(viewModel.formattedTime(for: context.date))
+                    .font(.system(.headline, design: .rounded))
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+
+                Spacer()
+            }
+            .frame(width: 175, height: 250)
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color.black.opacity(0.5))
+                    .shadow(radius: 5)
+            )
+            .padding()
         }
-        .frame(width: 175, height: 250)
-        .padding(5)
-        .background(RoundedRectangle(cornerRadius: 15)
-            .fill(Color.black.opacity(0.5)).shadow(radius: 5))
-        .padding()
     }
 }
