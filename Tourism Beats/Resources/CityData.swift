@@ -2,7 +2,7 @@ import Foundation
 import MapKit
 
 struct CityData {
-    static func cities(countryDataService: CountryDataServiceProtocol) -> [CityModel] {
+    static func cities(countryDataService: CountryServiceProtocol) -> [CityModel] {
         let service = countryDataService
         return [
             CityModel(name: "London", country: service.getCountryByName("United Kingdom") ?? CountryModel(name: "United Kingdom", code: "GB", flag: "🇬🇧"), imageName: "big_ben_image"),

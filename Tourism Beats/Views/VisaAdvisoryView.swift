@@ -3,6 +3,11 @@ import SwiftUI
 struct VisaAdvisoryView: View {
     @StateObject var viewModel: VisaAdvisoryViewModel
     private let allCountries = CountryData.allCountries
+    @State private var showingCountryPicker = false
+
+    private var currentCountry: CountryModel? {
+        allCountries.first { $0.code == viewModel.passportCode }
+    }
 
     var body: some View {
         NeumorphicCard {
@@ -12,12 +17,20 @@ struct VisaAdvisoryView: View {
                     .foregroundColor(.blue)
 
                 HStack(alignment: .top) {
-                    Picker("", selection: $viewModel.passportCode) {
-                        ForEach(allCountries, id: \.code) { c in
-                            Text("\(c.flag) \(c.name)").tag(c.code)
+                    Button {
+                        showingCountryPicker = true
+                    } label: {
+                        HStack {
+                            if let country = currentCountry {
+                                Text("\(country.flag) \(country.name)")
+                            } else {
+                                Text("Select Country")
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .foregroundColor(.accentColor)
                         }
                     }
-                    .pickerStyle(MenuPickerStyle())
                     .padding(.vertical, 8)
                     .padding(.horizontal, 12)
                     .background(
@@ -30,6 +43,11 @@ struct VisaAdvisoryView: View {
                                 y: 2
                             )
                     )
+                    .sheet(isPresented: $showingCountryPicker) {
+                        SearchableCountryPicker(
+                            selectedCode: $viewModel.passportCode
+                        )
+                    }
                     .onChange(of: viewModel.passportCode) {
                         viewModel.updatePassport(to: $0)
                     }

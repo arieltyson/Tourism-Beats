@@ -1,4 +1,4 @@
-class CountryDataService: CountryDataServiceProtocol {
+class CountryService: CountryServiceProtocol {
     private let countries: [CountryModel]
 
     init() {
