@@ -8,32 +8,47 @@ struct MusicRecommendationView: View {
     var body: some View {
         VStack {
             if viewModel.isMusicFeatureAvailable {
-                if let songImage = viewModel.songImage {
-                    AsyncImage(url: songImage) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
+                // Placeholder for Music Info to stabilize initial layout
+                VStack {
+                    if let songImage = viewModel.songImage {
+                        AsyncImage(url: songImage) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300, height: 300)
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
+                                .frame(width: 300, height: 300)
+                        }
+                    } else {
+                        Rectangle()
+                            .fill(Color.secondary.opacity(0.2))
                             .frame(width: 300, height: 300)
                             .cornerRadius(20)
-                            .padding(.top, 50)
-                    } placeholder: {
-                        ProgressView()
+                            .overlay(ProgressView())
                     }
-                } else {
-                    ProgressView()
-                        .frame(width: 300, height: 300)
-                }
-
-                Text(viewModel.songTitle)
+                    Text(
+                        viewModel.songTitle.isEmpty
+                            ? "Loading Song..." : viewModel.songTitle
+                    )
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
-                    .padding(.top, 20)
+                    .padding(.top, 5)
+                    .frame(minHeight: 40)
 
-                Text(viewModel.artistName)
+                    Text(
+                        viewModel.artistName.isEmpty
+                            ? " " : viewModel.artistName
+                    )
                     .font(.subheadline)
                     .foregroundColor(.white)
-                    .padding(.top, 5)
+                    .padding(.top, 2)
+                    .frame(minHeight: 20)
+                }
+                .padding(.top, 50)
+
             } else {
                 // Fallback UI if music access is denied
                 fallbackView
@@ -44,15 +59,17 @@ struct MusicRecommendationView: View {
             SafetyAdvisoryView(
                 viewModel: SafetyAdvisoryViewModel(city: viewModel.city)
             )
+            .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
             VisaAdvisoryView(
                 viewModel: VisaAdvisoryViewModel(
-                    passportCode: "TT",
+                    passportCode: "TT",  // Default to greatest country in the world
                     destinationCode: viewModel.city.country.code
                 )
             )
+            .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
         }
