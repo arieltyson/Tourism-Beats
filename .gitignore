@@ -418,3 +418,5 @@ xcuserdata/
 
 **/xcuserdata/
 
+# Ignore Apple Music API secrets
+Secrets.swift
