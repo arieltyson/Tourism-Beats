@@ -83,7 +83,7 @@ struct TouristAttractionView: View {
             // Navigate to Music recommendations on left swipe
             .navigationDestination(isPresented: $showMusicRecommendations) {
                 MusicRecommendationView(
-                    viewModel: MusicRecommendationViewModel(city: city),
+                    city: city,
                     fallbackView: FallbackMusicCardView()
                 )
             }

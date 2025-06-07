@@ -32,7 +32,7 @@ struct CitySelectionView: View {
     private let cities: [CityModel]
     init() {
         let svc = CountryService()
-        self.cities = CityData.cities(countryDataService: svc)
+        self.cities = CityData.cities(countryService: svc)
     }
 
     var body: some View {

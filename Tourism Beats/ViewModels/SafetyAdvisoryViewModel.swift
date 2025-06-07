@@ -23,7 +23,6 @@ class SafetyAdvisoryViewModel: ObservableObject {
         errorMessage = nil
 
         let countryCode = city.country.code
-        print("Fetching safety data for country code: \(countryCode)")
 
         Task {
             do {
