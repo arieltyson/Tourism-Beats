@@ -152,6 +152,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AF2647AA2DDACD15007AAC75 /* Wrappers */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Wrappers; sourceTree = "<group>"; };
+		AFB8A0802DF3F536000CA6A7 /* Security */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Security; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +211,7 @@
 		AF23D1B42C211F2400A3406D /* Tourism Beats */ = {
 			isa = PBXGroup;
 			children = (
+				AFB8A0802DF3F536000CA6A7 /* Security */,
 				AF4B45A42DDB1C7F005F3B5A /* Tourism-Beats-Info.plist */,
 				AF2647AA2DDACD15007AAC75 /* Wrappers */,
 				AF653D802C213B28002F7EFE /* SupportingFiles */,
@@ -385,6 +387,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				AF2647AA2DDACD15007AAC75 /* Wrappers */,
+				AFB8A0802DF3F536000CA6A7 /* Security */,
 			);
 			name = "Tourism Beats";
 			productName = "Tourism Beats";
