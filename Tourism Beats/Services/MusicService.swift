@@ -1,7 +1,7 @@
 import Foundation
 import MusicKit
 
-class MusicService: MusicServiceProtocol {
+class MusicService: MusicProtocol {
 
     enum MusicServiceError: Error {
         case invalidCountryCode(String)

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ClockFaceView: View {
+struct ClockView: View {
     let date: Date
     let timeZone: TimeZone
 

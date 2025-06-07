@@ -2,7 +2,7 @@ import SwiftUI
 import TipKit
 import UIKit
 
-struct TouristAttractionView: View {
+struct CityView: View {
     let city: CityModel
 
     // Use SwiftUI's dismiss to pop back to the map
@@ -57,10 +57,10 @@ struct TouristAttractionView: View {
 
                 // Time & Weather widgets
                 HStack {
-                    TimeWidgetView(cityName: city.name)
+                    TimeView(cityName: city.name)
                         .frame(maxWidth: .infinity)
 
-                    WeatherWidgetView(city: city)
+                    WeatherView(city: city)
                         .frame(maxWidth: .infinity)
                 }
 
@@ -82,9 +82,9 @@ struct TouristAttractionView: View {
             .padding()
             // Navigate to Music recommendations on left swipe
             .navigationDestination(isPresented: $showMusicRecommendations) {
-                MusicRecommendationView(
+                MusicView(
                     city: city,
-                    fallbackView: FallbackMusicCardView()
+                    fallbackView: FallbackMusicView()
                 )
             }
         }
@@ -117,7 +117,7 @@ struct TouristAttractionView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Image(systemName: "info.circle")
                         .foregroundColor(.white)
-                        .popoverTip(HighlightTip(), arrowEdge: .top)
+                        .popoverTip(TipModel(), arrowEdge: .top)
                 }
             }
         }

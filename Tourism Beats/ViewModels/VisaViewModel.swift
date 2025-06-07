@@ -1,19 +1,18 @@
-import Foundation
 import SwiftUI
 
 @MainActor
-class VisaAdvisoryViewModel: ObservableObject {
+class VisaViewModel: ObservableObject {
     @Published var requirement: VisaModel?
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var passportCode: String
     let destinationCode: String
-    private let service: VisaServiceProtocol
+    private let service: VisaProtocol
 
     init(
         passportCode: String,
         destinationCode: String,
-        service: VisaServiceProtocol = VisaService()
+        service: VisaProtocol = VisaService() as VisaProtocol
     ) {
         self.passportCode = passportCode
         self.destinationCode = destinationCode

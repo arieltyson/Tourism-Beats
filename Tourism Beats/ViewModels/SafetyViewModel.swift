@@ -1,17 +1,17 @@
-import SwiftUICore
+import SwiftUI
 
 @MainActor
-class SafetyAdvisoryViewModel: ObservableObject {
+class SafetyViewModel: ObservableObject {
     @Published var safetyData: SafetyModel?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
     let city: CityModel
-    private let safetyService: SafetyServiceProtocol
+    private let safetyService: SafetyProtocol
 
     init(
         city: CityModel,
-        safetyService: SafetyServiceProtocol = SafetyService()
+        safetyService: SafetyProtocol = SafetyService() as SafetyProtocol
     ) {
         self.city = city
         self.safetyService = safetyService

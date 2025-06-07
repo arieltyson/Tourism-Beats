@@ -1,7 +1,7 @@
 import UIKit
 
 class ContentSetupProvider {
-    
+
     static func setup(in view: UIView, withText text: String) {
         let label = UILabel()
         label.text = text
@@ -11,12 +11,21 @@ class ContentSetupProvider {
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)
-        
+
         NSLayoutConstraint.activate([
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
-            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            label.centerYAnchor.constraint(
+                equalTo: view.centerYAnchor,
+                constant: -20
+            ),
+            label.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            label.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -16
+            ),
         ])
     }
 }

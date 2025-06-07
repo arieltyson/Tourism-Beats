@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct SafetyAdvisoryView: View {
-    @StateObject var viewModel: SafetyAdvisoryViewModel
+struct SafetyView: View {
+    @StateObject var viewModel: SafetyViewModel
 
     var body: some View {
         NeumorphicCard {

@@ -46,7 +46,11 @@ struct CountryData {
         CountryModel(name: "Cuba", code: "CU", flag: "🇨🇺"),
         CountryModel(name: "Cyprus", code: "CY", flag: "🇨🇾"),
         CountryModel(name: "Czechia (Czech Republic)", code: "CZ", flag: "🇨🇿"),
-        CountryModel(name: "Democratic Republic of the Congo", code: "CD", flag: "🇨🇩"),
+        CountryModel(
+            name: "Democratic Republic of the Congo",
+            code: "CD",
+            flag: "🇨🇩"
+        ),
         CountryModel(name: "Denmark", code: "DK", flag: "🇩🇰"),
         CountryModel(name: "Djibouti", code: "DJ", flag: "🇩🇯"),
         CountryModel(name: "Dominica", code: "DM", flag: "🇩🇲"),
@@ -148,7 +152,11 @@ struct CountryData {
         CountryModel(name: "Rwanda", code: "RW", flag: "🇷🇼"),
         CountryModel(name: "Saint Kitts and Nevis", code: "KN", flag: "🇰🇳"),
         CountryModel(name: "Saint Lucia", code: "LC", flag: "🇱🇨"),
-        CountryModel(name: "Saint Vincent and the Grenadines", code: "VC", flag: "🇻🇨"),
+        CountryModel(
+            name: "Saint Vincent and the Grenadines",
+            code: "VC",
+            flag: "🇻🇨"
+        ),
         CountryModel(name: "Samoa", code: "WS", flag: "🇼🇸"),
         CountryModel(name: "San Marino", code: "SM", flag: "🇸🇲"),
         CountryModel(name: "Sao Tome and Principe", code: "ST", flag: "🇸🇹"),
@@ -195,6 +203,6 @@ struct CountryData {
         CountryModel(name: "Vietnam", code: "VN", flag: "🇻🇳"),
         CountryModel(name: "Yemen", code: "YE", flag: "🇾🇪"),
         CountryModel(name: "Zambia", code: "ZM", flag: "🇿🇲"),
-        CountryModel(name: "Zimbabwe", code: "ZW", flag: "🇿🇼")
+        CountryModel(name: "Zimbabwe", code: "ZW", flag: "🇿🇼"),
     ]
 }

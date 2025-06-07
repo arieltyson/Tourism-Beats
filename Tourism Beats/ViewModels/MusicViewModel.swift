@@ -1,10 +1,9 @@
-// MusicRecommendationViewModel.swift
 import Foundation
 import MusicKit
 import SwiftUI
 
 @MainActor
-class MusicRecommendationViewModel: ObservableObject {
+class MusicViewModel: ObservableObject {
     @Published var songTitle: String = "Loading…"
     @Published var artistName: String = ""
     @Published var songImage: URL?
@@ -12,7 +11,7 @@ class MusicRecommendationViewModel: ObservableObject {
     @Published var isPlaying = false
 
     let city: CityModel
-    private let musicService: MusicServiceProtocol
+    private let musicService: MusicProtocol
     private let player = ApplicationMusicPlayer.shared
 
     private var hasLoadedData = false  // only fetch once
@@ -21,7 +20,7 @@ class MusicRecommendationViewModel: ObservableObject {
 
     init(
         city: CityModel,
-        musicService: MusicServiceProtocol = MusicService()
+        musicService: MusicProtocol = MusicService() as MusicProtocol
     ) {
         self.city = city
         self.musicService = musicService

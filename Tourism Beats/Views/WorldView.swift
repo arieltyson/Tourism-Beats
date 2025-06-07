@@ -1,7 +1,7 @@
 import MapKit
 import SwiftUI
 
-struct CitySelectionView: View {
+struct WorldView: View {
     // MARK: – Selection / navigation state
     @State private var selectedCity: CityModel?
     @State private var showAlert = false
@@ -80,7 +80,7 @@ struct CitySelectionView: View {
         .navigationBarBackButtonHidden(true)
         .navigationDestination(isPresented: $navigateToAttraction) {
             if let city = cityToExplore {
-                TouristAttractionView(city: city)
+                CityView(city: city)
             }
         }
         .toolbar {
@@ -94,7 +94,7 @@ struct CitySelectionView: View {
             }
         }
         .navigationDestination(isPresented: $navigateBack) {
-            HomePageView()
+            HomeView()
         }
     }
 }

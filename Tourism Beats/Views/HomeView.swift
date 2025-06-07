@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct HomePageView: View {
+struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                EarthSceneView()
+                EarthView()
                     .edgesIgnoringSafeArea(.all)
                 VStack(spacing: 20) {
                     VStack {
@@ -19,10 +19,10 @@ struct HomePageView: View {
                             .italic()
                     }
                     .padding(.top, 50)
-                    
+
                     Spacer()
-                    
-                    NavigationLink(destination: CitySelectionView()) {
+
+                    NavigationLink(destination: WorldView()) {
                         Text("Choose a City")
                             .font(.title)
                             .padding()
@@ -34,7 +34,7 @@ struct HomePageView: View {
                                     .stroke(Color.white, lineWidth: 2)
                             )
                     }
-                    
+
                     Spacer()
                 }
                 .padding()
@@ -47,6 +47,6 @@ struct HomePageView: View {
 
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
-        HomePageView()
+        HomeView()
     }
 }

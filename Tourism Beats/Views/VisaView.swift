@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct VisaAdvisoryView: View {
-    @StateObject var viewModel: VisaAdvisoryViewModel
+struct VisaView: View {
+    @StateObject var viewModel: VisaViewModel
     private let allCountries = CountryData.allCountries
     @State private var showingCountryPicker = false
 

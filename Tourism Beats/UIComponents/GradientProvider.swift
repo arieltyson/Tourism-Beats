@@ -9,12 +9,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .black, .black, .black,
                 .blue, .blue, .blue,
-                .green, .green, .green
+                .green, .green, .green,
             ]
         ),
         MeshGradient(
@@ -23,13 +23,13 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .cyan, .pink, .indigo,
                 .yellow, .teal, .red,
-                .purple, .blue, .orange
-        ]
+                .purple, .blue, .orange,
+            ]
         ),
         MeshGradient(
             width: 3,
@@ -37,12 +37,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .blue, .cyan, .teal,
                 .pink, .purple, .indigo,
-                .yellow, .orange, .red
+                .yellow, .orange, .red,
             ]
         ),
         MeshGradient(
@@ -51,12 +51,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.8, 0.4], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .yellow, .orange, .red,
                 .purple, .blue, .green,
-                .mint, .cyan, .teal
+                .mint, .cyan, .teal,
             ]
         ),
         MeshGradient(
@@ -65,12 +65,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .blue, .blue, .blue,
                 .black, .black, .black,
-                .red, .red, .red
+                .red, .red, .red,
             ]
         ),
         MeshGradient(
@@ -79,12 +79,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .teal, .teal, .teal,
                 .blue, .blue, .blue,
-                .black, .black, .black
+                .black, .black, .black,
             ]
         ),
         MeshGradient(
@@ -93,12 +93,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .cyan, .blue, .purple,
                 .pink, .red, .orange,
-                .yellow, .green, .teal
+                .yellow, .green, .teal,
             ]
         ),
         MeshGradient(
@@ -107,12 +107,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .black, .cyan, .cyan,
                 .cyan, .black, .mint,
-                .mint, .mint, .black
+                .mint, .mint, .black,
             ]
         ),
         MeshGradient(
@@ -121,12 +121,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.3, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.6, 0.4], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .pink, .red, .orange,
                 .yellow, .green, .blue,
-                .indigo, .purple, .mint
+                .indigo, .purple, .mint,
             ]
         ),
         MeshGradient(
@@ -135,12 +135,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.5, 0.4], [1.0, 0.5],
-                [0.0, 1.0], [0.6, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.6, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .teal, .cyan, .blue,
                 .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                .red, .orange, .yellow,
             ]
         ),
         MeshGradient(
@@ -149,12 +149,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .green, .mint, .blue,
                 .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                .red, .orange, .yellow,
             ]
         ),
         MeshGradient(
@@ -163,12 +163,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .black, .cyan, .cyan,
                 .cyan, .black, .pink,
-                .pink, .pink, .black
+                .pink, .pink, .black,
             ]
         ),
         MeshGradient(
@@ -177,12 +177,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .indigo, .indigo, .black,
                 .cyan, .black, .cyan,
-                .black, .cyan, .indigo
+                .black, .cyan, .indigo,
             ]
         ),
         MeshGradient(
@@ -191,12 +191,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .red, .purple, .indigo,
                 .orange, .blue, .blue,
-                .yellow, .green, .mint
+                .yellow, .green, .mint,
             ]
         ),
         MeshGradient(
@@ -205,12 +205,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .blue, .cyan, .teal,
                 .pink, .purple, .indigo,
-                .yellow, .orange, .red
+                .yellow, .orange, .red,
             ]
         ),
         MeshGradient(
@@ -219,12 +219,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.8, 0.4], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .yellow, .orange, .red,
                 .purple, .blue, .green,
-                .mint, .cyan, .teal
+                .mint, .cyan, .teal,
             ]
         ),
         MeshGradient(
@@ -233,12 +233,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .indigo, .indigo, .indigo,
                 .black, .cyan, .black,
-                .indigo, .black, .cyan
+                .indigo, .black, .cyan,
             ]
         ),
         MeshGradient(
@@ -247,12 +247,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .black, .indigo, .indigo,
                 .black, .red, .indigo,
-                .black, .black, .red
+                .black, .black, .red,
             ]
         ),
         MeshGradient(
@@ -261,12 +261,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .cyan, .blue, .purple,
                 .pink, .red, .orange,
-                .yellow, .green, .teal
+                .yellow, .green, .teal,
             ]
         ),
         MeshGradient(
@@ -275,12 +275,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .black, .black, .black,
                 .cyan, .cyan, .black,
-                .red, .red, .cyan
+                .red, .red, .cyan,
             ]
         ),
         MeshGradient(
@@ -289,12 +289,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.3, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.6, 0.4], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .pink, .red, .orange,
                 .yellow, .green, .blue,
-                .indigo, .purple, .mint
+                .indigo, .purple, .mint,
             ]
         ),
         MeshGradient(
@@ -303,12 +303,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.5, 0.4], [1.0, 0.5],
-                [0.0, 1.0], [0.6, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.6, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .teal, .cyan, .blue,
                 .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                .red, .orange, .yellow,
             ]
         ),
         MeshGradient(
@@ -317,12 +317,12 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .green, .mint, .blue,
                 .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                .red, .orange, .yellow,
             ]
         ),
         MeshGradient(
@@ -331,13 +331,13 @@ struct GradientProvider {
             points: [
                 [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
                 [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
             ],
             colors: [
                 .pink, .pink, .pink,
                 .black, .indigo, .pink,
-                .black, .black, .indigo
+                .black, .black, .indigo,
             ]
-        )
+        ),
     ]
 }

@@ -4,7 +4,7 @@ enum VisaError: Error {
     case fileNotFound, decodingError, requirementNotFound
 }
 
-class VisaService: VisaServiceProtocol {
+class VisaService: VisaProtocol {
     private let fileName = "visa_requirements_2025"
     private var cache: [VisaModel]?
 

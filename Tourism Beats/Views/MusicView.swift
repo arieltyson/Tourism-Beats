@@ -1,13 +1,13 @@
 import MusicKit
 import SwiftUI
 
-struct MusicRecommendationView: View {
-    @StateObject private var viewModel: MusicRecommendationViewModel
-    let fallbackView: FallbackMusicCardView
+struct MusicView: View {
+    @StateObject private var viewModel: MusicViewModel
+    let fallbackView: FallbackMusicView
 
-    init(city: CityModel, fallbackView: FallbackMusicCardView) {
+    init(city: CityModel, fallbackView: FallbackMusicView) {
         _viewModel = StateObject(
-            wrappedValue: MusicRecommendationViewModel(city: city)
+            wrappedValue: MusicViewModel(city: city)
         )
         self.fallbackView = fallbackView
     }
@@ -84,15 +84,15 @@ struct MusicRecommendationView: View {
 
             Spacer()
 
-            SafetyAdvisoryView(
-                viewModel: SafetyAdvisoryViewModel(city: viewModel.city)
+            SafetyView(
+                viewModel: SafetyViewModel(city: viewModel.city)
             )
             .fixedSize(horizontal: false, vertical: true)
 
             Spacer()
 
-            VisaAdvisoryView(
-                viewModel: VisaAdvisoryViewModel(
+            VisaView(
+                viewModel: VisaViewModel(
                     passportCode: "TT",
                     destinationCode: viewModel.city.country.code
                 )

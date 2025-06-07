@@ -1,7 +1,7 @@
 import CoreLocation
 import SwiftUI
 
-struct WeatherWidgetView: View {
+struct WeatherView: View {
     @StateObject private var viewModel: WeatherViewModel
 
     init(city: CityModel) {

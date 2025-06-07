@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FallbackMusicCardView: View {
+struct FallbackMusicView: View {
     var body: some View {
         VStack {
             Text("Apple Music Unavailable")
@@ -9,15 +9,19 @@ struct FallbackMusicCardView: View {
                 .foregroundColor(.white)
                 .padding(.top, 50)
 
-            Text("Enable Apple Music access to view top tracks for your selected city.")
-                .font(.subheadline)
-                .foregroundColor(.white)
-                .padding(.top, 10)
-                .multilineTextAlignment(.center)
+            Text(
+                "Enable Apple Music access to view top tracks for your selected city."
+            )
+            .font(.subheadline)
+            .foregroundColor(.white)
+            .padding(.top, 10)
+            .multilineTextAlignment(.center)
 
             Button(action: {
                 // Open settings for music access
-                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                if let settingsURL = URL(
+                    string: UIApplication.openSettingsURLString
+                ) {
                     UIApplication.shared.open(settingsURL)
                 }
             }) {

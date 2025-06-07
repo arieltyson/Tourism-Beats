@@ -1,7 +1,7 @@
-import SwiftUI
 import SceneKit
+import SwiftUI
 
-struct EarthSceneView: UIViewRepresentable {
+struct EarthView: UIViewRepresentable {
     func makeUIView(context: Context) -> SCNView {
         let sceneView = SCNView()
         sceneView.scene = createScene()
@@ -22,7 +22,9 @@ struct EarthSceneView: UIViewRepresentable {
 
         // Rotate the Earth node
         let rotation = CABasicAnimation(keyPath: "rotation")
-        rotation.toValue = NSValue(scnVector4: SCNVector4(0, 1, 0, CGFloat.pi * 2))
+        rotation.toValue = NSValue(
+            scnVector4: SCNVector4(0, 1, 0, CGFloat.pi * 2)
+        )
         rotation.duration = 60
         rotation.repeatCount = .infinity
         earthNode.addAnimation(rotation, forKey: "rotation")
@@ -44,7 +46,7 @@ struct EarthSceneView: UIViewRepresentable {
 
 struct EarthSceneView_Previews: PreviewProvider {
     static var previews: some View {
-        EarthSceneView()
+        EarthView()
             .edgesIgnoringSafeArea(.all)
     }
 }

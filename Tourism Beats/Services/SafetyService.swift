@@ -4,7 +4,7 @@ enum SafetyError: Error {
     case fileNotFound, decodingError, countryNotFound
 }
 
-class SafetyService: SafetyServiceProtocol {
+class SafetyService: SafetyProtocol {
     func fetchSafetyData(for countryCode: String) async throws -> SafetyModel {
         // 1. Locate bundled JSON
         guard

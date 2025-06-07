@@ -6,14 +6,14 @@ struct Tourism_BeatsApp: App {
     var body: some Scene {
         WindowGroup {
             if #available(iOS 16.0, *) {
-                HomePageView()
+                HomeView()
             } else {
                 UnsupportedOSViewControllerWrapper()
                     .edgesIgnoringSafeArea(.all)
             }
         }
     }
-    
+
     init() {
         if #available(iOS 17.0, *) {
             do {

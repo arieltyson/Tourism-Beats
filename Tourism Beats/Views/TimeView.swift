@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TimeWidgetView: View {
+struct TimeView: View {
     @StateObject private var viewModel: TimeViewModel
 
     init(cityName: String) {
@@ -16,7 +16,7 @@ struct TimeWidgetView: View {
                 Spacer()
 
                 // -- Analog clock --
-                ClockFaceView(
+                ClockView(
                     date: context.date,
                     timeZone: viewModel.timeZone
                 )
