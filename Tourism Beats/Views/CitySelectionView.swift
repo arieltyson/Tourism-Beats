@@ -2,16 +2,21 @@ import MapKit
 import SwiftUI
 
 struct CitySelectionView: View {
+    // MARK: - State Properties
     @State private var selectedCity: CityModel? = nil
     @State private var showAlert = false
     @State private var navigateToAttraction = false
     @State private var navigateBack = false
 
-    let countryService = CountryService()
-    var cities: [CityModel] {
-        CityData.cities(countryDataService: countryService)
+    // MARK: - Data Properties
+    let cities: [CityModel]
+
+    init() {
+        let countryService = CountryService()
+        self.cities = CityData.cities(countryDataService: countryService)
     }
 
+    // MARK: - Body
     var body: some View {
         VStack {
             Text("Select a City")
@@ -31,6 +36,7 @@ struct CitySelectionView: View {
                     .font(.headline)
                     .padding()
                     .foregroundColor(.white)
+                    .transition(.opacity.animation(.easeInOut))
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -43,16 +49,12 @@ struct CitySelectionView: View {
                 primaryButton: .default(
                     Text("Yes"),
                     action: {
-                        print("Yes tapped for \(selectedCity?.name ?? "")")
                         navigateToAttraction = true
                     }
                 ),
                 secondaryButton: .cancel(
                     Text("No"),
                     action: {
-                        print(
-                            "No tapped for \(selectedCity?.country.name ?? "")"
-                        )
                         selectedCity = nil
                     }
                 )
@@ -71,12 +73,8 @@ struct CitySelectionView: View {
                 Button(action: {
                     navigateBack = true
                 }) {
-                    HStack {
-                        Image(systemName: "house")
-                            .foregroundColor(.white)
-                        Text("")
-                            .foregroundColor(.white)
-                    }
+                    Image(systemName: "house")
+                        .foregroundColor(.white)
                 }
             }
         }
