@@ -7,78 +7,85 @@ class MusicRecommendationViewModel: ObservableObject {
     @Published var songTitle: String = "Loading..."
     @Published var artistName: String = ""
     @Published var songImage: URL?
-    @Published var isMusicFeatureAvailable: Bool = true
+    @Published var isMusicFeatureAvailable = true
+    @Published var isPlaying = false
 
     let city: CityModel
     private let musicService: MusicServiceProtocol
-    private var hasRequestedMusicAccess = false
+    private let player = ApplicationMusicPlayer.shared
 
-    init(city: CityModel, musicService: MusicServiceProtocol = MusicService()) {
+    private var songID: MusicItemID?
+
+    init(
+        city: CityModel,
+        musicService: MusicServiceProtocol = MusicService()
+    ) {
         self.city = city
         self.musicService = musicService
     }
 
     func requestAccessAndLoadTopSong() async {
-        // Only show the permission pop-up once per session
-        guard !hasRequestedMusicAccess else { return }
-
         let status = await MusicAuthorization.request()
-        self.hasRequestedMusicAccess = true
+        self.isMusicFeatureAvailable = (status == .authorized)
 
-        if status == .authorized {
-            self.isMusicFeatureAvailable = true
-            await fetchTopSongUsingDevToken()
-        } else {
-            self.isMusicFeatureAvailable = false
-            self.songTitle = "Music Access Required"
-            self.artistName =
-                "Please grant permission in Settings to use this feature."
-            self.songImage = nil
-        }
-    }
-
-    private func fetchTopSongUsingDevToken() async {
-        guard !city.country.code.isEmpty else {
-            self.songTitle = "Country Info Missing"
-            self.artistName = ""
+        guard isMusicFeatureAvailable else {
+            songTitle = "Music Access Required"
+            artistName = "Please grant permission in Settings."
             return
         }
+        await fetchTopSong()
+    }
 
-        self.songTitle = "Loading Top Song..."
-        self.artistName = "for \(city.country.name)"
-        self.songImage = nil
+    /// Fetch song metadata via Apple Music REST API service.
+    private func fetchTopSong() async {
+        songTitle = "Loading Top Song…"
+        artistName = "for \(city.country.name)"
+        songImage = nil
+        isPlaying = false
 
         do {
             let appSong = try await musicService.fetchTopSong(
                 countryCode: city.country.code
             )
+            self.songID = appSong.id
             self.songTitle = appSong.title
             self.artistName = appSong.artistName
             self.songImage = appSong.artworkURL
-        } catch let error as MusicService.MusicServiceError {
-            handle(error: error)
         } catch {
-            self.songTitle = "An Unexpected Error Occurred"
-            self.artistName = "Please try again later."
-            print("Generic error fetching top song data: \(error)")
+            self.songTitle = "Could Not Load Song"
+            self.artistName = error.localizedDescription
+            print("🎵 fetch error:", error)
         }
     }
 
-    private func handle(error: MusicService.MusicServiceError) {
-        switch error {
-        case .tokenGenerationError:
-            self.songTitle = "Authentication Error"
-            self.artistName = "Could not generate developer token."
-        case .noSongFoundInChart:
-            self.songTitle = "Top Chart Unavailable"
-            self.artistName = "No chart found for \(city.country.name)."
-        case .apiError(let statusCode):
-            self.songTitle = "API Error"
-            self.artistName = "Could not connect (Code: \(statusCode))."
-        default:
-            self.songTitle = "Song Unavailable"
-            self.artistName = "An error occurred while fetching."
+    func togglePlayback() async {
+        guard let id = songID else { return }
+
+        // If we think we're playing, pause.
+        if isPlaying {
+            player.pause()
+            self.isPlaying = false
+        } else {
+            // If paused, fetch the full Song object using MusicKit and then play.
+            do {
+                // 1. Fetch the native MusicKit.Song object using its ID.
+                let request = MusicCatalogResourceRequest<Song>(
+                    matching: \.id,
+                    equalTo: id
+                )
+                let response = try await request.response()
+
+                // 2. Queue and play the fetched song.
+                if let song = response.items.first {
+                    player.queue = [song]
+                    try await player.play()
+                    self.isPlaying = true
+                }
+            } catch {
+                print("🎵 playback error:", error)
+                // If playback fails, ensure our state reflects that.
+                self.isPlaying = false
+            }
         }
-        print("MusicServiceError fetching top song: \(error)")
     }
 }

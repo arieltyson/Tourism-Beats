@@ -1,13 +1,15 @@
 import Foundation
+import MusicKit
 
+// MARK: - App-Specific Song Model
 struct AppSong {
+    let id: MusicItemID
     let title: String
     let artistName: String
     let artworkURL: URL?
 }
 
 // MARK: - Decodable Structs for Apple Music API Response
-
 struct AppleMusicChartResponse: Decodable {
     let results: ChartResults?
 }

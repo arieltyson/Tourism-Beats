@@ -1,4 +1,5 @@
 import Foundation
+import MusicKit
 
 class MusicService: MusicServiceProtocol {
 
@@ -65,6 +66,7 @@ class MusicService: MusicServiceProtocol {
             }
 
             return AppSong(
+                id: MusicItemID(topAPISong.id),
                 title: attributes.name,
                 artistName: attributes.artistName,
                 artworkURL: attributes.artwork?.artworkURL()
