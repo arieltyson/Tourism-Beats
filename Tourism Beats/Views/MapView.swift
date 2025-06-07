@@ -1,5 +1,5 @@
-import SwiftUI
 import MapKit
+import SwiftUI
 
 struct MapView: UIViewRepresentable {
     @Binding var selectedCity: CityModel?
@@ -12,10 +12,15 @@ struct MapView: UIViewRepresentable {
         mapView.mapType = .standard
         mapView.overrideUserInterfaceStyle = .dark
 
-        let europeCenter = CLLocationCoordinate2D(latitude: 54.5260, longitude: 15.2551)
+        let europeCenter = CLLocationCoordinate2D(
+            latitude: 54.5260,
+            longitude: 15.2551
+        )
         let span = MKCoordinateSpan(latitudeDelta: 20.0, longitudeDelta: 20.0)
-        let region = MKCoordinateRegion(center: europeCenter, span: span)
-        mapView.setRegion(region, animated: false)
+        mapView.setRegion(
+            .init(center: europeCenter, span: span),
+            animated: false
+        )
 
         for city in cities {
             let annotation = MKPointAnnotation()
@@ -27,7 +32,13 @@ struct MapView: UIViewRepresentable {
         return mapView
     }
 
-    func updateUIView(_ uiView: MKMapView, context: Context) {}
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+        if selectedCity == nil {
+            uiView.selectedAnnotations.forEach {
+                uiView.deselectAnnotation($0, animated: true)
+            }
+        }
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -35,17 +46,16 @@ struct MapView: UIViewRepresentable {
 
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
-
-        init(_ parent: MapView) {
-            self.parent = parent
-        }
+        init(_ parent: MapView) { self.parent = parent }
 
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            if let title = view.annotation?.title ?? "" ,
-               let city = parent.cities.first(where: {$0.name == title }) {
-                parent.selectedCity = city
-                parent.showAlert = true
-            }
+            guard
+                let title = view.annotation?.title ?? "",
+                let city = parent.cities.first(where: { $0.name == title })
+            else { return }
+
+            parent.selectedCity = city
+            parent.showAlert = true
         }
     }
 }
