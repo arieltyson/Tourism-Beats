@@ -1,5 +1,3 @@
-import Foundation
-
 protocol VisaServiceProtocol {
     func fetchVisaRequirement(
         passport: String,

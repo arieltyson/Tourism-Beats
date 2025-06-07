@@ -88,7 +88,9 @@ struct MusicRecommendationView: View {
             .ignoresSafeArea()
         )
         .onAppear {
-            Task { await viewModel.requestMusicAccessIfNeeded() }
+            Task {
+                await viewModel.requestAccessAndLoadTopSong()
+            }
         }
     }
 }
