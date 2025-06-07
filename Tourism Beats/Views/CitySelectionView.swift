@@ -30,14 +30,6 @@ struct CitySelectionView: View {
                 cities: cities
             )
             .edgesIgnoringSafeArea(.all)
-
-            if let city = selectedCity {
-                Text("Selected City: \(city.name), \(city.country.name)")
-                    .font(.headline)
-                    .padding()
-                    .foregroundColor(.white)
-                    .transition(.opacity.animation(.easeInOut))
-            }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .alert(isPresented: $showAlert) {
