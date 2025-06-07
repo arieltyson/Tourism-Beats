@@ -17,13 +17,28 @@ struct SafetyAdvisoryView: View {
                         Text("Error: \(err)")
                             .foregroundColor(.red)
                     } else if let safety = viewModel.safetyData {
-                        Text("Country: \(safety.countryName)")
-                            .font(.headline)
+                        HStack {
+                            Text("Country: ")
+                                .foregroundColor(.primary)
+                            Text("\(safety.countryName)")
+                                .foregroundColor(.indigo)
+                        }
+                        .font(.headline)
                         HStack {
                             Text(
-                                "Risk Level: \(viewModel.riskLevelScoreText ?? "")"
+                                "Risk Level: "
                             )
+                            .foregroundColor(.primary)
+                            .bold()
+
+                            Text(
+                                "\(viewModel.riskLevelScoreText ?? "")"
+                            )
+                            .foregroundColor(.mint)
+                            .bold()
+
                             Spacer()
+
                             Text(viewModel.riskLevelText ?? "")
                                 .fontWeight(.bold)
                                 .foregroundColor(viewModel.riskLevelColor)

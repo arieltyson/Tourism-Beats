@@ -23,6 +23,7 @@ struct VisaAdvisoryView: View {
                         HStack {
                             if let country = currentCountry {
                                 Text("\(country.flag) \(country.name)")
+                                    .foregroundColor(.primary)
                             } else {
                                 Text("Select Country")
                             }

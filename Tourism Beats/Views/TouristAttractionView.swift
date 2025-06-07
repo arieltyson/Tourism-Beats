@@ -3,10 +3,12 @@ import TipKit
 import UIKit
 
 struct TouristAttractionView: View {
-    var city: CityModel
-    @State private var navigateBack = false
+    let city: CityModel
+
+    // Use SwiftUI's dismiss to pop back to the map
+    @Environment(\.dismiss) private var dismiss
+
     @State private var showMusicRecommendations = false
-    @State private var showCitySelectionView = false
 
     var body: some View {
         ZStack {
@@ -38,13 +40,13 @@ struct TouristAttractionView: View {
 
                 Spacer()
 
+                // Attraction image
                 VStack(alignment: .leading, spacing: 20) {
                     Image(city.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .cornerRadius(15)
                         .padding(.all)
-
                 }
                 .padding(1)
                 .background(Rectangle().foregroundColor(.white))
@@ -53,6 +55,7 @@ struct TouristAttractionView: View {
 
                 Spacer()
 
+                // Time & Weather widgets
                 HStack {
                     TimeWidgetView(cityName: city.name)
                         .frame(maxWidth: .infinity)
@@ -63,6 +66,7 @@ struct TouristAttractionView: View {
 
                 Spacer()
 
+                // Swipe hint
                 VStack {
                     Image(systemName: "chevron.left.2")
                         .resizable()
@@ -76,32 +80,30 @@ struct TouristAttractionView: View {
                 }
             }
             .padding()
+            // Navigate to Music recommendations on left swipe
             .navigationDestination(isPresented: $showMusicRecommendations) {
                 MusicRecommendationView(
                     viewModel: MusicRecommendationViewModel(city: city),
                     fallbackView: FallbackMusicCardView()
                 )
             }
-            .navigationDestination(isPresented: $showCitySelectionView) {
-                CitySelectionView()
-            }
         }
         .gesture(
             DragGesture(minimumDistance: 20)
                 .onEnded { value in
-                    if value.translation.width < -50 {  // Left swipe
+                    if value.translation.width < -50 {
                         showMusicRecommendations = true
-                    } else if value.translation.width > 50 {  // Right swipe
-                        showCitySelectionView = true
+                    } else if value.translation.width > 50 {
+                        // Pop back to the map view
+                        dismiss()
                     }
                 }
         )
         .navigationBarBackButtonHidden(true)
         .toolbar {
+            // Custom back button to dismiss
             ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    navigateBack = true
-                }) {
+                Button(action: { dismiss() }) {
                     HStack {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.white)
@@ -110,7 +112,7 @@ struct TouristAttractionView: View {
                     }
                 }
             }
-
+            // Info tip if available
             if #available(iOS 18.0, *) {
                 ToolbarItem(placement: .topBarTrailing) {
                     Image(systemName: "info.circle")
@@ -120,11 +122,5 @@ struct TouristAttractionView: View {
             }
         }
         .toolbarBackground(Color.black.opacity(0.5), for: .navigationBar)
-        .onAppear {
-            print("TouristAttractionView appeared for \(city.name)")
-        }
-        .navigationDestination(isPresented: $navigateBack) {
-            CitySelectionView()
-        }
     }
 }
