@@ -4,29 +4,41 @@ import MusicKit
 class MusicService: MusicServiceProtocol {
 
     enum MusicServiceError: Error {
+        case invalidCountryCode(String)
         case invalidURL
-        case networkError(Error)
+        case apiError(statusCode: Int)
+        case noSongFoundInChart
         case decodingError(Error)
         case tokenGenerationError(Error)
-        case noSongFoundInChart
-        case invalidCountryCode(String)
-        case apiError(statusCode: Int)
     }
 
+    // MARK: - Chart Cache
+    // [ countryCode : (timestamp, AppSong) ]
+    private static var chartCache: [String: (Date, AppSong)] = [:]
+    private let cacheDuration: TimeInterval = 3 * 60 * 60
+
     func fetchTopSong(countryCode: String) async throws -> AppSong {
-        guard !countryCode.isEmpty, countryCode.count == 2 else {
+        let code = countryCode.uppercased()
+        guard code.count == 2 else {
             throw MusicServiceError.invalidCountryCode(countryCode)
         }
 
-        let developerToken: String
+        // Return cached if still valid
+        if let (ts, song) = Self.chartCache[code],
+            Date().timeIntervalSince(ts) < cacheDuration
+        {
+            return song
+        }
+
+        // Generate/​reuse developer token
+        let devToken: String
         do {
-            developerToken =
-                try DeveloperTokenGenerator.generateDeveloperToken()
+            devToken = try DeveloperTokenGenerator.generateDeveloperToken()
         } catch {
             throw MusicServiceError.tokenGenerationError(error)
         }
 
-        let storefront = countryCode.lowercased()
+        let storefront = code.lowercased()
         guard
             let url = URL(
                 string:
@@ -36,43 +48,41 @@ class MusicService: MusicServiceProtocol {
             throw MusicServiceError.invalidURL
         }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue(
-            "Bearer \(developerToken)",
-            forHTTPHeaderField: "Authorization"
-        )
+        var req = URLRequest(url: url)
+        req.addValue("Bearer \(devToken)", forHTTPHeaderField: "Authorization")
 
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse,
-            (200...299).contains(httpResponse.statusCode)
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        guard let http = resp as? HTTPURLResponse,
+            (200...299).contains(http.statusCode)
         else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-            throw MusicServiceError.apiError(statusCode: statusCode)
+            throw MusicServiceError.apiError(
+                statusCode: (resp as? HTTPURLResponse)?.statusCode ?? -1
+            )
         }
 
         do {
-            let decodedResponse = try JSONDecoder().decode(
-                AppleMusicChartResponse.self,
-                from: data
-            )
+            let decoded = try JSONDecoder()
+                .decode(AppleMusicChartResponse.self, from: data)
 
-            guard let topChart = decodedResponse.results?.songs?.first,
-                let topAPISong = topChart.data.first,
-                let attributes = topAPISong.attributes
+            guard
+                let chart = decoded.results?.songs?.first,
+                let apiSong = chart.data.first,
+                let attrs = apiSong.attributes
             else {
                 throw MusicServiceError.noSongFoundInChart
             }
 
-            return AppSong(
-                id: MusicItemID(topAPISong.id),
-                title: attributes.name,
-                artistName: attributes.artistName,
-                artworkURL: attributes.artwork?.artworkURL()
+            let song = AppSong(
+                id: MusicItemID(apiSong.id),
+                title: attrs.name,
+                artistName: attrs.artistName,
+                artworkURL: attrs.artwork?.artworkURL()
             )
-        } catch {
-            throw MusicServiceError.decodingError(error)
+            Self.chartCache[code] = (Date(), song)
+            return song
+
+        } catch let decodeErr {
+            throw MusicServiceError.decodingError(decodeErr)
         }
     }
 }

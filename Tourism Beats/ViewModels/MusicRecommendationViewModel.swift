@@ -1,10 +1,11 @@
+// MusicRecommendationViewModel.swift
 import Foundation
 import MusicKit
 import SwiftUI
 
 @MainActor
 class MusicRecommendationViewModel: ObservableObject {
-    @Published var songTitle: String = "Loading..."
+    @Published var songTitle: String = "Loading…"
     @Published var artistName: String = ""
     @Published var songImage: URL?
     @Published var isMusicFeatureAvailable = true
@@ -14,6 +15,8 @@ class MusicRecommendationViewModel: ObservableObject {
     private let musicService: MusicServiceProtocol
     private let player = ApplicationMusicPlayer.shared
 
+    private var hasLoadedData = false  // only fetch once
+    private var playableSong: Song?  // cache MusicKit song
     private var songID: MusicItemID?
 
     init(
@@ -26,22 +29,25 @@ class MusicRecommendationViewModel: ObservableObject {
 
     func requestAccessAndLoadTopSong() async {
         let status = await MusicAuthorization.request()
-        self.isMusicFeatureAvailable = (status == .authorized)
+        isMusicFeatureAvailable = (status == .authorized)
 
         guard isMusicFeatureAvailable else {
             songTitle = "Music Access Required"
-            artistName = "Please grant permission in Settings."
+            artistName = "Grant permission in Settings"
             return
         }
-        await fetchTopSong()
+
+        guard !hasLoadedData else { return }
+        hasLoadedData = true
+        await fetchTopSongMetadata()
     }
 
-    /// Fetch song metadata via Apple Music REST API service.
-    private func fetchTopSong() async {
+    private func fetchTopSongMetadata() async {
         songTitle = "Loading Top Song…"
         artistName = "for \(city.country.name)"
         songImage = nil
         isPlaying = false
+        playableSong = nil
 
         do {
             let appSong = try await musicService.fetchTopSong(
@@ -52,40 +58,51 @@ class MusicRecommendationViewModel: ObservableObject {
             self.artistName = appSong.artistName
             self.songImage = appSong.artworkURL
         } catch {
-            self.songTitle = "Could Not Load Song"
-            self.artistName = error.localizedDescription
+            songTitle = "Could Not Load Song"
+            artistName = error.localizedDescription
             print("🎵 fetch error:", error)
         }
     }
 
+    /// Toggling play/pause reuses a cached MusicKit `Song` if we already fetched it.
     func togglePlayback() async {
         guard let id = songID else { return }
 
-        // If we think we're playing, pause.
         if isPlaying {
             player.pause()
-            self.isPlaying = false
-        } else {
-            // If paused, fetch the full Song object using MusicKit and then play.
-            do {
-                // 1. Fetch the native MusicKit.Song object using its ID.
-                let request = MusicCatalogResourceRequest<Song>(
-                    matching: \.id,
-                    equalTo: id
-                )
-                let response = try await request.response()
+            isPlaying = false
+            return
+        }
 
-                // 2. Queue and play the fetched song.
-                if let song = response.items.first {
-                    player.queue = [song]
-                    try await player.play()
-                    self.isPlaying = true
-                }
+        // If we have a `Song` instance already, just play it
+        if let song = playableSong {
+            player.queue = [song]
+            do {
+                try await player.play()
+                isPlaying = true
             } catch {
                 print("🎵 playback error:", error)
-                // If playback fails, ensure our state reflects that.
-                self.isPlaying = false
+                isPlaying = false
             }
+            return
+        }
+
+        // Otherwise fetch it once, cache, then play
+        do {
+            let req = MusicCatalogResourceRequest<Song>(
+                matching: \.id,
+                equalTo: id
+            )
+            let resp = try await req.response()
+            if let song = resp.items.first {
+                playableSong = song
+                player.queue = [song]
+                try await player.play()
+                isPlaying = true
+            }
+        } catch {
+            print("🎵 playback error:", error)
+            isPlaying = false
         }
     }
 }

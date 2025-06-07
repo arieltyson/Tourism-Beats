@@ -2,67 +2,65 @@ import CryptoKit
 import Foundation
 
 struct DeveloperTokenGenerator {
+    private static var cachedToken: String?
+    private static var tokenExpiresAt: Date?
 
-    /// Generates a developer token valid for a short period.
     static func generateDeveloperToken() throws -> String {
-        let header = JWTHeader(kid: Secrets.musicKitKeyID)
+        if let token = cachedToken,
+            let expires = tokenExpiresAt,
+            expires > Date()
+        {
+            return token
+        }
 
+        // Build a fresh JWT…
+        let header = JWTHeader(kid: Secrets.musicKitKeyID)
         let payload = JWTPayload(
             iss: Secrets.teamID,
             iat: Date(),
-            exp: Date().addingTimeInterval(3600)  // Token valid for 1 hour
+            exp: Date().addingTimeInterval(3600)  // valid 1h
         )
 
         let headerString = try encode(header).toBase64URL()
         let payloadString = try encode(payload).toBase64URL()
+        let signature = try sign(header: headerString, payload: payloadString)
 
-        let signatureString = try sign(
-            header: headerString,
-            payload: payloadString
-        )
-
-        return "\(headerString).\(payloadString).\(signatureString)"
+        let token = "\(headerString).\(payloadString).\(signature)"
+        cachedToken = token
+        tokenExpiresAt = payload.exp
+        return token
     }
 
-    /// Signs the header and payload to create the final token component.
     private static func sign(header: String, payload: String) throws -> String {
         let privateKey = try P256.Signing.PrivateKey(
             pemRepresentation: Secrets.musicKitPrivateKey
         )
-
         let dataToSign = Data("\(header).\(payload)".utf8)
-        let signature = try privateKey.signature(for: dataToSign)
-
-        return signature.rawRepresentation.toBase64URL()
+        let sig = try privateKey.signature(for: dataToSign)
+        return sig.rawRepresentation.toBase64URL()
     }
-
-    // MARK: - JWT Helper Structs
 
     private struct JWTHeader: Encodable {
         let alg = "ES256"
         let kid: String
     }
-
     private struct JWTPayload: Encodable {
-        let iss: String  // Issuer (Team ID)
-        let iat: Date  // Issued At
-        let exp: Date  // Expiration
-    }
-}
-
-// MARK: - Helper Extensions
-
-extension Data {
-    fileprivate func toBase64URL() -> String {
-        return self.base64EncodedString()
-            .replacingOccurrences(of: "+", with: "-")
-            .replacingOccurrences(of: "/", with: "_")
-            .replacingOccurrences(of: "=", with: "")
+        let iss: String
+        let iat: Date
+        let exp: Date
     }
 }
 
 private func encode<T: Encodable>(_ value: T) throws -> Data {
     let encoder = JSONEncoder()
-    encoder.dateEncodingStrategy = .secondsSince1970  // Standard for JWT
+    encoder.dateEncodingStrategy = .secondsSince1970
     return try encoder.encode(value)
+}
+extension Data {
+    fileprivate func toBase64URL() -> String {
+        base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+    }
 }
