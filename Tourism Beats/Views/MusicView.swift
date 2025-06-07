@@ -60,6 +60,13 @@ struct MusicView: View {
                 .buttonStyle(.plain)
                 .padding(.top, 50)
 
+                if let msg = viewModel.playbackErrorMessage {
+                    Text(msg)
+                        .font(.subheadline)
+                        .foregroundColor(.red)
+                        .padding(.top, 8)
+                }
+
                 // song title & artist
                 Text(viewModel.songTitle)
                     .font(.title)
