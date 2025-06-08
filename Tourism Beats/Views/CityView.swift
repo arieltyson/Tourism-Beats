@@ -58,7 +58,7 @@ struct CityView: View {
 
                 // Time & Weather widgets
                 HStack {
-                    TimeView(cityName: city.name)
+                    TimeView(city: city)
                         .frame(maxWidth: .infinity)
 
                     WeatherView(city: city)

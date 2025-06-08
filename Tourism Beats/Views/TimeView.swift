@@ -3,27 +3,19 @@ import SwiftUI
 struct TimeView: View {
     @StateObject private var viewModel: TimeViewModel
 
-    init(cityName: String) {
+    init(city: CityModel) {
         _viewModel = StateObject(
-            wrappedValue: TimeViewModel(cityName: cityName)
+            wrappedValue: TimeViewModel(timeZone: city.timeZone)
         )
     }
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
             VStack {
-
                 Spacer()
-
-                // -- Analog clock --
-                ClockView(
-                    date: context.date,
-                    timeZone: viewModel.timeZone
-                )
-                .frame(width: 120, height: 120)
-                .padding()
-
-                // -- Digital clock --
+                ClockView(date: context.date, timeZone: viewModel.timeZone)
+                    .frame(width: 120, height: 120)
+                    .padding()
                 Text(viewModel.formattedTime(for: context.date))
                     .font(.system(.headline, design: .rounded))
                     .fontWeight(.medium)
@@ -32,7 +24,6 @@ struct TimeView: View {
                     .padding(.horizontal, 12)
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
-
                 Spacer()
             }
             .frame(width: 175, height: 250)

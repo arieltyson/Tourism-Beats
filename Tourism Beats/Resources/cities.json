@@ -4,714 +4,816 @@
     "countryCode": "GB",
     "imageName": "london_united_kingdom",
     "latitude": 51.5074,
-    "longitude": -0.1278
+    "longitude": -0.1278,
+    "timeZoneIdentifier": "Europe/London"
   },
   {
     "name": "Paris",
     "countryCode": "FR",
     "imageName": "paris_france",
     "latitude": 48.8566,
-    "longitude": 2.3522
+    "longitude": 2.3522,
+    "timeZoneIdentifier": "Europe/Paris"
   },
   {
     "name": "Tokyo",
     "countryCode": "JP",
     "imageName": "tokyo_japan",
     "latitude": 35.6895,
-    "longitude": 139.6917
+    "longitude": 139.6917,
+    "timeZoneIdentifier": "Asia/Tokyo"
   },
   {
     "name": "Berlin",
     "countryCode": "DE",
     "imageName": "berlin_germany",
     "latitude": 52.5200,
-    "longitude": 13.4050
+    "longitude": 13.4050,
+    "timeZoneIdentifier": "Europe/Berlin"
   },
   {
     "name": "Barcelona",
     "countryCode": "ES",
     "imageName": "barcelona_spain",
     "latitude": 41.3851,
-    "longitude": 2.1734
+    "longitude": 2.1734,
+    "timeZoneIdentifier": "Europe/Madrid"
   },
   {
     "name": "Rome",
     "countryCode": "IT",
     "imageName": "rome_italy",
     "latitude": 41.9028,
-    "longitude": 12.4964
+    "longitude": 12.4964,
+    "timeZoneIdentifier": "Europe/Rome"
   },
   {
     "name": "Beijing",
     "countryCode": "CN",
     "imageName": "beijing_china",
     "latitude": 39.9042,
-    "longitude": 116.4074
+    "longitude": 116.4074,
+    "timeZoneIdentifier": "Asia/Shanghai"
   },
   {
     "name": "Cairo",
     "countryCode": "EG",
     "imageName": "cairo_egypt",
     "latitude": 30.0444,
-    "longitude": 31.2357
+    "longitude": 31.2357,
+    "timeZoneIdentifier": "Africa/Cairo"
   },
   {
     "name": "New Delhi",
     "countryCode": "IN",
     "imageName": "new_delhi_india",
     "latitude": 28.6139,
-    "longitude": 77.2090
+    "longitude": 77.2090,
+    "timeZoneIdentifier": "Asia/Kolkata"
   },
   {
     "name": "Rio De Janeiro",
     "countryCode": "BR",
     "imageName": "rio_de_janeiro_brazil",
     "latitude": -22.9068,
-    "longitude": -43.1729
+    "longitude": -43.1729,
+    "timeZoneIdentifier": "America/Sao_Paulo"
   },
   {
     "name": "Moscow",
     "countryCode": "RU",
     "imageName": "moscow_russia",
     "latitude": 55.7558,
-    "longitude": 37.6176
+    "longitude": 37.6176,
+    "timeZoneIdentifier": "Europe/Moscow"
   },
   {
     "name": "Amsterdam",
     "countryCode": "NL",
     "imageName": "amsterdam_netherlands",
     "latitude": 52.3676,
-    "longitude": 4.9041
+    "longitude": 4.9041,
+    "timeZoneIdentifier": "Europe/Amsterdam"
   },
   {
     "name": "Athens",
     "countryCode": "GR",
     "imageName": "athens_greece",
     "latitude": 37.9838,
-    "longitude": 23.7275
+    "longitude": 23.7275,
+    "timeZoneIdentifier": "Europe/Athens"
   },
   {
     "name": "Bangkok",
     "countryCode": "TH",
     "imageName": "bangkok_thailand",
     "latitude": 13.7563,
-    "longitude": 100.5018
+    "longitude": 100.5018,
+    "timeZoneIdentifier": "Asia/Bangkok"
   },
   {
     "name": "Lagos",
     "countryCode": "NG",
     "imageName": "lagos_nigeria",
     "latitude": 6.5244,
-    "longitude": 3.3792
+    "longitude": 3.3792,
+    "timeZoneIdentifier": "Africa/Lagos"
   },
   {
     "name": "Cape Town",
     "countryCode": "ZA",
     "imageName": "cape_town_south_africa",
     "latitude": -33.9249,
-    "longitude": 18.4241
+    "longitude": 18.4241,
+    "timeZoneIdentifier": "Africa/Johannesburg"
   },
   {
     "name": "Nairobi",
     "countryCode": "KE",
     "imageName": "nairobi_kenya",
     "latitude": -1.286389,
-    "longitude": 36.817223
+    "longitude": 36.817223,
+    "timeZoneIdentifier": "Africa/Nairobi"
   },
   {
     "name": "Stockholm",
     "countryCode": "SE",
     "imageName": "stockholm_sweden",
     "latitude": 59.3293,
-    "longitude": 18.0686
+    "longitude": 18.0686,
+    "timeZoneIdentifier": "Europe/Stockholm"
   },
   {
     "name": "Istanbul",
     "countryCode": "TR",
     "imageName": "istanbul_turkey",
     "latitude": 41.0082,
-    "longitude": 28.9784
+    "longitude": 28.9784,
+    "timeZoneIdentifier": "Europe/Istanbul"
   },
   {
     "name": "Copenhagen",
     "countryCode": "DK",
     "imageName": "copenhagen_denmark",
     "latitude": 55.6761,
-    "longitude": 12.5683
+    "longitude": 12.5683,
+    "timeZoneIdentifier": "Europe/Copenhagen"
   },
   {
     "name": "Dubai",
     "countryCode": "AE",
     "imageName": "dubai_united_arab_emirates",
     "latitude": 25.2048,
-    "longitude": 55.2708
+    "longitude": 55.2708,
+    "timeZoneIdentifier": "Asia/Dubai"
   },
   {
     "name": "Tehran",
     "countryCode": "IR",
     "imageName": "tehran_iran",
     "latitude": 35.6892,
-    "longitude": 51.3890
+    "longitude": 51.3890,
+    "timeZoneIdentifier": "Asia/Tehran"
   },
   {
     "name": "Shanghai",
     "countryCode": "CN",
     "imageName": "shanghai_china",
     "latitude": 31.2304,
-    "longitude": 121.4737
+    "longitude": 121.4737,
+    "timeZoneIdentifier": "Asia/Shanghai"
   },
   {
     "name": "Sydney",
     "countryCode": "AU",
     "imageName": "sydney_australia",
     "latitude": -33.8688,
-    "longitude": 151.2093
+    "longitude": 151.2093,
+    "timeZoneIdentifier": "Australia/Sydney"
   },
   {
     "name": "Melbourne",
     "countryCode": "AU",
     "imageName": "melbourne_australia",
     "latitude": -37.8136,
-    "longitude": 144.9631
+    "longitude": 144.9631,
+    "timeZoneIdentifier": "Australia/Melbourne"
   },
   {
     "name": "Buenos Aires",
     "countryCode": "AR",
     "imageName": "buenos_aires_argentina",
     "latitude": -34.6037,
-    "longitude": -58.3816
+    "longitude": -58.3816,
+    "timeZoneIdentifier": "America/Argentina/Buenos_Aires"
   },
   {
     "name": "Santiago",
     "countryCode": "CL",
     "imageName": "santiago_chile",
     "latitude": -33.4489,
-    "longitude": -70.6693
+    "longitude": -70.6693,
+    "timeZoneIdentifier": "America/Santiago"
   },
   {
     "name": "Lima",
     "countryCode": "PE",
     "imageName": "lima_peru",
     "latitude": -12.0464,
-    "longitude": -77.0428
+    "longitude": -77.0428,
+    "timeZoneIdentifier": "America/Lima"
   },
   {
     "name": "Bogota",
     "countryCode": "CO",
     "imageName": "bogota_colombia",
     "latitude": 4.7110,
-    "longitude": -74.0721
+    "longitude": -74.0721,
+    "timeZoneIdentifier": "America/Bogota"
   },
   {
     "name": "Caracas",
     "countryCode": "VE",
     "imageName": "caracas_venezuela",
     "latitude": 10.4806,
-    "longitude": -66.9036
+    "longitude": -66.9036,
+    "timeZoneIdentifier": "America/Caracas"
   },
   {
     "name": "Port of Spain",
     "countryCode": "TT",
     "imageName": "port_of_spain_trinidad_and_tobago",
     "latitude": 10.6520,
-    "longitude": -61.5157
+    "longitude": -61.5157,
+    "timeZoneIdentifier": "America/Port_of_Spain"
   },
   {
     "name": "Kingston",
     "countryCode": "JM",
     "imageName": "kingston_jamaica",
     "latitude": 17.9714,
-    "longitude": -76.7936
+    "longitude": -76.7936,
+    "timeZoneIdentifier": "America/Jamaica"
   },
   {
     "name": "Mexico City",
     "countryCode": "MX",
     "imageName": "mexico_city_mexico",
     "latitude": 19.4326,
-    "longitude": -99.1332
+    "longitude": -99.1332,
+    "timeZoneIdentifier": "America/Mexico_City"
   },
   {
     "name": "Los Angeles",
     "countryCode": "US",
     "imageName": "los_angeles_united_states_of_america",
     "latitude": 34.0522,
-    "longitude": -118.2437
+    "longitude": -118.2437,
+    "timeZoneIdentifier": "America/Los_Angeles"
   },
   {
     "name": "San Francisco",
     "countryCode": "US",
     "imageName": "san_francisco_united_states_of_america",
     "latitude": 37.7749,
-    "longitude": -122.4194
+    "longitude": -122.4194,
+    "timeZoneIdentifier": "America/Los_Angeles"
   },
   {
     "name": "Vancouver",
     "countryCode": "CA",
     "imageName": "vancouver_canada",
     "latitude": 49.2827,
-    "longitude": -123.1207
+    "longitude": -123.1207,
+    "timeZoneIdentifier": "America/Vancouver"
   },
   {
     "name": "Houston",
     "countryCode": "US",
     "imageName": "houston_united_states_of_america",
     "latitude": 29.7604,
-    "longitude": -95.3698
+    "longitude": -95.3698,
+    "timeZoneIdentifier": "America/Chicago"
   },
   {
     "name": "Dallas",
     "countryCode": "US",
     "imageName": "dallas_united_states_of_america",
     "latitude": 32.7767,
-    "longitude": -96.7970
+    "longitude": -96.7970,
+    "timeZoneIdentifier": "America/Chicago"
   },
   {
     "name": "Chicago",
     "countryCode": "US",
     "imageName": "chicago_united_states_of_america",
     "latitude": 41.8781,
-    "longitude": -87.6298
+    "longitude": -87.6298,
+    "timeZoneIdentifier": "America/Chicago"
   },
   {
     "name": "Washington",
     "countryCode": "US",
     "imageName": "washington_united_states_of_america",
     "latitude": 38.9072,
-    "longitude": -77.0369
+    "longitude": -77.0369,
+    "timeZoneIdentifier": "America/New_York"
   },
   {
     "name": "New York",
     "countryCode": "US",
     "imageName": "new_york_united_states_of_america",
     "latitude": 40.7128,
-    "longitude": -74.0060
+    "longitude": -74.0060,
+    "timeZoneIdentifier": "America/New_York"
   },
   {
     "name": "Toronto",
     "countryCode": "CA",
     "imageName": "toronto_canada",
     "latitude": 43.6511,
-    "longitude": -79.3832
+    "longitude": -79.3832,
+    "timeZoneIdentifier": "America/Toronto"
   },
   {
     "name": "Montreal",
     "countryCode": "CA",
     "imageName": "montreal_canada",
     "latitude": 45.5017,
-    "longitude": -73.5673
+    "longitude": -73.5673,
+    "timeZoneIdentifier": "America/Toronto"
   },
   {
     "name": "Madrid",
     "countryCode": "ES",
     "imageName": "madrid_spain",
     "latitude": 40.4168,
-    "longitude": -3.7038
+    "longitude": -3.7038,
+    "timeZoneIdentifier": "Europe/Madrid"
   },
   {
     "name": "Hong Kong",
     "countryCode": "HK",
     "imageName": "hong_kong_china",
     "latitude": 22.3193,
-    "longitude": 114.1694
+    "longitude": 114.1694,
+    "timeZoneIdentifier": "Asia/Hong_Kong"
   },
   {
     "name": "Seoul",
     "countryCode": "KR",
     "imageName": "seoul_south_korea",
     "latitude": 37.5665,
-    "longitude": 126.9780
+    "longitude": 126.9780,
+    "timeZoneIdentifier": "Asia/Seoul"
   },
   {
     "name": "Mumbai",
     "countryCode": "IN",
     "imageName": "mumbai_india",
     "latitude": 19.0760,
-    "longitude": 72.8777
+    "longitude": 72.8777,
+    "timeZoneIdentifier": "Asia/Kolkata"
   },
   {
     "name": "Havana",
     "countryCode": "CU",
     "imageName": "havana_cuba",
     "latitude": 23.1136,
-    "longitude": -82.3666
+    "longitude": -82.3666,
+    "timeZoneIdentifier": "America/Havana"
   },
   {
     "name": "Santo Domingo",
     "countryCode": "DO",
     "imageName": "santo_domingo_dominican_republic",
     "latitude": 18.4861,
-    "longitude": -69.9312
+    "longitude": -69.9312,
+    "timeZoneIdentifier": "America/Santo_Domingo"
   },
   {
     "name": "Port-Au-Prince",
     "countryCode": "HT",
     "imageName": "port-au-prince_haiti",
     "latitude": 18.5944,
-    "longitude": -72.3074
+    "longitude": -72.3074,
+    "timeZoneIdentifier": "America/Port-au-Prince"
   },
   {
     "name": "San Juan",
     "countryCode": "PR",
     "imageName": "san_juan_puerto_rico",
     "latitude": 18.4663,
-    "longitude": -66.1057
+    "longitude": -66.1057,
+    "timeZoneIdentifier": "America/Puerto_Rico"
   },
   {
     "name": "Nassau",
     "countryCode": "BS",
     "imageName": "nassau_bahamas",
     "latitude": 25.0480,
-    "longitude": -77.3554
+    "longitude": -77.3554,
+    "timeZoneIdentifier": "America/Nassau"
   },
   {
     "name": "Guatemala City",
     "countryCode": "GT",
     "imageName": "guatemala_city_guatemala",
     "latitude": 14.6349,
-    "longitude": -90.5069
+    "longitude": -90.5069,
+    "timeZoneIdentifier": "America/Guatemala"
   },
   {
     "name": "Panama City",
     "countryCode": "PA",
     "imageName": "panama_city_panama",
     "latitude": 8.9833,
-    "longitude": -79.5167
+    "longitude": -79.5167,
+    "timeZoneIdentifier": "America/Panama"
   },
   {
     "name": "Belize City",
     "countryCode": "BZ",
     "imageName": "belize_city_belize",
     "latitude": 17.4995,
-    "longitude": -88.1976
+    "longitude": -88.1976,
+    "timeZoneIdentifier": "America/Belize"
   },
   {
     "name": "Seattle",
     "countryCode": "US",
     "imageName": "seattle_united_states",
     "latitude": 47.6062,
-    "longitude": -122.3321
+    "longitude": -122.3321,
+    "timeZoneIdentifier": "America/Los_Angeles"
   },
   {
     "name": "Victoria",
     "countryCode": "CA",
     "imageName": "victoria_canada",
     "latitude": 48.4284,
-    "longitude": -123.3656
+    "longitude": -123.3656,
+    "timeZoneIdentifier": "America/Vancouver"
   },
   {
     "name": "Anchorage",
     "countryCode": "US",
     "imageName": "anchorage_united_states",
     "latitude": 61.2181,
-    "longitude": -149.9003
+    "longitude": -149.9003,
+    "timeZoneIdentifier": "America/Anchorage"
   },
   {
     "name": "Calgary",
     "countryCode": "CA",
     "imageName": "calgary_canada",
     "latitude": 51.0447,
-    "longitude": -114.0719
+    "longitude": -114.0719,
+    "timeZoneIdentifier": "America/Edmonton"
   },
   {
     "name": "Miami",
     "countryCode": "US",
     "imageName": "miami_united_states",
     "latitude": 25.7617,
-    "longitude": -80.1918
+    "longitude": -80.1918,
+    "timeZoneIdentifier": "America/New_York"
   },
   {
     "name": "Denver",
     "countryCode": "US",
     "imageName": "denver_united_states",
     "latitude": 39.7392,
-    "longitude": -104.9903
+    "longitude": -104.9903,
+    "timeZoneIdentifier": "America/Denver"
   },
   {
     "name": "Reykjavik",
     "countryCode": "IS",
     "imageName": "reykjavik_iceland",
     "latitude": 64.1466,
-    "longitude": -21.9426
+    "longitude": -21.9426,
+    "timeZoneIdentifier": "Atlantic/Reykjavik"
   },
   {
     "name": "Nuuk",
     "countryCode": "GL",
     "imageName": "nuuk_greenland",
     "latitude": 64.1835,
-    "longitude": -51.7216
+    "longitude": -51.7216,
+    "timeZoneIdentifier": "America/Nuuk"
   },
   {
     "name": "Dublin",
     "countryCode": "IE",
     "imageName": "dublin_ireland",
     "latitude": 53.3498,
-    "longitude": -6.2603
+    "longitude": -6.2603,
+    "timeZoneIdentifier": "Europe/Dublin"
   },
   {
     "name": "Edinburgh",
     "countryCode": "GB",
     "imageName": "edinburgh_scotland",
     "latitude": 55.9533,
-    "longitude": -3.1883
+    "longitude": -3.1883,
+    "timeZoneIdentifier": "Europe/London"
   },
   {
     "name": "Belfast",
     "countryCode": "GB",
     "imageName": "belfast_northern_ireland",
     "latitude": 54.5973,
-    "longitude": -5.9301
+    "longitude": -5.9301,
+    "timeZoneIdentifier": "Europe/Belfast"
   },
   {
     "name": "Glasgow",
     "countryCode": "GB",
     "imageName": "glasgow_scotland",
     "latitude": 55.8642,
-    "longitude": -4.2518
+    "longitude": -4.2518,
+    "timeZoneIdentifier": "Europe/London"
   },
   {
     "name": "Cardiff",
     "countryCode": "GB",
     "imageName": "cardiff_wales",
     "latitude": 51.4816,
-    "longitude": -3.1791
+    "longitude": -3.1791,
+    "timeZoneIdentifier": "Europe/London"
   },
   {
     "name": "Oslo",
     "countryCode": "NO",
     "imageName": "oslo_norway",
     "latitude": 59.9139,
-    "longitude": 10.7522
+    "longitude": 10.7522,
+    "timeZoneIdentifier": "Europe/Oslo"
   },
   {
     "name": "Helsinki",
     "countryCode": "FI",
     "imageName": "helsinki_finland",
     "latitude": 60.1699,
-    "longitude": 24.9384
+    "longitude": 24.9384,
+    "timeZoneIdentifier": "Europe/Helsinki"
   },
   {
     "name": "Saint Petersburg",
     "countryCode": "RU",
     "imageName": "saint_petersburg_russia",
     "latitude": 59.9343,
-    "longitude": 30.3351
+    "longitude": 30.3351,
+    "timeZoneIdentifier": "Europe/Moscow"
   },
   {
     "name": "Brussels",
     "countryCode": "BE",
     "imageName": "brussels_belgium",
     "latitude": 50.8503,
-    "longitude": 4.3517
+    "longitude": 4.3517,
+    "timeZoneIdentifier": "Europe/Brussels"
   },
   {
     "name": "Geneva",
     "countryCode": "CH",
     "imageName": "geneva_switzerland",
     "latitude": 46.2044,
-    "longitude": 6.1432
+    "longitude": 6.1432,
+    "timeZoneIdentifier": "Europe/Zurich"
   },
   {
     "name": "Luxembourg City",
     "countryCode": "LU",
     "imageName": "luxembourg_city_luxembourg",
     "latitude": 49.6116,
-    "longitude": 6.1319
+    "longitude": 6.1319,
+    "timeZoneIdentifier": "Europe/Luxembourg"
   },
   {
     "name": "Budapest",
     "countryCode": "HU",
     "imageName": "budapest_hungary",
     "latitude": 47.4979,
-    "longitude": 19.0402
+    "longitude": 19.0402,
+    "timeZoneIdentifier": "Europe/Budapest"
   },
   {
     "name": "Warsaw",
     "countryCode": "PL",
     "imageName": "warsaw_poland",
     "latitude": 52.2297,
-    "longitude": 21.0122
+    "longitude": 21.0122,
+    "timeZoneIdentifier": "Europe/Warsaw"
   },
   {
     "name": "Kyiv",
     "countryCode": "UA",
     "imageName": "kyiv_ukraine",
     "latitude": 50.4501,
-    "longitude": 30.5234
+    "longitude": 30.5234,
+    "timeZoneIdentifier": "Europe/Kiev"
   },
   {
     "name": "Taipei City",
     "countryCode": "TW",
     "imageName": "taipei_city_taiwan",
     "latitude": 25.0330,
-    "longitude": 121.5654
+    "longitude": 121.5654,
+    "timeZoneIdentifier": "Asia/Taipei"
   },
   {
     "name": "Manila",
     "countryCode": "PH",
     "imageName": "manila_philippines",
     "latitude": 14.5995,
-    "longitude": 120.9842
+    "longitude": 120.9842,
+    "timeZoneIdentifier": "Asia/Manila"
   },
   {
     "name": "Jakarta",
     "countryCode": "ID",
     "imageName": "jakarta_indonesia",
     "latitude": -6.2088,
-    "longitude": 106.8456
+    "longitude": 106.8456,
+    "timeZoneIdentifier": "Asia/Jakarta"
   },
   {
     "name": "Auckland",
     "countryCode": "NZ",
     "imageName": "auckland_new_zealand",
     "latitude": -36.8485,
-    "longitude": 174.7633
+    "longitude": 174.7633,
+    "timeZoneIdentifier": "Pacific/Auckland"
   },
   {
     "name": "Kuala Lumpur",
     "countryCode": "MY",
     "imageName": "kuala_lumpur_malaysia",
     "latitude": 3.1390,
-    "longitude": 101.6869
+    "longitude": 101.6869,
+    "timeZoneIdentifier": "Asia/Kuala_Lumpur"
   },
   {
     "name": "Singapore",
     "countryCode": "SG",
     "imageName": "singapore_singapore",
     "latitude": 1.3521,
-    "longitude": 103.8198
+    "longitude": 103.8198,
+    "timeZoneIdentifier": "Asia/Singapore"
   },
   {
     "name": "Dhaka",
     "countryCode": "BD",
     "imageName": "dhaka_bangladesh",
     "latitude": 23.8103,
-    "longitude": 90.4125
+    "longitude": 90.4125,
+    "timeZoneIdentifier": "Asia/Dhaka"
   },
   {
     "name": "Colombo",
     "countryCode": "LK",
     "imageName": "colombo_sri_lanka",
     "latitude": 6.9271,
-    "longitude": 79.8612
+    "longitude": 79.8612,
+    "timeZoneIdentifier": "Asia/Colombo"
   },
   {
     "name": "Islamabad",
     "countryCode": "PK",
     "imageName": "islamabad_pakistan",
     "latitude": 33.6844,
-    "longitude": 73.0479
+    "longitude": 73.0479,
+    "timeZoneIdentifier": "Asia/Karachi"
   },
   {
     "name": "Rabat",
     "countryCode": "MA",
     "imageName": "rabat_morocco",
     "latitude": 34.0209,
-    "longitude": -6.8417
+    "longitude": -6.8417,
+    "timeZoneIdentifier": "Africa/Casablanca"
   },
   {
     "name": "Accra",
     "countryCode": "GH",
     "imageName": "accra_ghana",
     "latitude": 5.6037,
-    "longitude": -0.1870
+    "longitude": -0.1870,
+    "timeZoneIdentifier": "Africa/Accra"
   },
   {
     "name": "Abuja",
     "countryCode": "NG",
     "imageName": "abuja_nigeria",
     "latitude": 9.0765,
-    "longitude": 7.3986
+    "longitude": 7.3986,
+    "timeZoneIdentifier": "Africa/Lagos"
   },
   {
     "name": "Kinshasa",
     "countryCode": "CD",
     "imageName": "kinshasa_democratic_republic_of_the_congo",
     "latitude": -4.4419,
-    "longitude": 15.2663
+    "longitude": 15.2663,
+    "timeZoneIdentifier": "Africa/Kinshasa"
   },
   {
     "name": "Addis Ababa",
     "countryCode": "ET",
     "imageName": "addis_ababa_ethiopia",
     "latitude": 9.0249,
-    "longitude": 38.7469
+    "longitude": 38.7469,
+    "timeZoneIdentifier": "Africa/Addis_Ababa"
   },
   {
     "name": "Dodoma",
     "countryCode": "TZ",
     "imageName": "dodoma_tanzania",
     "latitude": -6.1630,
-    "longitude": 35.7516
+    "longitude": 35.7516,
+    "timeZoneIdentifier": "Africa/Dodoma"
   },
   {
     "name": "Pretoria",
     "countryCode": "ZA",
     "imageName": "pretoria_south_africa",
     "latitude": -25.7479,
-    "longitude": 28.2293
+    "longitude": 28.2293,
+    "timeZoneIdentifier": "Africa/Johannesburg"
   },
   {
     "name": "Khartoum",
     "countryCode": "SD",
     "imageName": "khartoum_sudan",
     "latitude": 15.5007,
-    "longitude": 32.5599
+    "longitude": 32.5599,
+    "timeZoneIdentifier": "Africa/Khartoum"
   },
   {
     "name": "Kampala",
     "countryCode": "UG",
     "imageName": "kampala_uganda",
     "latitude": 0.3476,
-    "longitude": 32.5825
+    "longitude": 32.5825,
+    "timeZoneIdentifier": "Africa/Kampala"
   },
   {
     "name": "Algiers",
     "countryCode": "DZ",
     "imageName": "algiers_algeria",
     "latitude": 36.7754,
-    "longitude": 3.0588
+    "longitude": 3.0588,
+    "timeZoneIdentifier": "Africa/Algiers"
   },
   {
     "name": "Maputo",
     "countryCode": "MZ",
     "imageName": "maputo_mozambique",
     "latitude": -25.9692,
-    "longitude": 32.5732
+    "longitude": 32.5732,
+    "timeZoneIdentifier": "Africa/Maputo"
   },
   {
     "name": "Luanda",
     "countryCode": "AO",
     "imageName": "luanda_angola",
     "latitude": -8.8399,
-    "longitude": 13.2894
+    "longitude": 13.2894,
+    "timeZoneIdentifier": "Africa/Luanda"
   },
   {
     "name": "Yamoussoukro",
     "countryCode": "CI",
     "imageName": "yamoussoukro_côte_d’ivoire",
     "latitude": 6.8206,
-    "longitude": -5.2768
+    "longitude": -5.2768,
+    "timeZoneIdentifier": "Africa/Abidjan"
   },
   {
     "name": "Lusaka",
     "countryCode": "ZM",
     "imageName": "lusaka_zambia",
     "latitude": -15.3875,
-    "longitude": 28.3228
+    "longitude": 28.3228,
+    "timeZoneIdentifier": "Africa/Lusaka"
   },
   {
     "name": "Johannesburg",
     "countryCode": "ZA",
     "imageName": "johannesburg_south_africa",
     "latitude": -26.2041,
-    "longitude": 28.0473
+    "longitude": 28.0473,
+    "timeZoneIdentifier": "Africa/Johannesburg"
   },
   {
     "name": "Gaborone",
     "countryCode": "BW",
     "imageName": "gaborone_botswana",
     "latitude": -24.6282,
-    "longitude": 25.9231
+    "longitude": 25.9231,
+    "timeZoneIdentifier": "Africa/Gaborone"
   }
 ]
 

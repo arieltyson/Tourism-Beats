@@ -14,6 +14,7 @@ private struct CityJSON: Decodable {
     let imageName: String
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
+    let timeZoneIdentifier: String
 }
 
 /// Loads & links `CountryModel` + `CityModel` from your bundled JSON.
@@ -52,7 +53,8 @@ final class DataService {
                 coordinate: CLLocationCoordinate2D(
                     latitude: entry.latitude,
                     longitude: entry.longitude
-                )
+                ),
+                timeZoneIdentifier: entry.timeZoneIdentifier
             )
         }
     }
