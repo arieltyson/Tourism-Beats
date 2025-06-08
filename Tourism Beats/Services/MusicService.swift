@@ -10,6 +10,8 @@ class MusicService: MusicProtocol {
         case noSongFoundInChart
         case decodingError(Error)
         case tokenGenerationError(Error)
+        case storefrontNotAvailable
+        case networkError(Error)
     }
 
     // MARK: - Chart Cache
@@ -52,12 +54,18 @@ class MusicService: MusicProtocol {
         req.addValue("Bearer \(devToken)", forHTTPHeaderField: "Authorization")
 
         let (data, resp) = try await URLSession.shared.data(for: req)
-        guard let http = resp as? HTTPURLResponse,
-            (200...299).contains(http.statusCode)
-        else {
-            throw MusicServiceError.apiError(
-                statusCode: (resp as? HTTPURLResponse)?.statusCode ?? -1
-            )
+
+        guard let http = resp as? HTTPURLResponse else {
+            throw MusicServiceError.networkError(URLError(.badServerResponse))
+        }
+
+        if http.statusCode == 400 || http.statusCode == 404 {
+            print("🎵 Storefront not available for country code: \(code)")
+            throw MusicServiceError.storefrontNotAvailable
+        }
+
+        guard (200...299).contains(http.statusCode) else {
+            throw MusicServiceError.apiError(statusCode: http.statusCode)
         }
 
         do {

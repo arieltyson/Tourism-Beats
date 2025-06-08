@@ -59,6 +59,16 @@ class MusicViewModel: ObservableObject {
             self.songTitle = appSong.title
             self.artistName = appSong.artistName
             self.songImage = appSong.artworkURL
+        } catch let error as MusicService.MusicServiceError {
+            if case .storefrontNotAvailable = error {
+                self.songTitle = "Music Not Available"
+                self.artistName =
+                    "Apple Music charts are not available in \(city.country.name)."
+            } else {
+                self.songTitle = "Could Not Load Song"
+                self.artistName = "An unexpected error occurred."
+            }
+            print("🎵 fetch error:", error)
         } catch {
             songTitle = "Could Not Load Song"
             artistName = error.localizedDescription

@@ -108,7 +108,9 @@ struct MusicView: View {
 
             Spacer()
         }
-        .customNavigationTitle("\(viewModel.city.name + " " + viewModel.city.country.flag)")
+        .customNavigationTitle(
+            "\(viewModel.city.name + " " + viewModel.city.country.flag)"
+        )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
             LinearGradient(
