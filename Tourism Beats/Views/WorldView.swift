@@ -31,8 +31,7 @@ struct WorldView: View {
     // MARK: – Data
     private let cities: [CityModel]
     init() {
-        let svc = CountryService()
-        self.cities = CityData.cities(countryService: svc)
+        self.cities = (try? DataService().loadCities()) ?? []
     }
 
     var body: some View {

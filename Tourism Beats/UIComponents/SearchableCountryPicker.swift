@@ -5,15 +5,17 @@ struct SearchableCountryPicker: View {
     @State private var searchText = ""
     @Environment(\.dismiss) private var dismiss
 
+    private let allCountries: [CountryModel] =
+        (try? DataService().loadCountries()) ?? []
+
     private var groupedCountries: [String: [CountryModel]] {
-        let countries = CountryData.allCountries
         let filtered: [CountryModel]
 
         if searchText.isEmpty {
-            filtered = countries
+            filtered = allCountries
         } else {
             let lowercasedSearchText = searchText.lowercased()
-            filtered = countries.filter { country in
+            filtered = allCountries.filter { country in
                 let nameWords = country.name.split(separator: " ")
                 let nameMatches = nameWords.contains {
                     $0.lowercased().hasPrefix(lowercasedSearchText)

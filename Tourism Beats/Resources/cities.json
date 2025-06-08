@@ -1,0 +1,717 @@
+[
+  {
+    "name": "London",
+    "countryCode": "GB",
+    "imageName": "london_united_kingdom",
+    "latitude": 51.5074,
+    "longitude": -0.1278
+  },
+  {
+    "name": "Paris",
+    "countryCode": "FR",
+    "imageName": "paris_france",
+    "latitude": 48.8566,
+    "longitude": 2.3522
+  },
+  {
+    "name": "Tokyo",
+    "countryCode": "JP",
+    "imageName": "tokyo_japan",
+    "latitude": 35.6895,
+    "longitude": 139.6917
+  },
+  {
+    "name": "Berlin",
+    "countryCode": "DE",
+    "imageName": "berlin_germany",
+    "latitude": 52.5200,
+    "longitude": 13.4050
+  },
+  {
+    "name": "Barcelona",
+    "countryCode": "ES",
+    "imageName": "barcelona_spain",
+    "latitude": 41.3851,
+    "longitude": 2.1734
+  },
+  {
+    "name": "Rome",
+    "countryCode": "IT",
+    "imageName": "rome_italy",
+    "latitude": 41.9028,
+    "longitude": 12.4964
+  },
+  {
+    "name": "Beijing",
+    "countryCode": "CN",
+    "imageName": "beijing_china",
+    "latitude": 39.9042,
+    "longitude": 116.4074
+  },
+  {
+    "name": "Cairo",
+    "countryCode": "EG",
+    "imageName": "cairo_egypt",
+    "latitude": 30.0444,
+    "longitude": 31.2357
+  },
+  {
+    "name": "New Delhi",
+    "countryCode": "IN",
+    "imageName": "new_delhi_india",
+    "latitude": 28.6139,
+    "longitude": 77.2090
+  },
+  {
+    "name": "Rio De Janeiro",
+    "countryCode": "BR",
+    "imageName": "rio_de_janeiro_brazil",
+    "latitude": -22.9068,
+    "longitude": -43.1729
+  },
+  {
+    "name": "Moscow",
+    "countryCode": "RU",
+    "imageName": "moscow_russia",
+    "latitude": 55.7558,
+    "longitude": 37.6176
+  },
+  {
+    "name": "Amsterdam",
+    "countryCode": "NL",
+    "imageName": "amsterdam_netherlands",
+    "latitude": 52.3676,
+    "longitude": 4.9041
+  },
+  {
+    "name": "Athens",
+    "countryCode": "GR",
+    "imageName": "athens_greece",
+    "latitude": 37.9838,
+    "longitude": 23.7275
+  },
+  {
+    "name": "Bangkok",
+    "countryCode": "TH",
+    "imageName": "bangkok_thailand",
+    "latitude": 13.7563,
+    "longitude": 100.5018
+  },
+  {
+    "name": "Lagos",
+    "countryCode": "NG",
+    "imageName": "lagos_nigeria",
+    "latitude": 6.5244,
+    "longitude": 3.3792
+  },
+  {
+    "name": "Cape Town",
+    "countryCode": "ZA",
+    "imageName": "cape_town_south_africa",
+    "latitude": -33.9249,
+    "longitude": 18.4241
+  },
+  {
+    "name": "Nairobi",
+    "countryCode": "KE",
+    "imageName": "nairobi_kenya",
+    "latitude": -1.286389,
+    "longitude": 36.817223
+  },
+  {
+    "name": "Stockholm",
+    "countryCode": "SE",
+    "imageName": "stockholm_sweden",
+    "latitude": 59.3293,
+    "longitude": 18.0686
+  },
+  {
+    "name": "Istanbul",
+    "countryCode": "TR",
+    "imageName": "istanbul_turkey",
+    "latitude": 41.0082,
+    "longitude": 28.9784
+  },
+  {
+    "name": "Copenhagen",
+    "countryCode": "DK",
+    "imageName": "copenhagen_denmark",
+    "latitude": 55.6761,
+    "longitude": 12.5683
+  },
+  {
+    "name": "Dubai",
+    "countryCode": "AE",
+    "imageName": "dubai_united_arab_emirates",
+    "latitude": 25.2048,
+    "longitude": 55.2708
+  },
+  {
+    "name": "Tehran",
+    "countryCode": "IR",
+    "imageName": "tehran_iran",
+    "latitude": 35.6892,
+    "longitude": 51.3890
+  },
+  {
+    "name": "Shanghai",
+    "countryCode": "CN",
+    "imageName": "shanghai_china",
+    "latitude": 31.2304,
+    "longitude": 121.4737
+  },
+  {
+    "name": "Sydney",
+    "countryCode": "AU",
+    "imageName": "sydney_australia",
+    "latitude": -33.8688,
+    "longitude": 151.2093
+  },
+  {
+    "name": "Melbourne",
+    "countryCode": "AU",
+    "imageName": "melbourne_australia",
+    "latitude": -37.8136,
+    "longitude": 144.9631
+  },
+  {
+    "name": "Buenos Aires",
+    "countryCode": "AR",
+    "imageName": "buenos_aires_argentina",
+    "latitude": -34.6037,
+    "longitude": -58.3816
+  },
+  {
+    "name": "Santiago",
+    "countryCode": "CL",
+    "imageName": "santiago_chile",
+    "latitude": -33.4489,
+    "longitude": -70.6693
+  },
+  {
+    "name": "Lima",
+    "countryCode": "PE",
+    "imageName": "lima_peru",
+    "latitude": -12.0464,
+    "longitude": -77.0428
+  },
+  {
+    "name": "Bogota",
+    "countryCode": "CO",
+    "imageName": "bogota_colombia",
+    "latitude": 4.7110,
+    "longitude": -74.0721
+  },
+  {
+    "name": "Caracas",
+    "countryCode": "VE",
+    "imageName": "caracas_venezuela",
+    "latitude": 10.4806,
+    "longitude": -66.9036
+  },
+  {
+    "name": "Port of Spain",
+    "countryCode": "TT",
+    "imageName": "port_of_spain_trinidad_and_tobago",
+    "latitude": 10.6520,
+    "longitude": -61.5157
+  },
+  {
+    "name": "Kingston",
+    "countryCode": "JM",
+    "imageName": "kingston_jamaica",
+    "latitude": 17.9714,
+    "longitude": -76.7936
+  },
+  {
+    "name": "Mexico City",
+    "countryCode": "MX",
+    "imageName": "mexico_city_mexico",
+    "latitude": 19.4326,
+    "longitude": -99.1332
+  },
+  {
+    "name": "Los Angeles",
+    "countryCode": "US",
+    "imageName": "los_angeles_united_states_of_america",
+    "latitude": 34.0522,
+    "longitude": -118.2437
+  },
+  {
+    "name": "San Francisco",
+    "countryCode": "US",
+    "imageName": "san_francisco_united_states_of_america",
+    "latitude": 37.7749,
+    "longitude": -122.4194
+  },
+  {
+    "name": "Vancouver",
+    "countryCode": "CA",
+    "imageName": "vancouver_canada",
+    "latitude": 49.2827,
+    "longitude": -123.1207
+  },
+  {
+    "name": "Houston",
+    "countryCode": "US",
+    "imageName": "houston_united_states_of_america",
+    "latitude": 29.7604,
+    "longitude": -95.3698
+  },
+  {
+    "name": "Dallas",
+    "countryCode": "US",
+    "imageName": "dallas_united_states_of_america",
+    "latitude": 32.7767,
+    "longitude": -96.7970
+  },
+  {
+    "name": "Chicago",
+    "countryCode": "US",
+    "imageName": "chicago_united_states_of_america",
+    "latitude": 41.8781,
+    "longitude": -87.6298
+  },
+  {
+    "name": "Washington",
+    "countryCode": "US",
+    "imageName": "washington_united_states_of_america",
+    "latitude": 38.9072,
+    "longitude": -77.0369
+  },
+  {
+    "name": "New York",
+    "countryCode": "US",
+    "imageName": "new_york_united_states_of_america",
+    "latitude": 40.7128,
+    "longitude": -74.0060
+  },
+  {
+    "name": "Toronto",
+    "countryCode": "CA",
+    "imageName": "toronto_canada",
+    "latitude": 43.6511,
+    "longitude": -79.3832
+  },
+  {
+    "name": "Montreal",
+    "countryCode": "CA",
+    "imageName": "montreal_canada",
+    "latitude": 45.5017,
+    "longitude": -73.5673
+  },
+  {
+    "name": "Madrid",
+    "countryCode": "ES",
+    "imageName": "madrid_spain",
+    "latitude": 40.4168,
+    "longitude": -3.7038
+  },
+  {
+    "name": "Hong Kong",
+    "countryCode": "HK",
+    "imageName": "hong_kong_china",
+    "latitude": 22.3193,
+    "longitude": 114.1694
+  },
+  {
+    "name": "Seoul",
+    "countryCode": "KR",
+    "imageName": "seoul_south_korea",
+    "latitude": 37.5665,
+    "longitude": 126.9780
+  },
+  {
+    "name": "Mumbai",
+    "countryCode": "IN",
+    "imageName": "mumbai_india",
+    "latitude": 19.0760,
+    "longitude": 72.8777
+  },
+  {
+    "name": "Havana",
+    "countryCode": "CU",
+    "imageName": "havana_cuba",
+    "latitude": 23.1136,
+    "longitude": -82.3666
+  },
+  {
+    "name": "Santo Domingo",
+    "countryCode": "DO",
+    "imageName": "santo_domingo_dominican_republic",
+    "latitude": 18.4861,
+    "longitude": -69.9312
+  },
+  {
+    "name": "Port-Au-Prince",
+    "countryCode": "HT",
+    "imageName": "port-au-prince_haiti",
+    "latitude": 18.5944,
+    "longitude": -72.3074
+  },
+  {
+    "name": "San Juan",
+    "countryCode": "PR",
+    "imageName": "san_juan_puerto_rico",
+    "latitude": 18.4663,
+    "longitude": -66.1057
+  },
+  {
+    "name": "Nassau",
+    "countryCode": "BS",
+    "imageName": "nassau_bahamas",
+    "latitude": 25.0480,
+    "longitude": -77.3554
+  },
+  {
+    "name": "Guatemala City",
+    "countryCode": "GT",
+    "imageName": "guatemala_city_guatemala",
+    "latitude": 14.6349,
+    "longitude": -90.5069
+  },
+  {
+    "name": "Panama City",
+    "countryCode": "PA",
+    "imageName": "panama_city_panama",
+    "latitude": 8.9833,
+    "longitude": -79.5167
+  },
+  {
+    "name": "Belize City",
+    "countryCode": "BZ",
+    "imageName": "belize_city_belize",
+    "latitude": 17.4995,
+    "longitude": -88.1976
+  },
+  {
+    "name": "Seattle",
+    "countryCode": "US",
+    "imageName": "seattle_united_states",
+    "latitude": 47.6062,
+    "longitude": -122.3321
+  },
+  {
+    "name": "Victoria",
+    "countryCode": "CA",
+    "imageName": "victoria_canada",
+    "latitude": 48.4284,
+    "longitude": -123.3656
+  },
+  {
+    "name": "Anchorage",
+    "countryCode": "US",
+    "imageName": "anchorage_united_states",
+    "latitude": 61.2181,
+    "longitude": -149.9003
+  },
+  {
+    "name": "Calgary",
+    "countryCode": "CA",
+    "imageName": "calgary_canada",
+    "latitude": 51.0447,
+    "longitude": -114.0719
+  },
+  {
+    "name": "Miami",
+    "countryCode": "US",
+    "imageName": "miami_united_states",
+    "latitude": 25.7617,
+    "longitude": -80.1918
+  },
+  {
+    "name": "Denver",
+    "countryCode": "US",
+    "imageName": "denver_united_states",
+    "latitude": 39.7392,
+    "longitude": -104.9903
+  },
+  {
+    "name": "Reykjavik",
+    "countryCode": "IS",
+    "imageName": "reykjavik_iceland",
+    "latitude": 64.1466,
+    "longitude": -21.9426
+  },
+  {
+    "name": "Nuuk",
+    "countryCode": "GL",
+    "imageName": "nuuk_greenland",
+    "latitude": 64.1835,
+    "longitude": -51.7216
+  },
+  {
+    "name": "Dublin",
+    "countryCode": "IE",
+    "imageName": "dublin_ireland",
+    "latitude": 53.3498,
+    "longitude": -6.2603
+  },
+  {
+    "name": "Edinburgh",
+    "countryCode": "GB",
+    "imageName": "edinburgh_scotland",
+    "latitude": 55.9533,
+    "longitude": -3.1883
+  },
+  {
+    "name": "Belfast",
+    "countryCode": "GB",
+    "imageName": "belfast_northern_ireland",
+    "latitude": 54.5973,
+    "longitude": -5.9301
+  },
+  {
+    "name": "Glasgow",
+    "countryCode": "GB",
+    "imageName": "glasgow_scotland",
+    "latitude": 55.8642,
+    "longitude": -4.2518
+  },
+  {
+    "name": "Cardiff",
+    "countryCode": "GB",
+    "imageName": "cardiff_wales",
+    "latitude": 51.4816,
+    "longitude": -3.1791
+  },
+  {
+    "name": "Oslo",
+    "countryCode": "NO",
+    "imageName": "oslo_norway",
+    "latitude": 59.9139,
+    "longitude": 10.7522
+  },
+  {
+    "name": "Helsinki",
+    "countryCode": "FI",
+    "imageName": "helsinki_finland",
+    "latitude": 60.1699,
+    "longitude": 24.9384
+  },
+  {
+    "name": "Saint Petersburg",
+    "countryCode": "RU",
+    "imageName": "saint_petersburg_russia",
+    "latitude": 59.9343,
+    "longitude": 30.3351
+  },
+  {
+    "name": "Brussels",
+    "countryCode": "BE",
+    "imageName": "brussels_belgium",
+    "latitude": 50.8503,
+    "longitude": 4.3517
+  },
+  {
+    "name": "Geneva",
+    "countryCode": "CH",
+    "imageName": "geneva_switzerland",
+    "latitude": 46.2044,
+    "longitude": 6.1432
+  },
+  {
+    "name": "Luxembourg City",
+    "countryCode": "LU",
+    "imageName": "luxembourg_city_luxembourg",
+    "latitude": 49.6116,
+    "longitude": 6.1319
+  },
+  {
+    "name": "Budapest",
+    "countryCode": "HU",
+    "imageName": "budapest_hungary",
+    "latitude": 47.4979,
+    "longitude": 19.0402
+  },
+  {
+    "name": "Warsaw",
+    "countryCode": "PL",
+    "imageName": "warsaw_poland",
+    "latitude": 52.2297,
+    "longitude": 21.0122
+  },
+  {
+    "name": "Kyiv",
+    "countryCode": "UA",
+    "imageName": "kyiv_ukraine",
+    "latitude": 50.4501,
+    "longitude": 30.5234
+  },
+  {
+    "name": "Taipei City",
+    "countryCode": "TW",
+    "imageName": "taipei_city_taiwan",
+    "latitude": 25.0330,
+    "longitude": 121.5654
+  },
+  {
+    "name": "Manila",
+    "countryCode": "PH",
+    "imageName": "manila_philippines",
+    "latitude": 14.5995,
+    "longitude": 120.9842
+  },
+  {
+    "name": "Jakarta",
+    "countryCode": "ID",
+    "imageName": "jakarta_indonesia",
+    "latitude": -6.2088,
+    "longitude": 106.8456
+  },
+  {
+    "name": "Auckland",
+    "countryCode": "NZ",
+    "imageName": "auckland_new_zealand",
+    "latitude": -36.8485,
+    "longitude": 174.7633
+  },
+  {
+    "name": "Kuala Lumpur",
+    "countryCode": "MY",
+    "imageName": "kuala_lumpur_malaysia",
+    "latitude": 3.1390,
+    "longitude": 101.6869
+  },
+  {
+    "name": "Singapore",
+    "countryCode": "SG",
+    "imageName": "singapore_singapore",
+    "latitude": 1.3521,
+    "longitude": 103.8198
+  },
+  {
+    "name": "Dhaka",
+    "countryCode": "BD",
+    "imageName": "dhaka_bangladesh",
+    "latitude": 23.8103,
+    "longitude": 90.4125
+  },
+  {
+    "name": "Colombo",
+    "countryCode": "LK",
+    "imageName": "colombo_sri_lanka",
+    "latitude": 6.9271,
+    "longitude": 79.8612
+  },
+  {
+    "name": "Islamabad",
+    "countryCode": "PK",
+    "imageName": "islamabad_pakistan",
+    "latitude": 33.6844,
+    "longitude": 73.0479
+  },
+  {
+    "name": "Rabat",
+    "countryCode": "MA",
+    "imageName": "rabat_morocco",
+    "latitude": 34.0209,
+    "longitude": -6.8417
+  },
+  {
+    "name": "Accra",
+    "countryCode": "GH",
+    "imageName": "accra_ghana",
+    "latitude": 5.6037,
+    "longitude": -0.1870
+  },
+  {
+    "name": "Abuja",
+    "countryCode": "NG",
+    "imageName": "abuja_nigeria",
+    "latitude": 9.0765,
+    "longitude": 7.3986
+  },
+  {
+    "name": "Kinshasa",
+    "countryCode": "CD",
+    "imageName": "kinshasa_democratic_republic_of_the_congo",
+    "latitude": -4.4419,
+    "longitude": 15.2663
+  },
+  {
+    "name": "Addis Ababa",
+    "countryCode": "ET",
+    "imageName": "addis_ababa_ethiopia",
+    "latitude": 9.0249,
+    "longitude": 38.7469
+  },
+  {
+    "name": "Dodoma",
+    "countryCode": "TZ",
+    "imageName": "dodoma_tanzania",
+    "latitude": -6.1630,
+    "longitude": 35.7516
+  },
+  {
+    "name": "Pretoria",
+    "countryCode": "ZA",
+    "imageName": "pretoria_south_africa",
+    "latitude": -25.7479,
+    "longitude": 28.2293
+  },
+  {
+    "name": "Khartoum",
+    "countryCode": "SD",
+    "imageName": "khartoum_sudan",
+    "latitude": 15.5007,
+    "longitude": 32.5599
+  },
+  {
+    "name": "Kampala",
+    "countryCode": "UG",
+    "imageName": "kampala_uganda",
+    "latitude": 0.3476,
+    "longitude": 32.5825
+  },
+  {
+    "name": "Algiers",
+    "countryCode": "DZ",
+    "imageName": "algiers_algeria",
+    "latitude": 36.7754,
+    "longitude": 3.0588
+  },
+  {
+    "name": "Maputo",
+    "countryCode": "MZ",
+    "imageName": "maputo_mozambique",
+    "latitude": -25.9692,
+    "longitude": 32.5732
+  },
+  {
+    "name": "Luanda",
+    "countryCode": "AO",
+    "imageName": "luanda_angola",
+    "latitude": -8.8399,
+    "longitude": 13.2894
+  },
+  {
+    "name": "Yamoussoukro",
+    "countryCode": "CI",
+    "imageName": "yamoussoukro_côte_d’ivoire",
+    "latitude": 6.8206,
+    "longitude": -5.2768
+  },
+  {
+    "name": "Lusaka",
+    "countryCode": "ZM",
+    "imageName": "lusaka_zambia",
+    "latitude": -15.3875,
+    "longitude": 28.3228
+  },
+  {
+    "name": "Johannesburg",
+    "countryCode": "ZA",
+    "imageName": "johannesburg_south_africa",
+    "latitude": -26.2041,
+    "longitude": 28.0473
+  },
+  {
+    "name": "Gaborone",
+    "countryCode": "BW",
+    "imageName": "gaborone_botswana",
+    "latitude": -24.6282,
+    "longitude": 25.9231
+  }
+]
+

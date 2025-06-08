@@ -2,7 +2,8 @@ import SwiftUI
 
 struct VisaView: View {
     @StateObject var viewModel: VisaViewModel
-    private let allCountries = CountryData.allCountries
+    private let allCountries: [CountryModel] =
+        (try? DataService().loadCountries()) ?? []
     @State private var showingCountryPicker = false
 
     private var currentCountry: CountryModel? {
