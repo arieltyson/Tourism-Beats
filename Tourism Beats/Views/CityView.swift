@@ -31,7 +31,8 @@ struct CityView: View {
                         .italic()
                         .foregroundColor(.white)
                         .lineLimit(1)
-                        .minimumScaleFactor(0.5)
+                        .minimumScaleFactor(0.3)
+                        .allowsTightening(true)
                         .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding()
@@ -44,7 +45,7 @@ struct CityView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     Image(city.imageName)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(1, contentMode: .fit)
                         .cornerRadius(15)
                         .padding(.all)
                 }
