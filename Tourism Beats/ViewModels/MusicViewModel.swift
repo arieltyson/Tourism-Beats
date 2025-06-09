@@ -18,7 +18,7 @@ class MusicViewModel: ObservableObject {
 
     private var hasLoadedData = false
     private var playableSong: Song?
-    private var songID: MusicItemID?
+    var songID: MusicItemID?
 
     init(
         city: CityModel,

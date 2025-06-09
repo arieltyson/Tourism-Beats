@@ -1,6 +1,6 @@
 import CoreLocation
 
-struct CityModel: Identifiable, Equatable {
+struct CityModel: Identifiable, Equatable, Hashable {
     let id: String
     let name: String
     let country: CountryModel
@@ -14,5 +14,9 @@ struct CityModel: Identifiable, Equatable {
 
     static func == (lhs: CityModel, rhs: CityModel) -> Bool {
         lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

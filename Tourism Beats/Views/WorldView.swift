@@ -2,35 +2,21 @@ import MapKit
 import SwiftUI
 
 struct WorldView: View {
-    // MARK: – Selection / navigation state
+    let onCitySelected: (CityModel) -> Void
+
+    // Map state
     @State private var selectedCity: CityModel?
     @State private var showAlert = false
-    @State private var cityToExplore: CityModel?
-    @State private var navigateToAttraction = false
-    @State private var navigateBack = false
-
-    // MARK: – Map region state
-    private static let initialCenter = CLLocationCoordinate2D(
-        latitude: 54.5260,
-        longitude: 15.2551
-    )
-    private static let initialSpan = MKCoordinateSpan(
-        latitudeDelta: 20,
-        longitudeDelta: 20
-    )
-
-    /// Current Map View
     @State private var region = MKCoordinateRegion(
-        center: initialCenter,
-        span: initialSpan
+        center: CLLocationCoordinate2D(latitude: 54.5260, longitude: 15.2551),
+        span: MKCoordinateSpan(latitudeDelta: 20, longitudeDelta: 20)
     )
-
-    /// Caching “pre-zoom” region
     @State private var lastRegion: MKCoordinateRegion?
 
-    // MARK: – Data
     private let cities: [CityModel]
-    init() {
+
+    init(onCitySelected: @escaping (CityModel) -> Void) {
+        self.onCitySelected = onCitySelected
         self.cities = (try? DataService().loadCities()) ?? []
     }
 
@@ -58,42 +44,20 @@ struct WorldView: View {
                     "Would you like to explore \(selectedCity?.name ?? ""), \(selectedCity?.country.name ?? "")?"
                 ),
                 primaryButton: .default(Text("Yes")) {
-                    // Restore pre-zoom
+                    // restore region, clear
                     region = lastRegion ?? region
                     lastRegion = nil
-
-                    // clear the selection + remember which city to push
-                    let city = selectedCity!
+                    if let city = selectedCity {
+                        onCitySelected(city)
+                    }
                     selectedCity = nil
-                    cityToExplore = city
-                    navigateToAttraction = true
                 },
-                secondaryButton: .cancel(Text("No")) {
-                    // Restore region and clear selection
+                secondaryButton: .cancel {
                     region = lastRegion ?? region
                     lastRegion = nil
                     selectedCity = nil
                 }
             )
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationDestination(isPresented: $navigateToAttraction) {
-            if let city = cityToExplore {
-                CityView(city: city)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    navigateBack = true
-                } label: {
-                    Image(systemName: "house")
-                        .foregroundColor(.white)
-                }
-            }
-        }
-        .navigationDestination(isPresented: $navigateBack) {
-            HomeView()
         }
     }
 }
