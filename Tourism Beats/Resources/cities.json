@@ -27,8 +27,8 @@
     "name": "Berlin",
     "countryCode": "DE",
     "imageName": "berlin_germany",
-    "latitude": 52.5200,
-    "longitude": 13.4050,
+    "latitude": 52.52,
+    "longitude": 13.405,
     "timeZoneIdentifier": "Europe/Berlin"
   },
   {
@@ -68,7 +68,7 @@
     "countryCode": "IN",
     "imageName": "new_delhi_india",
     "latitude": 28.6139,
-    "longitude": 77.2090,
+    "longitude": 77.209,
     "timeZoneIdentifier": "Asia/Kolkata"
   },
   {
@@ -172,7 +172,7 @@
     "countryCode": "IR",
     "imageName": "tehran_iran",
     "latitude": 35.6892,
-    "longitude": 51.3890,
+    "longitude": 51.389,
     "timeZoneIdentifier": "Asia/Tehran"
   },
   {
@@ -227,7 +227,7 @@
     "name": "Bogota",
     "countryCode": "CO",
     "imageName": "bogota_colombia",
-    "latitude": 4.7110,
+    "latitude": 4.711,
     "longitude": -74.0721,
     "timeZoneIdentifier": "America/Bogota"
   },
@@ -243,7 +243,7 @@
     "name": "Port of Spain",
     "countryCode": "TT",
     "imageName": "port_of_spain_trinidad_and_tobago",
-    "latitude": 10.6520,
+    "latitude": 10.652,
     "longitude": -61.5157,
     "timeZoneIdentifier": "America/Port_of_Spain"
   },
@@ -300,7 +300,7 @@
     "countryCode": "US",
     "imageName": "dallas_united_states_of_america",
     "latitude": 32.7767,
-    "longitude": -96.7970,
+    "longitude": -96.797,
     "timeZoneIdentifier": "America/Chicago"
   },
   {
@@ -324,7 +324,7 @@
     "countryCode": "US",
     "imageName": "new_york_united_states_of_america",
     "latitude": 40.7128,
-    "longitude": -74.0060,
+    "longitude": -74.006,
     "timeZoneIdentifier": "America/New_York"
   },
   {
@@ -364,14 +364,14 @@
     "countryCode": "KR",
     "imageName": "seoul_south_korea",
     "latitude": 37.5665,
-    "longitude": 126.9780,
+    "longitude": 126.978,
     "timeZoneIdentifier": "Asia/Seoul"
   },
   {
     "name": "Mumbai",
     "countryCode": "IN",
     "imageName": "mumbai_india",
-    "latitude": 19.0760,
+    "latitude": 19.076,
     "longitude": 72.8777,
     "timeZoneIdentifier": "Asia/Kolkata"
   },
@@ -411,7 +411,7 @@
     "name": "Nassau",
     "countryCode": "BS",
     "imageName": "nassau_bahamas",
-    "latitude": 25.0480,
+    "latitude": 25.048,
     "longitude": -77.3554,
     "timeZoneIdentifier": "America/Nassau"
   },
@@ -619,7 +619,7 @@
     "name": "Taipei City",
     "countryCode": "TW",
     "imageName": "taipei_city_taiwan",
-    "latitude": 25.0330,
+    "latitude": 25.033,
     "longitude": 121.5654,
     "timeZoneIdentifier": "Asia/Taipei"
   },
@@ -651,7 +651,7 @@
     "name": "Kuala Lumpur",
     "countryCode": "MY",
     "imageName": "kuala_lumpur_malaysia",
-    "latitude": 3.1390,
+    "latitude": 3.139,
     "longitude": 101.6869,
     "timeZoneIdentifier": "Asia/Kuala_Lumpur"
   },
@@ -700,7 +700,7 @@
     "countryCode": "GH",
     "imageName": "accra_ghana",
     "latitude": 5.6037,
-    "longitude": -0.1870,
+    "longitude": -0.187,
     "timeZoneIdentifier": "Africa/Accra"
   },
   {
@@ -731,7 +731,7 @@
     "name": "Dodoma",
     "countryCode": "TZ",
     "imageName": "dodoma_tanzania",
-    "latitude": -6.1630,
+    "latitude": -6.163,
     "longitude": 35.7516,
     "timeZoneIdentifier": "Africa/Dodoma"
   },
@@ -814,6 +814,237 @@
     "latitude": -24.6282,
     "longitude": 25.9231,
     "timeZoneIdentifier": "Africa/Gaborone"
+  },
+  {
+    "name": "Ho Chi Minh City",
+    "countryCode": "VN",
+    "imageName": "ho_chi_minh_city_vietnam",
+    "latitude": 10.7769,
+    "longitude": 106.7009,
+    "timeZoneIdentifier": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "name": "San Diego",
+    "countryCode": "US",
+    "imageName": "san_diego_united_states",
+    "latitude": 32.7157,
+    "longitude": -117.1611,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Las Vegas",
+    "countryCode": "US",
+    "imageName": "las_vegas_united_states",
+    "latitude": 36.1699,
+    "longitude": -115.1398,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Astana",
+    "countryCode": "KZ",
+    "imageName": "astana_kazakhstan",
+    "latitude": 51.1694,
+    "longitude": 71.4491,
+    "timeZoneIdentifier": "Asia/Almaty"
+  },
+  {
+    "name": "Lisbon",
+    "countryCode": "PT",
+    "imageName": "lisbon_portugal",
+    "latitude": 38.7223,
+    "longitude": -9.1393,
+    "timeZoneIdentifier": "Europe/Lisbon"
+  },
+  {
+    "name": "Belgrade",
+    "countryCode": "RS",
+    "imageName": "belgrade_serbia",
+    "latitude": 44.7866,
+    "longitude": 20.4489,
+    "timeZoneIdentifier": "Europe/Belgrade"
+  },
+  {
+    "name": "Zagreb",
+    "countryCode": "HR",
+    "imageName": "zagreb_croatia",
+    "latitude": 45.815,
+    "longitude": 15.9819,
+    "timeZoneIdentifier": "Europe/Zagreb"
+  },
+  {
+    "name": "Vienna",
+    "countryCode": "AT",
+    "imageName": "vienna_austria",
+    "latitude": 48.2082,
+    "longitude": 16.3738,
+    "timeZoneIdentifier": "Europe/Vienna"
+  },
+  {
+    "name": "Dakar",
+    "countryCode": "SN",
+    "imageName": "dakar_senegal",
+    "latitude": 14.7167,
+    "longitude": -17.4677,
+    "timeZoneIdentifier": "Africa/Dakar"
+  },
+  {
+    "name": "Banjul",
+    "countryCode": "GM",
+    "imageName": "banjul_the_gambia",
+    "latitude": 13.4549,
+    "longitude": -16.579,
+    "timeZoneIdentifier": "Africa/Banjul"
+  },
+  {
+    "name": "Nouakchott",
+    "countryCode": "MR",
+    "imageName": "nouakchott_mauritania",
+    "latitude": 18.0735,
+    "longitude": -15.9582,
+    "timeZoneIdentifier": "Africa/Nouakchott"
+  },
+  {
+    "name": "Freetown",
+    "countryCode": "SL",
+    "imageName": "freetown_sierra_leone",
+    "latitude": 8.4844,
+    "longitude": -13.2299,
+    "timeZoneIdentifier": "Africa/Freetown"
+  },
+  {
+    "name": "Port Moresby",
+    "countryCode": "PG",
+    "imageName": "port_moresby_papua_new_guinea",
+    "latitude": -9.4438,
+    "longitude": 147.1803,
+    "timeZoneIdentifier": "Pacific/Port_Moresby"
+  },
+  {
+    "name": "Ulaanbaatar",
+    "countryCode": "MN",
+    "imageName": "ulaanbaatar_mongolia",
+    "latitude": 47.9185,
+    "longitude": 106.917,
+    "timeZoneIdentifier": "Asia/Ulaanbaatar"
+  },
+  {
+    "name": "Bucharest",
+    "countryCode": "RO",
+    "imageName": "bucharest_romania",
+    "latitude": 44.4268,
+    "longitude": 26.1025,
+    "timeZoneIdentifier": "Europe/Bucharest"
+  },
+  {
+    "name": "Sofia",
+    "countryCode": "BG",
+    "imageName": "sofia_bulgaria",
+    "latitude": 42.6977,
+    "longitude": 23.3219,
+    "timeZoneIdentifier": "Europe/Sofia"
+  },
+  {
+    "name": "Salt Lake City",
+    "countryCode": "US",
+    "imageName": "salt_lake_city_united_states",
+    "latitude": 40.7608,
+    "longitude": -111.891,
+    "timeZoneIdentifier": "America/Denver"
+  },
+  {
+    "name": "Phoenix",
+    "countryCode": "US",
+    "imageName": "phoenix_united_states",
+    "latitude": 33.4484,
+    "longitude": -112.074,
+    "timeZoneIdentifier": "America/Phoenix"
+  },
+  {
+    "name": "Portland",
+    "countryCode": "US",
+    "imageName": "portland_united_states",
+    "latitude": 45.5051,
+    "longitude": -122.675,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Charlotte",
+    "countryCode": "US",
+    "imageName": "charlotte_united_states",
+    "latitude": 35.2271,
+    "longitude": -80.8431,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Oklahoma City",
+    "countryCode": "US",
+    "imageName": "oklahoma_city_united_states",
+    "latitude": 35.4676,
+    "longitude": -97.5164,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Kansas City",
+    "countryCode": "US",
+    "imageName": "kansas_city_united_states",
+    "latitude": 39.0997,
+    "longitude": -94.5786,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Minneapolis",
+    "countryCode": "US",
+    "imageName": "minneapolis_united_states",
+    "latitude": 44.9778,
+    "longitude": -93.265,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Detroit",
+    "countryCode": "US",
+    "imageName": "detroit_united_states",
+    "latitude": 42.3314,
+    "longitude": -83.0458,
+    "timeZoneIdentifier": "America/Detroit"
+  },
+  {
+    "name": "Winnipeg",
+    "countryCode": "CA",
+    "imageName": "winnipeg_canada",
+    "latitude": 49.8951,
+    "longitude": -97.1384,
+    "timeZoneIdentifier": "America/Winnipeg"
+  },
+  {
+    "name": "Edmonton",
+    "countryCode": "CA",
+    "imageName": "edmonton_canada",
+    "latitude": 53.5461,
+    "longitude": -113.4938,
+    "timeZoneIdentifier": "America/Edmonton"
+  },
+  {
+    "name": "Boston",
+    "countryCode": "US",
+    "imageName": "boston_united_states",
+    "latitude": 42.3601,
+    "longitude": -71.0589,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Hamilton",
+    "countryCode": "BM",
+    "imageName": "hamilton_bermuda",
+    "latitude": 32.2948,
+    "longitude": -64.7814,
+    "timeZoneIdentifier": "Atlantic/Bermuda"
+  },
+  {
+    "name": "Atlanta",
+    "countryCode": "US",
+    "imageName": "atlanta_united_states",
+    "latitude": 33.749,
+    "longitude": -84.388,
+    "timeZoneIdentifier": "America/New_York"
   }
 ]
-

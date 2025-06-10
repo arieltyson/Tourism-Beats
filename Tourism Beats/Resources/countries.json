@@ -95,6 +95,11 @@
     "flag": "🇧🇯"
   },
   {
+    "name": "Bermuda",
+    "code": "BM",
+    "flag": "🇧🇲"
+  },
+  {
     "name": "Bhutan",
     "code": "BT",
     "flag": "🇧🇹"
@@ -378,6 +383,11 @@
     "name": "Honduras",
     "code": "HN",
     "flag": "🇭🇳"
+  },
+  {
+    "name": "Hong Kong",
+    "code": "HK",
+    "flag": "🇭🇰"
   },
   {
     "name": "Hungary",
@@ -990,4 +1000,3 @@
     "flag": "🇿🇼"
   }
 ]
-
