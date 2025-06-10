@@ -14,43 +14,31 @@
 
 ## Demo:
 
-https://github.com/user-attachments/assets/3a3bb3ef-37f9-4175-8461-12a94f0077f9
+https://github.com/user-attachments/assets/af8abb28-02d4-4903-a660-36a0ce63454c
 
 ## Screenshots:
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/627d1c2c-29e9-41de-896e-ff7163a28add" alt="TourismBeatsHome" width="250" height="500">
+        <img src="https://github.com/user-attachments/assets/40e768e8-8208-41ea-aa8f-8dd36c7fd699" alt="IMG1" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/ea5664c5-6f40-4d5c-b654-49f99fd4b140" alt="TourismBeatsMap" width="250" height="500">
+        <img src="https://github.com/user-attachments/assets/5141856b-d34b-432a-99ae-7656ba90b114" alt="IMG2" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/arieltyson/Tourism-Beats/assets/114557791/ee23a122-9497-455a-8d36-02bb7eec0062" alt="TourismBeatsLondon" width="250" height="500">
-    </kbd>
-</div>
-
-<div style="display: flex; justify-content: center; align-items: center;">
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/db93f39f-5de9-4f8b-a2a9-9a98df85735b" alt="TourismBeatsTipView" width="250" height="500">
-    </kbd>
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/08212596-71ad-4c84-88fb-b982679978e0" alt="TourismBeatsFuture UpdatesView" width="250" height="500">
-    </kbd>
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/35e85b0a-e1e6-4559-af05-d09c2a004c70" alt="TourismBeatsMeshGradientBackground" width="250" height="500">
+        <img src="https://github.com/user-attachments/assets/7e5a8f35-ff3d-47ab-8b19-5ce10e0c9c3f" alt="IMG3" width="200">
     </kbd>
 </div>
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/user-attachments/assets/7305bc84-17fa-4531-8e23-5a6d97a2d462" alt="TourismBeatsTipView" width="250" height="500">
+        <img src="https://github.com/user-attachments/assets/154ed412-350e-4d1b-87d0-a7013a9223b8" alt="IMG4" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/8ebce170-c44d-41e2-9c4a-caf4a9000df4" alt="TourismBeatsMeshGradientBackground" width="250" height="500">
+        <img src="https://github.com/user-attachments/assets/e67226d7-b5c8-4447-b390-414f1ae31086" alt="IMG5" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/57218034-1571-4b3a-b5d7-2008f2167995" alt="TourismBeatsFuture UpdatesView" width="250" height="500">
+        <img src="https://github.com/user-attachments/assets/079dfb3b-3a90-46bf-aff9-7cac9c3fa357" alt="IMG6" width="200">
     </kbd>
 </div>
 
