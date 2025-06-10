@@ -14,6 +14,11 @@ struct MainTabView: View {
     @State private var homePath = NavigationPath()
     @State private var searchPath = NavigationPath()
 
+    init() {
+        UITabBar.appearance().tintColor = .white
+        UITabBar.appearance().unselectedItemTintColor = .white
+    }
+
     var body: some View {
         TabView(selection: $selectedTab) {
             // ────────── Home ──────────
@@ -21,12 +26,12 @@ struct MainTabView: View {
                 HomeView()
             }
             .tabItem {
-                Label(
-                    "Home",
-                    systemImage: (selectedTab == .home && homePath.isEmpty)
+                Image(
+                    systemName: (selectedTab == .home && homePath.isEmpty)
                         ? "house.circle.fill"
                         : "house"
                 )
+                Text("Home")
             }
             .tag(AppTab.home)
 
@@ -46,23 +51,23 @@ struct MainTabView: View {
                 }
             }
             .tabItem {
-                Label(
-                    "Search",
-                    systemImage: (selectedTab == .search && searchPath.isEmpty)
+                Image(
+                    systemName: (selectedTab == .search && searchPath.isEmpty)
                         ? "magnifyingglass.circle.fill"
                         : "magnifyingglass"
                 )
+                Text("Search")
             }
             .tag(AppTab.search)
         }
         .tint(.white)
         // whenever the user switches tabs, wipe out that stack
-        .onChange(of: selectedTab) {
-            switch selectedTab {
+        .onChange(of: selectedTab) { _, new in
+            switch new {
             case .home:
-                searchPath = NavigationPath()
-            case .search:
                 homePath = NavigationPath()
+            case .search:
+                searchPath = NavigationPath()
             }
         }
     }
