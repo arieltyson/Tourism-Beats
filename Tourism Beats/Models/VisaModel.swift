@@ -1,6 +1,6 @@
 import Foundation
 
-struct VisaModel: Codable, Identifiable {
+struct VisaModel: Codable, Identifiable, Sendable {
     var id: String { "\(passport)-\(destination)" }
 
     let passport: String

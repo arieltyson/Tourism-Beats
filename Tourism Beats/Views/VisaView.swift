@@ -50,8 +50,8 @@ struct VisaView: View {
                             selectedCode: $viewModel.passportCode
                         )
                     }
-                    .onChange(of: viewModel.passportCode) {
-                        viewModel.updatePassport(to: $0)
+                    .onChange(of: viewModel.passportCode) { _, newValue in
+                        viewModel.updatePassport(to: newValue)
                     }
 
                     Group {

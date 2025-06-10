@@ -1,6 +1,5 @@
 import SwiftUI
 
-@available(iOS 18.0, *)
 struct GradientProvider {
     static let gradients: [MeshGradient] = [
         MeshGradient(

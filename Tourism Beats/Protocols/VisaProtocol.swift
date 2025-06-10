@@ -1,4 +1,4 @@
-protocol VisaProtocol {
+protocol VisaProtocol: Sendable {
     func fetchVisaRequirement(
         passport: String,
         destination: String

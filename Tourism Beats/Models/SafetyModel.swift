@@ -1,6 +1,6 @@
 import Foundation
 
-struct SafetyModel: Codable, Identifiable {
+struct SafetyModel: Codable, Identifiable, Sendable {
     var id: String { countryCode }
 
     let countryName: String

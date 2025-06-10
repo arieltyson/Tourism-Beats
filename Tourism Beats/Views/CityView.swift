@@ -5,13 +5,8 @@ struct CityView: View {
 
     var body: some View {
         ZStack {
-            if #available(iOS 18.0, *) {
-                GradientProvider.gradients.randomElement()?
-                    .ignoresSafeArea()
-            } else {
-                UIKitGradientBackgroundWrapper()
-                    .ignoresSafeArea()
-            }
+            GradientProvider.gradients.randomElement()?
+                .ignoresSafeArea()
 
             VStack(spacing: 30) {
                 Text("\(city.name), \(city.country.name)  \(city.country.flag)")

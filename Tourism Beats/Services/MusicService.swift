@@ -1,7 +1,14 @@
 import Foundation
 import MusicKit
 
-class MusicService: MusicProtocol {
+actor MusicService: MusicProtocol {
+
+    static let shared = MusicService()
+
+    private var chartCache: [String: (Date, AppSong)] = [:]
+    private let cacheDuration: TimeInterval = 3 * 60 * 60  // 3 hours
+
+    private init() {}
 
     enum MusicServiceError: Error {
         case invalidCountryCode(String)
@@ -14,28 +21,22 @@ class MusicService: MusicProtocol {
         case networkError(Error)
     }
 
-    // MARK: - Chart Cache
-    // [ countryCode : (timestamp, AppSong) ]
-    private static var chartCache: [String: (Date, AppSong)] = [:]
-    private let cacheDuration: TimeInterval = 3 * 60 * 60
-
     func fetchTopSong(countryCode: String) async throws -> AppSong {
         let code = countryCode.uppercased()
         guard code.count == 2 else {
             throw MusicServiceError.invalidCountryCode(countryCode)
         }
 
-        // Return cached if still valid
-        if let (ts, song) = Self.chartCache[code],
+        if let (ts, song) = chartCache[code],
             Date().timeIntervalSince(ts) < cacheDuration
         {
             return song
         }
 
-        // Generate/​reuse developer token
         let devToken: String
         do {
-            devToken = try DeveloperTokenGenerator.generateDeveloperToken()
+            devToken = try await DeveloperTokenGenerator.shared
+                .generateDeveloperToken()
         } catch {
             throw MusicServiceError.tokenGenerationError(error)
         }
@@ -86,7 +87,8 @@ class MusicService: MusicProtocol {
                 artistName: attrs.artistName,
                 artworkURL: attrs.artwork?.artworkURL()
             )
-            Self.chartCache[code] = (Date(), song)
+
+            chartCache[code] = (Date(), song)
             return song
 
         } catch let decodeErr {

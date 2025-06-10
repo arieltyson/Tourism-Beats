@@ -12,7 +12,7 @@ class VisaViewModel: ObservableObject {
     init(
         passportCode: String,
         destinationCode: String,
-        service: VisaProtocol = VisaService() as VisaProtocol
+        service: VisaProtocol = VisaService()
     ) {
         self.passportCode = passportCode
         self.destinationCode = destinationCode
@@ -24,7 +24,7 @@ class VisaViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        Task {
+        Task { @MainActor in
             do {
                 requirement = try await service.fetchVisaRequirement(
                     passport: passportCode,
@@ -49,7 +49,6 @@ class VisaViewModel: ObservableObject {
         return requirement?.requirement ?? ""
     }
 
-    /// Color–code based on the text of `requirement`
     var requirementColor: Color {
         if passportCode.uppercased() == destinationCode.uppercased() {
             return .green
@@ -66,7 +65,6 @@ class VisaViewModel: ObservableObject {
         } else if req.contains("eta") {
             return .purple
         } else if req.contains("visa-free") {
-            // any visa-free (for X days or open)
             return .green
         } else {
             return .gray

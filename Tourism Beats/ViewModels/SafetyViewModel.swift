@@ -11,7 +11,7 @@ class SafetyViewModel: ObservableObject {
 
     init(
         city: CityModel,
-        safetyService: SafetyProtocol = SafetyService() as SafetyProtocol
+        safetyService: SafetyProtocol = SafetyService()
     ) {
         self.city = city
         self.safetyService = safetyService
@@ -24,7 +24,7 @@ class SafetyViewModel: ObservableObject {
 
         let countryCode = city.country.code
 
-        Task {
+        Task { @MainActor in
             do {
                 self.safetyData = try await safetyService.fetchSafetyData(
                     for: countryCode

@@ -14,7 +14,6 @@ class MusicViewModel: ObservableObject {
 
     let city: CityModel
     private let musicService: MusicProtocol
-    private let player = ApplicationMusicPlayer.shared
 
     private var hasLoadedData = false
     private var playableSong: Song?
@@ -22,7 +21,7 @@ class MusicViewModel: ObservableObject {
 
     init(
         city: CityModel,
-        musicService: MusicProtocol = MusicService() as MusicProtocol
+        musicService: MusicProtocol = MusicService.shared
     ) {
         self.city = city
         self.musicService = musicService
@@ -77,41 +76,42 @@ class MusicViewModel: ObservableObject {
     }
 
     func togglePlayback() async {
-        guard let id = songID else { return }
+        guard songID != nil else { return }
 
-        // clear any old playback error
         playbackErrorMessage = nil
 
-        if isPlaying {
-            player.pause()
+        if ApplicationMusicPlayer.shared.state.playbackStatus == .playing {
+            ApplicationMusicPlayer.shared.pause()
             isPlaying = false
             return
         }
 
         if let song = playableSong {
-            player.queue = [song]
-            do {
-                try await player.play()
-                isPlaying = true
-            } catch {
-                handlePlaybackError(error)
-            }
+            await self.play(song)
             return
         }
 
-        // fetch & play
         do {
             let req = MusicCatalogResourceRequest<Song>(
                 matching: \.id,
-                equalTo: id
+                equalTo: songID!
             )
             let resp = try await req.response()
+
             if let song = resp.items.first {
                 playableSong = song
-                player.queue = [song]
-                try await player.play()
-                isPlaying = true
+                await self.play(song)
             }
+        } catch {
+            handlePlaybackError(error)
+        }
+    }
+
+    private func play(_ song: Song) async {
+        ApplicationMusicPlayer.shared.queue = [song]
+        do {
+            try await ApplicationMusicPlayer.shared.play()
+            self.isPlaying = true
         } catch {
             handlePlaybackError(error)
         }
@@ -121,10 +121,7 @@ class MusicViewModel: ObservableObject {
         print("🎵 playback error:", error)
         isPlaying = false
 
-        // If it's a MusicDataRequest.Error with 404, assume region lock
-        if let me = error as? MusicDataRequest.Error,
-            me.status == 404
-        {
+        if let me = error as? MusicDataRequest.Error, me.status == 404 {
             playbackErrorMessage = "Song not available in your region"
         } else {
             playbackErrorMessage = "Unable to play song"
