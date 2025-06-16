@@ -5,7 +5,7 @@
 ## App Store  : https://apps.apple.com/app/tourism-beats/id6708221715
 
 <kbd>
-    <img src="https://github.com/user-attachments/assets/2864010d-ad96-42e6-abe6-58e804e27adf" alt="tourismBeatsLogo" width="1000" height="800">
+    <img src="https://github.com/user-attachments/assets/2864010d-ad96-42e6-abe6-58e804e27adf" alt="tourismBeatsLogo" width="800" height="500">
 </kbd>
 
 ## Project Description 🎨
