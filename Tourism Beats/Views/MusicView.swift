@@ -5,24 +5,21 @@ struct MusicView: View {
     @StateObject private var viewModel: MusicViewModel
     let fallbackView: FallbackMusicView
 
+    @State private var backgroundGradient: MeshGradient
+
     init(city: CityModel, fallbackView: FallbackMusicView) {
         _viewModel = StateObject(wrappedValue: MusicViewModel(city: city))
         self.fallbackView = fallbackView
+
+        _backgroundGradient = State(
+            initialValue: GradientProvider.gradients.randomElement()!
+        )
     }
 
     var body: some View {
         ZStack {
-            // ─── Background ────────────────────────────────────────────
-            LinearGradient(
-                colors: [
-                    Color.blue.opacity(0.7),
-                    Color.indigo.opacity(0.7),
-                    Color.blue,
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            backgroundGradient
+                .ignoresSafeArea()
 
             // ─── Content ────────────────────────────────────────────────
             VStack {
@@ -37,10 +34,10 @@ struct MusicView: View {
                                     .overlay(playPauseOverlay)
                             }
                             .buttonStyle(.plain)
-                            .padding(.top, 50)
+                            .padding(.top, 20)
                         } else {
                             artworkView
-                                .padding(.top, 50)
+                                .padding(.top, 20)
                         }
                     }
 
@@ -51,23 +48,23 @@ struct MusicView: View {
                             .foregroundColor(.red)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 8)
+                            .padding(.top, 4)
                     }
 
                     // ─── Song title ─────────────────────────────────────
                     Text(viewModel.songTitle)
-                        .font(.title)
+                        .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .minimumScaleFactor(0.5)
                         .padding(.horizontal)
-                        .frame(minHeight: 40)
+                        .frame(minHeight: 30)
 
                     // ─── Artist name ────────────────────────────────────
                     Text(viewModel.artistName)
-                        .font(.headline)
+                        .font(.subheadline)
                         .fontWeight(.medium)
                         .foregroundColor(.white.opacity(0.8))
                         .multilineTextAlignment(.center)
@@ -99,7 +96,6 @@ struct MusicView: View {
 
                 Spacer(minLength: 0)
             }
-            .padding()
         }
         .navigationBarBackButtonHidden(true)
         .task { await viewModel.requestAccessAndLoadTopSong() }
@@ -117,13 +113,14 @@ struct MusicView: View {
                 switch phase {
                 case .empty:
                     ProgressView()
-                        .frame(width: 300, height: 300)
+                        .frame(maxWidth: 300, maxHeight: 300)
+                        .aspectRatio(1, contentMode: .fit)
 
                 case .success(let image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 300)
+                        .frame(maxWidth: 300, maxHeight: 300)
                         .cornerRadius(20)
                         .shadow(radius: 10)
 
@@ -131,7 +128,7 @@ struct MusicView: View {
                     Image("placeholder_artwork")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 300)
+                        .frame(maxWidth: 300, maxHeight: 300)
                         .cornerRadius(20)
                         .shadow(radius: 10)
 
@@ -139,7 +136,7 @@ struct MusicView: View {
                     Image("placeholder_artwork")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 300)
+                        .frame(maxWidth: 300, maxHeight: 300)
                         .cornerRadius(20)
                         .shadow(radius: 10)
                 }
@@ -148,7 +145,7 @@ struct MusicView: View {
             Image("placeholder_artwork")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 300, height: 300)
+                .frame(maxWidth: 300, maxHeight: 300)
                 .cornerRadius(20)
                 .shadow(radius: 10)
         }
@@ -163,7 +160,7 @@ struct MusicView: View {
                     : "play.circle.fill"
             )
             .resizable()
-            .frame(width: 70, height: 70)
+            .frame(width: 60, height: 60)
             .foregroundStyle(
                 .white.opacity(0.9),
                 .black.opacity(0.3)

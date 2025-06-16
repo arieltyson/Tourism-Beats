@@ -8,40 +8,46 @@ struct CityView: View {
             GradientProvider.gradients.randomElement()?
                 .ignoresSafeArea()
 
-            VStack(spacing: 30) {
+            VStack {
                 Text("\(city.name), \(city.country.name)  \(city.country.flag)")
-                    .font(.largeTitle).bold().italic()
+                    .font(.title2).bold().italic()
                     .foregroundColor(.white)
                     .lineLimit(1)
                     .minimumScaleFactor(0.3)
                     .allowsTightening(true)
                     .padding(.horizontal, 20)
-                    .padding(.top, 50)
+                    .padding(.top, 20)
 
-                VStack(alignment: .leading, spacing: 20) {
+                VStack {
                     Image(city.imageName)
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
                         .cornerRadius(15)
                         .padding()
                 }
-                .background(Color.white)
-                .cornerRadius(15)
-                .shadow(radius: 15)
-                .padding(.horizontal)
+                .background(
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.black.opacity(0.5))
+                        .shadow(radius: 5)
+                )
+                .padding()
 
                 Spacer()
 
                 HStack {
                     TimeView(city: city)
                         .frame(maxWidth: .infinity)
+                        .scaleEffect(0.85)
                     WeatherView(city: city)
                         .frame(maxWidth: .infinity)
+                        .scaleEffect(0.85)
                 }
-                .padding(.horizontal)
-
-                Spacer()
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: 50)
         }
     }
 }

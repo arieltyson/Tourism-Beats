@@ -384,6 +384,7 @@ struct GradientProvider {
                 .blue, .cyan, .black,
             ]
         ),
+
         MeshGradient(
             width: 3,
             height: 3,
@@ -400,20 +401,7 @@ struct GradientProvider {
         ),
 
         // New "Forest" Theme Gradients
-        MeshGradient(
-            width: 3,
-            height: 3,
-            points: [
-                [0.0, 0.0], [0.4, 0.1], [1.0, 0.0],
-                [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
-                [0.0, 1.0], [0.6, 0.9], [1.0, 1.0],
-            ],
-            colors: [
-                .green, .teal, .mint,
-                .yellow, .green, .blue,
-                .black, .green, .indigo,
-            ]
-        ),
+
         MeshGradient(
             width: 3,
             height: 3,
@@ -445,36 +433,6 @@ struct GradientProvider {
             ]
         ),
 
-        // New "Vibrant" & "Neon" Theme Gradients
-        MeshGradient(
-            width: 3,
-            height: 3,
-            points: [
-                [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
-                [0.0, 0.5], [0.9, 0.1], [1.0, 0.5],
-                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
-            ],
-            colors: [
-                .pink, .red, .orange,
-                .yellow, .green, .mint,
-                .cyan, .blue, .purple,
-            ]
-        ),
-        MeshGradient(
-            width: 3,
-            height: 3,
-            points: [
-                [0.0, 0.0], [0.2, 0.1], [1.0, 0.0],
-                [0.1, 0.5], [0.5, 0.5], [0.9, 0.5],
-                [0.0, 1.0], [0.8, 0.9], [1.0, 1.0],
-            ],
-            colors: [
-                .red, .orange, .yellow,
-                .purple, .black, .green,
-                .blue, .indigo, .pink,
-            ]
-        ),
-
         // More Assorted Mixes
         MeshGradient(
             width: 3,
@@ -490,6 +448,8 @@ struct GradientProvider {
                 .pink, .purple, .indigo,
             ]
         ),
+
+        /// Golden Ratio
         MeshGradient(
             width: 3,
             height: 3,
@@ -502,6 +462,20 @@ struct GradientProvider {
                 .black, .red, .black,
                 .red, .orange, .red,
                 .black, .red, .black,
+            ]
+        ),
+        MeshGradient(
+            width: 3,
+            height: 3,
+            points: [
+                [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
+                [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
+                [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
+            ],
+            colors: [
+                .black, .cyan, .black,
+                .cyan, .indigo, .cyan,
+                .black, .cyan, .black,
             ]
         ),
         MeshGradient(

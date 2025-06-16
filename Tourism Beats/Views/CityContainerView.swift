@@ -6,34 +6,46 @@ struct CityContainerView: View {
     @State private var showMusic = false
 
     var body: some View {
-        ZStack {
-            // ── City page (slides out upward) ────────────────────────────
-            CityView(city: city)
-                .opacity(showMusic ? 0 : 1)
-                .transition(.move(edge: .top))
+        GeometryReader { geometry in
+            ZStack {
+                // ── City page (slides out upward) ────────────────────────────
+                CityView(city: city)
+                    .opacity(showMusic ? 0 : 1)
+                    .transition(.move(edge: .top))
+                    .frame(
+                        maxWidth: geometry.size.width,
+                        maxHeight: geometry.size.height
+                    )
 
-            // ── Music page (slides in from below) ────────────────────────
-            MusicView(city: city, fallbackView: FallbackMusicView())
-                .opacity(showMusic ? 1 : 0)
-                .transition(.move(edge: .bottom))
-        }
-        .animation(.easeInOut, value: showMusic)
-        .highPriorityGesture(
-            DragGesture(minimumDistance: 30)
-                .onEnded { g in
-                    let dx = abs(g.translation.width)
-                    let dy = g.translation.height
-                    guard dx < abs(dy) else { return }
-                    withAnimation {
-                        showMusic = (dy < 0)
+                // ── Music page (slides in from below) ────────────────────────
+                MusicView(city: city, fallbackView: FallbackMusicView())
+                    .opacity(showMusic ? 1 : 0)
+                    .transition(.move(edge: .bottom))
+                    .frame(
+                        maxWidth: geometry.size.width,
+                        maxHeight: geometry.size.height
+                    )
+            }
+            .animation(.easeInOut, value: showMusic)
+            .highPriorityGesture(
+                DragGesture(minimumDistance: 30)
+                    .onEnded { g in
+                        let dx = abs(g.translation.width)
+                        let dy = g.translation.height
+                        guard dx < abs(dy) else { return }
+                        withAnimation {
+                            showMusic = (dy < 0)
+                        }
                     }
-                }
-        )
-        .overlay(
-            VerticalPageIndicator(activeIndex: showMusic ? 1 : 0)
-                .padding(.trailing, 16),
-            alignment: .trailing
-        )
+            )
+            .overlay(
+                VerticalPageIndicator(activeIndex: showMusic ? 1 : 0)
+                    .padding(.trailing, 16)
+                    .padding(.top, geometry.safeAreaInsets.top + 20),
+                alignment: .topTrailing
+            )
+        }
+        .ignoresSafeArea(.all, edges: [])
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")

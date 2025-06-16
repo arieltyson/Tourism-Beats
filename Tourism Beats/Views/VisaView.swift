@@ -37,7 +37,7 @@ struct VisaView: View {
                     .padding(.horizontal, 12)
                     .background(
                         Capsule()
-                            .fill(Color.accentColor.opacity(0.2))
+                            .fill(Color.primary.opacity(0.2))
                             .shadow(
                                 color: Color.accentColor.opacity(0.3),
                                 radius: 4,
