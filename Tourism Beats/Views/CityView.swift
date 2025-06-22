@@ -9,14 +9,15 @@ struct CityView: View {
                 .ignoresSafeArea()
 
             VStack {
-                Text("\(city.name), \(city.country.name)  \(city.country.flag)")
-                    .font(.title2).bold().italic()
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.3)
-                    .allowsTightening(true)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
+                VStack {
+                    Text(city.name)
+                    Text("\(city.country.name) \(city.country.flag)")
+                }
+                .font(.title2).bold().italic()
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
 
                 VStack {
                     Image(city.imageName)
