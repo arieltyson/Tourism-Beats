@@ -394,7 +394,7 @@
   {
     "name": "Port-Au-Prince",
     "countryCode": "HT",
-    "imageName": "port-au-prince_haiti",
+    "imageName": "port_au_prince_haiti",
     "latitude": 18.5944,
     "longitude": -72.3074,
     "timeZoneIdentifier": "America/Port-au-Prince"

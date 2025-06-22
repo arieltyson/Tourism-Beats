@@ -7,7 +7,6 @@ struct WeatherDisplayInfo: Sendable, Hashable {
     let iconName: String
     let temperatureCelsius: String
     let temperatureFahrenheit: String
-    let isPreferredUnitCelsius: Bool
 }
 
 enum WeatherError: Error {
@@ -17,6 +16,14 @@ enum WeatherError: Error {
 @MainActor
 class WeatherFetcherService {
     private let weatherService = WeatherService.shared
+
+    private static let temperatureFormatter: MeasurementFormatter = {
+        let formatter = MeasurementFormatter()
+        formatter.locale = .current
+        formatter.unitOptions = .providedUnit
+        formatter.numberFormatter.maximumFractionDigits = 0
+        return formatter
+    }()
 
     func fetchWeather(at coordinate: CLLocationCoordinate2D) async throws
         -> WeatherDisplayInfo
@@ -38,24 +45,27 @@ class WeatherFetcherService {
         let condition = current.condition.description
         let iconName = iconName(for: current.condition)
 
-        let tempMeasurement = current.temperature
-        let isPreferredUnitCelsius = tempMeasurement.unit == .celsius
+        let original = current.temperature
+        let inCelsius = original.converted(to: .celsius)
+        let inFahrenheit = original.converted(to: .fahrenheit)
 
-        let tempCelsius = tempMeasurement.converted(to: .celsius)
-        let tempFahrenheit = tempMeasurement.converted(to: .fahrenheit)
+        let roundedC = Measurement(
+            value: inCelsius.value.rounded(),
+            unit: UnitTemperature.celsius
+        )
+        let roundedF = Measurement(
+            value: inFahrenheit.value.rounded(),
+            unit: UnitTemperature.fahrenheit
+        )
 
-        let celsiusValue = Int(tempCelsius.value.rounded())
-        let fahrenheitValue = Int(tempFahrenheit.value.rounded())
-
-        let celsiusStr = "\(celsiusValue)°C"
-        let fahrenheitStr = "\(fahrenheitValue)°F"
+        let celsiusString = Self.temperatureFormatter.string(from: roundedC)
+        let fahrenheitString = Self.temperatureFormatter.string(from: roundedF)
 
         return .init(
             condition: condition,
             iconName: iconName,
-            temperatureCelsius: celsiusStr,
-            temperatureFahrenheit: fahrenheitStr,
-            isPreferredUnitCelsius: isPreferredUnitCelsius
+            temperatureCelsius: celsiusString,
+            temperatureFahrenheit: fahrenheitString
         )
     }
 

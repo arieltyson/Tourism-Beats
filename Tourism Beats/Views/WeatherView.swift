@@ -2,7 +2,13 @@ import CoreLocation
 import SwiftUI
 
 struct WeatherView: View {
+    @Environment(\.locale) private var locale
     @StateObject private var viewModel: WeatherViewModel
+
+    /// Celsius is primary for Metric & U.K., Fahrenheit for U.S.
+    private var prefersMetric: Bool {
+        locale.prefersCelsius
+    }
 
     init(city: CityModel) {
         _viewModel = StateObject(
@@ -16,6 +22,7 @@ struct WeatherView: View {
                 ProgressView()
                     .tint(.white)
                     .progressViewStyle(.circular)
+
             } else if let error = viewModel.errorMessage {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .resizable()
@@ -27,6 +34,7 @@ struct WeatherView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 5)
+
             } else if let info = viewModel.weatherInfo {
                 Text(info.condition)
                     .font(.headline)
@@ -34,6 +42,7 @@ struct WeatherView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
                     .padding(.top, 10)
+
                 Image(systemName: info.iconName)
                     .resizable()
                     .scaledToFit()
@@ -44,18 +53,15 @@ struct WeatherView: View {
                 VStack(spacing: 4) {
                     Text(info.temperatureCelsius)
                         .font(.body)
-                        .fontWeight(
-                            info.isPreferredUnitCelsius ? .semibold : .regular
-                        )
-                        .foregroundColor(.white)
+                        .fontWeight(prefersMetric ? .semibold : .regular)
+                        .opacity(prefersMetric ? 1.0 : 0.6)
 
                     Text(info.temperatureFahrenheit)
                         .font(.body)
-                        .fontWeight(
-                            info.isPreferredUnitCelsius ? .regular : .semibold
-                        )
-                        .foregroundColor(.white.opacity(0.8))
+                        .fontWeight(prefersMetric ? .regular : .semibold)
+                        .opacity(prefersMetric ? 0.6 : 1.0)
                 }
+                .foregroundColor(.white)
                 .padding(.bottom, 10)
 
             } else {
