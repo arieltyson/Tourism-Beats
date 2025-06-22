@@ -5,7 +5,8 @@ import Foundation
 struct WeatherDisplayInfo: Sendable, Hashable {
     let condition: String
     let iconName: String
-    let temperature: String
+    let temperatureCelsius: String
+    let temperatureFahrenheit: String
 }
 
 enum WeatherError: Error {
@@ -35,17 +36,26 @@ class WeatherFetcherService {
         let current = weather.currentWeather
         let condition = current.condition.description
         let iconName = iconName(for: current.condition)
-        let temp = Int(current.temperature.value.rounded())
-        let tempStr = "\(temp) \(current.temperature.unit.symbol)"
+        let tempMeasurement = current.temperature
+
+        let tempCelsius = tempMeasurement.converted(to: .celsius)
+        let tempFahrenheit = tempMeasurement.converted(to: .fahrenheit)
+
+        let celsiusValue = Int(tempCelsius.value.rounded())
+        let fahrenheitValue = Int(tempFahrenheit.value.rounded())
+
+        let celsiusStr = "\(celsiusValue)°C"
+        let fahrenheitStr = "\(fahrenheitValue)°F"
+
         return .init(
             condition: condition,
             iconName: iconName,
-            temperature: tempStr
+            temperatureCelsius: celsiusStr,
+            temperatureFahrenheit: fahrenheitStr
         )
     }
 
     private func iconName(for condition: WeatherCondition) -> String {
-        // (Switch statement remains the same)
         switch condition {
         case .clear: return "sun.max.fill"
         case .mostlyClear, .partlyCloudy, .mostlyCloudy: return "cloud.sun.fill"

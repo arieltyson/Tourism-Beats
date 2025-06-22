@@ -40,10 +40,18 @@ struct WeatherView: View {
                     .frame(width: 40, height: 40)
                     .foregroundColor(.white)
                     .padding(.vertical, 10)
-                Text(info.temperature)
-                    .font(.body)
-                    .foregroundColor(.white)
-                    .padding(.bottom, 10)
+
+                VStack(spacing: 4) {
+                    Text(info.temperatureCelsius)
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                    Text(info.temperatureFahrenheit)
+                        .font(.body)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+                .padding(.bottom, 10)
+
             } else {
                 Text("---")
                     .foregroundColor(.white)
