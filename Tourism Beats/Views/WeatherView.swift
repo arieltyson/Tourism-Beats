@@ -44,10 +44,16 @@ struct WeatherView: View {
                 VStack(spacing: 4) {
                     Text(info.temperatureCelsius)
                         .font(.body)
-                        .fontWeight(.medium)
+                        .fontWeight(
+                            info.isPreferredUnitCelsius ? .semibold : .regular
+                        )
                         .foregroundColor(.white)
+
                     Text(info.temperatureFahrenheit)
                         .font(.body)
+                        .fontWeight(
+                            info.isPreferredUnitCelsius ? .regular : .semibold
+                        )
                         .foregroundColor(.white.opacity(0.8))
                 }
                 .padding(.bottom, 10)

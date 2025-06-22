@@ -7,6 +7,7 @@ struct WeatherDisplayInfo: Sendable, Hashable {
     let iconName: String
     let temperatureCelsius: String
     let temperatureFahrenheit: String
+    let isPreferredUnitCelsius: Bool
 }
 
 enum WeatherError: Error {
@@ -36,7 +37,9 @@ class WeatherFetcherService {
         let current = weather.currentWeather
         let condition = current.condition.description
         let iconName = iconName(for: current.condition)
+
         let tempMeasurement = current.temperature
+        let isPreferredUnitCelsius = tempMeasurement.unit == .celsius
 
         let tempCelsius = tempMeasurement.converted(to: .celsius)
         let tempFahrenheit = tempMeasurement.converted(to: .fahrenheit)
@@ -51,7 +54,8 @@ class WeatherFetcherService {
             condition: condition,
             iconName: iconName,
             temperatureCelsius: celsiusStr,
-            temperatureFahrenheit: fahrenheitStr
+            temperatureFahrenheit: fahrenheitStr,
+            isPreferredUnitCelsius: isPreferredUnitCelsius
         )
     }
 
