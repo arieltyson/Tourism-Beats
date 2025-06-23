@@ -17,7 +17,7 @@ struct ClockView: View {
                     .shadow(color: .gray.opacity(0.4), radius: 5, x: 2, y: 2)
 
                 // Tick marks
-                ForEach(0..<60) { tick in
+                ForEach(0 ..< 60) { tick in
                     let isHour = tick % 5 == 0
                     Rectangle()
                         .fill(Color.primary)
@@ -30,7 +30,7 @@ struct ClockView: View {
                 }
 
                 // Numbers
-                ForEach(1...12, id: \.self) { hour in
+                ForEach(1 ... 12, id: \.self) { hour in
                     let angle = Angle.degrees(Double(hour) / 12 * 360 - 90)
                     let numberRadius = radius * 0.78
                     let x =
@@ -132,8 +132,8 @@ struct ClockView: View {
     }
 }
 
-extension Calendar {
-    fileprivate func settingTimeZone(_ tz: TimeZone) -> Calendar {
+private extension Calendar {
+    func settingTimeZone(_ tz: TimeZone) -> Calendar {
         var cal = self
         cal.timeZone = tz
         return cal

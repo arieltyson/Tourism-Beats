@@ -4,7 +4,6 @@ import Foundation
 // MARK: - Developer Token Generator Actor
 
 actor DeveloperTokenGenerator {
-
     static let shared = DeveloperTokenGenerator()
 
     private var cachedToken: String?
@@ -15,15 +14,14 @@ actor DeveloperTokenGenerator {
     /// Generates a developer token for MusicKit, using a cached token if available and valid.
     func generateDeveloperToken() async throws -> String {
         if let token = cachedToken,
-            let expires = tokenExpiresAt,
-            expires > Date()
-        {
+           let expires = tokenExpiresAt,
+           expires > Date() {
             return token
         }
 
         // --- Build a fresh JWT ---
         let header = JWTHeader(kid: Secrets.musicKitKeyID)
-        let expirationDate = Date().addingTimeInterval(3600)  // Stays valid for 1 hour
+        let expirationDate = Date().addingTimeInterval(3600) // Stays valid for 1 hour
         let payload = JWTPayload(
             iss: Secrets.teamID,
             iat: Date(),
@@ -61,9 +59,9 @@ actor DeveloperTokenGenerator {
     }
 
     private struct JWTPayload: Encodable {
-        let iss: String  // Issuer (Your Team ID)
-        let iat: Date  // Issued At
-        let exp: Date  // Expiration Time
+        let iss: String // Issuer (Your Team ID)
+        let iat: Date // Issued At
+        let exp: Date // Expiration Time
     }
 }
 
@@ -75,8 +73,8 @@ private func encode<T: Encodable>(_ value: T) throws -> Data {
     return try encoder.encode(value)
 }
 
-extension Data {
-    fileprivate func toBase64URL() -> String {
+private extension Data {
+    func toBase64URL() -> String {
         base64EncodedString()
             .replacingOccurrences(of: "+", with: "-")
             .replacingOccurrences(of: "/", with: "_")

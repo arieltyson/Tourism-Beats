@@ -2,7 +2,7 @@ import SceneKit
 import SwiftUI
 
 struct EarthView: UIViewRepresentable {
-    func makeUIView(context: Context) -> SCNView {
+    func makeUIView(context _: Context) -> SCNView {
         let sceneView = SCNView()
         sceneView.scene = createScene()
         sceneView.allowsCameraControl = false
@@ -11,7 +11,7 @@ struct EarthView: UIViewRepresentable {
         return sceneView
     }
 
-    func updateUIView(_ uiView: SCNView, context: Context) {}
+    func updateUIView(_: SCNView, context _: Context) {}
 
     private func createScene() -> SCNScene {
         let scene = SCNScene()

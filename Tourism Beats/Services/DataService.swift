@@ -19,7 +19,6 @@ private struct CityJSON: Decodable {
 
 /// Loads & links `CountryModel` + `CityModel` from your bundled JSON.
 final class DataService {
-
     /// Load all countries from `countries.json`.
     func loadCountries() throws -> [CountryModel] {
         try loadJSON("countries.json")
@@ -40,11 +39,11 @@ final class DataService {
         return cityEntries.map { entry in
             let country =
                 lookup[entry.countryCode]
-                ?? CountryModel(
-                    name: "Unknown",
-                    code: entry.countryCode,
-                    flag: "❓"
-                )
+                    ?? CountryModel(
+                        name: "Unknown",
+                        code: entry.countryCode,
+                        flag: "❓"
+                    )
             return CityModel(
                 id: "\(entry.name)-\(entry.countryCode)",
                 name: entry.name,

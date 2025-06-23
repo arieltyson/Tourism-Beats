@@ -71,6 +71,7 @@ struct SearchableCountryPicker: View {
 }
 
 // MARK: - Subcomponents
+
 private struct SectionHeader: View {
     let letter: String
 
@@ -124,8 +125,7 @@ private struct SectionIndexTitles: View {
                                     in: .named("SectionIndex")
                                 )
                                 if frame.midY > 0
-                                    && frame.midY < UIScreen.main.bounds.height
-                                {
+                                    && frame.midY < UIScreen.main.bounds.height {
                                     selectedLetter = letter
                                 }
                             }

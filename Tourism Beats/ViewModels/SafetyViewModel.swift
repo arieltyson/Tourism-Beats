@@ -42,7 +42,7 @@ class SafetyViewModel: ObservableObject {
         switch score {
         case ..<1.7:
             return "LOW"
-        case 1.7..<2.7:
+        case 1.7 ..< 2.7:
             return "MED"
         case 2.7...:
             return "HIGH"
@@ -56,7 +56,7 @@ class SafetyViewModel: ObservableObject {
         switch score {
         case ..<1.7:
             return .green
-        case 1.7..<2.7:
+        case 1.7 ..< 2.7:
             return .yellow
         case 2.7...:
             return .red

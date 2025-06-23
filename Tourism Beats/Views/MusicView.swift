@@ -116,7 +116,7 @@ struct MusicView: View {
                         .frame(maxWidth: 300, maxHeight: 300)
                         .aspectRatio(1, contentMode: .fit)
 
-                case .success(let image):
+                case let .success(image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)

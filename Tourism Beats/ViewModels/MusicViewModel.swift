@@ -54,10 +54,10 @@ class MusicViewModel: ObservableObject {
             let appSong = try await musicService.fetchTopSong(
                 countryCode: city.country.code
             )
-            self.songID = appSong.id
-            self.songTitle = appSong.title
-            self.artistName = appSong.artistName
-            self.songImage = appSong.artworkURL
+            songID = appSong.id
+            songTitle = appSong.title
+            artistName = appSong.artistName
+            songImage = appSong.artworkURL
         } catch let error as MusicService.MusicServiceError {
             if case .storefrontNotAvailable = error {
                 self.songTitle = "Music Not Available"
@@ -87,7 +87,7 @@ class MusicViewModel: ObservableObject {
         }
 
         if let song = playableSong {
-            await self.play(song)
+            await play(song)
             return
         }
 
@@ -100,7 +100,7 @@ class MusicViewModel: ObservableObject {
 
             if let song = resp.items.first {
                 playableSong = song
-                await self.play(song)
+                await play(song)
             }
         } catch {
             handlePlaybackError(error)
@@ -111,7 +111,7 @@ class MusicViewModel: ObservableObject {
         ApplicationMusicPlayer.shared.queue = [song]
         do {
             try await ApplicationMusicPlayer.shared.play()
-            self.isPlaying = true
+            isPlaying = true
         } catch {
             handlePlaybackError(error)
         }

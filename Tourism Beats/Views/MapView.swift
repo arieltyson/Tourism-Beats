@@ -24,7 +24,7 @@ struct MapView: UIViewRepresentable {
         return mapView
     }
 
-    func updateUIView(_ uiView: MKMapView, context: Context) {
+    func updateUIView(_ uiView: MKMapView, context _: Context) {
         // Only animate if our SwiftUI region actually differs
         if !uiView.region.isApproximatelyEqual(to: region) {
             uiView.setRegion(region, animated: true)
@@ -32,8 +32,8 @@ struct MapView: UIViewRepresentable {
 
         // Deselect if the user cancelled
         if selectedCity == nil {
-            uiView.selectedAnnotations.forEach {
-                uiView.deselectAnnotation($0, animated: true)
+            for selectedAnnotation in uiView.selectedAnnotations {
+                uiView.deselectAnnotation(selectedAnnotation, animated: true)
             }
         }
     }
@@ -51,7 +51,7 @@ struct MapView: UIViewRepresentable {
         }
 
         // 1) Pin tapped: stash current region, zoom in, fire alert
-        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
             guard
                 let name = view.annotation?.title ?? "",
                 let city = parent.cities.first(where: { $0.name == name })
@@ -69,7 +69,7 @@ struct MapView: UIViewRepresentable {
         // 2) User pans/zooms: sync back into SwiftUI state, but only if not mid-alert
         func mapView(
             _ mapView: MKMapView,
-            regionDidChangeAnimated animated: Bool
+            regionDidChangeAnimated _: Bool
         ) {
             Task {
                 // ignore callbacks while we’re still showing the “zoomed in” alert

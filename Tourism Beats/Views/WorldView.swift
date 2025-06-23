@@ -17,7 +17,7 @@ struct WorldView: View {
 
     init(onCitySelected: @escaping (CityModel) -> Void) {
         self.onCitySelected = onCitySelected
-        self.cities = (try? DataService().loadCities()) ?? []
+        cities = (try? DataService().loadCities()) ?? []
     }
 
     var body: some View {

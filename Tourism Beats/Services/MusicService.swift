@@ -2,11 +2,10 @@ import Foundation
 import MusicKit
 
 actor MusicService: MusicProtocol {
-
     static let shared = MusicService()
 
     private var chartCache: [String: (Date, AppSong)] = [:]
-    private let cacheDuration: TimeInterval = 3 * 60 * 60  // 3 hours
+    private let cacheDuration: TimeInterval = 3 * 60 * 60 // 3 hours
 
     private init() {}
 
@@ -28,8 +27,7 @@ actor MusicService: MusicProtocol {
         }
 
         if let (ts, song) = chartCache[code],
-            Date().timeIntervalSince(ts) < cacheDuration
-        {
+           Date().timeIntervalSince(ts) < cacheDuration {
             return song
         }
 
@@ -45,7 +43,7 @@ actor MusicService: MusicProtocol {
         guard
             let url = URL(
                 string:
-                    "https://api.music.apple.com/v1/catalog/\(storefront)/charts?types=songs&limit=1"
+                "https://api.music.apple.com/v1/catalog/\(storefront)/charts?types=songs&limit=1"
             )
         else {
             throw MusicServiceError.invalidURL
@@ -65,7 +63,7 @@ actor MusicService: MusicProtocol {
             throw MusicServiceError.storefrontNotAvailable
         }
 
-        guard (200...299).contains(http.statusCode) else {
+        guard (200 ... 299).contains(http.statusCode) else {
             throw MusicServiceError.apiError(statusCode: http.statusCode)
         }
 
