@@ -19,7 +19,7 @@ struct TimeView: View {
                     date: context.date,
                     timeZone: viewModel.timeZone
                 )
-                .frame(width: 120, height: 120)
+                .aspectRatio(1, contentMode: .fit)
                 .padding()
 
                 // -- Digital clock --
@@ -34,7 +34,7 @@ struct TimeView: View {
 
                 Spacer()
             }
-            .frame(width: 175, height: 250)
+            .frame(minWidth: 140, minHeight: 200)
             .background(
                 RoundedRectangle(cornerRadius: 15)
                     .fill(Color.black.opacity(0.5))

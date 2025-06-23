@@ -1,11 +1,14 @@
 import CoreLocation
 import SwiftUI
+@preconcurrency import WeatherKit
 
 struct WeatherView: View {
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.locale) private var locale
     @StateObject private var viewModel: WeatherViewModel
 
-    /// Celsius is primary for Metric & U.K., Fahrenheit for U.S.
+    @State private var attribution: WeatherAttribution?
+
     private var prefersMetric: Bool {
         locale.prefersCelsius
     }
@@ -62,14 +65,38 @@ struct WeatherView: View {
                         .opacity(prefersMetric ? 0.6 : 1.0)
                 }
                 .foregroundColor(.white)
-                .padding(.bottom, 10)
 
+                Spacer()
+
+                // MARK: - WeatherKit Attribution
+                if let attribution = attribution {
+                    HStack(spacing: 8) {
+                        AsyncImage(url: logoURL(for: colorScheme)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 10)
+                                .font(.caption)
+                        } placeholder: {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.white)
+                                .frame(height: 10)
+                                .font(.caption)
+                        }
+
+                        Link("Legal", destination: attribution.legalPageURL)
+                            .font(.caption)
+                            .foregroundColor(.white.opacity(0.8))
+                    }
+                    .padding(.bottom, 12)
+                }
             } else {
                 Text("---")
                     .foregroundColor(.white)
             }
         }
-        .frame(width: 175, height: 250)
+        .frame(minWidth: 140, minHeight: 200)
         .padding(5)
         .background(
             RoundedRectangle(cornerRadius: 15)
@@ -77,7 +104,28 @@ struct WeatherView: View {
                 .shadow(radius: 5)
         )
         .padding()
+        .task {
+            await fetchAttribution()
+        }
         .animation(.easeInOut, value: viewModel.isLoading)
         .animation(.easeInOut, value: viewModel.weatherInfo?.condition)
+    }
+
+    // MARK: - Helper Functions
+    private func fetchAttribution() async {
+        do {
+            self.attribution = try await WeatherService.shared.attribution
+        } catch {
+            print(
+                "Failed to fetch WeatherKit attribution: \(error.localizedDescription)"
+            )
+        }
+    }
+
+    private func logoURL(for colorScheme: ColorScheme) -> URL? {
+        guard let attribution = attribution else { return nil }
+
+        return colorScheme == .dark
+            ? attribution.combinedMarkDarkURL : attribution.combinedMarkLightURL
     }
 }

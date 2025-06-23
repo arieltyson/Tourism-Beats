@@ -8,9 +8,9 @@ struct CityView: View {
             GradientProvider.gradients.randomElement()?
                 .ignoresSafeArea()
 
-            VStack {
+            VStack(spacing: 0) {
                 VStack {
-                    Text(city.name)
+                    Text("\(city.name),")
                     Text("\(city.country.name) \(city.country.flag)")
                 }
                 .font(.title2).bold().italic()
@@ -18,6 +18,7 @@ struct CityView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
+                .padding(.bottom, 20)
 
                 VStack {
                     Image(city.imageName)
@@ -31,17 +32,17 @@ struct CityView: View {
                         .fill(Color.black.opacity(0.5))
                         .shadow(radius: 5)
                 )
-                .padding()
+                .padding(.horizontal)
+                .frame(maxHeight: .infinity)
+                .layoutPriority(1)
 
-                Spacer()
+                Spacer(minLength: 20)
 
                 HStack {
                     TimeView(city: city)
                         .frame(maxWidth: .infinity)
-                        .scaleEffect(0.85)
                     WeatherView(city: city)
                         .frame(maxWidth: .infinity)
-                        .scaleEffect(0.85)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
