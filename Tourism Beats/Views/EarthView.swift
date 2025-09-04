@@ -1,10 +1,12 @@
 import SceneKit
 import SwiftUI
 
+// MARK: - EarthView
+
 struct EarthView: UIViewRepresentable {
     func makeUIView(context _: Context) -> SCNView {
         let sceneView = SCNView()
-        sceneView.scene = createScene()
+        sceneView.scene = self.createScene()
         sceneView.allowsCameraControl = false
         sceneView.showsStatistics = false
         sceneView.backgroundColor = UIColor.black
@@ -17,7 +19,7 @@ struct EarthView: UIViewRepresentable {
         let scene = SCNScene()
 
         // Create and add the Earth node
-        let earthNode = createEarthNode()
+        let earthNode = self.createEarthNode()
         scene.rootNode.addChildNode(earthNode)
 
         // Rotate the Earth node
@@ -43,6 +45,8 @@ struct EarthView: UIViewRepresentable {
         return earthNode
     }
 }
+
+// MARK: - EarthSceneView_Previews
 
 struct EarthSceneView_Previews: PreviewProvider {
     static var previews: some View {

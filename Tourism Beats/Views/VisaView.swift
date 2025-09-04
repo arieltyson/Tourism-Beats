@@ -7,7 +7,7 @@ struct VisaView: View {
     @State private var showingCountryPicker = false
 
     private var currentCountry: CountryModel? {
-        allCountries.first { $0.code == viewModel.passportCode }
+        self.allCountries.first { $0.code == self.viewModel.passportCode }
     }
 
     var body: some View {
@@ -19,7 +19,7 @@ struct VisaView: View {
 
                 HStack(alignment: .top) {
                     Button {
-                        showingCountryPicker = true
+                        self.showingCountryPicker = true
                     } label: {
                         HStack {
                             if let country = currentCountry {
@@ -45,26 +45,26 @@ struct VisaView: View {
                                 y: 2
                             )
                     )
-                    .sheet(isPresented: $showingCountryPicker) {
+                    .sheet(isPresented: self.$showingCountryPicker) {
                         SearchableCountryPicker(
-                            selectedCode: $viewModel.passportCode
+                            selectedCode: self.$viewModel.passportCode
                         )
                     }
-                    .onChange(of: viewModel.passportCode) { _, newValue in
-                        viewModel.updatePassport(to: newValue)
+                    .onChange(of: self.viewModel.passportCode) { _, newValue in
+                        self.viewModel.updatePassport(to: newValue)
                     }
 
                     Group {
-                        if viewModel.isLoading {
+                        if self.viewModel.isLoading {
                             ProgressView()
-                        } else if viewModel.errorMessage != nil {
+                        } else if self.viewModel.errorMessage != nil {
                             Text("Error")
                                 .foregroundColor(.red)
-                        } else if viewModel.requirement != nil {
-                            Text(viewModel.summaryText)
+                        } else if self.viewModel.requirement != nil {
+                            Text(self.viewModel.summaryText)
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .foregroundColor(viewModel.requirementColor)
+                                .foregroundColor(self.viewModel.requirementColor)
                         } else {
                             Text("No info")
                                 .foregroundColor(.gray)

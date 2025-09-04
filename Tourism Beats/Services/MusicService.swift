@@ -5,7 +5,7 @@ actor MusicService: MusicProtocol {
     static let shared = MusicService()
 
     private var chartCache: [String: (Date, AppSong)] = [:]
-    private let cacheDuration: TimeInterval = 3 * 60 * 60  // 3 hours
+    private let cacheDuration: TimeInterval = 3 * 60 * 60 // 3 hours
 
     private init() {}
 
@@ -27,7 +27,8 @@ actor MusicService: MusicProtocol {
         }
 
         if let (ts, song) = chartCache[code],
-            Date().timeIntervalSince(ts) < cacheDuration {
+           Date().timeIntervalSince(ts) < cacheDuration
+        {
             return song
         }
 
@@ -41,7 +42,7 @@ actor MusicService: MusicProtocol {
         guard
             let url = URL(
                 string:
-                    "https://api.music.apple.com/v1/catalog/\(storefront)/charts?types=songs&limit=1"
+                "https://api.music.apple.com/v1/catalog/\(storefront)/charts?types=songs&limit=1"
             )
         else { throw MusicServiceError.invalidURL }
 
@@ -56,7 +57,7 @@ actor MusicService: MusicProtocol {
         if http.statusCode == 400 || http.statusCode == 404 {
             throw MusicServiceError.storefrontNotAvailable
         }
-        guard (200...299).contains(http.statusCode) else {
+        guard (200 ... 299).contains(http.statusCode) else {
             throw MusicServiceError.apiError(statusCode: http.statusCode)
         }
 
@@ -75,14 +76,14 @@ actor MusicService: MusicProtocol {
 
             let song = AppSong(
                 source: .appleMusic,
-                id: apiSong.id,  // String id (MusicKit-compatible)
+                id: apiSong.id, // String id (MusicKit-compatible)
                 title: attrs.name,
                 artistName: attrs.artistName,
                 artworkURL: attrs.artwork?.artworkURL(),
-                deepLinkURL: nil  // Apple playback is in-app
+                deepLinkURL: nil // Apple playback is in-app
             )
 
-            chartCache[code] = (Date(), song)
+            self.chartCache[code] = (Date(), song)
             return song
         } catch let decodeErr {
             throw MusicServiceError.decodingError(decodeErr)

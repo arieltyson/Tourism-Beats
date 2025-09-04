@@ -2,6 +2,8 @@ import CoreLocation
 import Foundation
 @preconcurrency import WeatherKit
 
+// MARK: - WeatherDisplayInfo
+
 struct WeatherDisplayInfo: Sendable, Hashable {
     let condition: String
     let iconName: String
@@ -9,9 +11,13 @@ struct WeatherDisplayInfo: Sendable, Hashable {
     let temperatureFahrenheit: String
 }
 
+// MARK: - WeatherError
+
 enum WeatherError: Error {
     case fetchFailed(Error)
 }
+
+// MARK: - WeatherFetcherService
 
 @MainActor
 class WeatherFetcherService {
@@ -26,14 +32,15 @@ class WeatherFetcherService {
     }()
 
     func fetchWeather(at coordinate: CLLocationCoordinate2D) async throws
-        -> WeatherDisplayInfo {
+        -> WeatherDisplayInfo
+    {
         let location = CLLocation(
             latitude: coordinate.latitude,
             longitude: coordinate.longitude
         )
         do {
             let weather = try await weatherService.weather(for: location)
-            return processWeather(weather)
+            return self.processWeather(weather)
         } catch {
             throw WeatherError.fetchFailed(error)
         }
@@ -70,26 +77,26 @@ class WeatherFetcherService {
 
     private func iconName(for condition: WeatherCondition) -> String {
         switch condition {
-        case .clear: return "sun.max.fill"
-        case .mostlyClear, .partlyCloudy, .mostlyCloudy: return "cloud.sun.fill"
-        case .cloudy: return "cloud.fill"
-        case .foggy: return "cloud.fog.fill"
-        case .haze: return "sun.haze.fill"
-        case .drizzle, .rain: return "cloud.rain.fill"
-        case .thunderstorms: return "cloud.bolt.fill"
-        case .snow, .sleet, .freezingRain, .hail: return "snow"
-        case .blizzard, .blowingSnow: return "wind.snow"
-        case .blowingDust: return "sun.dust.fill"
-        case .breezy, .windy: return "wind"
-        case .hot: return "sun.max.fill"
-        case .flurries, .sunFlurries: return "cloud.snow.fill"
-        case .frigid: return "thermometer.snowflake"
-        case .heavyRain: return "cloud.heavyrain.fill"
-        case .hurricane, .tropicalStorm: return "hurricane"
+        case .clear: "sun.max.fill"
+        case .mostlyClear, .mostlyCloudy, .partlyCloudy: "cloud.sun.fill"
+        case .cloudy: "cloud.fill"
+        case .foggy: "cloud.fog.fill"
+        case .haze: "sun.haze.fill"
+        case .drizzle, .rain: "cloud.rain.fill"
+        case .thunderstorms: "cloud.bolt.fill"
+        case .freezingRain, .hail, .sleet, .snow: "snow"
+        case .blizzard, .blowingSnow: "wind.snow"
+        case .blowingDust: "sun.dust.fill"
+        case .breezy, .windy: "wind"
+        case .hot: "sun.max.fill"
+        case .flurries, .sunFlurries: "cloud.snow.fill"
+        case .frigid: "thermometer.snowflake"
+        case .heavyRain: "cloud.heavyrain.fill"
+        case .hurricane, .tropicalStorm: "hurricane"
         case .isolatedThunderstorms, .scatteredThunderstorms:
-            return "cloud.sun.bolt.fill"
-        case .smoky: return "smoke.fill"
-        default: return "cloud"
+            "cloud.sun.bolt.fill"
+        case .smoky: "smoke.fill"
+        default: "cloud"
         }
     }
 }

@@ -10,22 +10,22 @@ class WeatherViewModel: ObservableObject {
     private let fetcher = WeatherFetcherService()
 
     init(coordinate: CLLocationCoordinate2D) {
-        loadWeather(at: coordinate)
+        self.loadWeather(at: coordinate)
     }
 
     func loadWeather(at coordinate: CLLocationCoordinate2D) {
-        isLoading = true
-        errorMessage = nil
-        weatherInfo = nil
+        self.isLoading = true
+        self.errorMessage = nil
+        self.weatherInfo = nil
 
         Task {
             do {
                 let displayInfo = try await fetcher.fetchWeather(at: coordinate)
-                weatherInfo = displayInfo
+                self.weatherInfo = displayInfo
             } catch {
-                errorMessage = "Weather unavailable."
+                self.errorMessage = "Weather unavailable."
             }
-            isLoading = false
+            self.isLoading = false
         }
     }
 }

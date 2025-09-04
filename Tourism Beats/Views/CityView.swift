@@ -7,8 +7,8 @@ struct CityView: View {
         // Foreground content only (background provided by container)
         VStack(spacing: 0) {
             VStack {
-                Text("\(city.name),")
-                Text("\(city.country.name) \(city.country.flag)")
+                Text("\(self.city.name),")
+                Text("\(self.city.country.name) \(self.city.country.flag)")
             }
             .font(.title2).bold().italic()
             .foregroundColor(.white)
@@ -18,7 +18,7 @@ struct CityView: View {
             .padding(.bottom, 20)
 
             VStack {
-                Image(city.imageName)
+                Image(self.city.imageName)
                     .resizable()
                     .aspectRatio(1, contentMode: .fit)
                     .cornerRadius(15)
@@ -36,8 +36,8 @@ struct CityView: View {
             Spacer(minLength: 20)
 
             HStack {
-                TimeView(city: city).frame(maxWidth: .infinity)
-                WeatherView(city: city).frame(maxWidth: .infinity)
+                TimeView(city: self.city).frame(maxWidth: .infinity)
+                WeatherView(city: self.city).frame(maxWidth: .infinity)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)

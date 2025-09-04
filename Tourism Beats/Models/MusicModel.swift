@@ -1,7 +1,7 @@
 import Foundation
 import MusicKit
 
-// MARK: - Provider
+// MARK: - AppSongSource
 
 /// The catalog a song came from.
 public enum AppSongSource: String, Codable, Sendable {
@@ -9,7 +9,7 @@ public enum AppSongSource: String, Codable, Sendable {
     case spotify
 }
 
-// MARK: - App-facing song model
+// MARK: - AppSong
 
 /// Provider-agnostic song model used by the UI and view models.
 /// - Note: `id` is the provider’s native identifier (Apple Music or Spotify).
@@ -17,7 +17,7 @@ public enum AppSongSource: String, Codable, Sendable {
 ///         at the point of Apple Music playback.
 public struct AppSong: Sendable, Equatable, Hashable {
     public let source: AppSongSource
-    public let id: String  // Provider ID (AM/Spotify)
+    public let id: String // Provider ID (AM/Spotify)
     public let title: String
     public let artistName: String
     public let artworkURL: URL?
@@ -45,16 +45,16 @@ public struct AppSong: Sendable, Equatable, Hashable {
 
 // MARK: - Apple Music conveniences
 
-extension AppSong {
+public extension AppSong {
     /// Convenience for Apple Music playback: converts the provider `id`
     /// to `MusicItemID` **iff** the source is Apple Music.
-    public var musicKitID: MusicItemID? {
-        source == .appleMusic ? MusicItemID(id) : nil
+    var musicKitID: MusicItemID? {
+        self.source == .appleMusic ? MusicItemID(self.id) : nil
     }
 
     /// Useful flags in UI/view models.
-    public var isAppleMusic: Bool { source == .appleMusic }
-    public var isSpotify: Bool { source == .spotify }
+    var isAppleMusic: Bool { self.source == .appleMusic }
+    var isSpotify: Bool { self.source == .spotify }
 }
 
 // MARK: - Apple Music API response models
@@ -90,9 +90,9 @@ struct ArtworkAPI: Decodable, Sendable {
     /// Returns a sized artwork URL by replacing the `{w}` and `{h}` tokens.
     func artworkURL(width: Int = 600, height: Int = 600) -> URL? {
         let sized =
-            url
-            .replacingOccurrences(of: "{w}", with: "\(width)")
-            .replacingOccurrences(of: "{h}", with: "\(height)")
+            self.url
+                .replacingOccurrences(of: "{w}", with: "\(width)")
+                .replacingOccurrences(of: "{h}", with: "\(height)")
         return URL(string: sized)
     }
 }

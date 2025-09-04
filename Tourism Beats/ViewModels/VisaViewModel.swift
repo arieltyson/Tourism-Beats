@@ -17,40 +17,40 @@ class VisaViewModel: ObservableObject {
         self.passportCode = passportCode
         self.destinationCode = destinationCode
         self.service = service
-        fetchRequirement()
+        self.fetchRequirement()
     }
 
     func fetchRequirement() {
-        isLoading = true
-        errorMessage = nil
+        self.isLoading = true
+        self.errorMessage = nil
 
         Task { @MainActor in
             do {
-                requirement = try await service.fetchVisaRequirement(
-                    passport: passportCode,
-                    destination: destinationCode
+                self.requirement = try await self.service.fetchVisaRequirement(
+                    passport: self.passportCode,
+                    destination: self.destinationCode
                 )
             } catch {
-                errorMessage = "Could not load visa requirements."
+                self.errorMessage = "Could not load visa requirements."
             }
-            isLoading = false
+            self.isLoading = false
         }
     }
 
     func updatePassport(to newCode: String) {
-        passportCode = newCode
-        fetchRequirement()
+        self.passportCode = newCode
+        self.fetchRequirement()
     }
 
     var summaryText: String {
-        if passportCode.uppercased() == destinationCode.uppercased() {
+        if self.passportCode.uppercased() == self.destinationCode.uppercased() {
             return "Welcome Home 🏡"
         }
-        return requirement?.requirement ?? ""
+        return self.requirement?.requirement ?? ""
     }
 
     var requirementColor: Color {
-        if passportCode.uppercased() == destinationCode.uppercased() {
+        if self.passportCode.uppercased() == self.destinationCode.uppercased() {
             return .green
         }
         guard let req = requirement?.requirement.lowercased() else {

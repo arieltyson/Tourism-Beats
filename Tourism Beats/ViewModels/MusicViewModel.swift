@@ -26,10 +26,10 @@ class MusicViewModel: ObservableObject {
 
     // Apple playback
     private var playableSong: Song?
-    private var appleSong: AppSong?  // ← hold Apple song 
+    private var appleSong: AppSong? // ← hold Apple song
 
     // Spotify
-    private var spotifyMirroredSong: AppSong?  // ← hold Spotify mirror
+    private var spotifyMirroredSong: AppSong? // ← hold Spotify mirror
 
     // Playback state monitoring
     private var cancellables = Set<AnyCancellable>()
@@ -40,7 +40,7 @@ class MusicViewModel: ObservableObject {
     init(city: CityModel, musicService: MusicProtocol = MusicService.shared) {
         self.city = city
         self.musicService = musicService
-        setupPlaybackStateMonitoring()
+        self.setupPlaybackStateMonitoring()
     }
 
     deinit {
@@ -59,7 +59,7 @@ class MusicViewModel: ObservableObject {
                 await self?.handleAppBecameActive()
             }
         }
-        .store(in: &cancellables)
+        .store(in: &self.cancellables)
 
         NotificationCenter.default.publisher(
             for: UIApplication.willResignActiveNotification
@@ -69,7 +69,7 @@ class MusicViewModel: ObservableObject {
                 await self?.handleAppWillResignActive()
             }
         }
-        .store(in: &cancellables)
+        .store(in: &self.cancellables)
 
         // Audio interruptions
         NotificationCenter.default.publisher(
@@ -80,33 +80,33 @@ class MusicViewModel: ObservableObject {
                 await self?.handleAudioInterruption(notification)
             }
         }
-        .store(in: &cancellables)
+        .store(in: &self.cancellables)
 
         // Periodic sync
-        startPlaybackStateMonitoring()
+        self.startPlaybackStateMonitoring()
     }
 
     private func startPlaybackStateMonitoring() {
-        playbackStateTask?.cancel()
-        playbackStateTask = Task {
+        self.playbackStateTask?.cancel()
+        self.playbackStateTask = Task {
             while !Task.isCancelled {
-                await syncPlaybackState()
-                try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1s
+                await self.syncPlaybackState()
+                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1s
             }
         }
     }
 
     private func handleAppBecameActive() async {
-        await syncPlaybackState()
-        if appleSong != nil {
-            startPlaybackStateMonitoring()
+        await self.syncPlaybackState()
+        if self.appleSong != nil {
+            self.startPlaybackStateMonitoring()
         }
     }
 
     private func handleAppWillResignActive() async {
-        playbackStateTask?.cancel()
-        if appleSong != nil {
-            lastKnownPlaybackState =
+        self.playbackStateTask?.cancel()
+        if self.appleSong != nil {
+            self.lastKnownPlaybackState =
                 ApplicationMusicPlayer.shared.state.playbackStatus
         }
     }
@@ -115,24 +115,25 @@ class MusicViewModel: ObservableObject {
         guard
             let userInfo = notification.userInfo,
             let typeValue = userInfo[AVAudioSessionInterruptionTypeKey]
-                as? UInt,
+            as? UInt,
             let type = AVAudioSession.InterruptionType(rawValue: typeValue)
         else { return }
 
         switch type {
         case .began:
-            if isPlaying {
-                isPlaying = false
-                lastKnownPlaybackState = .interrupted
+            if self.isPlaying {
+                self.isPlaying = false
+                self.lastKnownPlaybackState = .interrupted
             }
         case .ended:
             if let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey]
-                as? UInt {
+                as? UInt
+            {
                 let options = AVAudioSession.InterruptionOptions(
                     rawValue: optionsValue
                 )
                 if options.contains(.shouldResume) {
-                    await syncPlaybackState()
+                    await self.syncPlaybackState()
                 }
             }
         @unknown default:
@@ -141,41 +142,42 @@ class MusicViewModel: ObservableObject {
     }
 
     private func syncPlaybackState() async {
-        guard appleSong != nil else { return }
+        guard self.appleSong != nil else { return }
         let player = ApplicationMusicPlayer.shared
         let status = player.state.playbackStatus
-        if isPlaying != (status == .playing) {
-            isPlaying = (status == .playing)
+        if self.isPlaying != (status == .playing) {
+            self.isPlaying = (status == .playing)
         }
-        lastKnownPlaybackState = status
+        self.lastKnownPlaybackState = status
     }
 
     // MARK: - Lifecycle
+
     /// Load metadata without prompting for Apple authorization.
     func requestAccessAndLoadTopSong() async {
-        guard !hasLoadedData else { return }
-        hasLoadedData = true
-        await fetchTopSongMetadata()
+        guard !self.hasLoadedData else { return }
+        self.hasLoadedData = true
+        await self.fetchTopSongMetadata()
     }
 
     private func fetchTopSongMetadata() async {
-        songTitle = "Loading Top Song…"
-        artistName = "for \(city.country.name)"
-        songImage = nil
-        isPlaying = false
-        playableSong = nil
-        playbackErrorMessage = nil
-        userFeedbackMessage = nil
-        spotifyMirroredSong = nil  // reset any prior mirror
+        self.songTitle = "Loading Top Song…"
+        self.artistName = "for \(self.city.country.name)"
+        self.songImage = nil
+        self.isPlaying = false
+        self.playableSong = nil
+        self.playbackErrorMessage = nil
+        self.userFeedbackMessage = nil
+        self.spotifyMirroredSong = nil // reset any prior mirror
 
         do {
             let appSong = try await musicService.fetchTopSong(
-                countryCode: city.country.code
+                countryCode: self.city.country.code
             )
-            appleSong = appSong  // ← keep Apple song
-            songTitle = appSong.title
-            artistName = appSong.artistName
-            songImage = appSong.artworkURL
+            self.appleSong = appSong // ← keep Apple song
+            self.songTitle = appSong.title
+            self.artistName = appSong.artistName
+            self.songImage = appSong.artworkURL
         } catch let error as MusicService.MusicServiceError {
             if case .storefrontNotAvailable = error {
                 songTitle = "Music Not Available"
@@ -187,16 +189,17 @@ class MusicViewModel: ObservableObject {
             }
             print("🎵 fetch error:", error)
         } catch {
-            songTitle = "Could Not Load Song"
-            artistName = error.localizedDescription
+            self.songTitle = "Could Not Load Song"
+            self.artistName = error.localizedDescription
             print("🎵 fetch error:", error)
         }
     }
 
     // MARK: - Apple Music
+
     func handleAppleMusicAction() async {
-        userFeedbackMessage = nil
-        playbackErrorMessage = nil
+        self.userFeedbackMessage = nil
+        self.playbackErrorMessage = nil
 
         // Request permission only when user taps
         let status = await MusicAuthorization.request()
@@ -210,11 +213,11 @@ class MusicViewModel: ObservableObject {
             // try anyway; errors will be surfaced via playback failure
         }
 
-        await togglePlayback()
+        await self.togglePlayback()
     }
 
     private func togglePlayback() async {
-        guard let appSong = appleSong else { return }  // ← use Apple song only
+        guard let appSong = appleSong else { return } // ← use Apple song only
 
         let player = ApplicationMusicPlayer.shared
         let currentStatus = player.state.playbackStatus
@@ -222,14 +225,14 @@ class MusicViewModel: ObservableObject {
         // Pause if already playing
         if currentStatus == .playing {
             player.pause()
-            isPlaying = false
-            lastKnownPlaybackState = .paused
+            self.isPlaying = false
+            self.lastKnownPlaybackState = .paused
             return
         }
 
         // Resume/Play
         if let song = playableSong {
-            await play(song)
+            await self.play(song)
             return
         }
 
@@ -243,8 +246,8 @@ class MusicViewModel: ObservableObject {
             )
             let resp = try await req.response()
             if let song = resp.items.first {
-                playableSong = song
-                await play(song)
+                self.playableSong = song
+                await self.play(song)
             }
         } catch {}
     }
@@ -253,22 +256,23 @@ class MusicViewModel: ObservableObject {
         ApplicationMusicPlayer.shared.queue = [song]
         do {
             try await ApplicationMusicPlayer.shared.play()
-            isPlaying = true
-            lastKnownPlaybackState = .playing
+            self.isPlaying = true
+            self.lastKnownPlaybackState = .playing
         } catch {
-            isPlaying = false
-            lastKnownPlaybackState = .stopped
+            self.isPlaying = false
+            self.lastKnownPlaybackState = .stopped
         }
     }
 
     // MARK: - Spotify
+
     func handleSpotifyAction() async {
-        userFeedbackMessage = nil
-        playbackErrorMessage = nil
+        self.userFeedbackMessage = nil
+        self.playbackErrorMessage = nil
 
         // Require app installed
         guard let spotifyURL = URL(string: "spotify://"),
-            UIApplication.shared.canOpenURL(spotifyURL)
+              UIApplication.shared.canOpenURL(spotifyURL)
         else {
             return
         }
@@ -278,24 +282,24 @@ class MusicViewModel: ObservableObject {
 
         // If we already mirrored once, reuse instantly
         if let s = spotifyMirroredSong, let deep = s.deepLinkURL {
-            await open(deep)
+            await self.open(deep)
             return
         }
 
         // If Apple Music is playing, Spotify will interrupt; our interruption
         // handler will update UI state appropriately.
-        isSpotifySearching = true
+        self.isSpotifySearching = true
         defer { isSpotifySearching = false }
 
         do {
             let mirrored = try await SpotifyService().mirror(
                 title: apple.title,
                 artist: apple.artistName,
-                countryCode: city.country.code
+                countryCode: self.city.country.code
             )
-            spotifyMirroredSong = mirrored
+            self.spotifyMirroredSong = mirrored
             if let deep = mirrored.deepLinkURL {
-                await open(deep)
+                await self.open(deep)
             }
         } catch {}
     }

@@ -1,7 +1,7 @@
 import Foundation
 
 struct SafetyModel: Codable, Identifiable, Sendable {
-    var id: String { countryCode }
+    var id: String { self.countryCode }
 
     let countryName: String
     let countryCode: String

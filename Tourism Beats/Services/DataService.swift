@@ -1,11 +1,15 @@
 import CoreLocation
 import Foundation
 
+// MARK: - DataServiceError
+
 /// Errors this service can throw when loading your bundled JSON.
 enum DataServiceError: Error {
     case fileNotFound(String)
     case decodingError(Error)
 }
+
+// MARK: - CityJSON
 
 /// Matches the shape of each record in `cities.json`.
 private struct CityJSON: Decodable {
@@ -17,11 +21,13 @@ private struct CityJSON: Decodable {
     let timeZoneIdentifier: String
 }
 
+// MARK: - DataService
+
 /// Loads & links `CountryModel` + `CityModel` from your bundled JSON.
 final class DataService {
     /// Load all countries from `countries.json`.
     func loadCountries() throws -> [CountryModel] {
-        try loadJSON("countries.json")
+        try self.loadJSON("countries.json")
     }
 
     /// Load all cities from `cities.json`, then look up each city’s `CountryModel` by code.

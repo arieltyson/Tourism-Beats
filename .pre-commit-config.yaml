@@ -1,23 +1,37 @@
-repos:
-  - repo: https://github.com/realm/SwiftLint
-    rev: 0.59.1
-    hooks:
-      - id: swiftlint
-        name: swiftlint-fix
-        entry: bash -c 'export PATH="/opt/homebrew/bin:$PATH"; swiftlint --fix'
-        language: system
-        types: [swift]
-      - id: swiftlint
-        name: swiftlint-check
-        entry: bash -c 'export PATH="/opt/homebrew/bin:$PATH"; swiftlint'
-        language: system
-        types: [swift]
+# .pre-commit-config.yaml
+# Order: SwiftFormat → SwiftLint autocorrect → restage changes → SwiftLint (blocking)
+# Runs against the whole tree for consistent results.
 
-  - repo: https://github.com/nicklockwood/SwiftFormat
-    rev: 0.56.4
+repos:
+  - repo: local
     hooks:
       - id: swiftformat
-        name: swiftformat-with-version
-        entry: bash -c 'export PATH="/opt/homebrew/bin:$PATH"; swiftformat --swiftversion 6.1.1 --config .swiftformat'
+        name: SwiftFormat
+        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftformat . --swiftversion 6.1.1 --config .swiftformat'
         language: system
         types: [swift]
+        pass_filenames: false
+        stages: [commit]
+
+      - id: swiftlint-autocorrect
+        name: SwiftLint (autocorrect)
+        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftlint autocorrect --format --quiet || true'
+        language: system
+        types: [swift]
+        pass_filenames: false
+        stages: [commit]
+
+      - id: restage
+        name: Restage formatting changes
+        entry: bash -lc 'git add -A'
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      - id: swiftlint
+        name: SwiftLint (check)
+        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftlint'
+        language: system
+        types: [swift]
+        pass_filenames: false
+        stages: [commit]

@@ -15,18 +15,18 @@ class SafetyViewModel: ObservableObject {
     ) {
         self.city = city
         self.safetyService = safetyService
-        fetchSafetyData()
+        self.fetchSafetyData()
     }
 
     func fetchSafetyData() {
-        isLoading = true
-        errorMessage = nil
+        self.isLoading = true
+        self.errorMessage = nil
 
-        let countryCode = city.country.code
+        let countryCode = self.city.country.code
 
         Task { @MainActor in
             do {
-                self.safetyData = try await safetyService.fetchSafetyData(
+                self.safetyData = try await self.safetyService.fetchSafetyData(
                     for: countryCode
                 )
             } catch {

@@ -1,12 +1,12 @@
 import SwiftUI
 
-// MARK: - App Tab Enum
+// MARK: - AppTab
 
 enum AppTab: Hashable {
     case home, search
 }
 
-// MARK: - Music Route Model
+// MARK: - MusicRoute
 
 /// Wrapper so we can push MusicView on the same navigation stack
 struct MusicRoute: Hashable {

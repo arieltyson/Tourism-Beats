@@ -12,9 +12,9 @@ struct NeumorphicButtonStyle: ButtonStyle {
         let darkShadow = Color.black.opacity(0.2)
 
         return configuration.label
-            .padding()  // inner content padding
+            .padding() // inner content padding
             .background(
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
                     .fill(bg)
                     // “raised” when not pressed, “inset” when pressed
                     .shadow(

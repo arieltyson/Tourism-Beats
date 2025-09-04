@@ -1,6 +1,6 @@
 import SwiftUI
 
-// MARK: - Provider Logo
+// MARK: - ProviderLogo
 
 enum ProviderLogo {
     case spotify, appleMusic
@@ -24,13 +24,13 @@ enum ProviderLogo {
     }
 }
 
-// MARK: - Pill Right Kind
+// MARK: - PillRightKind
 
 enum PillRightKind {
     case link, play, pause, loading
 }
 
-// MARK: - Neumorphic Pill (tappable)
+// MARK: - NeumorphicPill
 
 struct NeumorphicPill: View {
     let logo: ProviderLogo
@@ -43,6 +43,7 @@ struct NeumorphicPill: View {
     private let corner: CGFloat = 18
 
     // MARK: - Adaptive Colors
+
     private var adaptiveAccent: Color {
         Color.primary.opacity(0.8)
     }
@@ -66,42 +67,42 @@ struct NeumorphicPill: View {
     }
 
     var body: some View {
-        Button(action: action) {
+        Button(action: self.action) {
             HStack(spacing: 12) {
-                logo.view
+                self.logo.view
                     .frame(width: 22, height: 22)
-                    .opacity(dimmed ? 0.45 : 1.0)
-                    .foregroundStyle(adaptiveAccent)
+                    .opacity(self.dimmed ? 0.45 : 1.0)
+                    .foregroundStyle(self.adaptiveAccent)
 
-                Text(title)
+                Text(self.title)
                     .font(.subheadline.weight(.semibold))
                     .foregroundColor(.primary)
-                    .opacity(dimmed ? 0.6 : 1.0)
+                    .opacity(self.dimmed ? 0.6 : 1.0)
 
                 Spacer(minLength: 8)
 
-                rightIcon
+                self.rightIcon
                     .frame(width: 20, height: 20)
-                    .foregroundStyle(dimmed ? adaptiveGray : adaptiveAccent)
+                    .foregroundStyle(self.dimmed ? self.adaptiveGray : self.adaptiveAccent)
                     .font(.system(size: 16, weight: .bold))
             }
-            .frame(maxWidth: .infinity, minHeight: height)
+            .frame(maxWidth: .infinity, minHeight: self.height)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text(title))
-            .accessibilityHint(Text(accessibilityHint))
-            .opacity(dimmed ? 0.9 : 1.0)
+            .accessibilityLabel(Text(self.title))
+            .accessibilityHint(Text(self.accessibilityHint))
+            .opacity(self.dimmed ? 0.9 : 1.0)
             // Ensure the whole rounded shape is tappable
             .contentShape(
-                RoundedRectangle(cornerRadius: corner, style: .continuous)
+                RoundedRectangle(cornerRadius: self.corner, style: .continuous)
             )
         }
-        .buttonStyle(NeumorphicButtonStyle(cornerRadius: corner))
+        .buttonStyle(NeumorphicButtonStyle(cornerRadius: self.corner))
         .frame(maxWidth: .infinity)
     }
 
     @ViewBuilder
     private var rightIcon: some View {
-        switch rightKind {
+        switch self.rightKind {
         case .link:
             Image(systemName: "arrow.up.right.square")
                 .symbolRenderingMode(.hierarchical)
@@ -113,17 +114,17 @@ struct NeumorphicPill: View {
             ProgressView()
                 .scaleEffect(0.8)
                 .progressViewStyle(
-                    CircularProgressViewStyle(tint: adaptiveAccent)
+                    CircularProgressViewStyle(tint: self.adaptiveAccent)
                 )
         }
     }
 
     private var accessibilityHint: String {
-        switch rightKind {
-        case .link: return "Opens in Spotify"
-        case .play: return "Plays the song with Apple Music"
-        case .pause: return "Pauses playback"
-        case .loading: return "Searching for song"
+        switch self.rightKind {
+        case .link: "Opens in Spotify"
+        case .play: "Plays the song with Apple Music"
+        case .pause: "Pauses playback"
+        case .loading: "Searching for song"
         }
     }
 }

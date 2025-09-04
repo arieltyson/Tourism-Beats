@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - SearchableCountryPicker
+
 struct SearchableCountryPicker: View {
     @Binding var selectedCode: String
     @State private var searchText = ""
@@ -11,17 +13,17 @@ struct SearchableCountryPicker: View {
     private var groupedCountries: [String: [CountryModel]] {
         let filtered: [CountryModel]
 
-        if searchText.isEmpty {
-            filtered = allCountries
+        if self.searchText.isEmpty {
+            filtered = self.allCountries
         } else {
-            let lowercasedSearchText = searchText.lowercased()
-            filtered = allCountries.filter { country in
+            let lowercasedSearchText = self.searchText.lowercased()
+            filtered = self.allCountries.filter { country in
                 let nameWords = country.name.split(separator: " ")
                 let nameMatches = nameWords.contains {
                     $0.lowercased().hasPrefix(lowercasedSearchText)
                 }
                 let codeMatches = country.code.localizedCaseInsensitiveContains(
-                    searchText
+                    self.searchText
                 )
                 return nameMatches || codeMatches
             }
@@ -33,35 +35,35 @@ struct SearchableCountryPicker: View {
     }
 
     private var sectionLetters: [String] {
-        groupedCountries.keys.sorted()
+        self.groupedCountries.keys.sorted()
     }
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(sectionLetters, id: \.self) { letter in
+                ForEach(self.sectionLetters, id: \.self) { letter in
                     Section(header: SectionHeader(letter: letter)) {
-                        ForEach(groupedCountries[letter] ?? [], id: \.id) {
+                        ForEach(self.groupedCountries[letter] ?? [], id: \.id) {
                             country in
                             CountryRow(
                                 country: country,
-                                selectedCode: $selectedCode
+                                selectedCode: self.$selectedCode
                             )
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                selectedCode = country.code
-                                dismiss()
+                                self.selectedCode = country.code
+                                self.dismiss()
                             }
                         }
                     }
                 }
             }
             .overlay(alignment: .trailing) {
-                if searchText.isEmpty {
-                    SectionIndexTitles(letters: sectionLetters)
+                if self.searchText.isEmpty {
+                    SectionIndexTitles(letters: self.sectionLetters)
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer)
+            .searchable(text: self.$searchText, placement: .navigationBarDrawer)
             .navigationTitle("Select Country")
             .navigationBarTitleDisplayMode(.inline)
             .listStyle(.plain)
@@ -70,13 +72,13 @@ struct SearchableCountryPicker: View {
     }
 }
 
-// MARK: - Subcomponents
+// MARK: - SectionHeader
 
 private struct SectionHeader: View {
     let letter: String
 
     var body: some View {
-        Text(letter)
+        Text(self.letter)
             .font(.system(.headline, design: .rounded))
             .foregroundColor(.accentColor)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -85,18 +87,20 @@ private struct SectionHeader: View {
     }
 }
 
+// MARK: - CountryRow
+
 private struct CountryRow: View {
     let country: CountryModel
     @Binding var selectedCode: String
 
     var body: some View {
         HStack {
-            Text("\(country.flag) \(country.name)")
+            Text("\(self.country.flag) \(self.country.name)")
                 .font(.callout)
 
             Spacer()
 
-            if selectedCode == country.code {
+            if self.selectedCode == self.country.code {
                 Image(systemName: "checkmark")
                     .foregroundColor(.accentColor)
             }
@@ -105,17 +109,19 @@ private struct CountryRow: View {
     }
 }
 
+// MARK: - SectionIndexTitles
+
 private struct SectionIndexTitles: View {
     let letters: [String]
     @State private var selectedLetter: String?
 
     var body: some View {
         VStack(spacing: 2) {
-            ForEach(letters, id: \.self) { letter in
+            ForEach(self.letters, id: \.self) { letter in
                 Text(letter)
                     .font(.system(size: 12, weight: .bold))
                     .foregroundColor(
-                        selectedLetter == letter ? .accentColor : .secondary
+                        self.selectedLetter == letter ? .accentColor : .secondary
                     )
                     .frame(width: 20, height: 20)
                     .background(
@@ -124,9 +130,10 @@ private struct SectionIndexTitles: View {
                                 let frame = proxy.frame(
                                     in: .named("SectionIndex")
                                 )
-                                if frame.midY > 0
-                                    && frame.midY < UIScreen.main.bounds.height {
-                                    selectedLetter = letter
+                                if frame.midY > 0,
+                                   frame.midY < UIScreen.main.bounds.height
+                                {
+                                    self.selectedLetter = letter
                                 }
                             }
                         }

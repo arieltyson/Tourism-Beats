@@ -24,13 +24,13 @@ struct AdvisoriesView: View {
                             )
 
                         VStack(spacing: 20) {
-                            SafetyView(viewModel: SafetyViewModel(city: city))
+                            SafetyView(viewModel: SafetyViewModel(city: self.city))
                                 .fixedSize(horizontal: false, vertical: true)
 
                             VisaView(
                                 viewModel: VisaViewModel(
                                     passportCode: "TT",
-                                    destinationCode: city.country.code
+                                    destinationCode: self.city.country.code
                                 )
                             )
                             .fixedSize(horizontal: false, vertical: true)

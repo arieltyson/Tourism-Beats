@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - ClockView
+
 struct ClockView: View {
     let date: Date
     let timeZone: TimeZone
@@ -8,7 +10,7 @@ struct ClockView: View {
         GeometryReader { geo in
             let radius = min(geo.size.width, geo.size.height) / 2
             let center = CGPoint(x: radius, y: radius)
-            let calendar = Calendar.current.settingTimeZone(timeZone)
+            let calendar = Calendar.current.settingTimeZone(self.timeZone)
 
             ZStack {
                 // Background
@@ -53,17 +55,17 @@ struct ClockView: View {
                 // Hands
                 HandShape(length: radius * 0.55)
                     .fill(Color.primary)
-                    .rotationEffect(hourAngle(using: calendar))
+                    .rotationEffect(self.hourAngle(using: calendar))
                     .shadow(radius: 1)
 
                 HandShape(length: radius * 0.75)
                     .fill(Color.primary)
-                    .rotationEffect(minuteAngle(using: calendar))
+                    .rotationEffect(self.minuteAngle(using: calendar))
                     .shadow(radius: 1)
 
                 HandShape(length: radius * 0.9, isSecondHand: true)
                     .fill(Color.red)
-                    .rotationEffect(secondAngle(using: calendar))
+                    .rotationEffect(self.secondAngle(using: calendar))
                     .shadow(color: .red, radius: 2)
 
                 // Center dot
@@ -73,7 +75,7 @@ struct ClockView: View {
             }
             .animation(
                 .interpolatingSpring(stiffness: 300, damping: 15),
-                value: calendar.component(.second, from: date)
+                value: calendar.component(.second, from: self.date)
             )
         }
     }
@@ -81,21 +83,21 @@ struct ClockView: View {
     // MARK: Angle Computations
 
     private func hourAngle(using cal: Calendar) -> Angle {
-        let comps = cal.dateComponents([.hour, .minute], from: date)
+        let comps = cal.dateComponents([.hour, .minute], from: self.date)
         let h = Double(comps.hour ?? 0).truncatingRemainder(dividingBy: 12)
         let m = Double(comps.minute ?? 0)
         return .degrees((h + m / 60) / 12 * 360)
     }
 
     private func minuteAngle(using cal: Calendar) -> Angle {
-        let comps = cal.dateComponents([.minute, .second], from: date)
+        let comps = cal.dateComponents([.minute, .second], from: self.date)
         let m = Double(comps.minute ?? 0)
         let s = Double(comps.second ?? 0)
         return .degrees((m + s / 60) / 60 * 360)
     }
 
     private func secondAngle(using cal: Calendar) -> Angle {
-        let s = Double(cal.component(.second, from: date))
+        let s = Double(cal.component(.second, from: self.date))
         return .degrees(s / 60 * 360)
     }
 
@@ -107,14 +109,14 @@ struct ClockView: View {
 
         func path(in rect: CGRect) -> Path {
             var path = Path()
-            let width: CGFloat = isSecondHand ? 1.5 : 4.0
+            let width: CGFloat = self.isSecondHand ? 1.5 : 4.0
             // Rounded rectangle extending upward from center
             path.addRoundedRect(
                 in: CGRect(
                     x: rect.midX - width / 2,
-                    y: rect.midY - length,
+                    y: rect.midY - self.length,
                     width: width,
-                    height: length
+                    height: self.length
                 ),
                 cornerSize: CGSize(width: width / 2, height: width / 2)
             )

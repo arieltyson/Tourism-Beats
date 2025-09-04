@@ -1,8 +1,12 @@
 import Foundation
 
+// MARK: - SafetyError
+
 enum SafetyError: Error {
     case fileNotFound, decodingError, countryNotFound
 }
+
+// MARK: - SafetyService
 
 actor SafetyService: SafetyProtocol {
     func fetchSafetyData(for countryCode: String) async throws -> SafetyModel {

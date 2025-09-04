@@ -10,7 +10,7 @@ struct WeatherView: View {
     @State private var attribution: WeatherAttribution?
 
     private var prefersMetric: Bool {
-        locale.prefersCelsius
+        self.locale.prefersCelsius
     }
 
     init(city: CityModel) {
@@ -21,7 +21,7 @@ struct WeatherView: View {
 
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if self.viewModel.isLoading {
                 ProgressView()
                     .tint(.white)
                     .progressViewStyle(.circular)
@@ -56,22 +56,23 @@ struct WeatherView: View {
                 VStack(spacing: 4) {
                     Text(info.temperatureCelsius)
                         .font(.body)
-                        .fontWeight(prefersMetric ? .semibold : .regular)
-                        .opacity(prefersMetric ? 1.0 : 0.6)
+                        .fontWeight(self.prefersMetric ? .semibold : .regular)
+                        .opacity(self.prefersMetric ? 1.0 : 0.6)
 
                     Text(info.temperatureFahrenheit)
                         .font(.body)
-                        .fontWeight(prefersMetric ? .regular : .semibold)
-                        .opacity(prefersMetric ? 0.6 : 1.0)
+                        .fontWeight(self.prefersMetric ? .regular : .semibold)
+                        .opacity(self.prefersMetric ? 0.6 : 1.0)
                 }
                 .foregroundColor(.white)
 
                 Spacer()
 
                 // MARK: - WeatherKit Attribution
-                if let attribution = attribution {
+
+                if let attribution {
                     HStack(spacing: 8) {
-                        AsyncImage(url: logoURL(for: colorScheme)) { image in
+                        AsyncImage(url: self.logoURL(for: self.colorScheme)) { image in
                             image
                                 .resizable()
                                 .scaledToFit()
@@ -105,13 +106,14 @@ struct WeatherView: View {
         )
         .padding()
         .task {
-            await fetchAttribution()
+            await self.fetchAttribution()
         }
-        .animation(.easeInOut, value: viewModel.isLoading)
-        .animation(.easeInOut, value: viewModel.weatherInfo?.condition)
+        .animation(.easeInOut, value: self.viewModel.isLoading)
+        .animation(.easeInOut, value: self.viewModel.weatherInfo?.condition)
     }
 
     // MARK: - Helper Functions
+
     private func fetchAttribution() async {
         do {
             self.attribution = try await WeatherService.shared.attribution
@@ -123,7 +125,7 @@ struct WeatherView: View {
     }
 
     private func logoURL(for colorScheme: ColorScheme) -> URL? {
-        guard let attribution = attribution else { return nil }
+        guard let attribution else { return nil }
 
         return colorScheme == .dark
             ? attribution.combinedMarkDarkURL : attribution.combinedMarkLightURL

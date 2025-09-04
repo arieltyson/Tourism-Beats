@@ -17,7 +17,7 @@ struct WorldView: View {
 
     init(onCitySelected: @escaping (CityModel) -> Void) {
         self.onCitySelected = onCitySelected
-        cities = (try? DataService().loadCities()) ?? []
+        self.cities = (try? DataService().loadCities()) ?? []
     }
 
     var body: some View {
@@ -28,34 +28,34 @@ struct WorldView: View {
                 .padding()
 
             MapView(
-                selectedCity: $selectedCity,
-                showAlert: $showAlert,
-                region: $region,
-                lastRegion: $lastRegion,
-                cities: cities
+                selectedCity: self.$selectedCity,
+                showAlert: self.$showAlert,
+                region: self.$region,
+                lastRegion: self.$lastRegion,
+                cities: self.cities
             )
             .edgesIgnoringSafeArea(.all)
         }
         .background(Color.black.ignoresSafeArea())
-        .alert(isPresented: $showAlert) {
+        .alert(isPresented: self.$showAlert) {
             Alert(
-                title: Text("Explore \(selectedCity?.name ?? "")?"),
+                title: Text("Explore \(self.selectedCity?.name ?? "")?"),
                 message: Text(
-                    "Would you like to explore \(selectedCity?.name ?? ""), \(selectedCity?.country.name ?? "")?"
+                    "Would you like to explore \(self.selectedCity?.name ?? ""), \(self.selectedCity?.country.name ?? "")?"
                 ),
                 primaryButton: .default(Text("Yes")) {
                     // restore region, clear
-                    region = lastRegion ?? region
-                    lastRegion = nil
+                    self.region = self.lastRegion ?? self.region
+                    self.lastRegion = nil
                     if let city = selectedCity {
-                        onCitySelected(city)
+                        self.onCitySelected(city)
                     }
-                    selectedCity = nil
+                    self.selectedCity = nil
                 },
                 secondaryButton: .cancel {
-                    region = lastRegion ?? region
-                    lastRegion = nil
-                    selectedCity = nil
+                    self.region = self.lastRegion ?? self.region
+                    self.lastRegion = nil
+                    self.selectedCity = nil
                 }
             )
         }

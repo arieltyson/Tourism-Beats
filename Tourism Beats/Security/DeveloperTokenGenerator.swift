@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-// MARK: - Developer Token Generator Actor
+// MARK: - DeveloperTokenGenerator
 
 actor DeveloperTokenGenerator {
     static let shared = DeveloperTokenGenerator()
@@ -15,13 +15,14 @@ actor DeveloperTokenGenerator {
     func generateDeveloperToken() async throws -> String {
         if let token = cachedToken,
            let expires = tokenExpiresAt,
-           expires > Date() {
+           expires > Date()
+        {
             return token
         }
 
         // --- Build a fresh JWT ---
         let header = JWTHeader(kid: Secrets.musicKitKeyID)
-        let expirationDate = Date().addingTimeInterval(3600) // Stays valid for 1 hour
+        let expirationDate = Date().addingTimeInterval(3_600) // Stays valid for 1 hour
         let payload = JWTPayload(
             iss: Secrets.teamID,
             iat: Date(),
@@ -34,8 +35,8 @@ actor DeveloperTokenGenerator {
 
         let token = "\(headerString).\(payloadString).\(signature)"
 
-        cachedToken = token
-        tokenExpiresAt = expirationDate
+        self.cachedToken = token
+        self.tokenExpiresAt = expirationDate
 
         return token
     }
@@ -67,7 +68,7 @@ actor DeveloperTokenGenerator {
 
 // MARK: - Helper Functions (File Private)
 
-private func encode<T: Encodable>(_ value: T) throws -> Data {
+private func encode(_ value: some Encodable) throws -> Data {
     let encoder = JSONEncoder()
     encoder.dateEncodingStrategy = .secondsSince1970
     return try encoder.encode(value)

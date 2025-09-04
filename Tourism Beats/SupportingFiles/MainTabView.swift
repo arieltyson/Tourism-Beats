@@ -6,14 +6,14 @@ struct MainTabView: View {
     @State private var searchPath = NavigationPath()
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: self.$selectedTab) {
             // ────────── Home ──────────
-            NavigationStack(path: $homePath) {
+            NavigationStack(path: self.$homePath) {
                 HomeView()
             }
             .tabItem {
                 Image(
-                    systemName: (selectedTab == .home && homePath.isEmpty)
+                    systemName: (self.selectedTab == .home && self.homePath.isEmpty)
                         ? "house.circle.fill" : "house"
                 )
                 Text("Home")
@@ -21,9 +21,9 @@ struct MainTabView: View {
             .tag(AppTab.home)
 
             // ───────── Search ─────────
-            NavigationStack(path: $searchPath) {
+            NavigationStack(path: self.$searchPath) {
                 WorldView { city in
-                    searchPath.append(city)
+                    self.searchPath.append(city)
                 }
                 .navigationDestination(for: CityModel.self) { city in
                     CityContainerView(city: city)
@@ -37,7 +37,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(
-                    systemName: (selectedTab == .search && searchPath.isEmpty)
+                    systemName: (self.selectedTab == .search && self.searchPath.isEmpty)
                         ? "magnifyingglass.circle.fill" : "magnifyingglass"
                 )
                 Text("Search")
@@ -47,10 +47,10 @@ struct MainTabView: View {
         .tint(.white)
         // Helps icon legibility across bright/dark backgrounds behind the transparent bar.
         .toolbarColorScheme(.dark, for: .tabBar)
-        .onChange(of: selectedTab) { _, new in
+        .onChange(of: self.selectedTab) { _, new in
             switch new {
-            case .home: homePath = NavigationPath()
-            case .search: searchPath = NavigationPath()
+            case .home: self.homePath = NavigationPath()
+            case .search: self.searchPath = NavigationPath()
             }
         }
     }

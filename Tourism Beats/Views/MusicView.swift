@@ -16,10 +16,10 @@ struct MusicView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
                     let maxArt = min(geo.size.width * 0.7, 360)
-                    artworkView(maxSide: maxArt)
+                    self.artworkView(maxSide: maxArt)
                         .padding(.top, 24)
 
-                    Text(viewModel.songTitle)
+                    Text(self.viewModel.songTitle)
                         .font(.title3).bold()
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
@@ -27,7 +27,7 @@ struct MusicView: View {
                         .minimumScaleFactor(0.75)
                         .padding(.horizontal)
 
-                    Text(viewModel.artistName)
+                    Text(self.viewModel.artistName)
                         .font(.subheadline)
                         .fontWeight(.medium)
                         .foregroundColor(.white.opacity(0.8))
@@ -40,20 +40,20 @@ struct MusicView: View {
                         NeumorphicPill(
                             logo: .appleMusic,
                             title: "Apple Music",
-                            rightKind: viewModel.isPlaying ? .pause : .play,
+                            rightKind: self.viewModel.isPlaying ? .pause : .play,
                             dimmed: false
                         ) {
-                            Task { await viewModel.handleAppleMusicAction() }
+                            Task { await self.viewModel.handleAppleMusicAction() }
                         }
 
                         NeumorphicPill(
                             logo: .spotify,
                             title: "Spotify",
-                            rightKind: viewModel.isSpotifySearching
+                            rightKind: self.viewModel.isSpotifySearching
                                 ? .loading : .link,
                             dimmed: false
                         ) {
-                            Task { await viewModel.handleSpotifyAction() }
+                            Task { await self.viewModel.handleSpotifyAction() }
                         }
                     }
                     .padding(.horizontal, 20)
@@ -67,10 +67,11 @@ struct MusicView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .task { await viewModel.requestAccessAndLoadTopSong() }  // metadata only
+        .task { await self.viewModel.requestAccessAndLoadTopSong() } // metadata only
     }
 
     // MARK: - Subviews
+
     @ViewBuilder
     private func artworkView(maxSide: CGFloat) -> some View {
         if let url = viewModel.songImage {

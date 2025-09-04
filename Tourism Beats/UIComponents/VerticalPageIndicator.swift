@@ -13,20 +13,20 @@ struct VerticalPageIndicator: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            ForEach(0..<count, id: \.self) { i in
+            ForEach(0 ..< self.count, id: \.self) { i in
                 Circle()
                     .frame(
-                        width: activeIndex == i ? 10 : 6,
-                        height: activeIndex == i ? 10 : 6
+                        width: self.activeIndex == i ? 10 : 6,
+                        height: self.activeIndex == i ? 10 : 6
                     )
-                    .foregroundColor(activeIndex == i ? .white : .white.opacity(0.4))
+                    .foregroundColor(self.activeIndex == i ? .white : .white.opacity(0.4))
                     .shadow(
-                        color: activeIndex == i ? .black.opacity(0.3) : .clear,
-                        radius: activeIndex == i ? 2 : 0,
+                        color: self.activeIndex == i ? .black.opacity(0.3) : .clear,
+                        radius: self.activeIndex == i ? 2 : 0,
                         x: 0,
                         y: 1
                     )
-                    .animation(.easeInOut(duration: 0.2), value: activeIndex)
+                    .animation(.easeInOut(duration: 0.2), value: self.activeIndex)
             }
         }
     }

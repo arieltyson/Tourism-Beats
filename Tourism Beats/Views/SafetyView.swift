@@ -11,7 +11,7 @@ struct SafetyView: View {
                     .foregroundColor(.blue)
 
                 Group {
-                    if viewModel.isLoading {
+                    if self.viewModel.isLoading {
                         ProgressView()
                     } else if let err = viewModel.errorMessage {
                         Text("Error: \(err)")
@@ -32,16 +32,16 @@ struct SafetyView: View {
                             .bold()
 
                             Text(
-                                "\(viewModel.riskLevelScoreText ?? "")"
+                                "\(self.viewModel.riskLevelScoreText ?? "")"
                             )
                             .foregroundColor(.mint)
                             .bold()
 
                             Spacer()
 
-                            Text(viewModel.riskLevelText ?? "")
+                            Text(self.viewModel.riskLevelText ?? "")
                                 .fontWeight(.bold)
-                                .foregroundColor(viewModel.riskLevelColor)
+                                .foregroundColor(self.viewModel.riskLevelColor)
                         }
                     } else {
                         Text("No advisory information available.")

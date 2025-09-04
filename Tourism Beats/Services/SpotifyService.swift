@@ -1,9 +1,10 @@
 import Foundation
 
+// MARK: - SpotifyService
+
 /// Mirrors the Apple Music #1 (by country) on Spotify by searching the same song/artist.
 /// Keeps UX parity: same title/artist shown, but playback via Spotify deep link.
 actor SpotifyService: MusicProtocol {
-
     enum ServiceError: Swift.Error {
         case api(Int)
         case notFound
@@ -18,7 +19,7 @@ actor SpotifyService: MusicProtocol {
             countryCode: countryCode
         )
         // 2) Mirror on Spotify
-        return try await mirror(
+        return try await self.mirror(
             title: appleTop.title,
             artist: appleTop.artistName,
             countryCode: countryCode
@@ -27,7 +28,8 @@ actor SpotifyService: MusicProtocol {
 
     // New helper: given Apple’s title/artist, produce a Spotify deep link AppSong.
     func mirror(title: String, artist: String, countryCode: String) async throws
-        -> AppSong {
+        -> AppSong
+    {
         let token = try await SpotifyAuthManager.shared.validAccessToken()
         let market = countryCode.uppercased()
 
@@ -47,8 +49,8 @@ actor SpotifyService: MusicProtocol {
         }
         let deep: URL? =
             best.external_urls?["spotify"]
-            .flatMap { URL(string: $0) }
-            ?? URL(string: "https://open.spotify.com/track/\(best.id)")
+                .flatMap { URL(string: $0) }
+                ?? URL(string: "https://open.spotify.com/track/\(best.id)")
 
         return AppSong(
             source: .spotify,
@@ -103,7 +105,8 @@ actor SpotifyService: MusicProtocol {
     }
 
     private func searchOnce(q: String, market: String, token: String)
-        async throws -> Track? {
+        async throws -> Track?
+    {
         var comps = URLComponents(
             url: base.appendingPathComponent("search"),
             resolvingAgainstBaseURL: false
@@ -121,7 +124,7 @@ actor SpotifyService: MusicProtocol {
         guard let http = resp as? HTTPURLResponse else {
             throw ServiceError.api(-1)
         }
-        guard (200...299).contains(http.statusCode) else {
+        guard (200 ... 299).contains(http.statusCode) else {
             throw ServiceError.api(http.statusCode)
         }
 
@@ -138,13 +141,13 @@ actor SpotifyService: MusicProtocol {
         targetTitle: String,
         targetArtist: String
     ) -> Int {
-        let candTitle = normalize(candidate.name)
-        let candArtists = normalize(
+        let candTitle = self.normalize(candidate.name)
+        let candArtists = self.normalize(
             candidate.artists.map(\.name).joined(separator: " ")
         )
 
-        let tgtTitle = normalize(cleanTitle(targetTitle))
-        let tgtArtist = normalize(cleanArtist(targetArtist))
+        let tgtTitle = self.normalize(self.cleanTitle(targetTitle))
+        let tgtArtist = self.normalize(self.cleanArtist(targetArtist))
 
         var s = 0
         if candTitle == tgtTitle {
@@ -160,8 +163,8 @@ actor SpotifyService: MusicProtocol {
         if candTitle.contains("karaoke") || candTitle.contains("tribute") {
             s -= 20
         }
-        if candTitle.contains("live") && !tgtTitle.contains("live") { s -= 8 }
-        if candTitle.contains("remix") && !tgtTitle.contains("remix") { s -= 6 }
+        if candTitle.contains("live"), !tgtTitle.contains("live") { s -= 8 }
+        if candTitle.contains("remix"), !tgtTitle.contains("remix") { s -= 6 }
 
         return min(max(s, 0), 100)
     }
@@ -220,7 +223,8 @@ actor SpotifyService: MusicProtocol {
     }
 }
 
-// MARK: - Minimal Spotify models
+// MARK: - Track
+
 private struct Track: Decodable {
     let id: String
     let name: String
@@ -228,6 +232,15 @@ private struct Track: Decodable {
     let album: Album
     let external_urls: [String: String]?
 }
+
+// MARK: - Artist
+
 private struct Artist: Decodable { let name: String }
+
+// MARK: - Album
+
 private struct Album: Decodable { let images: [Image] }
+
+// MARK: - Image
+
 private struct Image: Decodable { let url: String }

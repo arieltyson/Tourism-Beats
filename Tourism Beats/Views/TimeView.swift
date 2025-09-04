@@ -17,13 +17,13 @@ struct TimeView: View {
                 // -- Analog clock --
                 ClockView(
                     date: context.date,
-                    timeZone: viewModel.timeZone
+                    timeZone: self.viewModel.timeZone
                 )
                 .aspectRatio(1, contentMode: .fit)
                 .padding()
 
                 // -- Digital clock --
-                Text(viewModel.formattedTime(for: context.date))
+                Text(self.viewModel.formattedTime(for: context.date))
                     .font(.system(.headline, design: .rounded))
                     .fontWeight(.medium)
                     .foregroundColor(.white)

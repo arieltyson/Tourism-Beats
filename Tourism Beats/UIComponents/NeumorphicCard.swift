@@ -20,32 +20,32 @@ struct NeumorphicCard<Content: View>: View {
         let darkShadow = Color.black.opacity(0.2)
 
         ZStack {
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
                 .fill(bg)
                 // “Raised” when not pressed
                 .shadow(
-                    color: isPressed ? darkShadow : lightShadow,
-                    radius: isPressed ? 2 : 8,
-                    x: isPressed ? 2 : -8,
-                    y: isPressed ? 2 : -8
+                    color: self.isPressed ? darkShadow : lightShadow,
+                    radius: self.isPressed ? 2 : 8,
+                    x: self.isPressed ? 2 : -8,
+                    y: self.isPressed ? 2 : -8
                 )
                 .shadow(
-                    color: isPressed ? lightShadow : darkShadow,
-                    radius: isPressed ? 2 : 8,
-                    x: isPressed ? -2 : 8,
-                    y: isPressed ? -2 : 8
+                    color: self.isPressed ? lightShadow : darkShadow,
+                    radius: self.isPressed ? 2 : 8,
+                    x: self.isPressed ? -2 : 8,
+                    y: self.isPressed ? -2 : 8
                 )
-            content()
+            self.content()
                 .padding()
         }
-        .scaleEffect(isPressed ? 0.97 : 1)
+        .scaleEffect(self.isPressed ? 0.97 : 1)
         .animation(
             .spring(response: 0.3, dampingFraction: 0.6),
-            value: isPressed
+            value: self.isPressed
         )
         .gesture(
             LongPressGesture(minimumDuration: 0.01)
-                .updating($isPressed) { current, state, _ in
+                .updating(self.$isPressed) { current, state, _ in
                     state = current
                 }
         )

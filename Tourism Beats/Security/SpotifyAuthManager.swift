@@ -1,24 +1,28 @@
-import Foundation
 import AuthenticationServices
 import CryptoKit
+import Foundation
 import UIKit
 
-// MARK: - Main-actor presenter for ASWebAuthenticationSession
+// MARK: - WebAuthPresenter
+
 @MainActor
 final class WebAuthPresenter: NSObject,
-    ASWebAuthenticationPresentationContextProviding {
+    ASWebAuthenticationPresentationContextProviding
+{
     static let shared = WebAuthPresenter()
 
-    func presentationAnchor(for session: ASWebAuthenticationSession)
-        -> ASPresentationAnchor {
+    func presentationAnchor(for _: ASWebAuthenticationSession)
+        -> ASPresentationAnchor
+    {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
+            .flatMap(\.windows)
             .first(where: { $0.isKeyWindow }) ?? UIWindow()
     }
 }
 
-// MARK: - Auth manager (actor)
+// MARK: - SpotifyAuthManager
+
 actor SpotifyAuthManager {
     static let shared = SpotifyAuthManager()
 
@@ -30,7 +34,7 @@ actor SpotifyAuthManager {
 
     private var token: Token? = {
         guard let data = Keychain.get("spotify.token"),
-            let t = try? JSONDecoder().decode(Token.self, from: data)
+              let t = try? JSONDecoder().decode(Token.self, from: data)
         else { return nil }
         return t
     }()
@@ -59,15 +63,15 @@ actor SpotifyAuthManager {
         if let t = token, t.expiresAt > Date().addingTimeInterval(30) {
             return t.accessToken
         }
-        if token?.refreshToken != nil { return try await refresh() }
-        return try await authorize()
+        if self.token?.refreshToken != nil { return try await self.refresh() }
+        return try await self.authorize()
     }
 
     private func authorize() async throws -> String {
         let v = Self.randomURLSafeString(64)
         let s = Self.randomURLSafeString(24)
-        verifier = v
-        state = s
+        self.verifier = v
+        self.state = s
 
         let expectedVerifier = v
         let expectedState = s
@@ -78,9 +82,9 @@ actor SpotifyAuthManager {
             resolvingAgainstBaseURL: false
         )!
         comps.queryItems = [
-            .init(name: "client_id", value: clientID),
+            .init(name: "client_id", value: self.clientID),
             .init(name: "response_type", value: "code"),
-            .init(name: "redirect_uri", value: redirectURI.absoluteString),
+            .init(name: "redirect_uri", value: self.redirectURI.absoluteString),
             .init(name: "code_challenge_method", value: "S256"),
             .init(name: "code_challenge", value: challenge),
             .init(name: "state", value: s),
@@ -96,15 +100,15 @@ actor SpotifyAuthManager {
                 [manager = self, expectedVerifier, expectedState] callback, err
                 in
                 guard err == nil,
-                    let url = callback,
-                    let items = URLComponents(
-                        url: url,
-                        resolvingAgainstBaseURL: false
-                    )?.queryItems,
-                    let code = items.first(where: { $0.name == "code" })?.value,
-                    let back = items.first(where: { $0.name == "state" })?
-                        .value,
-                    back == expectedState
+                      let url = callback,
+                      let items = URLComponents(
+                          url: url,
+                          resolvingAgainstBaseURL: false
+                      )?.queryItems,
+                      let code = items.first(where: { $0.name == "code" })?.value,
+                      let back = items.first(where: { $0.name == "state" })?
+                      .value,
+                      back == expectedState
                 else {
                     cont.resume(throwing: AuthError.authorizationFailed)
                     return
@@ -140,10 +144,10 @@ actor SpotifyAuthManager {
             forHTTPHeaderField: "Content-Type"
         )
         req.httpBody = [
-            "client_id": clientID,
+            "client_id": self.clientID,
             "grant_type": "authorization_code",
             "code": code,
-            "redirect_uri": redirectURI.absoluteString,
+            "redirect_uri": self.redirectURI.absoluteString,
             "code_verifier": verifier
         ].map {
             "\($0.key)=\($0.value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)"
@@ -168,7 +172,7 @@ actor SpotifyAuthManager {
             refreshToken: r.refresh_token,
             expiresAt: Date().addingTimeInterval(TimeInterval(r.expires_in))
         )
-        token = t
+        self.token = t
         try? Keychain.set(JSONEncoder().encode(t), for: "spotify.token")
         return t.accessToken
     }
@@ -185,7 +189,7 @@ actor SpotifyAuthManager {
             forHTTPHeaderField: "Content-Type"
         )
         req.httpBody = [
-            "client_id": clientID,
+            "client_id": self.clientID,
             "grant_type": "refresh_token",
             "refresh_token": refresh
         ].map { "\($0.key)=\($0.value)" }
@@ -206,24 +210,24 @@ actor SpotifyAuthManager {
 
         let new = Token(
             accessToken: r.access_token,
-            refreshToken: r.refresh_token ?? token?.refreshToken,
+            refreshToken: r.refresh_token ?? self.token?.refreshToken,
             expiresAt: Date().addingTimeInterval(TimeInterval(r.expires_in))
         )
-        token = new
+        self.token = new
         try? Keychain.set(JSONEncoder().encode(new), for: "spotify.token")
         return new.accessToken
     }
 
     enum AuthError: Error {
         case authorizationFailed, tokenExchangeFailed, refreshFailed,
-            noRefreshToken
+             noRefreshToken
     }
 
     static func randomURLSafeString(_ length: Int) -> String {
         let chars = Array(
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~"
         )
-        return String((0..<length).compactMap { _ in chars.randomElement() })
+        return String((0 ..< length).compactMap { _ in chars.randomElement() })
     }
 
     static func codeChallenge(for verifier: String) -> String {

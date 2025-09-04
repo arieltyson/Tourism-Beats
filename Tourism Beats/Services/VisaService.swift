@@ -1,8 +1,12 @@
 import Foundation
 
+// MARK: - VisaError
+
 enum VisaError: Error {
     case fileNotFound, decodingError, requirementNotFound
 }
+
+// MARK: - VisaService
 
 actor VisaService: VisaProtocol {
     private let fileName = "visa_requirements_2025"
@@ -23,7 +27,7 @@ actor VisaService: VisaProtocol {
             [VisaModel].self,
             from: data
         )
-        cache = list
+        self.cache = list
         return list
     }
 

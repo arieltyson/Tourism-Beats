@@ -9,7 +9,7 @@ struct CityModel: Identifiable, Equatable, Hashable {
     let timeZoneIdentifier: String
 
     var timeZone: TimeZone {
-        TimeZone(identifier: timeZoneIdentifier) ?? .current
+        TimeZone(identifier: self.timeZoneIdentifier) ?? .current
     }
 
     static func == (lhs: CityModel, rhs: CityModel) -> Bool {
@@ -17,6 +17,6 @@ struct CityModel: Identifiable, Equatable, Hashable {
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(self.id)
     }
 }

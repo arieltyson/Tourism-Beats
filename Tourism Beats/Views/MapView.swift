@@ -1,6 +1,8 @@
 import MapKit
 import SwiftUI
 
+// MARK: - MapView
+
 struct MapView: UIViewRepresentable {
     @Binding var selectedCity: CityModel?
     @Binding var showAlert: Bool
@@ -13,9 +15,9 @@ struct MapView: UIViewRepresentable {
         mapView.delegate = context.coordinator
         mapView.mapType = .standard
         mapView.overrideUserInterfaceStyle = .dark
-        mapView.setRegion(region, animated: false)
+        mapView.setRegion(self.region, animated: false)
 
-        for city in cities {
+        for city in self.cities {
             let pin = MKPointAnnotation()
             pin.title = city.name
             pin.coordinate = city.coordinate
@@ -26,12 +28,12 @@ struct MapView: UIViewRepresentable {
 
     func updateUIView(_ uiView: MKMapView, context _: Context) {
         // Only animate if our SwiftUI region actually differs
-        if !uiView.region.isApproximatelyEqual(to: region) {
-            uiView.setRegion(region, animated: true)
+        if !uiView.region.isApproximatelyEqual(to: self.region) {
+            uiView.setRegion(self.region, animated: true)
         }
 
         // Deselect if the user cancelled
-        if selectedCity == nil {
+        if self.selectedCity == nil {
             for selectedAnnotation in uiView.selectedAnnotations {
                 uiView.deselectAnnotation(selectedAnnotation, animated: true)
             }
@@ -57,13 +59,13 @@ struct MapView: UIViewRepresentable {
                 let city = parent.cities.first(where: { $0.name == name })
             else { return }
 
-            parent.lastRegion = parent.region
-            parent.region = MKCoordinateRegion(
+            self.parent.lastRegion = self.parent.region
+            self.parent.region = MKCoordinateRegion(
                 center: city.coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
             )
-            parent.selectedCity = city
-            parent.showAlert = true
+            self.parent.selectedCity = city
+            self.parent.showAlert = true
         }
 
         // 2) User pans/zooms: sync back into SwiftUI state, but only if not mid-alert
@@ -73,12 +75,12 @@ struct MapView: UIViewRepresentable {
         ) {
             Task {
                 // ignore callbacks while we’re still showing the “zoomed in” alert
-                guard parent.lastRegion == nil else { return }
+                guard self.parent.lastRegion == nil else { return }
 
                 // yield so we don’t mutate state in the middle of MapKit’s update pass
                 await Task.yield()
 
-                parent.region = mapView.region
+                self.parent.region = mapView.region
             }
         }
     }
