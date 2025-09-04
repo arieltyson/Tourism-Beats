@@ -1,17 +1,65 @@
 import Foundation
 import MusicKit
 
-// MARK: - App-Specific Song Model
+// MARK: - Provider
 
-struct AppSong: Sendable {
-    let id: MusicItemID
-    let title: String
-    let artistName: String
-    let artworkURL: URL?
+/// The catalog a song came from.
+public enum AppSongSource: String, Codable, Sendable {
+    case appleMusic
+    case spotify
 }
 
-// MARK: - Decodable & Sendable Structs for Apple Music API Response
+// MARK: - App-facing song model
 
+/// Provider-agnostic song model used by the UI and view models.
+/// - Note: `id` is the provider’s native identifier (Apple Music or Spotify).
+///         Keep it as `String` for portability. Convert to `MusicItemID` only
+///         at the point of Apple Music playback.
+public struct AppSong: Sendable, Equatable, Hashable {
+    public let source: AppSongSource
+    public let id: String  // Provider ID (AM/Spotify)
+    public let title: String
+    public let artistName: String
+    public let artworkURL: URL?
+    /// For Spotify, this will usually be a ready-to-open link like
+    /// `https://open.spotify.com/track/{id}`. Apple Music playback is in-app
+    /// so this is typically `nil` for AM sources.
+    public let deepLinkURL: URL?
+
+    public init(
+        source: AppSongSource,
+        id: String,
+        title: String,
+        artistName: String,
+        artworkURL: URL?,
+        deepLinkURL: URL?
+    ) {
+        self.source = source
+        self.id = id
+        self.title = title
+        self.artistName = artistName
+        self.artworkURL = artworkURL
+        self.deepLinkURL = deepLinkURL
+    }
+}
+
+// MARK: - Apple Music conveniences
+
+extension AppSong {
+    /// Convenience for Apple Music playback: converts the provider `id`
+    /// to `MusicItemID` **iff** the source is Apple Music.
+    public var musicKitID: MusicItemID? {
+        source == .appleMusic ? MusicItemID(id) : nil
+    }
+
+    /// Useful flags in UI/view models.
+    public var isAppleMusic: Bool { source == .appleMusic }
+    public var isSpotify: Bool { source == .spotify }
+}
+
+// MARK: - Apple Music API response models
+
+/// Top-level Apple Music Charts response.
 struct AppleMusicChartResponse: Decodable, Sendable {
     let results: ChartResults?
 }
@@ -24,6 +72,7 @@ struct ChartData: Decodable, Sendable {
     let data: [AppleMusicAPISong]
 }
 
+/// Minimal song node from Apple Music API used for top charts.
 struct AppleMusicAPISong: Decodable, Sendable {
     let id: String
     let attributes: SongAttributes?
@@ -38,12 +87,30 @@ struct SongAttributes: Decodable, Sendable {
 struct ArtworkAPI: Decodable, Sendable {
     let url: String
 
+    /// Returns a sized artwork URL by replacing the `{w}` and `{h}` tokens.
     func artworkURL(width: Int = 600, height: Int = 600) -> URL? {
-        let sizedURLString = url.replacingOccurrences(
-            of: "{w}",
-            with: "\(width)"
+        let sized =
+            url
+            .replacingOccurrences(of: "{w}", with: "\(width)")
+            .replacingOccurrences(of: "{h}", with: "\(height)")
+        return URL(string: sized)
+    }
+}
+
+// MARK: - Helpers to map AM API → AppSong
+
+extension AppSong {
+    /// Create an `AppSong` from an Apple Music API node.
+    /// Returns `nil` if required attributes are missing.
+    init?(appleNode: AppleMusicAPISong) {
+        guard let attrs = appleNode.attributes else { return nil }
+        self.init(
+            source: .appleMusic,
+            id: appleNode.id,
+            title: attrs.name,
+            artistName: attrs.artistName,
+            artworkURL: attrs.artwork?.artworkURL(),
+            deepLinkURL: nil
         )
-        .replacingOccurrences(of: "{h}", with: "\(height)")
-        return URL(string: sizedURLString)
     }
 }
