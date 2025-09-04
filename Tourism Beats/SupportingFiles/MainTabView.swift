@@ -1,23 +1,9 @@
 import SwiftUI
 
-enum AppTab: Hashable {
-    case home, search
-}
-
-/// Wrapper so we can push MusicView on the same navigation stack
-struct MusicRoute: Hashable {
-    let city: CityModel
-}
-
 struct MainTabView: View {
     @State private var selectedTab: AppTab = .home
     @State private var homePath = NavigationPath()
     @State private var searchPath = NavigationPath()
-
-    init() {
-        UITabBar.appearance().tintColor = .white
-        UITabBar.appearance().unselectedItemTintColor = .white
-    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -28,8 +14,7 @@ struct MainTabView: View {
             .tabItem {
                 Image(
                     systemName: (selectedTab == .home && homePath.isEmpty)
-                        ? "house.circle.fill"
-                        : "house"
+                        ? "house.circle.fill" : "house"
                 )
                 Text("Home")
             }
@@ -53,21 +38,19 @@ struct MainTabView: View {
             .tabItem {
                 Image(
                     systemName: (selectedTab == .search && searchPath.isEmpty)
-                        ? "magnifyingglass.circle.fill"
-                        : "magnifyingglass"
+                        ? "magnifyingglass.circle.fill" : "magnifyingglass"
                 )
                 Text("Search")
             }
             .tag(AppTab.search)
         }
         .tint(.white)
-        // whenever the user switches tabs, wipe out that stack
+        // Helps icon legibility across bright/dark backgrounds behind the transparent bar.
+        .toolbarColorScheme(.dark, for: .tabBar)
         .onChange(of: selectedTab) { _, new in
             switch new {
-            case .home:
-                homePath = NavigationPath()
-            case .search:
-                searchPath = NavigationPath()
+            case .home: homePath = NavigationPath()
+            case .search: searchPath = NavigationPath()
             }
         }
     }

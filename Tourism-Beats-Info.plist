@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+    <!-- Custom URL scheme so ASWebAuthenticationSession can return to your app -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <!-- Not strictly required by iOS, but helpful for clarity -->
+            <key>CFBundleURLName</key>
+            <string>com.arieljtyson.Tourism-Beats</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <!-- Must match the scheme portion of Secrets.spotifyRedirectURI -->
+                <string>tourismbeats</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Optional: allow canOpenURL("spotify://") to detect the Spotify app -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>spotify</string>
+    </array>
+</dict>
 </plist>

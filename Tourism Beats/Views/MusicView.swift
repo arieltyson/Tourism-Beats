@@ -5,64 +5,28 @@ struct MusicView: View {
     @StateObject private var viewModel: MusicViewModel
     let fallbackView: FallbackMusicView
 
-    @State private var backgroundGradient: MeshGradient
-
     init(city: CityModel, fallbackView: FallbackMusicView) {
         _viewModel = StateObject(wrappedValue: MusicViewModel(city: city))
         self.fallbackView = fallbackView
-
-        _backgroundGradient = State(
-            initialValue: GradientProvider.gradients.randomElement()!
-        )
     }
 
     var body: some View {
-        ZStack {
-            backgroundGradient
-                .ignoresSafeArea()
+        GeometryReader { geo in
+            // Foreground content only; background is in CityContainerView
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 16) {
+                    let maxArt = min(geo.size.width * 0.7, 360)
+                    artworkView(maxSide: maxArt)
+                        .padding(.top, 24)
 
-            // ─── Content ────────────────────────────────────────────────
-            VStack {
-                if viewModel.isMusicFeatureAvailable {
-                    // Artwork (conditionally tappable)
-                    Group {
-                        if viewModel.songID != nil {
-                            Button {
-                                Task { await viewModel.togglePlayback() }
-                            } label: {
-                                artworkView
-                                    .overlay(playPauseOverlay)
-                            }
-                            .buttonStyle(.plain)
-                            .padding(.top, 20)
-                        } else {
-                            artworkView
-                                .padding(.top, 20)
-                        }
-                    }
-
-                    // Playback‐specific error (region lock, etc)
-                    if let msg = viewModel.playbackErrorMessage {
-                        Text(msg)
-                            .font(.subheadline)
-                            .foregroundColor(.red)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 4)
-                    }
-
-                    // ─── Song title ─────────────────────────────────────
                     Text(viewModel.songTitle)
-                        .font(.title3)
-                        .fontWeight(.bold)
+                        .font(.title3).bold()
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
-                        .minimumScaleFactor(0.5)
+                        .minimumScaleFactor(0.75)
                         .padding(.horizontal)
-                        .frame(minHeight: 30)
 
-                    // ─── Artist name ────────────────────────────────────
                     Text(viewModel.artistName)
                         .font(.subheadline)
                         .fontWeight(.medium)
@@ -72,71 +36,68 @@ struct MusicView: View {
                         .minimumScaleFactor(0.9)
                         .padding(.horizontal)
 
-                } else {
-                    // No Music permission
-                    fallbackView
+                    VStack(spacing: 14) {
+                        NeumorphicPill(
+                            logo: .appleMusic,
+                            title: "Apple Music",
+                            rightKind: viewModel.isPlaying ? .pause : .play,
+                            dimmed: false
+                        ) {
+                            Task { await viewModel.handleAppleMusicAction() }
+                        }
+
+                        NeumorphicPill(
+                            logo: .spotify,
+                            title: "Spotify",
+                            rightKind: viewModel.isSpotifySearching
+                                ? .loading : .link,
+                            dimmed: false
+                        ) {
+                            Task { await viewModel.handleSpotifyAction() }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+
+                    Spacer(minLength: 0)
                 }
-
-                Spacer()
-
-                SafetyView(
-                    viewModel: SafetyViewModel(city: viewModel.city)
-                )
-                .fixedSize(horizontal: false, vertical: true)
-
-                Spacer()
-
-                VisaView(
-                    viewModel: VisaViewModel(
-                        passportCode: "TT",
-                        destinationCode: viewModel.city.country.code
-                    )
-                )
-                .fixedSize(horizontal: false, vertical: true)
-
-                Spacer(minLength: 0)
+                // Keep content above home indicator/tab icons
+                .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                .frame(maxWidth: .infinity)
             }
         }
         .navigationBarBackButtonHidden(true)
-        .task { await viewModel.requestAccessAndLoadTopSong() }
-        .safeAreaInset(edge: .bottom) {
-            Color.clear.frame(height: 50)
-        }
+        .task { await viewModel.requestAccessAndLoadTopSong() }  // metadata only
     }
 
     // MARK: - Subviews
-
     @ViewBuilder
-    private var artworkView: some View {
+    private func artworkView(maxSide: CGFloat) -> some View {
         if let url = viewModel.songImage {
             AsyncImage(url: url) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
-                        .frame(maxWidth: 300, maxHeight: 300)
+                        .frame(width: maxSide, height: maxSide)
                         .aspectRatio(1, contentMode: .fit)
-
                 case let .success(image):
-                    image
-                        .resizable()
+                    image.resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 300, maxHeight: 300)
+                        .frame(width: maxSide, height: maxSide)
                         .cornerRadius(20)
                         .shadow(radius: 10)
-
                 case .failure:
                     Image("placeholder_artwork")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 300, maxHeight: 300)
+                        .frame(width: maxSide, height: maxSide)
                         .cornerRadius(20)
                         .shadow(radius: 10)
-
                 @unknown default:
                     Image("placeholder_artwork")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 300, maxHeight: 300)
+                        .frame(width: maxSide, height: maxSide)
                         .cornerRadius(20)
                         .shadow(radius: 10)
                 }
@@ -145,28 +106,9 @@ struct MusicView: View {
             Image("placeholder_artwork")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 300, maxHeight: 300)
+                .frame(width: maxSide, height: maxSide)
                 .cornerRadius(20)
                 .shadow(radius: 10)
-        }
-    }
-
-    @ViewBuilder
-    private var playPauseOverlay: some View {
-        if viewModel.isPlaying || viewModel.songID != nil {
-            Image(
-                systemName: viewModel.isPlaying
-                    ? "pause.circle.fill"
-                    : "play.circle.fill"
-            )
-            .resizable()
-            .frame(width: 60, height: 60)
-            .foregroundStyle(
-                .white.opacity(0.9),
-                .black.opacity(0.3)
-            )
-            .shadow(radius: 4)
-            .transition(.opacity.animation(.easeInOut(duration: 0.2)))
         }
     }
 }
