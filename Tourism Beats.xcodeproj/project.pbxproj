@@ -14,7 +14,6 @@
 		AF653D8D2C213E5E002F7EFE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D8C2C213E5E002F7EFE /* UIKit.framework */; };
 		AF653D8F2C213E64002F7EFE /* MusicKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D8E2C213E64002F7EFE /* MusicKit.framework */; };
 		AF653D912C213E7E002F7EFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D902C213E7E002F7EFE /* QuartzCore.framework */; };
-		AF9D2EAF2E67B05E001A6ED9 /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = AF9D2EAE2E67B05E001A6ED9 /* SpotifyiOS */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +61,6 @@
 				AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */,
 				AF653D892C213E4A002F7EFE /* CoreLocation.framework in Frameworks */,
 				AF653D862C213DDA002F7EFE /* SceneKit.framework in Frameworks */,
-				AF9D2EAF2E67B05E001A6ED9 /* SpotifyiOS in Frameworks */,
 				AF653D872C213E2F002F7EFE /* MapKit.framework in Frameworks */,
 				AF653D8D2C213E5E002F7EFE /* UIKit.framework in Frameworks */,
 				AF653D8F2C213E64002F7EFE /* MusicKit.framework in Frameworks */,
@@ -221,7 +219,6 @@
 			);
 			mainGroup = AF23D1A92C211F2400A3406D;
 			packageReferences = (
-				AF9D2EAD2E67B05E001A6ED9 /* XCRemoteSwiftPackageReference "ios-sdk" */,
 			);
 			productRefGroup = AF23D1B32C211F2400A3406D /* Products */;
 			projectDirPath = "";
@@ -447,7 +444,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.5;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -488,7 +485,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.0.5;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -611,25 +608,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		AF9D2EAD2E67B05E001A6ED9 /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/spotify/ios-sdk";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		AF9D2EAE2E67B05E001A6ED9 /* SpotifyiOS */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AF9D2EAD2E67B05E001A6ED9 /* XCRemoteSwiftPackageReference "ios-sdk" */;
-			productName = SpotifyiOS;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AF23D1AA2C211F2400A3406D /* Project object */;
 }
