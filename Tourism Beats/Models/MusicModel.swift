@@ -25,6 +25,8 @@ public struct AppSong: Sendable, Equatable, Hashable {
     /// `https://open.spotify.com/track/{id}`. Apple Music playback is in-app
     /// so this is typically `nil` for AM sources.
     public let deepLinkURL: URL?
+    /// International Standard Recording Code - storefront-agnostic identifier
+    public let isrc: String?
 
     public init(
         source: AppSongSource,
@@ -32,7 +34,8 @@ public struct AppSong: Sendable, Equatable, Hashable {
         title: String,
         artistName: String,
         artworkURL: URL?,
-        deepLinkURL: URL?
+        deepLinkURL: URL?,
+        isrc: String? = nil
     ) {
         self.source = source
         self.id = id
@@ -40,6 +43,7 @@ public struct AppSong: Sendable, Equatable, Hashable {
         self.artistName = artistName
         self.artworkURL = artworkURL
         self.deepLinkURL = deepLinkURL
+        self.isrc = isrc
     }
 }
 
@@ -82,6 +86,7 @@ struct SongAttributes: Decodable, Sendable {
     let name: String
     let artistName: String
     let artwork: ArtworkAPI?
+    let isrc: String?
 }
 
 struct ArtworkAPI: Decodable, Sendable {
@@ -110,7 +115,8 @@ extension AppSong {
             title: attrs.name,
             artistName: attrs.artistName,
             artworkURL: attrs.artwork?.artworkURL(),
-            deepLinkURL: nil
+            deepLinkURL: nil,
+            isrc: attrs.isrc
         )
     }
 }

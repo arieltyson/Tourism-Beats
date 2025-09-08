@@ -40,10 +40,13 @@ struct MusicView: View {
                         NeumorphicPill(
                             logo: .appleMusic,
                             title: "Apple Music",
-                            rightKind: self.viewModel.isPlaying ? .pause : .play,
+                            rightKind: self.viewModel.isPlaying
+                                ? .pause : .play,
                             dimmed: false
                         ) {
-                            Task { await self.viewModel.handleAppleMusicAction() }
+                            Task {
+                                await self.viewModel.handleAppleMusicAction()
+                            }
                         }
 
                         NeumorphicPill(

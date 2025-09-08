@@ -1,41 +1,42 @@
 import AVFoundation
 @preconcurrency import Combine
 import Foundation
-import MusicKit
+@preconcurrency import MusicKit
 import SwiftUI
+import UIKit
 
 @MainActor
-class MusicViewModel: ObservableObject {
-    // Display
+final class MusicViewModel: ObservableObject {
+    // MARK: Display
+
     @Published var songTitle: String = "Loading…"
     @Published var artistName: String = ""
     @Published var songImage: URL?
 
-    // Apple playback state
-    @Published var isPlaying = false
-    @Published var playbackErrorMessage: String?
-    @Published var userFeedbackMessage: String?
+    // MARK: Playback state
 
-    // UI state for pills
+    @Published var isPlaying = false
+    @Published var userFeedbackMessage: String?
     @Published var isSpotifySearching = false
+
+    // MARK: Dependencies
 
     let city: CityModel
     private let musicService: MusicProtocol
 
+    // MARK: Internal state
+
     private var hasLoadedData = false
+    private var playableSong: Song? // Apple Music playable item
+    private var appleSong: AppSong? // Apple Music chart result
+    private var spotifyMirroredSong: AppSong? // Mirror of Apple result
 
-    // Apple playback
-    private var playableSong: Song?
-    private var appleSong: AppSong? // ← hold Apple song
+    // MARK: Observers
 
-    // Spotify
-    private var spotifyMirroredSong: AppSong? // ← hold Spotify mirror
-
-    // Playback state monitoring
     private var cancellables = Set<AnyCancellable>()
     private var playbackStateTask: Task<Void, Never>?
-    private var lastKnownPlaybackState: MusicKit.MusicPlayer.PlaybackStatus =
-        .stopped
+
+    // MARK: Init
 
     init(city: CityModel, musicService: MusicProtocol = MusicService.shared) {
         self.city = city
@@ -50,14 +51,11 @@ class MusicViewModel: ObservableObject {
     // MARK: - Playback State Monitoring
 
     private func setupPlaybackStateMonitoring() {
-        // App lifecycle
         NotificationCenter.default.publisher(
             for: UIApplication.didBecomeActiveNotification
         )
         .sink { [weak self] _ in
-            Task { @MainActor in
-                await self?.handleAppBecameActive()
-            }
+            Task { @MainActor in await self?.handleAppBecameActive() }
         }
         .store(in: &self.cancellables)
 
@@ -65,24 +63,18 @@ class MusicViewModel: ObservableObject {
             for: UIApplication.willResignActiveNotification
         )
         .sink { [weak self] _ in
-            Task { @MainActor in
-                await self?.handleAppWillResignActive()
-            }
+            Task { @MainActor in await self?.handleAppWillResignActive() }
         }
         .store(in: &self.cancellables)
 
-        // Audio interruptions
         NotificationCenter.default.publisher(
             for: AVAudioSession.interruptionNotification
         )
-        .sink { [weak self] notification in
-            Task { @MainActor in
-                await self?.handleAudioInterruption(notification)
-            }
+        .sink { [weak self] note in
+            Task { @MainActor in await self?.handleAudioInterruption(note) }
         }
         .store(in: &self.cancellables)
 
-        // Periodic sync
         self.startPlaybackStateMonitoring()
     }
 
@@ -98,43 +90,29 @@ class MusicViewModel: ObservableObject {
 
     private func handleAppBecameActive() async {
         await self.syncPlaybackState()
-        if self.appleSong != nil {
-            self.startPlaybackStateMonitoring()
-        }
+        if self.appleSong != nil { self.startPlaybackStateMonitoring() }
     }
 
     private func handleAppWillResignActive() async {
         self.playbackStateTask?.cancel()
-        if self.appleSong != nil {
-            self.lastKnownPlaybackState =
-                ApplicationMusicPlayer.shared.state.playbackStatus
-        }
     }
 
     private func handleAudioInterruption(_ notification: Notification) async {
         guard
             let userInfo = notification.userInfo,
-            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey]
-            as? UInt,
-            let type = AVAudioSession.InterruptionType(rawValue: typeValue)
+            let rawType = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSession.InterruptionType(rawValue: rawType)
         else { return }
 
         switch type {
         case .began:
-            if self.isPlaying {
-                self.isPlaying = false
-                self.lastKnownPlaybackState = .interrupted
-            }
+            if self.isPlaying { self.isPlaying = false }
         case .ended:
-            if let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey]
+            if let rawOpts = userInfo[AVAudioSessionInterruptionOptionKey]
                 as? UInt
             {
-                let options = AVAudioSession.InterruptionOptions(
-                    rawValue: optionsValue
-                )
-                if options.contains(.shouldResume) {
-                    await self.syncPlaybackState()
-                }
+                let opts = AVAudioSession.InterruptionOptions(rawValue: rawOpts)
+                if opts.contains(.shouldResume) { await self.syncPlaybackState() }
             }
         @unknown default:
             break
@@ -143,17 +121,13 @@ class MusicViewModel: ObservableObject {
 
     private func syncPlaybackState() async {
         guard self.appleSong != nil else { return }
-        let player = ApplicationMusicPlayer.shared
-        let status = player.state.playbackStatus
-        if self.isPlaying != (status == .playing) {
-            self.isPlaying = (status == .playing)
-        }
-        self.lastKnownPlaybackState = status
+        let status = ApplicationMusicPlayer.shared.state.playbackStatus
+        self.isPlaying = (status == .playing)
     }
 
     // MARK: - Lifecycle
 
-    /// Load metadata without prompting for Apple authorization.
+    /// Loads top-song metadata (no Apple Music authorization prompt).
     func requestAccessAndLoadTopSong() async {
         guard !self.hasLoadedData else { return }
         self.hasLoadedData = true
@@ -166,32 +140,30 @@ class MusicViewModel: ObservableObject {
         self.songImage = nil
         self.isPlaying = false
         self.playableSong = nil
-        self.playbackErrorMessage = nil
         self.userFeedbackMessage = nil
-        self.spotifyMirroredSong = nil // reset any prior mirror
+        self.spotifyMirroredSong = nil
 
         do {
-            let appSong = try await musicService.fetchTopSong(
+            let result = try await musicService.fetchTopSong(
                 countryCode: self.city.country.code
             )
-            self.appleSong = appSong // ← keep Apple song
-            self.songTitle = appSong.title
-            self.artistName = appSong.artistName
-            self.songImage = appSong.artworkURL
+            self.appleSong = result
+            self.songTitle = result.title
+            self.artistName = result.artistName
+            self.songImage = result.artworkURL
         } catch let error as MusicService.MusicServiceError {
-            if case .storefrontNotAvailable = error {
+            switch error {
+            case .storefrontNotAvailable:
                 songTitle = "Music Not Available"
                 artistName =
                     "Apple Music charts are not available in \(city.country.name)."
-            } else {
+            default:
                 songTitle = "Could Not Load Song"
                 artistName = "An unexpected error occurred."
             }
-            print("🎵 fetch error:", error)
         } catch {
             self.songTitle = "Could Not Load Song"
             self.artistName = error.localizedDescription
-            print("🎵 fetch error:", error)
         }
     }
 
@@ -199,57 +171,42 @@ class MusicViewModel: ObservableObject {
 
     func handleAppleMusicAction() async {
         self.userFeedbackMessage = nil
-        self.playbackErrorMessage = nil
 
-        // Request permission only when user taps
         let status = await MusicAuthorization.request()
         guard status == .authorized else { return }
 
-        // Subscription check (best-effort)
-        do {
-            let sub = try await MusicSubscription.current
-            guard sub.canPlayCatalogContent else { return }
-        } catch {
-            // try anyway; errors will be surfaced via playback failure
+        // Best-effort subscription check; if it throws, we still attempt play.
+        if let subscription = try? await MusicSubscription.current,
+           subscription.canPlayCatalogContent == false
+        {
+            return
         }
 
         await self.togglePlayback()
     }
 
     private func togglePlayback() async {
-        guard let appSong = appleSong else { return } // ← use Apple song only
-
         let player = ApplicationMusicPlayer.shared
-        let currentStatus = player.state.playbackStatus
-
-        // Pause if already playing
-        if currentStatus == .playing {
+        if player.state.playbackStatus == .playing {
             player.pause()
             self.isPlaying = false
-            self.lastKnownPlaybackState = .paused
             return
         }
 
-        // Resume/Play
-        if let song = playableSong {
-            await self.play(song)
+        if let cached = playableSong {
+            await self.play(cached)
             return
         }
 
-        // Convert AppSong ID → MusicItemID and fetch song
-        guard let musicKitID = appSong.musicKitID else { return }
+        // Resolve into the current storefront
+        guard let song = await resolvePlayableSongForCurrentStorefront() else {
+            self.userFeedbackMessage =
+                "This track isn't available in your Apple Music region."
+            return
+        }
 
-        do {
-            let req = MusicCatalogResourceRequest<Song>(
-                matching: \.id,
-                equalTo: musicKitID
-            )
-            let resp = try await req.response()
-            if let song = resp.items.first {
-                self.playableSong = song
-                await self.play(song)
-            }
-        } catch {}
+        self.playableSong = song
+        await self.play(song)
     }
 
     private func play(_ song: Song) async {
@@ -257,10 +214,8 @@ class MusicViewModel: ObservableObject {
         do {
             try await ApplicationMusicPlayer.shared.play()
             self.isPlaying = true
-            self.lastKnownPlaybackState = .playing
         } catch {
             self.isPlaying = false
-            self.lastKnownPlaybackState = .stopped
         }
     }
 
@@ -268,26 +223,26 @@ class MusicViewModel: ObservableObject {
 
     func handleSpotifyAction() async {
         self.userFeedbackMessage = nil
-        self.playbackErrorMessage = nil
 
-        // Require app installed
-        guard let spotifyURL = URL(string: "spotify://"),
-              UIApplication.shared.canOpenURL(spotifyURL)
-        else {
+        guard let apple = appleSong else {
+            self.userFeedbackMessage = "No song available to play."
             return
         }
 
-        // Use the Apple chart result as the source of truth for title/artist
-        guard let apple = appleSong else { return }
+        let isSpotifyInstalled = self.canOpenSpotifyApp()
 
-        // If we already mirrored once, reuse instantly
-        if let s = spotifyMirroredSong, let deep = s.deepLinkURL {
-            await self.open(deep)
+        // Reuse a previous successful mirror if we have one
+        if let mirrored = spotifyMirroredSong, let deep = mirrored.deepLinkURL {
+            await self.openSpotifyURL(deep, isAppInstalled: isSpotifyInstalled)
             return
         }
 
-        // If Apple Music is playing, Spotify will interrupt; our interruption
-        // handler will update UI state appropriately.
+        // Pause Apple Music before handing off to Spotify
+        if ApplicationMusicPlayer.shared.state.playbackStatus == .playing {
+            ApplicationMusicPlayer.shared.pause()
+            self.isPlaying = false
+        }
+
         self.isSpotifySearching = true
         defer { isSpotifySearching = false }
 
@@ -298,17 +253,222 @@ class MusicViewModel: ObservableObject {
                 countryCode: self.city.country.code
             )
             self.spotifyMirroredSong = mirrored
+
             if let deep = mirrored.deepLinkURL {
-                await self.open(deep)
+                await self.openSpotifyURL(deep, isAppInstalled: isSpotifyInstalled)
+            } else {
+                await self.openSpotifySearchFallback(
+                    title: apple.title,
+                    artist: apple.artistName,
+                    isAppInstalled: isSpotifyInstalled
+                )
             }
-        } catch {}
+        } catch {
+            await self.handleSpotifyError(
+                error,
+                title: apple.title,
+                artist: apple.artistName,
+                isAppInstalled: isSpotifyInstalled
+            )
+        }
     }
 
-    private func open(_ url: URL) async {
-        if #available(iOS 17.0, *) {
-            _ = await UIApplication.shared.open(url)
-        } else {
-            UIApplication.shared.open(url, options: [:]) { _ in }
+    // MARK: - Spotify Deep Linking
+
+    private func canOpenSpotifyApp() -> Bool {
+        guard let scheme = URL(string: "spotify://") else { return false }
+        return UIApplication.shared.canOpenURL(scheme)
+    }
+
+    private func openSpotifyURL(_ url: URL, isAppInstalled: Bool) async {
+        if isAppInstalled, let appURL = spotifyAppURLIfPossible(forWebURL: url) {
+            if await self.openURL(appURL) { return }
         }
+
+        // Fall back to web (which may still universal-link into Spotify)
+        _ = await self.openURL(url)
+        if !(UIApplication.shared.canOpenURL(url)) {
+            await MainActor.run {
+                self.userFeedbackMessage =
+                    "Unable to open Spotify. Please check if the app is installed."
+            }
+        }
+    }
+
+    private func spotifyAppURLIfPossible(forWebURL webURL: URL) -> URL? {
+        guard webURL.host == "open.spotify.com" else { return nil }
+        let components = webURL.pathComponents
+        guard components.count >= 3, components[1] == "track" else {
+            return nil
+        }
+        let trackID = components[2]
+        return URL(string: "spotify://track/\(trackID)")
+    }
+
+    private func openSpotifySearchFallback(
+        title: String,
+        artist: String,
+        isAppInstalled: Bool
+    ) async {
+        let query = "\(title) \(artist)"
+        let encoded = self.encodeForURLPath(query)
+
+        if isAppInstalled,
+           let appURL = URL(string: "spotify://search/\(encoded)"),
+           await openURL(appURL)
+        {
+            return
+        }
+
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "open.spotify.com"
+        components.path = "/search/\(encoded)"
+
+        if let webURL = components.url {
+            if await self.openURL(webURL) { return }
+        }
+
+        await MainActor.run {
+            self.userFeedbackMessage =
+                "Unable to open Spotify search. Please try again."
+        }
+    }
+
+    private func handleSpotifyError(
+        _ error: Error,
+        title: String,
+        artist: String,
+        isAppInstalled: Bool
+    ) async {
+        if let spotifyError = error as? SpotifyService.ServiceError {
+            switch spotifyError {
+            case let .api(statusCode):
+                if statusCode == 401 {
+                    await MainActor.run {
+                        self.userFeedbackMessage =
+                            "Spotify authentication expired. Please try again."
+                    }
+                    return
+                } else if statusCode == 404 {
+                    // Not found → search
+                    await self.openSpotifySearchFallback(
+                        title: title,
+                        artist: artist,
+                        isAppInstalled: isAppInstalled
+                    )
+                    return
+                } else {
+                    await MainActor.run {
+                        self.userFeedbackMessage =
+                            "Spotify service unavailable. Trying search instead…"
+                    }
+                    await self.openSpotifySearchFallback(
+                        title: title,
+                        artist: artist,
+                        isAppInstalled: isAppInstalled
+                    )
+                    return
+                }
+            case .notFound:
+                await self.openSpotifySearchFallback(
+                    title: title,
+                    artist: artist,
+                    isAppInstalled: isAppInstalled
+                )
+                return
+            }
+        }
+
+        // Unknown error → search fallback
+        await MainActor.run {
+            self.userFeedbackMessage =
+                "Unable to connect to Spotify. Trying search instead…"
+        }
+        await self.openSpotifySearchFallback(
+            title: title,
+            artist: artist,
+            isAppInstalled: isAppInstalled
+        )
+    }
+
+    // MARK: - URL Opening
+
+    private func openURL(_ url: URL) async -> Bool {
+        guard UIApplication.shared.canOpenURL(url) else { return false }
+
+        if #available(iOS 17.0, *) {
+            return await UIApplication.shared.open(url)
+        } else {
+            return await withCheckedContinuation { continuation in
+                UIApplication.shared.open(url, options: [:]) { result in
+                    continuation.resume(returning: result)
+                }
+            }
+        }
+    }
+
+    // MARK: - Storefront Resolution
+
+    private func resolvePlayableSongForCurrentStorefront() async -> Song? {
+        guard let app = appleSong else { return nil }
+
+        // 1) Best: look up by ISRC (storefront-agnostic)
+        if let isrc = app.isrc {
+            if let byISRC = try? await fetchSongByISRC(isrc) {
+                return byISRC
+            }
+        }
+
+        // 2) Fallback: search in the user's storefront
+        return try? await self.searchSongByTitleAndArtist(
+            title: app.title,
+            artist: app.artistName
+        )
+    }
+
+    private func fetchSongByISRC(_ isrc: String) async throws -> Song? {
+        let request = MusicCatalogResourceRequest<Song>(
+            matching: \.isrc,
+            equalTo: isrc
+        )
+        let response = try await request.response()
+        return response.items.first
+    }
+
+    private func searchSongByTitleAndArtist(title: String, artist: String)
+        async throws -> Song?
+    {
+        var search = MusicCatalogSearchRequest(
+            term: "\(title) \(artist)",
+            types: [Song.self]
+        )
+        search.limit = 5
+        let response = try await search.response()
+
+        // Prefer exact/near-exact matches
+        if let exact = response.songs.first(where: { song in
+            song.title.compare(
+                title,
+                options: [.caseInsensitive, .diacriticInsensitive]
+            ) == .orderedSame
+                && song.artistName.compare(
+                    artist,
+                    options: [.caseInsensitive, .diacriticInsensitive]
+                ) == .orderedSame
+        }) {
+            return exact
+        }
+        return response.songs.first
+    }
+
+    // MARK: - Encoding
+
+    private func encodeForURLPath(_ value: String) -> String {
+        value.addingPercentEncoding(
+            withAllowedCharacters: CharacterSet.urlPathAllowed.union(
+                .urlQueryAllowed
+            )
+        ) ?? value
     }
 }
