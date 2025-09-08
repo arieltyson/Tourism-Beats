@@ -9,6 +9,7 @@ struct MapView: UIViewRepresentable {
     @Binding var region: MKCoordinateRegion
     @Binding var lastRegion: MKCoordinateRegion?
     let cities: [CityModel]
+    let onCitySelected: (CityModel) -> Void
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
@@ -52,7 +53,7 @@ struct MapView: UIViewRepresentable {
             self.parent = parent
         }
 
-        // 1) Pin tapped: stash current region, zoom in, fire alert
+        // 1) Pin tapped: stash current region, zoom in, show alert
         func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
             guard
                 let name = view.annotation?.title ?? "",
