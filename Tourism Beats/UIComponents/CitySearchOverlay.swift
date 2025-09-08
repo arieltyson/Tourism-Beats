@@ -1,6 +1,8 @@
 import MapKit
 import SwiftUI
 
+// MARK: - CitySearchOverlay
+
 /// A beautiful, award-winning city search overlay that follows Apple's latest design guidelines
 struct CitySearchOverlay: View {
     @Binding var isPresented: Bool
@@ -19,10 +21,10 @@ struct CitySearchOverlay: View {
     // MARK: - Computed Properties
 
     private var searchResults: [CityModel] {
-        if searchText.isEmpty {
-            return cities.prefix(10).map { $0 }
+        if self.searchText.isEmpty {
+            return self.cities.prefix(10).map(\.self)
         }
-        return filteredCities
+        return self.filteredCities
     }
 
     // MARK: - Body
@@ -33,15 +35,15 @@ struct CitySearchOverlay: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    dismissSearch()
+                    self.dismissSearch()
                 }
 
             VStack(spacing: 0) {
                 // Search header
-                searchHeader
+                self.searchHeader
 
                 // Search results
-                searchResultsList
+                self.searchResultsList
             }
             .background(
                 .ultraThinMaterial,
@@ -52,18 +54,18 @@ struct CitySearchOverlay: View {
             .padding(.bottom, 40)
         }
         .onAppear {
-            setupInitialState()
+            self.setupInitialState()
         }
-        .onChange(of: searchText) { _, newValue in
-            performSearch(newValue)
+        .onChange(of: self.searchText) { _, newValue in
+            self.performSearch(newValue)
         }
         .animation(
             .spring(response: 0.4, dampingFraction: 0.8),
-            value: isPresented
+            value: self.isPresented
         )
         .animation(
             .spring(response: 0.3, dampingFraction: 0.7),
-            value: searchResults.count
+            value: self.searchResults.count
         )
     }
 
@@ -84,7 +86,7 @@ struct CitySearchOverlay: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(.primary)
 
-                searchField
+                self.searchField
             }
             .padding(.horizontal, 20)
         }
@@ -99,17 +101,17 @@ struct CitySearchOverlay: View {
                 .foregroundStyle(.secondary)
                 .font(.system(size: 16, weight: .medium))
 
-            TextField("Search for a city...", text: $searchText)
-                .focused($isSearchFieldFocused)
+            TextField("Search for a city...", text: self.$searchText)
+                .focused(self.$isSearchFieldFocused)
                 .textFieldStyle(.plain)
                 .font(.system(size: 16))
                 .submitLabel(.search)
                 .onSubmit {
-                    selectFirstResult()
+                    self.selectFirstResult()
                 }
 
-            if !searchText.isEmpty {
-                Button(action: clearSearch) {
+            if !self.searchText.isEmpty {
+                Button(action: self.clearSearch) {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.secondary)
                         .font(.system(size: 16))
@@ -127,12 +129,12 @@ struct CitySearchOverlay: View {
     private var searchResultsList: some View {
         ScrollView {
             LazyVStack(spacing: 8) {
-                ForEach(searchResults, id: \.id) { city in
+                ForEach(self.searchResults, id: \.id) { city in
                     CitySearchResultRow(
                         city: city,
-                        searchText: searchText
+                        searchText: self.searchText
                     ) {
-                        selectCity(city)
+                        self.selectCity(city)
                     }
                 }
             }
@@ -145,17 +147,17 @@ struct CitySearchOverlay: View {
     // MARK: - Helper Methods
 
     private func setupInitialState() {
-        isSearchFieldFocused = true
-        filteredCities = cities
+        self.isSearchFieldFocused = true
+        self.filteredCities = self.cities
     }
 
     private func performSearch(_ query: String) {
-        isSearching = true
+        self.isSearching = true
 
         if query.isEmpty {
-            filteredCities = cities
+            self.filteredCities = self.cities
         } else {
-            filteredCities = cities.filter { city in
+            self.filteredCities = self.cities.filter { city in
                 city.name.localizedCaseInsensitiveContains(query)
                     || city.country.name.localizedCaseInsensitiveContains(query)
             }
@@ -166,9 +168,9 @@ struct CitySearchOverlay: View {
                 let city2NameMatch = city2.name
                     .localizedCaseInsensitiveContains(query)
 
-                if city1NameMatch && !city2NameMatch {
+                if city1NameMatch, !city2NameMatch {
                     return true
-                } else if !city1NameMatch && city2NameMatch {
+                } else if !city1NameMatch, city2NameMatch {
                     return false
                 } else {
                     return city1.name < city2.name
@@ -176,7 +178,7 @@ struct CitySearchOverlay: View {
             }
         }
 
-        isSearching = false
+        self.isSearching = false
     }
 
     private func selectCity(_ city: CityModel) {
@@ -186,41 +188,41 @@ struct CitySearchOverlay: View {
 
         // Animate to city location
         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-            region = MKCoordinateRegion(
+            self.region = MKCoordinateRegion(
                 center: city.coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
             )
         }
 
         // Select city (no alert for search selections)
-        selectedCity = city
+        self.selectedCity = city
 
         // Call completion handler - this will navigate directly
-        onCitySelected(city)
+        self.onCitySelected(city)
 
         // Dismiss search
-        dismissSearch()
+        self.dismissSearch()
     }
 
     private func selectFirstResult() {
         guard let firstCity = searchResults.first else { return }
-        selectCity(firstCity)
+        self.selectCity(firstCity)
     }
 
     private func clearSearch() {
-        searchText = ""
-        isSearchFieldFocused = true
+        self.searchText = ""
+        self.isSearchFieldFocused = true
     }
 
     private func dismissSearch() {
-        isSearchFieldFocused = false
+        self.isSearchFieldFocused = false
         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-            isPresented = false
+            self.isPresented = false
         }
     }
 }
 
-// MARK: - City Search Result Row
+// MARK: - CitySearchResultRow
 
 struct CitySearchResultRow: View {
     let city: CityModel
@@ -228,19 +230,19 @@ struct CitySearchResultRow: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
+        Button(action: self.onTap) {
             HStack(spacing: 16) {
                 // Country flag (emoji or computed from ISO code)
-                cityIcon
+                self.cityIcon
 
                 // City info
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(highlightedText(city.name, searchText: searchText))
+                    Text(self.highlightedText(self.city.name, searchText: self.searchText))
                         .font(.system(size: 16, weight: .medium))
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.leading)
 
-                    Text(city.country.name)
+                    Text(self.city.country.name)
                         .font(.system(size: 14))
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.leading)
@@ -265,11 +267,11 @@ struct CitySearchResultRow: View {
 
     private var cityIcon: some View {
         CountryFlagView(
-            flagEmoji: city.country.flag,
-            isoCode: city.country.code
+            flagEmoji: self.city.country.flag,
+            isoCode: self.city.country.code
         )
         .frame(width: 40, height: 30)
-        .accessibilityLabel("\(city.country.name) flag")
+        .accessibilityLabel("\(self.city.country.name) flag")
     }
 
     private func highlightedText(_ text: String, searchText: String)
@@ -294,7 +296,7 @@ struct CitySearchResultRow: View {
     }
 }
 
-// MARK: - Country Flag View
+// MARK: - CountryFlagView
 
 /// Renders a country flag inside a rounded rectangle.
 /// Uses the provided `flagEmoji` when available; otherwise computes it from the ISO alpha-2 code.
@@ -306,17 +308,17 @@ private struct CountryFlagView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
                 .fill(.quaternary)
-            Text(resolvedFlag)
+            Text(self.resolvedFlag)
                 .font(.system(size: 18))
                 .minimumScaleFactor(0.6)
         }
     }
 
     private var resolvedFlag: String {
-        if !flagEmoji.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return flagEmoji
+        if !self.flagEmoji.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            self.flagEmoji
         } else {
-            return isoCode.flagEmoji
+            self.isoCode.flagEmoji
         }
     }
 }
@@ -332,11 +334,11 @@ extension String {
         var searchStartIndex = startIndex
 
         while searchStartIndex < endIndex,
-            let range = range(
-                of: searchString,
-                options: options,
-                range: searchStartIndex..<endIndex
-            )
+              let range = range(
+                  of: searchString,
+                  options: options,
+                  range: searchStartIndex ..< endIndex
+              )
         {
             ranges.append(range)
             searchStartIndex = range.upperBound
@@ -350,13 +352,13 @@ extension String {
     var flagEmoji: String {
         let uppercased = uppercased()
         guard uppercased.count == 2,
-            uppercased.unicodeScalars.allSatisfy({
-                ("A"..."Z").contains(Character($0))
-            })
+              uppercased.unicodeScalars.allSatisfy({
+                  ("A" ... "Z").contains(Character($0))
+              })
         else {
             return "🏳️"
         }
-        let base: UInt32 = 0x1F1E6  // Regional Indicator Symbol Letter A
+        let base: UInt32 = 0x1F1E6 // Regional Indicator Symbol Letter A
         var scalars = String.UnicodeScalarView()
         for scalar in uppercased.unicodeScalars {
             if let regional = UnicodeScalar(base + (scalar.value - 65)) {
@@ -420,7 +422,7 @@ extension String {
                     longitude: 121.4737
                 ),
                 timeZoneIdentifier: "Asia/Shanghai"
-            ),
+            )
         ],
         onCitySelected: { _ in }
     )

@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - AdvisoriesView
+
 struct AdvisoriesView: View {
     let city: CityModel
 
@@ -9,26 +11,29 @@ struct AdvisoriesView: View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 12) {
                 // MARK: Hero
-                HeroCard(city: city)
+
+                HeroCard(city: self.city)
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel(
-                        "Travel Advisories for \(city.name), \(city.country.name)"
+                        "Travel Advisories for \(self.city.name), \(self.city.country.name)"
                     )
 
                 // MARK: Safety
+
                 AdvisoryCard {
                     SectionHeader(
                         title: "Safety & Advisories"
                     )
                     .padding(.bottom, 2)
 
-                    SafetyView(viewModel: SafetyViewModel(city: city))
+                    SafetyView(viewModel: SafetyViewModel(city: self.city))
                         .fixedSize(horizontal: false, vertical: true)
                         .transition(.opacity.combined(with: .scale))
                 }
-                .accessibilityHint("Shows travel advisories for \(city.name)")
+                .accessibilityHint("Shows travel advisories for \(self.city.name)")
 
                 // MARK: Visa
+
                 AdvisoryCard {
                     SectionHeader(
                         title: "Visa & Entry"
@@ -38,26 +43,26 @@ struct AdvisoriesView: View {
                     VisaView(
                         viewModel: VisaViewModel(
                             passportCode: "TT",
-                            destinationCode: city.country.code
+                            destinationCode: self.city.country.code
                         )
                     )
                     .fixedSize(horizontal: false, vertical: true)
                     .transition(.opacity.combined(with: .scale))
                 }
                 .accessibilityHint(
-                    "Shows visa information for travelers to \(city.name)"
+                    "Shows visa information for travelers to \(self.city.name)"
                 )
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
             .padding(.bottom, 16)
-            .opacity(appeared ? 1 : 0.9)
-            .scaleEffect(appeared ? 1 : 0.98)
+            .opacity(self.appeared ? 1 : 0.9)
+            .scaleEffect(self.appeared ? 1 : 0.98)
             .animation(
                 .spring(response: 0.6, dampingFraction: 0.85),
-                value: appeared
+                value: self.appeared
             )
-            .onAppear { appeared = true }
+            .onAppear { self.appeared = true }
         }
         .background(Color.clear.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
@@ -65,7 +70,7 @@ struct AdvisoriesView: View {
     }
 }
 
-// MARK: - Hero
+// MARK: - HeroCard
 
 private struct HeroCard: View {
     let city: CityModel
@@ -74,13 +79,13 @@ private struct HeroCard: View {
     var body: some View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(city.name)
+                Text(self.city.name)
                     .font(.system(.largeTitle, design: .rounded).weight(.bold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
 
-                Text(city.country.name)
+                Text(self.city.country.name)
                     .font(.title3.weight(.semibold))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -111,12 +116,12 @@ private struct HeroCard: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(
-                            .white.opacity(scheme == .dark ? 0.10 : 0.16),
+                            .white.opacity(self.scheme == .dark ? 0.10 : 0.16),
                             lineWidth: 1
                         )
                 )
                 .shadow(
-                    color: .black.opacity(scheme == .dark ? 0.30 : 0.08),
+                    color: .black.opacity(self.scheme == .dark ? 0.30 : 0.08),
                     radius: 14,
                     y: 8
                 )
@@ -131,7 +136,7 @@ private struct HeroCard: View {
     }
 }
 
-// MARK: - Reusable Card
+// MARK: - AdvisoryCard
 
 private struct AdvisoryCard<Content: View>: View {
     @Environment(\.colorScheme) private var scheme
@@ -139,7 +144,7 @@ private struct AdvisoryCard<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            content
+            self.content
         }
         .padding(12)
         .background {
@@ -148,12 +153,12 @@ private struct AdvisoryCard<Content: View>: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(
-                            .white.opacity(scheme == .dark ? 0.10 : 0.16),
+                            .white.opacity(self.scheme == .dark ? 0.10 : 0.16),
                             lineWidth: 1
                         )
                 )
                 .shadow(
-                    color: .black.opacity(scheme == .dark ? 0.30 : 0.08),
+                    color: .black.opacity(self.scheme == .dark ? 0.30 : 0.08),
                     radius: 14,
                     y: 8
                 )
@@ -167,14 +172,14 @@ private struct AdvisoryCard<Content: View>: View {
     }
 }
 
-// MARK: - Section Header
+// MARK: - SectionHeader
 
 private struct SectionHeader: View {
     let title: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(title)
+            Text(self.title)
                 .font(.system(.title3, design: .rounded).weight(.semibold))
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)

@@ -33,8 +33,9 @@ struct MapView: UIViewRepresentable {
             uiView.setRegion(self.region, animated: true)
         }
 
-        // Deselect if the user cancelled
-        if self.selectedCity == nil {
+        // Only deselect annotations if we're explicitly clearing the selection
+        // and not currently showing an alert
+        if self.selectedCity == nil, !self.showAlert, !uiView.selectedAnnotations.isEmpty {
             for selectedAnnotation in uiView.selectedAnnotations {
                 uiView.deselectAnnotation(selectedAnnotation, animated: true)
             }
@@ -74,11 +75,14 @@ struct MapView: UIViewRepresentable {
             _ mapView: MKMapView,
             regionDidChangeAnimated _: Bool
         ) {
-            Task {
-                // ignore callbacks while we’re still showing the “zoomed in” alert
+            Task { @MainActor in
+                // ignore callbacks while we're still showing the "zoomed in" alert
                 guard self.parent.lastRegion == nil else { return }
 
-                // yield so we don’t mutate state in the middle of MapKit’s update pass
+                // ignore callbacks if we're showing an alert
+                guard !self.parent.showAlert else { return }
+
+                // yield so we don't mutate state in the middle of MapKit's update pass
                 await Task.yield()
 
                 self.parent.region = mapView.region
