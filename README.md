@@ -14,31 +14,31 @@
 
 ## Demo:
 
-https://github.com/user-attachments/assets/af8abb28-02d4-4903-a660-36a0ce63454c
+https://github.com/user-attachments/assets/951ccd9a-7c2d-4f23-89d5-0a6d7b74b5b0
 
 ## Screenshots:
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/user-attachments/assets/40e768e8-8208-41ea-aa8f-8dd36c7fd699" alt="IMG1" width="200">
+        <img src="https://github.com/user-attachments/assets/49292595-ece1-494d-8a48-31d2a1cabf3a" alt="Home Page" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/5141856b-d34b-432a-99ae-7656ba90b114" alt="IMG2" width="200">
+        <img src="https://github.com/user-attachments/assets/081068d1-b925-4764-9165-9e529026635a" alt="Map View" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/7e5a8f35-ff3d-47ab-8b19-5ce10e0c9c3f" alt="IMG3" width="200">
+        <img src="https://github.com/user-attachments/assets/04bd11a3-34bd-45e5-a201-4cae6621260f" alt="City View" width="200">
     </kbd>
 </div>
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/user-attachments/assets/154ed412-350e-4d1b-87d0-a7013a9223b8" alt="IMG4" width="200">
+        <img src="https://github.com/user-attachments/assets/ea56356d-f12e-4d31-a88c-1c7c6e666d83" alt="Music View" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/e67226d7-b5c8-4447-b390-414f1ae31086" alt="IMG5" width="200">
+        <img src="https://github.com/user-attachments/assets/96bdae34-208b-46d3-b74f-c66b7675698d" alt="Visa Search" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/079dfb3b-3a90-46bf-aff9-7cac9c3fa357" alt="IMG6" width="200">
+        <img src="https://github.com/user-attachments/assets/c43aca52-434d-4f57-9f96-ab99bd939698" alt="Map Search" width="200">
     </kbd>
 </div>
 
