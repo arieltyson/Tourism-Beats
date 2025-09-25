@@ -25,7 +25,8 @@ struct HomeView: View {
             .ignoresSafeArea()
 
             GeometryReader { proxy in
-                let safeWidth = proxy.size.width - horizontalPadding * 2
+                // Ensure we never pass a negative available width downstream
+                let safeWidth = max(0, proxy.size.width - horizontalPadding * 2)
 
                 VStack(spacing: 16) {
                     Spacer(minLength: 0)
@@ -134,16 +135,29 @@ private struct GlassCTA: View {
 
     private var content: some View {
         // Calculate the text block width we actually need
-        let neededTextWidth = max(titleSize.width, subtitleSize.width)
+        let neededTextWidth = max(
+            titleSize.width.isFinite ? titleSize.width : 0,
+            subtitleSize.width.isFinite ? subtitleSize.width : 0
+        )
 
         // Proposed content width: match subtitle above, but never less than what we need
-        var contentWidth = max(matchToWidth, neededTextWidth)
+        let safeMatchWidth = matchToWidth.isFinite ? max(0, matchToWidth) : 0
+        var contentWidth = max(safeMatchWidth, neededTextWidth)
 
         // Add space for the trailing icon + spacing
         contentWidth += (hSpacing + iconWidth)
 
         // Clamp to available space and ensure a minimum readable width
-        contentWidth = min(max(contentWidth, minReadable), maxAvailableWidth)
+        let available = max(0, maxAvailableWidth.isFinite ? maxAvailableWidth : 0)
+        if available > 0 {
+            contentWidth = min(max(contentWidth, minReadable), available)
+        } else {
+            // No available width reported yet; still ensure we never pass a negative/non-finite value
+            contentWidth = max(contentWidth, minReadable)
+        }
+
+        // Final sanitization: only pass a valid width to .frame; otherwise let SwiftUI size it
+        let frameWidth: CGFloat? = (contentWidth.isFinite && contentWidth > 0) ? contentWidth : nil
 
         return HStack(spacing: hSpacing) {
             VStack(alignment: .leading, spacing: 2) {
@@ -168,7 +182,7 @@ private struct GlassCTA: View {
         }
         .padding(.horizontal, innerHPad)
         .padding(.vertical, innerVPad)
-        .frame(width: contentWidth)
+        .frame(width: frameWidth)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.ultraThinMaterial)
