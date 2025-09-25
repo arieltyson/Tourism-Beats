@@ -6,24 +6,45 @@ struct MainTabView: View {
     @State private var searchPath = NavigationPath()
 
     var body: some View {
-        TabView(selection: self.$selectedTab) {
-            // ────────── Home ──────────
-            NavigationStack(path: self.$homePath) {
+        Group {
+            if #available(iOS 26, *) {
+                baseView
+                    // Let the system bar be fully transparent.
+                    .toolbarBackground(.clear, for: .tabBar)
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
+                    // Draw the glass BEHIND the TabView so it can’t duplicate up top.
+                    .background(alignment: .bottom) {
+                        LiquidTabBarBackground()
+                            .transition(
+                                .opacity.combined(with: .scale(scale: 0.995))
+                            )
+                            .accessibilityHidden(true)
+                    }
+            } else {
+                baseView
+                    .toolbarBackground(.ultraThinMaterial, for: .tabBar)
+                    .toolbarBackgroundVisibility(.visible, for: .tabBar)
+            }
+        }
+    }
+
+    private var baseView: some View {
+        TabView(selection: $selectedTab) {
+            NavigationStack(path: $homePath) {
                 HomeView()
             }
             .tabItem {
                 Image(
-                    systemName: (self.selectedTab == .home && self.homePath.isEmpty)
+                    systemName: (selectedTab == .home && homePath.isEmpty)
                         ? "house.circle.fill" : "house"
                 )
                 Text("Home")
             }
             .tag(AppTab.home)
 
-            // ───────── Search ─────────
-            NavigationStack(path: self.$searchPath) {
+            NavigationStack(path: $searchPath) {
                 WorldView { city in
-                    self.searchPath.append(city)
+                    searchPath.append(city)
                 }
                 .navigationDestination(for: CityModel.self) { city in
                     CityContainerView(city: city)
@@ -37,7 +58,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(
-                    systemName: (self.selectedTab == .search && self.searchPath.isEmpty)
+                    systemName: (selectedTab == .search && searchPath.isEmpty)
                         ? "magnifyingglass.circle.fill" : "magnifyingglass"
                 )
                 Text("Search")
@@ -45,12 +66,13 @@ struct MainTabView: View {
             .tag(AppTab.search)
         }
         .tint(.white)
-        // Helps icon legibility across bright/dark backgrounds behind the transparent bar.
         .toolbarColorScheme(.dark, for: .tabBar)
-        .onChange(of: self.selectedTab) { _, new in
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
+        .onChange(of: selectedTab) { _, new in
             switch new {
-            case .home: self.homePath = NavigationPath()
-            case .search: self.searchPath = NavigationPath()
+            case .home: homePath = NavigationPath()
+            case .search: searchPath = NavigationPath()
             }
         }
     }

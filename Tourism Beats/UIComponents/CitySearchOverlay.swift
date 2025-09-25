@@ -3,7 +3,6 @@ import SwiftUI
 
 // MARK: - CitySearchOverlay
 
-/// A beautiful, award-winning city search overlay that follows Apple's latest design guidelines
 struct CitySearchOverlay: View {
     @Binding var isPresented: Bool
     @Binding var selectedCity: CityModel?
