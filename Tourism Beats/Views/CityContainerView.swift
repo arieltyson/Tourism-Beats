@@ -1,20 +1,17 @@
 import SwiftUI
 
-/// Three-state vertical pager: 0 = City, 1 = Music, 2 = Advisories
 struct CityContainerView: View {
     let city: CityModel
 
-    @State private var pageIndex: Int = 0 // 0…2
+    @State private var pageIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
-    @State private var isPaging: Bool = false // when true, our drag takes precedence
+    @State private var isPaging: Bool = false
 
     var body: some View {
         GeometryReader { geo in
-            // 1) Background paints under transparent bars
             self.backgroundForCurrentPage
                 .ignoresSafeArea()
 
-            // 2) Foreground pages live inside the safe area, move interactively
             let pageHeight = geo.size.height
             let pageWidth = geo.size.width
 
@@ -31,20 +28,19 @@ struct CityContainerView: View {
                     .frame(width: pageWidth, height: pageHeight)
                     .offset(y: self.offset(for: 2, height: pageHeight))
             }
-            .clipped() // hide off-screen pages cleanly
+            .clipped()
             .contentShape(Rectangle())
             .animation(
                 .interactiveSpring(response: 0.35, dampingFraction: 0.85),
                 value: self.pageIndex
             )
             .highPriorityGesture(
-                DragGesture(minimumDistance: 12) // ↓ lighter than before
+                DragGesture(minimumDistance: 12)
                     .onChanged { value in
-                        // Only engage if the drag is vertically dominant (allow some diagonal)
                         if !self.isPaging {
                             let v = abs(value.translation.height)
                             let h = abs(value.translation.width)
-                            guard v > h * 0.7 else { return } // ↓ less strict than 1.0x
+                            guard v > h * 0.7 else { return }
                             self.isPaging = true
                         }
                         self.dragOffset = value.translation.height
@@ -55,34 +51,29 @@ struct CityContainerView: View {
                             isPaging = false
                         }
 
-                        // Vertical dominance check again on end
                         let v = abs(value.translation.height)
                         let h = abs(value.translation.width)
                         guard v > h * 0.7 else { return }
 
                         let height = pageHeight
-                        // Distance threshold: ~14% of height, clamped for consistency across devices
                         let base = height * 0.14
                         let threshold = min(140, max(80, base))
 
                         let dy = value.translation.height
-                        let commitByDistance = abs(dy) > threshold
-
-                        // Velocity/prediction fallback: quick flicks commit even if distance short
                         let predicted = value.predictedEndTranslation.height
                         let sameDirection =
                             (dy >= 0 && predicted >= 0)
-                                || (dy <= 0 && predicted <= 0)
+                            || (dy <= 0 && predicted <= 0)
+                        let commitByDistance = abs(dy) > threshold
                         let commitByVelocity =
                             sameDirection && abs(predicted) > threshold * 0.6
 
                         if commitByDistance || commitByVelocity {
                             if dy < 0, self.pageIndex < 2 {
                                 self.pageIndex += 1
-                            } // swipe up → next
-                            else if dy > 0, self.pageIndex > 0 {
+                            } else if dy > 0, self.pageIndex > 0 {
                                 self.pageIndex -= 1
-                            } // swipe down → prev
+                            }
                         }
                     }
             )
@@ -109,21 +100,21 @@ struct CityContainerView: View {
         }
     }
 
-    // Interactive offset (current page + neighbors) with live drag
     private func offset(for index: Int, height: CGFloat) -> CGFloat {
         CGFloat(index - self.pageIndex) * height + self.dragOffset
     }
 
-    // Deterministic gradient per page (no result-builder logic).
     private var backgroundForCurrentPage: some View {
         let all = GradientProvider.gradients
-        let base = self.city.id.hashValue
-        let seed: Int = switch self.pageIndex {
-        case 0: base &* 31
-        case 1: base &* 47
-        default: base &* 59
-        }
-        let idx = abs(seed) % all.count
+        // Use bitPattern to avoid overflow on Int.min when taking abs.
+        let base = UInt(bitPattern: self.city.id.hashValue)
+        let seed: UInt =
+            switch self.pageIndex {
+            case 0: base &* 31
+            case 1: base &* 47
+            default: base &* 59
+            }
+        let idx = Int(seed % UInt(all.count))
         return all[idx]
     }
 }

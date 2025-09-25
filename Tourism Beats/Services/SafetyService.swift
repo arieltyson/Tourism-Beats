@@ -1,37 +1,45 @@
 import Foundation
 
-// MARK: - SafetyError
-
 enum SafetyError: Error {
     case fileNotFound, decodingError, countryNotFound
 }
 
-// MARK: - SafetyService
-
 actor SafetyService: SafetyProtocol {
+    // Cache a dictionary keyed by uppercase ISO code → model
+    private var byCode: [String: SafetyModel]?
+
     func fetchSafetyData(for countryCode: String) async throws -> SafetyModel {
-        // 1. Locate bundled JSON
+        let map = try await loadIfNeeded()
+        if let entry = map[countryCode.uppercased()] {
+            return entry
+        }
+        throw SafetyError.countryNotFound
+    }
+
+    // MARK: - Loading
+
+    private func loadIfNeeded() async throws -> [String: SafetyModel] {
+        if let map = byCode { return map }
+
         guard
             let url = Bundle.main.url(
                 forResource: "gpi_data_2024",
                 withExtension: "json"
             )
-        else {
-            throw SafetyError.fileNotFound
-        }
-        let raw = try Data(contentsOf: url)
+        else { throw SafetyError.fileNotFound }
 
-        // 2. Decode full list
-        let decoder = JSONDecoder()
-        let list = try decoder.decode([SafetyModel].self, from: raw)
-
-        // 3. Filter by code (case-insensitive)
-        if let entry = list.first(where: {
-            $0.countryCode.uppercased() == countryCode.uppercased()
-        }) {
-            return entry
-        } else {
-            throw SafetyError.countryNotFound
+        do {
+            let data = try Data(contentsOf: url)
+            let list = try JSONDecoder().decode([SafetyModel].self, from: data)
+            let map = Dictionary(
+                uniqueKeysWithValues: list.map {
+                    ($0.countryCode.uppercased(), $0)
+                }
+            )
+            self.byCode = map
+            return map
+        } catch {
+            throw SafetyError.decodingError
         }
     }
 }

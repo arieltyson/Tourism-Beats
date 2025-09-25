@@ -1,17 +1,12 @@
 import CoreLocation
 import Foundation
 
-// MARK: - DataServiceError
-
-/// Errors this service can throw when loading your bundled JSON.
 enum DataServiceError: Error {
     case fileNotFound(String)
     case decodingError(Error)
 }
 
-// MARK: - CityJSON
-
-/// Matches the shape of each record in `cities.json`.
+// Raw JSON row
 private struct CityJSON: Decodable {
     let name: String
     let countryCode: String
@@ -21,58 +16,77 @@ private struct CityJSON: Decodable {
     let timeZoneIdentifier: String
 }
 
-// MARK: - DataService
-
-/// Loads & links `CountryModel` + `CityModel` from your bundled JSON.
+@MainActor
 final class DataService {
-    /// Load all countries from `countries.json`.
-    func loadCountries() throws -> [CountryModel] {
-        try self.loadJSON("countries.json")
-    }
+    // Shared decoders are cheaper than creating new ones repeatedly.
+    private static let decoder = JSONDecoder()
 
-    /// Load all cities from `cities.json`, then look up each city’s `CountryModel` by code.
-    func loadCities() throws -> [CityModel] {
-        // 1) decode countries
-        let countries = try loadCountries()
-        let lookup = Dictionary(
+    // Process-level caches (thread-safe enough for our usage; data is immutable)
+    private static var cachedCountries: [CountryModel]?
+    private static var cachedCities: [CityModel]?
+    private static var cachedCountryLookup: [String: CountryModel]?
+
+    // MARK: - Public API
+
+    func loadCountries() throws -> [CountryModel] {
+        if let c = Self.cachedCountries { return c }
+        let countries: [CountryModel] = try self.loadJSON("countries.json")
+        Self.cachedCountries = countries
+        Self.cachedCountryLookup = Dictionary(
             uniqueKeysWithValues: countries.map { ($0.code, $0) }
         )
+        return countries
+    }
 
-        // 2) decode raw city entries
-        let cityEntries: [CityJSON] = try loadJSON("cities.json")
+    func loadCities() throws -> [CityModel] {
+        if let c = Self.cachedCities { return c }
 
-        // 3) map into your strongly-typed CityModel
-        return cityEntries.map { entry in
+        let lookup: [String: CountryModel]
+        if let cached = Self.cachedCountryLookup {
+            lookup = cached
+        } else {
+            let countries = try loadCountries()
+            lookup = Dictionary(
+                uniqueKeysWithValues: countries.map { ($0.code, $0) }
+            )
+            Self.cachedCountryLookup = lookup
+        }
+
+        let entries: [CityJSON] = try loadJSON("cities.json")
+        let cities = entries.map { entry in
             let country =
                 lookup[entry.countryCode]
-                    ?? CountryModel(
-                        name: "Unknown",
-                        code: entry.countryCode,
-                        flag: "❓"
-                    )
+                ?? CountryModel(
+                    name: "Unknown",
+                    code: entry.countryCode,
+                    flag: "❓"
+                )
             return CityModel(
                 id: "\(entry.name)-\(entry.countryCode)",
                 name: entry.name,
                 country: country,
                 imageName: entry.imageName,
-                coordinate: CLLocationCoordinate2D(
+                coordinate: .init(
                     latitude: entry.latitude,
                     longitude: entry.longitude
                 ),
                 timeZoneIdentifier: entry.timeZoneIdentifier
             )
         }
+        Self.cachedCities = cities
+        return cities
     }
 
-    /// Generic helper: load & decode any `Decodable` T from a bundled file.
+    // MARK: - Helpers
+
     private func loadJSON<T: Decodable>(_ filename: String) throws -> T {
         guard
             let url = Bundle.main.url(forResource: filename, withExtension: nil)
         else { throw DataServiceError.fileNotFound(filename) }
 
-        let data = try Data(contentsOf: url)
         do {
-            return try JSONDecoder().decode(T.self, from: data)
+            let data = try Data(contentsOf: url)
+            return try Self.decoder.decode(T.self, from: data)
         } catch {
             throw DataServiceError.decodingError(error)
         }

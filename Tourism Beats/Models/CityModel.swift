@@ -1,6 +1,6 @@
 import CoreLocation
 
-struct CityModel: Identifiable, Equatable, Hashable {
+struct CityModel: Identifiable, Equatable, Hashable, Sendable {
     let id: String
     let name: String
     let country: CountryModel
@@ -12,11 +12,6 @@ struct CityModel: Identifiable, Equatable, Hashable {
         TimeZone(identifier: self.timeZoneIdentifier) ?? .current
     }
 
-    static func == (lhs: CityModel, rhs: CityModel) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
+    static func == (lhs: CityModel, rhs: CityModel) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(self.id) }
 }

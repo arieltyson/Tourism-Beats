@@ -1,25 +1,26 @@
 import Foundation
 
 extension Locale {
-    /// Returns the raw “measurementSystem” value from NSLocale,
-    /// e.g. "Metric", "U.S.", or "U.K."
-    private var rawMeasurementSystem: String {
-        (self as NSLocale)
-            .object(forKey: NSLocale.Key.measurementSystem) as? String
-            ?? ""
-    }
-
     /// True for Metric & U.K., false for U.S.
+    /// Uses the modern API when available; falls back to a fast, allocation-light check.
     var prefersCelsius: Bool {
-        // Strip out punctuation (so “U.S.” → “US”) and uppercase
-        let lettersOnly =
-            self.rawMeasurementSystem
-                .replacingOccurrences(
-                    of: "\\P{L}",
-                    with: "",
-                    options: .regularExpression
-                )
-                .uppercased()
-        return lettersOnly != "US"
+        if #available(iOS 16, *) {
+            switch self.measurementSystem {
+            case .us: return false
+            default: return true
+            }
+        } else {
+            // Older OS fallback: avoid regex; strip non-letters cheaply.
+            let scalars =
+                (self as NSLocale)
+                .object(forKey: NSLocale.Key.measurementSystem) as? String ?? ""
+            var letters = String.UnicodeScalarView()
+            letters.reserveCapacity(scalars.count)
+            for s in scalars.unicodeScalars
+            where CharacterSet.letters.contains(s) {
+                letters.append(s)
+            }
+            return String(letters).uppercased() != "US"
+        }
     }
 }
