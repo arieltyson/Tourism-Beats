@@ -7,22 +7,29 @@ struct FoodCityCard: View {
 
     @Environment(\.colorScheme) private var colorScheme
     @ScaledMetric(relativeTo: .title3) private var cardHeight = 188.0
-    @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 88.0
+    @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 84.0
+    @ScaledMetric(relativeTo: .body) private var textBottomInset = 18.0
 
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
+        ZStack {
             FoodCityCardBackground(group: self.group)
 
             FoodCityCardVignette()
-
-            FoodCityCardText(group: self.group, badgeInsetWidth: self.badgeMinWidth)
+        }
+        .overlay(alignment: .bottomLeading) {
+            FoodCityCardText(
+                group: self.group,
+                badgeInsetWidth: self.badgeMinWidth,
+                bottomInset: self.textBottomInset
+            )
         }
         .overlay(alignment: .bottomTrailing) {
             FoodCityCardCountBadge(
                 count: self.group.restaurantCount,
                 minWidth: self.badgeMinWidth
             )
-            .padding(SpacingTokens.small)
+            .padding(.horizontal, SpacingTokens.small)
+            .padding(.bottom, SpacingTokens.small)
         }
         .frame(maxWidth: .infinity)
         .frame(height: self.cardHeight)
@@ -111,6 +118,7 @@ private struct FoodCityCardVignette: View {
 private struct FoodCityCardText: View {
     let group: FoodJournalCityGroup
     let badgeInsetWidth: CGFloat
+    let bottomInset: CGFloat
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
@@ -120,6 +128,7 @@ private struct FoodCityCardText: View {
                 .foregroundStyle(.white)
                 .lineLimit(2)
                 .minimumScaleFactor(0.88)
+                .fixedSize(horizontal: false, vertical: true)
                 .shadow(color: .black.opacity(0.28), radius: 10, y: 4)
 
             if !self.group.displayCountryName.isEmpty {
@@ -128,11 +137,14 @@ private struct FoodCityCardText: View {
                     .foregroundStyle(.white.opacity(0.9))
                     .lineLimit(1)
                     .minimumScaleFactor(0.9)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(SpacingTokens.small)
-        .padding(.trailing, self.badgeInsetWidth + SpacingTokens.large)
+        .padding(.leading, SpacingTokens.small)
+        .padding(.trailing, self.badgeInsetWidth + SpacingTokens.xLarge)
+        .padding(.top, SpacingTokens.small)
+        .padding(.bottom, self.bottomInset)
     }
 }
 
