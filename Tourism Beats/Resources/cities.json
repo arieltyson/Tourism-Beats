@@ -1430,5 +1430,181 @@
     "latitude": 6.1319,
     "longitude": 1.2228,
     "timeZoneIdentifier": "Africa/Lome"
+  },
+  {
+    "name": "Port-au-Prince",
+    "countryCode": "HT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Port-au-Prince_Haiti_Temple_-_Pierre.jpg/1280px-Port-au-Prince_Haiti_Temple_-_Pierre.jpg",
+    "latitude": 18.53638889,
+    "longitude": -72.34638889,
+    "timeZoneIdentifier": "America/Port-au-Prince"
+  },
+  {
+    "name": "Santiago de Cuba",
+    "countryCode": "CU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Santiago_de_cuba_al_atardecer.jpg/1280px-Santiago_de_cuba_al_atardecer.jpg",
+    "latitude": 20.02166667,
+    "longitude": -75.82944444,
+    "timeZoneIdentifier": "America/Havana"
+  },
+  {
+    "name": "Santiago de los Caballeros",
+    "countryCode": "DO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/SantiagoCitySkyline2.jpg/1280px-SantiagoCitySkyline2.jpg",
+    "latitude": 19.45722222,
+    "longitude": -70.68888889,
+    "timeZoneIdentifier": "America/Santo_Domingo"
+  },
+  {
+    "name": "Bridgetown",
+    "countryCode": "BB",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bridgetown2.jpg/1280px-Bridgetown2.jpg",
+    "latitude": 13.09694444,
+    "longitude": -59.61305556,
+    "timeZoneIdentifier": "America/Barbados"
+  },
+  {
+    "name": "Fort-de-France",
+    "countryCode": "MQ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Fort-de-france-harbor.jpg/1280px-Fort-de-france-harbor.jpg",
+    "latitude": 14.6,
+    "longitude": -61.06666667,
+    "timeZoneIdentifier": "America/Martinique"
+  },
+  {
+    "name": "Willemstad",
+    "countryCode": "CW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Handelskade_in_Willemstad.jpg/1280px-Handelskade_in_Willemstad.jpg",
+    "latitude": 12.11666667,
+    "longitude": -68.93333333,
+    "timeZoneIdentifier": "America/Curacao"
+  },
+  {
+    "name": "George Town",
+    "countryCode": "KY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/96-124_S_Church_St%2C_George_Town%2C_Cayman_Islands_-_panoramio_%281%29.jpg/1280px-96-124_S_Church_St%2C_George_Town%2C_Cayman_Islands_-_panoramio_%281%29.jpg",
+    "latitude": 19.29638889,
+    "longitude": -81.38166667,
+    "timeZoneIdentifier": "America/Cayman"
+  },
+  {
+    "name": "Oranjestad",
+    "countryCode": "AW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f8/Sightings_in_Oranjestad.jpg/1280px-Sightings_in_Oranjestad.jpg",
+    "latitude": 12.51861111,
+    "longitude": -70.03583333,
+    "timeZoneIdentifier": "America/Aruba"
+  },
+  {
+    "name": "Castries",
+    "countryCode": "LC",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/View_of_Castries_Saint_Lucia_Day248bdriveb.jpg/1280px-View_of_Castries_Saint_Lucia_Day248bdriveb.jpg",
+    "latitude": 14.01083333,
+    "longitude": -60.98944444,
+    "timeZoneIdentifier": "America/St_Lucia"
+  },
+  {
+    "name": "Basseterre",
+    "countryCode": "KN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/St._Kitts%2C_Karibik_-_Marina_in_Basseterre_-_panoramio.jpg/1280px-St._Kitts%2C_Karibik_-_Marina_in_Basseterre_-_panoramio.jpg",
+    "latitude": 17.3,
+    "longitude": -62.73333333,
+    "timeZoneIdentifier": "America/St_Kitts"
+  },
+  {
+    "name": "St. John's",
+    "countryCode": "AG",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/St_Johns_Antigua_2012.jpg/1280px-St_Johns_Antigua_2012.jpg",
+    "latitude": 17.11666667,
+    "longitude": -61.85,
+    "timeZoneIdentifier": "America/Antigua"
+  },
+  {
+    "name": "Kingstown",
+    "countryCode": "VC",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Kingstown.jpg/1280px-Kingstown.jpg",
+    "latitude": 13.15777778,
+    "longitude": -61.225,
+    "timeZoneIdentifier": "America/St_Vincent"
+  },
+  {
+    "name": "Roseau",
+    "countryCode": "DM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Roseau_Dominica.jpg/1280px-Roseau_Dominica.jpg",
+    "latitude": 15.30138889,
+    "longitude": -61.38833333,
+    "timeZoneIdentifier": "America/Dominica"
+  },
+  {
+    "name": "St. George's",
+    "countryCode": "GD",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/St_Georges_Grenada_Fort_-_panoramio.jpg/1280px-St_Georges_Grenada_Fort_-_panoramio.jpg",
+    "latitude": 12.0525,
+    "longitude": -61.75305556,
+    "timeZoneIdentifier": "America/Grenada"
+  },
+  {
+    "name": "Basse-Terre",
+    "countryCode": "GP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Monts_Cara%C3%AFbes_depuis_le_Fort_Louis_Delgr%C3%A8s_%C3%A0_Basse-Terre.jpg/1280px-Monts_Cara%C3%AFbes_depuis_le_Fort_Louis_Delgr%C3%A8s_%C3%A0_Basse-Terre.jpg",
+    "latitude": 15.9958,
+    "longitude": -61.7292,
+    "timeZoneIdentifier": "America/Guadeloupe"
+  },
+  {
+    "name": "Brades",
+    "countryCode": "MS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Brades_administration_2019.jpg/1280px-Brades_administration_2019.jpg",
+    "latitude": 16.79277778,
+    "longitude": -62.21055556,
+    "timeZoneIdentifier": "America/Montserrat"
+  },
+  {
+    "name": "Tampa",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Downtown_Tampa%2C_Florida.jpg/1280px-Downtown_Tampa%2C_Florida.jpg",
+    "latitude": 27.9475,
+    "longitude": -82.45861111,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Orlando",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Lake-eola-park-orlando-florida.jpg/1280px-Lake-eola-park-orlando-florida.jpg",
+    "latitude": 28.54,
+    "longitude": -81.38,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Philipsburg",
+    "countryCode": "SX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Philipsburg_and_the_Great_Bay%2C_Sint_Maarten%2C_Caribbean.jpg/1280px-Philipsburg_and_the_Great_Bay%2C_Sint_Maarten%2C_Caribbean.jpg",
+    "latitude": 18.0237,
+    "longitude": -63.0458,
+    "timeZoneIdentifier": "America/Lower_Princes"
+  },
+  {
+    "name": "The Valley",
+    "countryCode": "AI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Wallblake_House%2C_The_Valley.jpg/1280px-Wallblake_House%2C_The_Valley.jpg",
+    "latitude": 18.22083333,
+    "longitude": -63.05166667,
+    "timeZoneIdentifier": "America/Anguilla"
+  },
+  {
+    "name": "Gustavia",
+    "countryCode": "BL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Gustavia_Harbor%2C_Saint-Barth%C3%A9lemy.jpg/1280px-Gustavia_Harbor%2C_Saint-Barth%C3%A9lemy.jpg",
+    "latitude": 17.89790833,
+    "longitude": -62.85055556,
+    "timeZoneIdentifier": "America/St_Barthelemy"
+  },
+  {
+    "name": "Cockburn Town",
+    "countryCode": "TC",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Cockburn_Town.jpg/1280px-Cockburn_Town.jpg",
+    "latitude": 21.459,
+    "longitude": -71.139,
+    "timeZoneIdentifier": "America/Grand_Turk"
   }
 ]

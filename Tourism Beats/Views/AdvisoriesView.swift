@@ -114,19 +114,16 @@ private struct HeroCard: View {
 
             Spacer(minLength: 0)
 
-            // Decorative glyph
-            Image(systemName: "shield.checkered")
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundStyle(AppColors.info)
-                .symbolRenderingMode(.hierarchical)
-                .padding(12)
+            // Animated walking figure
+            WalkingStickman(height: 36, color: .green)
+                .padding(8)
                 .background(
-                    AppColors.info.opacity(0.1),
+                    Color.green.opacity(0.1),
                     in: RoundedRectangle(cornerRadius: 12, style: .continuous)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .strokeBorder(AppColors.info.opacity(0.2), lineWidth: 1)
+                        .strokeBorder(Color.green.opacity(0.2), lineWidth: 1)
                 )
         }
         .padding(12)

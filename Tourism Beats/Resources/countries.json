@@ -25,6 +25,11 @@
     "flag": "🇦🇴"
   },
   {
+    "name": "Anguilla",
+    "code": "AI",
+    "flag": "🇦🇮"
+  },
+  {
     "name": "Antigua and Barbuda",
     "code": "AG",
     "flag": "🇦🇬"
@@ -38,6 +43,11 @@
     "name": "Armenia",
     "code": "AM",
     "flag": "🇦🇲"
+  },
+  {
+    "name": "Aruba",
+    "code": "AW",
+    "flag": "🇦🇼"
   },
   {
     "name": "Australia",
@@ -165,6 +175,11 @@
     "flag": "🇨🇦"
   },
   {
+    "name": "Cayman Islands",
+    "code": "KY",
+    "flag": "🇰🇾"
+  },
+  {
     "name": "Central African Republic",
     "code": "CF",
     "flag": "🇨🇫"
@@ -218,6 +233,11 @@
     "name": "Cuba",
     "code": "CU",
     "flag": "🇨🇺"
+  },
+  {
+    "name": "Curacao",
+    "code": "CW",
+    "flag": "🇨🇼"
   },
   {
     "name": "Cyprus",
@@ -353,6 +373,11 @@
     "name": "Grenada",
     "code": "GD",
     "flag": "🇬🇩"
+  },
+  {
+    "name": "Guadeloupe",
+    "code": "GP",
+    "flag": "🇬🇵"
   },
   {
     "name": "Guatemala",
@@ -550,6 +575,11 @@
     "flag": "🇲🇱"
   },
   {
+    "name": "Martinique",
+    "code": "MQ",
+    "flag": "🇲🇶"
+  },
+  {
     "name": "Malta",
     "code": "MT",
     "flag": "🇲🇹"
@@ -598,6 +628,11 @@
     "name": "Montenegro",
     "code": "ME",
     "flag": "🇲🇪"
+  },
+  {
+    "name": "Montserrat",
+    "code": "MS",
+    "flag": "🇲🇸"
   },
   {
     "name": "Morocco",
@@ -750,6 +785,11 @@
     "flag": "🇷🇼"
   },
   {
+    "name": "Saint Barthelemy",
+    "code": "BL",
+    "flag": "🇧🇱"
+  },
+  {
     "name": "Saint Kitts and Nevis",
     "code": "KN",
     "flag": "🇰🇳"
@@ -808,6 +848,11 @@
     "name": "Singapore",
     "code": "SG",
     "flag": "🇸🇬"
+  },
+  {
+    "name": "Sint Maarten",
+    "code": "SX",
+    "flag": "🇸🇽"
   },
   {
     "name": "Slovakia",
@@ -923,6 +968,11 @@
     "name": "Tunisia",
     "code": "TN",
     "flag": "🇹🇳"
+  },
+  {
+    "name": "Turks and Caicos Islands",
+    "code": "TC",
+    "flag": "🇹🇨"
   },
   {
     "name": "Turkey",
