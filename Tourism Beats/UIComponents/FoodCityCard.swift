@@ -136,8 +136,8 @@ private struct FoodCityCardFooter: View {
             LinearGradient(
                 colors: [
                     .clear,
-                    .black.opacity(0.16),
-                    .black.opacity(0.82)
+                    .black.opacity(0.28),
+                    .black.opacity(0.9)
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -245,11 +245,12 @@ private struct FoodCityCardText: View {
             if !self.group.displayCountryName.isEmpty {
                 Text(self.group.displayCountryName)
                     .font(TypographyTokens.artistName)
-                    .foregroundStyle(.white.opacity(0.9))
+                    .foregroundStyle(.white.opacity(0.94))
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
                     .fixedSize(horizontal: false, vertical: true)
                     .layoutPriority(1)
+                    .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -268,17 +269,26 @@ private struct FoodCityCardCountBadge: View {
                 .font(TypographyTokens.cardLabel.monospacedDigit())
                 .bold()
                 .foregroundStyle(.white)
+                .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
 
             Text(self.count == 1 ? "restaurant" : "restaurants")
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.84))
+                .foregroundStyle(.white.opacity(0.94))
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
+                .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
         }
         .frame(minWidth: self.minWidth, alignment: .trailing)
         .padding(.horizontal, SpacingTokens.small)
         .padding(.vertical, SpacingTokens.xSmall)
-        .background(.thinMaterial, in: Capsule())
+        .background {
+            Capsule()
+                .fill(.thinMaterial)
+                .overlay {
+                    Capsule()
+                        .fill(.black.opacity(0.18))
+                }
+        }
         .fixedSize(horizontal: true, vertical: true)
     }
 }

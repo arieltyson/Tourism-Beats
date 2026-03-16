@@ -6,6 +6,7 @@ import SwiftUI
 struct TripDetailView: View {
     @Bindable var trip: Trip
 
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
     @State private var viewModel = TripsViewModel()
@@ -13,6 +14,7 @@ struct TripDetailView: View {
     @State private var activityToEdit: TripActivity?
     @State private var dayPendingDeletion: TripDay?
     @State private var isEditTripPresented: Bool = false
+    @State private var isTripDeleteConfirmationPresented: Bool = false
     @State private var errorMessage: String?
 
     var body: some View {
@@ -60,10 +62,19 @@ struct TripDetailView: View {
                 }
                 .labelStyle(.iconOnly)
 
-                Button("Edit Trip", systemImage: "pencil") {
-                    self.isEditTripPresented = true
+                Menu {
+                    Button("Edit Trip", systemImage: "pencil") {
+                        self.isEditTripPresented = true
+                    }
+
+                    Button("Delete Trip", systemImage: "trash", role: .destructive) {
+                        self.isTripDeleteConfirmationPresented = true
+                    }
+                } label: {
+                    Label("Trip Actions", systemImage: "ellipsis.circle")
                 }
                 .labelStyle(.iconOnly)
+                .accessibilityLabel("Trip actions")
             }
         }
         .sheet(isPresented: self.$isEditTripPresented) {
@@ -76,6 +87,21 @@ struct TripDetailView: View {
             if let day = activity.day {
                 AddEditActivityView(day: day, activity: activity)
             }
+        }
+        .confirmationDialog(
+            "Delete Trip",
+            isPresented: self.$isTripDeleteConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button("Delete Trip", role: .destructive) {
+                self.confirmDeleteTrip()
+            }
+
+            Button("Cancel", role: .cancel) {
+                self.isTripDeleteConfirmationPresented = false
+            }
+        } message: {
+            Text("Deleting this trip also removes its days and activities.")
         }
         .confirmationDialog(
             "Delete Day",
@@ -141,6 +167,22 @@ struct TripDetailView: View {
         self.renumberDays()
         self.persistChanges()
         self.dayPendingDeletion = nil
+    }
+
+    private func confirmDeleteTrip() {
+        self.isTripDeleteConfirmationPresented = false
+
+        do {
+            self.modelContext.delete(self.trip)
+
+            if self.modelContext.hasChanges {
+                try self.modelContext.save()
+            }
+
+            self.dismiss()
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
     }
 
     private func cycleActivityStatus(_ activity: TripActivity) {

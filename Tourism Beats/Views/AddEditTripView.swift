@@ -97,6 +97,7 @@ struct AddEditTripView: View {
                     name: self.$name,
                     city: self.$city,
                     countryDisplayLabel: self.countryDisplayLabel,
+                    hasCountryValue: self.hasCountryValue,
                     onSelectCountry: {
                         self.formViewModel.isCountryPickerPresented = true
                     }
@@ -203,6 +204,11 @@ struct AddEditTripView: View {
 
         return self.trimmedCountry.isEmpty
             ? "Choose a country" : self.trimmedCountry
+    }
+
+    private var hasCountryValue: Bool {
+        !self.trimmedCountry.isEmpty
+            || !self.formViewModel.selectedCountryName.isEmpty
     }
 
     private func synchronizeCountryField() {
@@ -369,6 +375,7 @@ private struct TripBasicsSection: View {
     @Binding var name: String
     @Binding var city: String
     let countryDisplayLabel: String
+    let hasCountryValue: Bool
     let onSelectCountry: () -> Void
 
     var body: some View {
@@ -377,23 +384,11 @@ private struct TripBasicsSection: View {
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
 
-            Button(action: {
-                self.onSelectCountry()
-            }) {
-                Label("Country", systemImage: "globe")
-            }
-            .foregroundStyle(.primary)
-            .overlay(alignment: .trailing) {
-                HStack(spacing: SpacingTokens.xSmall) {
-                    Text(self.countryDisplayLabel)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-
-                    Image(systemName: "chevron.down")
-                        .font(TypographyTokens.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
+            TripCountryPickerField(
+                countryDisplayLabel: self.countryDisplayLabel,
+                hasCountryValue: self.hasCountryValue,
+                onSelectCountry: self.onSelectCountry
+            )
 
             TextField("City", text: self.$city)
                 .textContentType(.addressCity)
@@ -405,6 +400,91 @@ private struct TripBasicsSection: View {
             Text(
                 "Only the trip name and city are required. Dates, notes, and activities can stay flexible."
             )
+        }
+    }
+}
+
+// MARK: - TripCountryPickerField
+
+private struct TripCountryPickerField: View {
+    let countryDisplayLabel: String
+    let hasCountryValue: Bool
+    let onSelectCountry: () -> Void
+
+    var body: some View {
+        Button(action: self.onSelectCountry) {
+            ViewThatFits(in: .horizontal) {
+                TripCountryPickerFieldInlineContent(
+                    countryDisplayLabel: self.countryDisplayLabel,
+                    hasCountryValue: self.hasCountryValue
+                )
+
+                TripCountryPickerFieldStackedContent(
+                    countryDisplayLabel: self.countryDisplayLabel,
+                    hasCountryValue: self.hasCountryValue
+                )
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(
+            self.hasCountryValue
+                ? "Country, \(self.countryDisplayLabel)"
+                : "Country, Choose a country"
+        )
+    }
+}
+
+// MARK: - TripCountryPickerFieldInlineContent
+
+private struct TripCountryPickerFieldInlineContent: View {
+    let countryDisplayLabel: String
+    let hasCountryValue: Bool
+
+    var body: some View {
+        HStack(alignment: .center, spacing: SpacingTokens.small) {
+            Label("Country", systemImage: "globe")
+                .foregroundStyle(.primary)
+
+            Spacer(minLength: SpacingTokens.small)
+
+            HStack(alignment: .center, spacing: SpacingTokens.xSmall) {
+                Text(self.countryDisplayLabel)
+                    .foregroundStyle(self.hasCountryValue ? .secondary : .tertiary)
+                    .lineLimit(1)
+
+                Image(systemName: "chevron.down")
+                    .font(TypographyTokens.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .fixedSize(horizontal: true, vertical: false)
+        }
+    }
+}
+
+// MARK: - TripCountryPickerFieldStackedContent
+
+private struct TripCountryPickerFieldStackedContent: View {
+    let countryDisplayLabel: String
+    let hasCountryValue: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
+            Label("Country", systemImage: "globe")
+                .foregroundStyle(.primary)
+
+            HStack(alignment: .center, spacing: SpacingTokens.xSmall) {
+                Text(self.countryDisplayLabel)
+                    .foregroundStyle(self.hasCountryValue ? .secondary : .tertiary)
+                    .lineLimit(2)
+
+                Spacer(minLength: SpacingTokens.small)
+
+                Image(systemName: "chevron.down")
+                    .font(TypographyTokens.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 }
