@@ -11,36 +11,32 @@ struct TimeView: View {
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
-            VStack {
-                Spacer()
-
+            VStack(spacing: 8) {
                 // -- Analog clock --
                 ClockView(
                     date: context.date,
                     timeZone: self.viewModel.timeZone
                 )
                 .aspectRatio(1, contentMode: .fit)
-                .padding()
+                .frame(maxWidth: 120, maxHeight: 120)
+                .padding(.horizontal, 12)
+                .padding(.top, 12)
 
                 // -- Digital clock --
                 Text(self.viewModel.formattedTime(for: context.date))
-                    .font(.system(.headline, design: .rounded))
+                    .font(.system(.subheadline, design: .rounded))
                     .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 12)
+                    .foregroundStyle(.white)
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
-
-                Spacer()
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 12)
             }
-            .frame(minWidth: 140, minHeight: 200)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.black.opacity(0.5))
-                    .shadow(radius: 5)
+                .ultraThinMaterial,
+                in: .rect(cornerRadius: 16, style: .continuous)
             )
-            .padding()
         }
     }
 }

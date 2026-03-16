@@ -20,91 +20,83 @@ struct WeatherView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 6) {
             if self.viewModel.isLoading {
                 ProgressView()
                     .tint(.white)
                     .progressViewStyle(.circular)
 
-            } else if let error = viewModel.errorMessage {
+            } else if let error = self.viewModel.errorMessage {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.yellow)
+                    .frame(width: 24, height: 24)
+                    .foregroundStyle(.yellow)
                 Text(error)
-                    .font(.caption)
-                    .foregroundColor(.white)
+                    .font(.caption2)
+                    .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 5)
+                    .padding(.horizontal, 4)
 
-            } else if let info = viewModel.weatherInfo {
+            } else if let info = self.viewModel.weatherInfo {
                 Text(info.condition)
-                    .font(.headline)
-                    .foregroundColor(.white)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
-                    .padding(.top, 10)
 
                 Image(systemName: info.iconName)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(.white)
-                    .padding(.vertical, 10)
+                    .frame(width: 32, height: 32)
+                    .foregroundStyle(.white)
 
-                VStack(spacing: 4) {
+                VStack(spacing: 2) {
                     Text(info.temperatureCelsius)
-                        .font(.body)
+                        .font(.subheadline)
                         .fontWeight(self.prefersMetric ? .semibold : .regular)
                         .opacity(self.prefersMetric ? 1.0 : 0.6)
 
                     Text(info.temperatureFahrenheit)
-                        .font(.body)
+                        .font(.caption)
                         .fontWeight(self.prefersMetric ? .regular : .semibold)
                         .opacity(self.prefersMetric ? 0.6 : 1.0)
                 }
-                .foregroundColor(.white)
-
-                Spacer()
+                .foregroundStyle(.white)
 
                 // MARK: - WeatherKit Attribution
 
                 if let attribution {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 4) {
                         AsyncImage(url: self.logoURL(for: self.colorScheme)) { image in
                             image
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 10)
-                                .font(.caption)
+                                .frame(height: 8)
                         } placeholder: {
                             ProgressView()
                                 .progressViewStyle(.circular)
                                 .tint(.white)
-                                .frame(height: 10)
-                                .font(.caption)
+                                .frame(height: 8)
                         }
 
                         Link("Legal", destination: attribution.legalPageURL)
-                            .font(.caption)
-                            .foregroundColor(.white.opacity(0.8))
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.7))
                     }
-                    .padding(.bottom, 12)
+                    .padding(.top, 2)
                 }
             } else {
                 Text("---")
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
             }
         }
-        .frame(minWidth: 140, minHeight: 200)
-        .padding(5)
+        .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(Color.black.opacity(0.5))
-                .shadow(radius: 5)
+            .ultraThinMaterial,
+            in: .rect(cornerRadius: 16, style: .continuous)
         )
-        .padding()
         .task {
             await self.fetchAttribution()
         }

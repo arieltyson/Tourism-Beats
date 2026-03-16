@@ -36,7 +36,6 @@ struct CachedCityImage: View {
                 self.placeholder
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
     }
 
