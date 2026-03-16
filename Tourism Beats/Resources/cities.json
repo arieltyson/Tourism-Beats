@@ -1662,5 +1662,21 @@
     "latitude": 35.1725,
     "longitude": 33.365,
     "timeZoneIdentifier": "Asia/Nicosia"
+  },
+  {
+    "name": "San Fernando",
+    "countryCode": "TT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/San_Fernando_Hospital_Extension%2C_San_Fernando%2C_Trinidad_and_Tobago.JPG/1280px-San_Fernando_Hospital_Extension%2C_San_Fernando%2C_Trinidad_and_Tobago.JPG",
+    "latitude": 10.28333333,
+    "longitude": -61.46666667,
+    "timeZoneIdentifier": "America/Port_of_Spain"
+  },
+  {
+    "name": "Scarborough",
+    "countryCode": "TT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Port_of_Scarborough%2C_Tobago%2C_West_Indies.jpg/1280px-Port_of_Scarborough%2C_Tobago%2C_West_Indies.jpg",
+    "latitude": 11.18333333,
+    "longitude": -60.7375,
+    "timeZoneIdentifier": "America/Port_of_Spain"
   }
 ]
