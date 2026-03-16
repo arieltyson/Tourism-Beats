@@ -11,108 +11,61 @@ struct MusicView: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            // Foreground content only; background is in CityContainerView
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 16) {
-                    let maxArt = min(geo.size.width * 0.7, 360)
-                    self.artworkView(maxSide: maxArt)
-                        .padding(.top, 24)
+        ScrollView(.vertical) {
+            VStack(spacing: 16) {
+                MusicArtworkCard(artworkURL: self.viewModel.songImage)
+                    .frame(maxWidth: 360)
+                    .padding(.horizontal, 32)
+                    .padding(.top, 24)
 
-                    Text(self.viewModel.songTitle)
-                        .font(.title3).bold()
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.75)
-                        .padding(.horizontal)
+                Text(self.viewModel.songTitle)
+                    .font(.title3).bold()
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.75)
+                    .padding(.horizontal)
 
-                    Text(self.viewModel.artistName)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.9)
-                        .padding(.horizontal)
+                Text(self.viewModel.artistName)
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.8))
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+                    .padding(.horizontal)
 
-                    VStack(spacing: 14) {
-                        NeumorphicPill(
-                            logo: .appleMusic,
-                            title: "Apple Music",
-                            rightKind: self.viewModel.isPlaying
-                                ? .pause : .play,
-                            dimmed: false
-                        ) {
-                            Task {
-                                await self.viewModel.handleAppleMusicAction()
-                            }
-                        }
-
-                        NeumorphicPill(
-                            logo: .spotify,
-                            title: "Spotify",
-                            rightKind: self.viewModel.isSpotifySearching
-                                ? .loading : .link,
-                            dimmed: false
-                        ) {
-                            Task { await self.viewModel.handleSpotifyAction() }
+                VStack(spacing: 14) {
+                    NeumorphicPill(
+                        logo: .appleMusic,
+                        title: "Apple Music",
+                        rightKind: self.viewModel.isPlaying
+                            ? .pause : .play,
+                        dimmed: false
+                    ) {
+                        Task {
+                            await self.viewModel.handleAppleMusicAction()
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
 
-                    Spacer(minLength: 0)
+                    NeumorphicPill(
+                        logo: .spotify,
+                        title: "Spotify",
+                        rightKind: self.viewModel.isSpotifySearching
+                            ? .loading : .link,
+                        dimmed: false
+                    ) {
+                        Task { await self.viewModel.handleSpotifyAction() }
+                    }
                 }
-                // Keep content above home indicator/tab icons
-                .padding(.bottom, geo.safeAreaInsets.bottom + 20)
-                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
             }
+            .padding(.bottom, 20)
+            .frame(maxWidth: .infinity)
         }
+        .scrollIndicators(.hidden)
+        .safeAreaPadding(.bottom, 20)
         .navigationBarBackButtonHidden(true)
         .task { await self.viewModel.requestAccessAndLoadTopSong() } // metadata only
-    }
-
-    // MARK: - Subviews
-
-    @ViewBuilder
-    private func artworkView(maxSide: CGFloat) -> some View {
-        if let url = viewModel.songImage {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                        .frame(width: maxSide, height: maxSide)
-                        .aspectRatio(1, contentMode: .fit)
-                case let .success(image):
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: maxSide, height: maxSide)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
-                case .failure:
-                    Image("placeholder_artwork")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: maxSide, height: maxSide)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
-                @unknown default:
-                    Image("placeholder_artwork")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: maxSide, height: maxSide)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
-                }
-            }
-        } else {
-            Image("placeholder_artwork")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: maxSide, height: maxSide)
-                .cornerRadius(20)
-                .shadow(radius: 10)
-        }
     }
 }
