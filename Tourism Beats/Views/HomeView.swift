@@ -6,84 +6,148 @@ struct HomeView: View {
     let onExplore: () -> Void
     let onCitySelected: (CityModel) -> Void
 
+    @Environment(\.colorScheme) private var scheme
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var subtitleSize: CGSize = .zero
-    @State private var featuredCities: [CityModel] = []
+    @State private var viewModel = HomeViewModel()
+    @State private var scrollOffset: CGFloat = 0
     @State private var haptic = HapticTrigger()
 
     var body: some View {
         ZStack {
             EarthView()
                 .ignoresSafeArea()
+                .opacity(self.globeOpacity)
 
             AppGradients.vignette
                 .ignoresSafeArea()
+                .opacity(self.globeOpacity)
 
-            GeometryReader { proxy in
-                let safeWidth = max(0, proxy.size.width - self.horizontalPadding * 2)
+            ScrollView(.vertical) {
+                TimelineView(.periodic(from: .now, by: 60)) { _ in
+                    LazyVStack(spacing: 20) {
+                        // Header
+                        HomeHeaderSection()
+                            .padding(.top, 60)
 
-                VStack(spacing: 16) {
-                    Spacer(minLength: 0)
-
-                    HeroTitle(subtitleSize: self.$subtitleSize)
-                        .padding(.horizontal, self.horizontalPadding)
-
-                    // Interactive CTA
-                    ExploreCTA(
-                        matchToWidth: self.subtitleSize.width,
-                        maxAvailableWidth: safeWidth,
-                        action: {
-                            self.haptic.fire(.searchOpen)
-                            self.onExplore()
-                        }
-                    )
-                    .padding(.horizontal, self.horizontalPadding)
-
-                    // Featured destination chips
-                    if self.typeSize < .accessibility1,
-                       !self.featuredCities.isEmpty
-                    {
-                        FeaturedCitiesRow(
-                            cities: self.featuredCities,
-                            onSelect: { city in
+                        if self.viewModel.isLoaded,
+                           !self.viewModel.featuredCities.isEmpty
+                        {
+                            // Hero card
+                            DiscoveryHeroCard(
+                                city: self.viewModel.featuredCities[0],
+                                localTime: self.viewModel.localTime(
+                                    for: self.viewModel.featuredCities[0]
+                                ),
+                                scheme: self.scheme
+                            ) {
                                 self.haptic.fire(.citySelect)
-                                self.onCitySelected(city)
+                                self.onCitySelected(self.viewModel.featuredCities[0])
                             }
-                        )
-                        .padding(.horizontal, self.horizontalPadding)
-                        .transition(.opacity)
-                    }
 
-                    Spacer(minLength: 0)
+                            // City grid
+                            let gridCities = Array(
+                                self.viewModel.featuredCities.dropFirst().prefix(6)
+                            )
+                            LazyVGrid(columns: self.gridColumns, spacing: 14) {
+                                ForEach(gridCities) { city in
+                                    DiscoveryCityCard(
+                                        city: city,
+                                        localTime: self.viewModel.localTime(for: city),
+                                        scheme: self.scheme
+                                    ) {
+                                        self.haptic.fire(.citySelect)
+                                        self.onCitySelected(city)
+                                    }
+                                }
+                            }
+
+                            // Last featured city as a wide card
+                            if self.viewModel.featuredCities.count > 7 {
+                                let lastCity = self.viewModel.featuredCities[7]
+                                DiscoveryCityCard(
+                                    city: lastCity,
+                                    localTime: self.viewModel.localTime(for: lastCity),
+                                    scheme: self.scheme
+                                ) {
+                                    self.haptic.fire(.citySelect)
+                                    self.onCitySelected(lastCity)
+                                }
+                            }
+
+                            // Explore CTA
+                            DiscoveryCTACard(
+                                cityCount: self.viewModel.allCityCount,
+                                scheme: self.scheme
+                            ) {
+                                self.haptic.fire(.searchOpen)
+                                self.onExplore()
+                            }
+                        }
+
+                        Spacer()
+                            .frame(height: 80)
+                    }
+                    .padding(.horizontal, self.horizontalPadding)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .safeAreaPadding(.bottom, 16)
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear
+                            .preference(
+                                key: ScrollOffsetKey.self,
+                                value: proxy.frame(in: .named("homeScroll")).minY
+                            )
+                    }
+                )
+            }
+            .scrollIndicators(.hidden)
+            .coordinateSpace(name: "homeScroll")
+            .onPreferenceChange(ScrollOffsetKey.self) { value in
+                if !self.reduceMotion {
+                    self.scrollOffset = value
+                }
             }
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .navigationBarBackButtonHidden(true)
         .task {
-            guard self.featuredCities.isEmpty else { return }
-            if let cities = try? DataService().loadCities() {
-                self.featuredCities = Array(cities.shuffled().prefix(3))
+            self.viewModel.loadCities()
+            if self.viewModel.isLoaded {
+                AccessibilityAnnouncer.announceDiscoveryLoaded(
+                    count: self.viewModel.featuredCities.count
+                )
             }
         }
     }
 
-    private var horizontalPadding: CGFloat {
-        switch self.typeSize {
-        case ...DynamicTypeSize.xxxLarge: 24
-        default: 20
+    // MARK: - Computed Properties
+
+    private var globeOpacity: Double {
+        if self.reduceMotion { return 0.6 }
+        let normalized = min(max(-self.scrollOffset / 200, 0), 1)
+        return 1.0 - (normalized * 0.6)
+    }
+
+    private var gridColumns: [GridItem] {
+        if self.typeSize >= .accessibility1 {
+            [GridItem(.flexible())]
+        } else {
+            [
+                GridItem(.flexible(), spacing: 14),
+                GridItem(.flexible(), spacing: 14)
+            ]
         }
+    }
+
+    private var horizontalPadding: CGFloat {
+        self.typeSize >= .accessibility1 ? 20 : 24
     }
 }
 
-// MARK: - HeroTitle
+// MARK: - HomeHeaderSection
 
-private struct HeroTitle: View {
-    @Binding var subtitleSize: CGSize
-
+private struct HomeHeaderSection: View {
     var body: some View {
         VStack(spacing: 10) {
             Text("Tourism Beats")
@@ -103,117 +167,179 @@ private struct HeroTitle: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.85)
                 .shadow(color: .black.opacity(0.25), radius: 6, y: 1)
-                .measureSize { size in
-                    if abs(size.width - self.subtitleSize.width) > 0.5
-                        || abs(size.height - self.subtitleSize.height) > 0.5
-                    {
-                        self.subtitleSize = size
-                    }
-                }
         }
     }
 }
 
-// MARK: - ExploreCTA
+// MARK: - DiscoveryHeroCard
 
-private struct ExploreCTA: View {
-    let matchToWidth: CGFloat
-    let maxAvailableWidth: CGFloat
+private struct DiscoveryHeroCard: View {
+    let city: CityModel
+    let localTime: String
+    let scheme: ColorScheme
     let action: () -> Void
 
-    @Environment(\.colorScheme) private var scheme
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var typeSize
 
-    @State private var titleSize: CGSize = .zero
-    @State private var subtitleSize: CGSize = .zero
-
-    private let innerHPad: CGFloat = 18
-    private let innerVPad: CGFloat = 14
-    private let iconWidth: CGFloat = 28
-    private let hSpacing: CGFloat = 12
-    private let minReadable: CGFloat = 220
+    private var cardHeight: CGFloat {
+        self.typeSize >= .accessibility1 ? 320 : 280
+    }
 
     var body: some View {
         Button(action: self.action) {
-            ZStack {
-                self.cardContent
-                self.measuringOverlay
-            }
-        }
-        .buttonStyle(GlassCTAButtonStyle(scheme: self.scheme))
-        .accessibilityLabel("Explore destinations. Discover cities around the world.")
-        .accessibilityHint("Opens the search tab to explore destinations")
-    }
+            ZStack(alignment: .bottomLeading) {
+                Image(self.city.imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: self.cardHeight)
+                    .clipped()
 
-    private var cardContent: some View {
-        let neededTextWidth = max(
-            self.titleSize.width.isFinite ? self.titleSize.width : 0,
-            self.subtitleSize.width.isFinite ? self.subtitleSize.width : 0
+                LinearGradient(
+                    colors: [.clear, .black.opacity(0.7)],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(self.city.country.flag)
+                        .font(.title2)
+
+                    Text(self.city.name)
+                        .font(.system(.title, design: .rounded).weight(.bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.8)
+
+                    HStack(spacing: 8) {
+                        Text(self.city.country.name)
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.85))
+
+                        Text("\u{00B7}")
+                            .foregroundStyle(.white.opacity(0.5))
+
+                        Text(self.localTime)
+                            .font(.system(.subheadline, design: .monospaced))
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                }
+                .padding(20)
+            }
+            .frame(height: self.cardHeight)
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .strokeBorder(
+                        AppColors.glassBorder(for: self.scheme),
+                        lineWidth: 1
+                    )
+            )
+            .shadow(
+                color: AppColors.glassShadow(for: self.scheme),
+                radius: 18,
+                y: 6
+            )
+        }
+        .buttonStyle(CardPressStyle())
+        .accessibilityLabel(
+            "\(self.city.country.flag) \(self.city.name), \(self.city.country.name). Local time \(self.localTime)"
         )
-
-        let safeMatchWidth = self.matchToWidth.isFinite ? max(0, self.matchToWidth) : 0
-        var contentWidth = max(safeMatchWidth, neededTextWidth)
-        contentWidth += (self.hSpacing + self.iconWidth)
-
-        let available = max(0, self.maxAvailableWidth.isFinite ? self.maxAvailableWidth : 0)
-        if available > 0 {
-            contentWidth = min(max(contentWidth, self.minReadable), available)
-        } else {
-            contentWidth = max(contentWidth, self.minReadable)
-        }
-
-        let frameWidth: CGFloat? = (contentWidth.isFinite && contentWidth > 0) ? contentWidth : nil
-
-        return HStack(spacing: self.hSpacing) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Explore destinations")
-                    .font(.system(.title3, design: .rounded).weight(.semibold))
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.9)
-
-                Text("Discover cities around the world")
-                    .font(.footnote)
-                    .foregroundStyle(.white.opacity(0.9))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.9)
-            }
-
-            Spacer(minLength: 0)
-
-            AnimatedSearchIcon(reduceMotion: self.reduceMotion)
-                .frame(width: self.iconWidth, height: self.iconWidth)
-                .accessibilityHidden(true)
-        }
-        .padding(.horizontal, self.innerHPad)
-        .padding(.vertical, self.innerVPad)
-        .frame(width: frameWidth)
-    }
-
-    private var measuringOverlay: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text("Explore destinations")
-                .font(.system(.title3, design: .rounded).weight(.semibold))
-                .fixedSize()
-                .measureSize { self.titleSize = $0 }
-
-            Text("Discover cities around the world")
-                .font(.footnote)
-                .fixedSize()
-                .measureSize { self.subtitleSize = $0 }
-        }
-        .opacity(0.001)
-        .allowsHitTesting(false)
+        .accessibilityHint("Opens city details")
     }
 }
 
-// MARK: - GlassCTAButtonStyle
+// MARK: - DiscoveryCityCard
 
-private struct GlassCTAButtonStyle: ButtonStyle {
+private struct DiscoveryCityCard: View {
+    let city: CityModel
+    let localTime: String
     let scheme: ColorScheme
+    let action: () -> Void
 
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
+    var body: some View {
+        Button(action: self.action) {
+            ZStack(alignment: .bottomLeading) {
+                Image(self.city.imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 200)
+                    .clipped()
+
+                LinearGradient(
+                    colors: [.clear, .black.opacity(0.7)],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 4) {
+                        Text(self.city.country.flag)
+                            .font(.callout)
+
+                        Text(self.city.name)
+                            .font(.system(.headline, design: .rounded).weight(.semibold))
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    }
+
+                    Text(self.localTime)
+                        .font(.system(.caption, design: .monospaced))
+                        .foregroundStyle(.white.opacity(0.8))
+                }
+                .padding(14)
+            }
+            .frame(height: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(
+                        AppColors.glassBorder(for: self.scheme),
+                        lineWidth: 1
+                    )
+            )
+            .shadow(
+                color: AppColors.glassShadow(for: self.scheme),
+                radius: 18,
+                y: 6
+            )
+        }
+        .buttonStyle(CardPressStyle())
+        .accessibilityLabel(
+            "\(self.city.country.flag) \(self.city.name), \(self.city.country.name). Local time \(self.localTime)"
+        )
+        .accessibilityHint("Opens city details")
+    }
+}
+
+// MARK: - DiscoveryCTACard
+
+private struct DiscoveryCTACard: View {
+    let cityCount: Int
+    let scheme: ColorScheme
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: self.action) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Explore all destinations")
+                        .font(.system(.title3, design: .rounded).weight(.semibold))
+                        .foregroundStyle(.white)
+
+                    Text("\(self.cityCount) cities worldwide")
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.8))
+                }
+
+                Spacer()
+
+                Image(systemName: "arrow.right.circle.fill")
+                    .font(.title2)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(.white)
+            }
+            .padding(18)
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .fill(.ultraThinMaterial)
@@ -231,149 +357,32 @@ private struct GlassCTAButtonStyle: ButtonStyle {
                     )
             )
             .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+        .buttonStyle(CardPressStyle())
+        .accessibilityLabel("Explore all destinations. \(self.cityCount) cities worldwide.")
+        .accessibilityHint("Opens the search tab to explore destinations")
+    }
+}
+
+// MARK: - CardPressStyle
+
+private struct CardPressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
             .opacity(configuration.isPressed ? 0.9 : 1.0)
-            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
-    }
-}
-
-// MARK: - FeaturedCitiesRow
-
-private struct FeaturedCitiesRow: View {
-    let cities: [CityModel]
-    let onSelect: (CityModel) -> Void
-
-    var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 10) {
-                ForEach(self.cities) { city in
-                    FeaturedCityChip(city: city) {
-                        self.onSelect(city)
-                    }
-                }
-            }
-        }
-        .scrollIndicators(.hidden)
-    }
-}
-
-// MARK: - FeaturedCityChip
-
-private struct FeaturedCityChip: View {
-    let city: CityModel
-    let action: () -> Void
-
-    @Environment(\.colorScheme) private var scheme
-
-    var body: some View {
-        Button(action: self.action) {
-            HStack(spacing: 6) {
-                Text(self.city.country.flag)
-                    .font(.body)
-
-                Text(self.city.name)
-                    .font(.system(.subheadline, design: .rounded).weight(.medium))
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
-
-                Image(systemName: "chevron.right")
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.6))
-            }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
-            .background(
-                Capsule(style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay(
-                        Capsule(style: .continuous)
-                            .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
-                                lineWidth: 1
-                            )
-                    )
+            .animation(
+                .spring(response: 0.25, dampingFraction: 0.7),
+                value: configuration.isPressed
             )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("\(self.city.country.flag) \(self.city.name), \(self.city.country.name)")
-        .accessibilityHint("Opens city details")
     }
 }
 
-// MARK: - AnimatedSearchIcon
+// MARK: - ScrollOffsetKey
 
-private struct AnimatedSearchIcon: View {
-    var reduceMotion: Bool
-
-    var body: some View {
-        ZStack {
-            Image(systemName: "magnifyingglass.circle.fill")
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(.white)
-
-            if !self.reduceMotion {
-                TimelineView(.animation) { timeline in
-                    let t = timeline.date.timeIntervalSinceReferenceDate
-                    let scale = 1.0 + 0.03 * CGFloat(sin(t * 0.7))
-                    Image(systemName: "magnifyingglass.circle.fill")
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(.white.opacity(0.95))
-                        .scaleEffect(scale)
-                        .allowsHitTesting(false)
-                }
-
-                TimelineView(.animation) { timeline in
-                    let t = timeline.date.timeIntervalSinceReferenceDate
-                    Canvas { ctx, size in
-                        func ring(_ phase: Double, alpha: Double) {
-                            let p = CGFloat(
-                                (t * 0.28 + phase).truncatingRemainder(
-                                    dividingBy: 1
-                                )
-                            )
-                            let scale = 1 + p * 0.55
-                            let opacity = max(0, 1 - Double(p)) * alpha
-                            let rect = CGRect(
-                                x: size.width * (0.5 - 0.5 * scale),
-                                y: size.height * (0.5 - 0.5 * scale),
-                                width: size.width * scale,
-                                height: size.height * scale
-                            )
-                            ctx.stroke(
-                                Path(ellipseIn: rect),
-                                with: .color(.white.opacity(opacity)),
-                                lineWidth: 1
-                            )
-                        }
-                        ring(0.00, alpha: 0.22)
-                        ring(0.33, alpha: 0.18)
-                        ring(0.66, alpha: 0.14)
-                    }
-                    .blendMode(.plusLighter)
-                    .allowsHitTesting(false)
-                }
-            }
-        }
-    }
-}
-
-// MARK: - ViewSizeKey
-
-private struct ViewSizeKey: PreferenceKey {
-    static let defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+private struct ScrollOffsetKey: PreferenceKey {
+    static let defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
-    }
-}
-
-private extension View {
-    func measureSize(_ onChange: @escaping (CGSize) -> Void) -> some View {
-        background(
-            GeometryReader { proxy in
-                Color.clear
-                    .preference(key: ViewSizeKey.self, value: proxy.size)
-            }
-        )
-        .onPreferenceChange(ViewSizeKey.self, perform: onChange)
     }
 }

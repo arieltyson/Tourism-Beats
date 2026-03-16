@@ -33,6 +33,15 @@ enum AccessibilityAnnouncer {
         self.post("Visa status: \(status).")
     }
 
+    // MARK: - Discovery
+
+    static func announceDiscoveryLoaded(count: Int) {
+        let label = count == 1
+            ? "1 featured destination loaded."
+            : "\(count) featured destinations loaded."
+        self.post(label)
+    }
+
     // MARK: - Search
 
     static func announceSearchResults(count: Int) {
