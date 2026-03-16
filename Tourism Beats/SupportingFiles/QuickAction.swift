@@ -4,6 +4,7 @@ import UIKit
 enum QuickAction: String, CaseIterable, Sendable {
     case searchDestinations = "com.arieljtyson.TourismBeats.quickAction.search"
     case exploreHome = "com.arieljtyson.TourismBeats.quickAction.explore"
+    case foodJournal = "com.arieljtyson.TourismBeats.quickAction.food"
 
     init?(shortcutItem: UIApplicationShortcutItem) {
         self.init(rawValue: shortcutItem.type)
@@ -14,6 +15,7 @@ enum QuickAction: String, CaseIterable, Sendable {
         switch self {
         case .searchDestinations: .search
         case .exploreHome: .home
+        case .foodJournal: .food
         }
     }
 
@@ -33,6 +35,14 @@ enum QuickAction: String, CaseIterable, Sendable {
                 localizedTitle: "Explore",
                 localizedSubtitle: "An immersive experience",
                 icon: UIApplicationShortcutIcon(systemImageName: "globe.europe.africa"),
+                userInfo: nil
+            )
+        case .foodJournal:
+            UIApplicationShortcutItem(
+                type: self.rawValue,
+                localizedTitle: "Food Journal",
+                localizedSubtitle: "Your restaurant lists",
+                icon: UIApplicationShortcutIcon(systemImageName: "fork.knife.circle"),
                 userInfo: nil
             )
         }

@@ -4,6 +4,7 @@ struct MainTabView: View {
     @Binding var selectedTab: AppTab
     @State private var homePath = NavigationPath()
     @State private var searchPath = NavigationPath()
+    @State private var foodPath = NavigationPath()
 
     var body: some View {
         TabView(selection: self.$selectedTab) {
@@ -45,6 +46,16 @@ struct MainTabView: View {
                     }
                 }
             }
+
+            Tab(
+                AppTab.food.title,
+                systemImage: AppTab.food.systemImage,
+                value: .food
+            ) {
+                NavigationStack(path: self.$foodPath) {
+                    FoodView()
+                }
+            }
         }
         .tint(.white)
         .toolbarBackground(.hidden, for: .navigationBar)
@@ -55,6 +66,7 @@ struct MainTabView: View {
             switch old {
             case .home: self.homePath = NavigationPath()
             case .search: self.searchPath = NavigationPath()
+            case .food: self.foodPath = NavigationPath()
             }
         }
     }

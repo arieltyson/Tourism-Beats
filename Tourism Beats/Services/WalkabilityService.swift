@@ -19,7 +19,7 @@ actor WalkabilityService: WalkabilityProtocol {
         countryCode: String
     ) async throws -> WalkabilityModel {
         let map = try await self.loadIfNeeded()
-        let key = "\(city.uppercased())|\(countryCode.uppercased())"
+        let key = Self.normalizedLookupKey(city: city, countryCode: countryCode)
         if let entry = map[key] {
             return entry
         }
@@ -46,7 +46,13 @@ actor WalkabilityService: WalkabilityProtocol {
             )
             let map = Dictionary(
                 uniqueKeysWithValues: list.map {
-                    ("\($0.city.uppercased())|\($0.countryCode.uppercased())", $0)
+                    (
+                        Self.normalizedLookupKey(
+                            city: $0.city,
+                            countryCode: $0.countryCode
+                        ),
+                        $0
+                    )
                 }
             )
             self.cache = map
@@ -54,5 +60,20 @@ actor WalkabilityService: WalkabilityProtocol {
         } catch {
             throw WalkabilityError.decodingError
         }
+    }
+
+    private static func normalizedLookupKey(
+        city: String,
+        countryCode: String
+    ) -> String {
+        let folded = city.folding(
+            options: [.diacriticInsensitive, .caseInsensitive],
+            locale: .current
+        )
+        let tokens = folded.unicodeScalars.split { scalar in
+            !CharacterSet.alphanumerics.contains(scalar)
+        }
+        let normalizedCity = tokens.map(String.init).joined(separator: " ")
+        return "\(normalizedCity.uppercased())|\(countryCode.uppercased())"
     }
 }

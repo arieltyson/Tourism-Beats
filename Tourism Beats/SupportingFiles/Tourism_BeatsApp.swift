@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 import SwiftUI
 import UIKit
 
@@ -37,6 +38,7 @@ struct Tourism_BeatsApp: App {
                     self.selectedTab = action.targetTab
                 }
             }
+            .modelContainer(for: Restaurant.self)
         }
     }
 }
