@@ -2,71 +2,155 @@ import SwiftUI
 
 // MARK: - FoodViewModel
 
-/// Manages UI state and filtering logic for the Food Journal tab.
-///
-/// The actual `@Query` lives on `FoodView`; this view model transforms the
-/// raw array into filtered, city-grouped sections and manages sheet state.
+/// Manages the Food Journal's top-level filtering, grouping, and sheet state.
 @MainActor
 @Observable
 final class FoodViewModel {
-    // MARK: - UI State
-
     var searchText: String = ""
     var selectedFilter: RestaurantStatus?
     var isAddSheetPresented: Bool = false
     var restaurantToEdit: Restaurant?
 
-    // MARK: - Filtering & Grouping
+    private let catalogCitiesByNormalizedName: [String: [CityModel]]
+    private let catalogCityNames: [String]
 
-    /// A city section containing its sorted restaurants.
-    struct CitySection: Identifiable {
-        let city: String
-        let restaurants: [Restaurant]
-        var id: String { self.city }
+    init(dataService: DataService = DataService()) {
+        let catalogCities = (try? dataService.loadCities()) ?? []
+        self.catalogCitiesByNormalizedName = Dictionary(
+            grouping: catalogCities,
+            by: { FoodJournalCityGroup.normalizedLookupValue($0.name) }
+        )
+        self.catalogCityNames = catalogCities.map(\.name)
     }
 
-    /// Filters restaurants by search text and status, then groups by city.
-    ///
-    /// - Cities are sorted alphabetically.
-    /// - Restaurants within each city sort by score descending (unrated last).
-    func filteredSections(from restaurants: [Restaurant]) -> [CitySection] {
-        let filtered = restaurants.filter { restaurant in
-            self.matchesFilter(restaurant) && self.matchesSearch(restaurant)
-        }
+    func cityGroups(from restaurants: [Restaurant]) -> [FoodJournalCityGroup] {
+        let visibleKeys = Set(
+            restaurants
+                .filter { self.matchesFilter($0) && self.matchesSearch($0) }
+                .map { self.groupKey(for: $0) }
+        )
 
-        let grouped = Dictionary(grouping: filtered) { $0.city }
+        let groupedRestaurants = Dictionary(
+            grouping: restaurants,
+            by: { self.groupKey(for: $0) }
+        )
 
-        return grouped
-            .sorted { $0.key.localizedCompare($1.key) == .orderedAscending }
-            .map { city, items in
-                CitySection(
-                    city: city,
-                    restaurants: items.sorted { lhs, rhs in
-                        (lhs.clampedScore ?? -1) > (rhs.clampedScore ?? -1)
-                    }
-                )
+        return groupedRestaurants
+            .compactMap { key, items in
+                guard visibleKeys.contains(key) else { return nil }
+                return self.makeCityGroup(from: items, key: key)
+            }
+            .sorted {
+                $0.displayCityName.localizedCompare($1.displayCityName) == .orderedAscending
             }
     }
 
-    /// Distinct city names from all restaurants, for auto-suggest in the form.
     func existingCities(from restaurants: [Restaurant]) -> [String] {
-        Array(Set(restaurants.map(\.city)))
+        let restaurantCities = restaurants
+            .map(\.city)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+
+        return Array(Set(restaurantCities + self.catalogCityNames))
             .sorted { $0.localizedCompare($1) == .orderedAscending }
     }
 
-    // MARK: - Private
+    private func groupKey(for restaurant: Restaurant) -> String {
+        FoodJournalCityGroup.groupKey(
+            city: restaurant.city,
+            country: restaurant.country
+        )
+    }
+
+    private func makeCityGroup(
+        from restaurants: [Restaurant],
+        key: String
+    ) -> FoodJournalCityGroup {
+        let representative = self.representativeRestaurant(from: restaurants)
+        let rawCityName = representative?.city.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let rawCountryName = representative?.country.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+
+        return FoodJournalCityGroup(
+            key: key,
+            rawCityName: rawCityName,
+            rawCountryName: rawCountryName,
+            restaurantCount: restaurants.count,
+            city: self.resolveCity(cityName: rawCityName, countryName: rawCountryName)
+        )
+    }
+
+    private func representativeRestaurant(
+        from restaurants: [Restaurant]
+    ) -> Restaurant? {
+        restaurants.min { lhs, rhs in
+            let lhsDisplay = "\(lhs.city) \(lhs.country)"
+            let rhsDisplay = "\(rhs.city) \(rhs.country)"
+            return lhsDisplay.localizedCompare(rhsDisplay) == .orderedAscending
+        }
+    }
+
+    private func resolveCity(cityName: String, countryName: String) -> CityModel? {
+        let normalizedCityName = FoodJournalCityGroup.normalizedLookupValue(cityName)
+        guard !normalizedCityName.isEmpty else { return nil }
+
+        let candidates = self.catalogCitiesByNormalizedName[normalizedCityName] ?? []
+        guard !candidates.isEmpty else { return nil }
+
+        let normalizedCountryName = FoodJournalCityGroup.normalizedLookupValue(countryName)
+        if !normalizedCountryName.isEmpty {
+            if let exactMatch = candidates.first(where: {
+                self.countryTokens(for: $0).contains(normalizedCountryName)
+            }) {
+                return exactMatch
+            }
+
+            if let partialMatch = candidates.first(where: { city in
+                self.countryTokens(for: city).contains { token in
+                    token.localizedStandardContains(normalizedCountryName)
+                        || normalizedCountryName.localizedStandardContains(token)
+                }
+            }) {
+                return partialMatch
+            }
+        }
+
+        return candidates.count == 1 ? candidates.first : nil
+    }
+
+    private func countryTokens(for city: CityModel) -> Set<String> {
+        var tokens = Set(
+            [
+                FoodJournalCityGroup.normalizedLookupValue(city.country.name),
+                FoodJournalCityGroup.normalizedLookupValue(city.country.code)
+            ]
+        )
+
+        switch city.country.code {
+        case "US":
+            tokens.formUnion(["united states", "united states of america", "usa", "us"])
+        case "GB":
+            tokens.formUnion(["united kingdom", "uk", "great britain"])
+        case "AE":
+            tokens.formUnion(["united arab emirates", "uae"])
+        default:
+            break
+        }
+
+        return Set(tokens.filter { !$0.isEmpty })
+    }
 
     private func matchesFilter(_ restaurant: Restaurant) -> Bool {
-        guard let filter = self.selectedFilter else { return true }
-        return restaurant.status == filter
+        guard let selectedFilter else { return true }
+        return restaurant.status == selectedFilter
     }
 
     private func matchesSearch(_ restaurant: Restaurant) -> Bool {
         guard !self.searchText.isEmpty else { return true }
-        let query = self.searchText
-        return restaurant.name.localizedStandardContains(query)
-            || restaurant.city.localizedStandardContains(query)
-            || restaurant.country.localizedStandardContains(query)
-            || (restaurant.bestDish?.localizedStandardContains(query) ?? false)
+
+        return restaurant.name.localizedStandardContains(self.searchText)
+            || restaurant.city.localizedStandardContains(self.searchText)
+            || restaurant.country.localizedStandardContains(self.searchText)
+            || (restaurant.bestDish?.localizedStandardContains(self.searchText) ?? false)
+            || (restaurant.notes?.localizedStandardContains(self.searchText) ?? false)
     }
 }

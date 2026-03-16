@@ -64,7 +64,8 @@ final class AppDelegate: NSObject, UIApplicationDelegate, @unchecked Sendable {
 
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
+        didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey:
+            Any]? = nil
     ) -> Bool {
         Self.configureImageCache()
         QuickAction.registerAll(in: application)
@@ -113,7 +114,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate, @unchecked Sendable {
     }
 
     @discardableResult
-    private func routeQuickAction(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
+    private func routeQuickAction(_ shortcutItem: UIApplicationShortcutItem)
+    -> Bool
+    {
         guard let action = QuickAction(shortcutItem: shortcutItem) else {
             return false
         }
