@@ -1606,5 +1606,61 @@
     "latitude": 21.459,
     "longitude": -71.139,
     "timeZoneIdentifier": "America/Grand_Turk"
+  },
+  {
+    "name": "Kralendijk",
+    "countryCode": "BQ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/BONAIRE-kralendijk-hafen-2.jpg/1280px-BONAIRE-kralendijk-hafen-2.jpg",
+    "latitude": 12.14444444,
+    "longitude": -68.26555556,
+    "timeZoneIdentifier": "America/Kralendijk"
+  },
+  {
+    "name": "San Jose",
+    "countryCode": "CR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Ciudad_de_San_Jos%C3%A9.png/1280px-Ciudad_de_San_Jos%C3%A9.png",
+    "latitude": 9.9325,
+    "longitude": -84.08,
+    "timeZoneIdentifier": "America/Costa_Rica"
+  },
+  {
+    "name": "Managua",
+    "countryCode": "NI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/%D0%9A%D0%B0%D1%84%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D1%81%D0%BE%D0%B1%D0%BE%D1%80_%D0%B2_%D0%9C%D0%B0%D0%BD%D0%B0%D0%B3%D1%83%D0%B0_%28cropped%29.jpg/1280px-%D0%9A%D0%B0%D1%84%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D1%81%D0%BE%D0%B1%D0%BE%D1%80_%D0%B2_%D0%9C%D0%B0%D0%BD%D0%B0%D0%B3%D1%83%D0%B0_%28cropped%29.jpg",
+    "latitude": 12.13638889,
+    "longitude": -86.25138889,
+    "timeZoneIdentifier": "America/Managua"
+  },
+  {
+    "name": "Tegucigalpa",
+    "countryCode": "HN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Teatro_Manuel_Bonilla_Tegucigalpa.jpg/1280px-Teatro_Manuel_Bonilla_Tegucigalpa.jpg",
+    "latitude": 14.10583333,
+    "longitude": -87.20472222,
+    "timeZoneIdentifier": "America/Tegucigalpa"
+  },
+  {
+    "name": "San Salvador",
+    "countryCode": "SV",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Monumento_al_Salvador_del_Mundo_1.jpg/1280px-Monumento_al_Salvador_del_Mundo_1.jpg",
+    "latitude": 13.69888889,
+    "longitude": -89.19138889,
+    "timeZoneIdentifier": "America/El_Salvador"
+  },
+  {
+    "name": "La Paz, Baja California Sur",
+    "countryCode": "MX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Vista_a%C3%A9rea_del_Museo_de_Arte_de_Baja_California_Sur_01.jpg/1280px-Vista_a%C3%A9rea_del_Museo_de_Arte_de_Baja_California_Sur_01.jpg",
+    "latitude": 24.14222222,
+    "longitude": -110.31083333,
+    "timeZoneIdentifier": "America/Mazatlan"
+  },
+  {
+    "name": "Nicosia",
+    "countryCode": "CY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Nicosia%27s_skyline_2024.jpg/1280px-Nicosia%27s_skyline_2024.jpg",
+    "latitude": 35.1725,
+    "longitude": 33.365,
+    "timeZoneIdentifier": "Asia/Nicosia"
   }
 ]
