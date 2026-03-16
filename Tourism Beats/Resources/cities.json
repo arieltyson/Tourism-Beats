@@ -733,7 +733,7 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Street_in_Viwandani_ward%2C_Dodoma_City.jpg/1280px-Street_in_Viwandani_ward%2C_Dodoma_City.jpg",
     "latitude": -6.163,
     "longitude": 35.7516,
-    "timeZoneIdentifier": "Africa/Dodoma"
+    "timeZoneIdentifier": "Africa/Dar_es_Salaam"
   },
   {
     "name": "Pretoria",
@@ -1046,5 +1046,213 @@
     "latitude": 33.749,
     "longitude": -84.388,
     "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Baku",
+    "countryCode": "AZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Baku_Montage.jpg/1280px-Baku_Montage.jpg",
+    "latitude": 40.4093,
+    "longitude": 49.8671,
+    "timeZoneIdentifier": "Asia/Baku"
+  },
+  {
+    "name": "Grand Rapids",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Meyer_May_House.jpg/1280px-Meyer_May_House.jpg",
+    "latitude": 42.9634,
+    "longitude": -85.6681,
+    "timeZoneIdentifier": "America/Detroit"
+  },
+  {
+    "name": "Nashville",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Nashville%2C_TN_skyline.jpg/1280px-Nashville%2C_TN_skyline.jpg",
+    "latitude": 36.1627,
+    "longitude": -86.7816,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "St. Louis",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Runner_Fountain_and_Old_Courthouse_and_Arch_%285618845531%29.jpg/1280px-Runner_Fountain_and_Old_Courthouse_and_Arch_%285618845531%29.jpg",
+    "latitude": 38.627,
+    "longitude": -90.1994,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "New Orleans",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/New_Orleans_from_the_Air_September_2019_-_Central_Business_District_Skyline_%28cropped%29.jpg/1280px-New_Orleans_from_the_Air_September_2019_-_Central_Business_District_Skyline_%28cropped%29.jpg",
+    "latitude": 29.9511,
+    "longitude": -90.0715,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "La Paz",
+    "countryCode": "BO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Vista_del_centro_de_La_Paz.jpg/1280px-Vista_del_centro_de_La_Paz.jpg",
+    "latitude": -16.4897,
+    "longitude": -68.1193,
+    "timeZoneIdentifier": "America/La_Paz"
+  },
+  {
+    "name": "Boise",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Boise_Metro_Chamber_of_Commerce_photo_to_share_-_winter_2017.jpg/1280px-Boise_Metro_Chamber_of_Commerce_photo_to_share_-_winter_2017.jpg",
+    "latitude": 43.615,
+    "longitude": -116.2023,
+    "timeZoneIdentifier": "America/Boise"
+  },
+  {
+    "name": "Omaha",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/City_of_Omaha%2C_Nebraska_Skyline_on_the_Missouri_River_%2830899969517%29.jpg/1280px-City_of_Omaha%2C_Nebraska_Skyline_on_the_Missouri_River_%2830899969517%29.jpg",
+    "latitude": 41.2565,
+    "longitude": -95.9345,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Cleveland",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Cleveland_skyline_from_Lakewood_Park%2C_January_2026.jpg/1280px-Cleveland_skyline_from_Lakewood_Park%2C_January_2026.jpg",
+    "latitude": 41.4993,
+    "longitude": -81.6944,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Columbus",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Downtown_Columbus_View_from_Main_St_Bridge_-_edit1.jpg/1280px-Downtown_Columbus_View_from_Main_St_Bridge_-_edit1.jpg",
+    "latitude": 39.9612,
+    "longitude": -82.9988,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Cincinnati",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Downtown_Cincinnati_viewed_from_Devou_Park_%28cropped%29.jpg/1280px-Downtown_Cincinnati_viewed_from_Devou_Park_%28cropped%29.jpg",
+    "latitude": 39.1031,
+    "longitude": -84.512,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Indianapolis",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Indianapolis-1872528.jpg/1280px-Indianapolis-1872528.jpg",
+    "latitude": 39.7684,
+    "longitude": -86.1581,
+    "timeZoneIdentifier": "America/Indiana/Indianapolis"
+  },
+  {
+    "name": "Quebec City",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Quebec_City_Rue_St-Louis_2010.jpg/1280px-Quebec_City_Rue_St-Louis_2010.jpg",
+    "latitude": 46.8139,
+    "longitude": -71.208,
+    "timeZoneIdentifier": "America/Toronto"
+  },
+  {
+    "name": "Halifax",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Halifax_Harbour_Sunset_Skyline%2C_Nova_Scotia_%2824237034620%29.jpg/1280px-Halifax_Harbour_Sunset_Skyline%2C_Nova_Scotia_%2824237034620%29.jpg",
+    "latitude": 44.6488,
+    "longitude": -63.5752,
+    "timeZoneIdentifier": "America/Halifax"
+  },
+  {
+    "name": "Fredericton",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Fredericton%2C_NB_%28cropped%29.jpg/1280px-Fredericton%2C_NB_%28cropped%29.jpg",
+    "latitude": 45.9636,
+    "longitude": -66.6431,
+    "timeZoneIdentifier": "America/Moncton"
+  },
+  {
+    "name": "Ottawa",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Parliament-Ottawa.jpg/1280px-Parliament-Ottawa.jpg",
+    "latitude": 45.4215,
+    "longitude": -75.6972,
+    "timeZoneIdentifier": "America/Toronto"
+  },
+  {
+    "name": "Sudbury",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Sudbury_downtown.JPG/1280px-Sudbury_downtown.JPG",
+    "latitude": 46.4917,
+    "longitude": -80.993,
+    "timeZoneIdentifier": "America/Toronto"
+  },
+  {
+    "name": "Thunder Bay",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Thunder_Bay_skyline.JPG/1280px-Thunder_Bay_skyline.JPG",
+    "latitude": 48.3809,
+    "longitude": -89.2477,
+    "timeZoneIdentifier": "America/Thunder_Bay"
+  },
+  {
+    "name": "Regina",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Reginadowntown_%28cropped%29.png/1280px-Reginadowntown_%28cropped%29.png",
+    "latitude": 50.4452,
+    "longitude": -104.6189,
+    "timeZoneIdentifier": "America/Regina"
+  },
+  {
+    "name": "Saskatoon",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Saskatoon%2C_Saskatchewan.jpg/1280px-Saskatoon%2C_Saskatchewan.jpg",
+    "latitude": 52.1579,
+    "longitude": -106.6702,
+    "timeZoneIdentifier": "America/Regina"
+  },
+  {
+    "name": "Kelowna",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Kelowna_city_view_from_Knox_Mountain.jpg/1280px-Kelowna_city_view_from_Knox_Mountain.jpg",
+    "latitude": 49.888,
+    "longitude": -119.496,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Kamloops",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Old_Kamloops_Courthouse.jpg/1280px-Old_Kamloops_Courthouse.jpg",
+    "latitude": 50.6745,
+    "longitude": -120.3273,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Okanagan",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kelowna_Vineyards_%28114204%29.jpg/1280px-Kelowna_Vineyards_%28114204%29.jpg",
+    "latitude": 49.888,
+    "longitude": -119.496,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Prince George",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/2017-05-05-PrinceGeorge.jpg/1280px-2017-05-05-PrinceGeorge.jpg",
+    "latitude": 53.9171,
+    "longitude": -122.7497,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Tofino",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Tofino.Vue_vers_l%27est.JPG/1280px-Tofino.Vue_vers_l%27est.JPG",
+    "latitude": 49.1529,
+    "longitude": -125.9063,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Yellowknife",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Northwest_Territories_Legislative_Building.jpg/1280px-Northwest_Territories_Legislative_Building.jpg",
+    "latitude": 62.454,
+    "longitude": -114.3718,
+    "timeZoneIdentifier": "America/Yellowknife"
   }
 ]
