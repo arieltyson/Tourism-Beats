@@ -225,14 +225,19 @@ struct AddEditTripView: View {
 
     private func save() {
         do {
-            try self.persistTrip()
+            let savedTrip = try self.persistTrip()
+
+            if !savedTrip.isSample {
+                try TripSeedService.registerUserCreatedTrip(in: self.modelContext)
+            }
+
             self.dismiss()
         } catch {
             self.saveErrorMessage = error.localizedDescription
         }
     }
 
-    private func persistTrip() throws {
+    private func persistTrip() throws -> Trip {
         if let trip {
             trip.name = self.trimmedName
             trip.city = self.trimmedCity
@@ -246,6 +251,10 @@ struct AddEditTripView: View {
             trip.status = self.status
             trip.notes = self.normalizedNotes
             self.synchronizeDays(for: trip)
+            if self.modelContext.hasChanges {
+                try self.modelContext.save()
+            }
+            return trip
         } else {
             let newTrip = Trip(
                 name: self.trimmedName,
@@ -260,10 +269,10 @@ struct AddEditTripView: View {
             )
             self.modelContext.insert(newTrip)
             self.createInitialDays(for: newTrip)
-        }
-
-        if self.modelContext.hasChanges {
-            try self.modelContext.save()
+            if self.modelContext.hasChanges {
+                try self.modelContext.save()
+            }
+            return newTrip
         }
     }
 

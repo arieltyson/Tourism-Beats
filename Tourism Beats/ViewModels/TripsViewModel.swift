@@ -45,7 +45,7 @@ final class TripsViewModel {
     /// Sections appear in priority order: in-progress → upcoming → completed.
     /// Trips within each section sort by start date (soonest first).
     func filteredSections(from trips: [Trip]) -> [TripSection] {
-        let filtered = trips.filter { trip in
+        let filtered = self.presentedTrips(from: trips).filter { trip in
             self.matchesStatusFilter(trip) && self.matchesSearch(trip)
         }
 
@@ -63,6 +63,11 @@ final class TripsViewModel {
                 }
                 return TripSection(status: status, trips: sorted)
             }
+    }
+
+    func presentedTrips(from trips: [Trip]) -> [Trip] {
+        let userTrips = trips.filter { !$0.isSample }
+        return userTrips.isEmpty ? trips : userTrips
     }
 
     func cityModel(for trip: Trip) -> CityModel? {

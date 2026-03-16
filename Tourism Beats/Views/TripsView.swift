@@ -14,8 +14,12 @@ struct TripsView: View {
     @State private var tripPendingDeletion: Trip?
     @State private var errorMessage: String?
 
+    private var presentedTrips: [Trip] {
+        self.viewModel.presentedTrips(from: self.trips)
+    }
+
     private var sections: [TripsViewModel.TripSection] {
-        self.viewModel.filteredSections(from: self.trips)
+        self.viewModel.filteredSections(from: self.presentedTrips)
     }
 
     private var visibleTripCount: Int {
@@ -24,10 +28,15 @@ struct TripsView: View {
         }
     }
 
+    private var shouldOfferSampleTrips: Bool {
+        !TripSeedService.hasCreatedCustomTrip()
+    }
+
     var body: some View {
         ScrollView {
-            if self.trips.isEmpty, self.viewModel.searchText.isEmpty {
+            if self.presentedTrips.isEmpty, self.viewModel.searchText.isEmpty {
                 TripsEmptyState(
+                    showsSampleTrips: self.shouldOfferSampleTrips,
                     onCreateTrip: {
                         self.viewModel.isAddTripSheetPresented = true
                     },
@@ -42,7 +51,6 @@ struct TripsView: View {
                 .padding(.top, SpacingTokens.xxLarge)
             } else {
                 TripsContent(
-                    allTrips: self.trips,
                     sections: self.sections,
                     viewModel: self.viewModel,
                     onEditTrip: { trip in
@@ -167,7 +175,6 @@ struct TripsView: View {
 // MARK: - TripsContent
 
 private struct TripsContent: View {
-    let allTrips: [Trip]
     let sections: [TripsViewModel.TripSection]
     let viewModel: TripsViewModel
     let onEditTrip: (Trip) -> Void
@@ -175,8 +182,6 @@ private struct TripsContent: View {
 
     var body: some View {
         LazyVStack(alignment: .leading, spacing: SpacingTokens.large) {
-            TripsSummaryCard(trips: self.allTrips, visibleTripCount: self.visibleTripCount)
-
             ForEach(self.sections) { section in
                 TripSectionView(
                     section: section,
@@ -188,67 +193,6 @@ private struct TripsContent: View {
         }
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.vertical, SpacingTokens.small)
-    }
-
-    private var visibleTripCount: Int {
-        self.sections.reduce(0) { partialResult, section in
-            partialResult + section.trips.count
-        }
-    }
-}
-
-// MARK: - TripsSummaryCard
-
-private struct TripsSummaryCard: View {
-    let trips: [Trip]
-    let visibleTripCount: Int
-
-    private var sampleTripCount: Int {
-        self.trips.filter(\.isSample).count
-    }
-
-    private var plannedActivityCount: Int {
-        self.trips.reduce(0) { partialResult, trip in
-            partialResult + trip.activityCount
-        }
-    }
-
-    var body: some View {
-        GlassCard(cornerRadius: 28) {
-            VStack(alignment: .leading, spacing: SpacingTokens.medium) {
-                VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                    Text("Trips Library")
-                        .font(TypographyTokens.songTitle)
-                        .bold()
-                        .foregroundStyle(.primary)
-
-                    Text("Plan fast, stay flexible, and keep every day as light or detailed as you want.")
-                        .font(TypographyTokens.body)
-                        .foregroundStyle(.secondary)
-                }
-
-                HStack(spacing: SpacingTokens.small) {
-                    TripsMetricChip(
-                        title: "Visible",
-                        value: self.visibleTripCount.formatted(.number),
-                        tint: AppColors.info,
-                        systemImage: "map"
-                    )
-                    TripsMetricChip(
-                        title: "Samples",
-                        value: self.sampleTripCount.formatted(.number),
-                        tint: AppColors.gold,
-                        systemImage: "sparkles"
-                    )
-                    TripsMetricChip(
-                        title: "Activities",
-                        value: self.plannedActivityCount.formatted(.number),
-                        tint: AppColors.coral,
-                        systemImage: "list.bullet"
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -550,6 +494,7 @@ private struct TripsFilterMenu: View {
 // MARK: - TripsEmptyState
 
 private struct TripsEmptyState: View {
+    let showsSampleTrips: Bool
     let onCreateTrip: () -> Void
     let onRestoreSamples: () -> Void
 
@@ -566,13 +511,11 @@ private struct TripsEmptyState: View {
                     .bold()
                     .foregroundStyle(.primary)
 
-                Text(
-                    "Keep rough sketches, detailed day plans, or both. Start with your own trip or load the sample itineraries."
-                )
-                .font(TypographyTokens.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: 340)
+                Text(self.supportingCopy)
+                    .font(TypographyTokens.body)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: 340)
             }
 
             VStack(spacing: SpacingTokens.small) {
@@ -582,21 +525,33 @@ private struct TripsEmptyState: View {
                 .buttonStyle(.borderedProminent)
                 .tint(AppColors.coral)
 
-                Button("Load Sample Trips", systemImage: "sparkles") {
-                    self.onRestoreSamples()
+                if self.showsSampleTrips {
+                    Button("Load Sample Trips", systemImage: "sparkles") {
+                        self.onRestoreSamples()
+                    }
+                    .buttonStyle(.bordered)
                 }
-                .buttonStyle(.bordered)
             }
 
-            HStack(spacing: SpacingTokens.xSmall) {
-                TripsSampleNamePill(title: "Trinidad and Tobago")
-                TripsSampleNamePill(title: "Vancouver, BC")
-                TripsSampleNamePill(title: "San Francisco")
+            if self.showsSampleTrips {
+                HStack(spacing: SpacingTokens.xSmall) {
+                    TripsSampleNamePill(title: "Trinidad and Tobago")
+                    TripsSampleNamePill(title: "Vancouver, BC")
+                    TripsSampleNamePill(title: "San Francisco")
+                }
+                .fixedSize(horizontal: false, vertical: true)
             }
-            .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity)
         .padding(SpacingTokens.xLarge)
+    }
+
+    private var supportingCopy: String {
+        if self.showsSampleTrips {
+            return "Keep rough sketches, detailed day plans, or both. Start with your own trip or load the sample itineraries."
+        }
+
+        return "Keep rough sketches or detailed day plans, then build each trip around the way you actually travel."
     }
 }
 
