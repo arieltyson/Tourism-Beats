@@ -25,11 +25,15 @@ struct CityView: View {
                 .shadow(color: .black.opacity(0.25), radius: 12, y: 6)
                 .padding(.horizontal, 20)
 
-            HStack(spacing: 12) {
-                TimeView(city: self.city)
-                WeatherView(city: self.city)
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    TimeView(city: self.city)
+                    WeatherView(city: self.city)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+
+                CityFunFactCard(city: self.city)
             }
-            .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, 20)
 
             Spacer(minLength: 0)
