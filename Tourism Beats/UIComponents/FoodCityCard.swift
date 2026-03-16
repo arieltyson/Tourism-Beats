@@ -6,9 +6,13 @@ struct FoodCityCard: View {
     let group: FoodJournalCityGroup
 
     @Environment(\.colorScheme) private var colorScheme
-    @ScaledMetric(relativeTo: .title3) private var cardHeight = 188.0
-    @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 84.0
-    @ScaledMetric(relativeTo: .body) private var footerHeight = 78.0
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    @ScaledMetric(relativeTo: .title3) private var standardCardHeight = 212.0
+    @ScaledMetric(relativeTo: .title3) private var accessibilityCardHeight = 260.0
+    @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 92.0
+    @ScaledMetric(relativeTo: .body) private var standardFooterMinHeight = 104.0
+    @ScaledMetric(relativeTo: .body) private var accessibilityFooterMinHeight = 152.0
 
     var body: some View {
         ZStack {
@@ -22,7 +26,7 @@ struct FoodCityCard: View {
                 FoodCityCardFooter(
                     group: self.group,
                     badgeMinWidth: self.badgeMinWidth,
-                    footerHeight: self.footerHeight
+                    footerMinHeight: self.footerMinHeight
                 )
             }
         }
@@ -44,6 +48,18 @@ struct FoodCityCard: View {
         .contentShape(.rect(cornerRadius: 26, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(self.group.accessibilityLabel)
+    }
+
+    private var cardHeight: CGFloat {
+        self.dynamicTypeSize.isAccessibilitySize
+            ? self.accessibilityCardHeight
+            : self.standardCardHeight
+    }
+
+    private var footerMinHeight: CGFloat {
+        self.dynamicTypeSize.isAccessibilitySize
+            ? self.accessibilityFooterMinHeight
+            : self.standardFooterMinHeight
     }
 }
 
@@ -113,7 +129,7 @@ private struct FoodCityCardVignette: View {
 private struct FoodCityCardFooter: View {
     let group: FoodJournalCityGroup
     let badgeMinWidth: CGFloat
-    let footerHeight: CGFloat
+    let footerMinHeight: CGFloat
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -127,22 +143,85 @@ private struct FoodCityCardFooter: View {
                 endPoint: .bottom
             )
 
-            HStack(alignment: .bottom, spacing: SpacingTokens.small) {
-                FoodCityCardText(group: self.group)
-
-                Spacer(minLength: SpacingTokens.small)
-
-                FoodCityCardCountBadge(
-                    count: self.group.restaurantCount,
-                    minWidth: self.badgeMinWidth
-                )
-            }
+            FoodCityCardFooterContent(
+                group: self.group,
+                badgeMinWidth: self.badgeMinWidth
+            )
             .padding(.horizontal, SpacingTokens.small)
             .padding(.bottom, SpacingTokens.small)
             .padding(.top, SpacingTokens.medium)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: self.footerHeight)
+        .frame(minHeight: self.footerMinHeight, alignment: .bottom)
+    }
+}
+
+// MARK: - FoodCityCardFooterContent
+
+private struct FoodCityCardFooterContent: View {
+    let group: FoodJournalCityGroup
+    let badgeMinWidth: CGFloat
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        if self.dynamicTypeSize.isAccessibilitySize {
+            FoodCityCardVerticalFooterContent(
+                group: self.group,
+                badgeMinWidth: self.badgeMinWidth
+            )
+        } else {
+            ViewThatFits(in: .horizontal) {
+                FoodCityCardHorizontalFooterContent(
+                    group: self.group,
+                    badgeMinWidth: self.badgeMinWidth
+                )
+
+                FoodCityCardVerticalFooterContent(
+                    group: self.group,
+                    badgeMinWidth: self.badgeMinWidth
+                )
+            }
+        }
+    }
+}
+
+// MARK: - FoodCityCardHorizontalFooterContent
+
+private struct FoodCityCardHorizontalFooterContent: View {
+    let group: FoodJournalCityGroup
+    let badgeMinWidth: CGFloat
+
+    var body: some View {
+        HStack(alignment: .bottom, spacing: SpacingTokens.small) {
+            FoodCityCardText(group: self.group)
+
+            Spacer(minLength: SpacingTokens.small)
+
+            FoodCityCardCountBadge(
+                count: self.group.restaurantCount,
+                minWidth: self.badgeMinWidth
+            )
+        }
+    }
+}
+
+// MARK: - FoodCityCardVerticalFooterContent
+
+private struct FoodCityCardVerticalFooterContent: View {
+    let group: FoodJournalCityGroup
+    let badgeMinWidth: CGFloat
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: SpacingTokens.small) {
+            FoodCityCardText(group: self.group)
+
+            FoodCityCardCountBadge(
+                count: self.group.restaurantCount,
+                minWidth: self.badgeMinWidth
+            )
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -160,15 +239,17 @@ private struct FoodCityCardText: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.88)
                 .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(1)
                 .shadow(color: .black.opacity(0.28), radius: 10, y: 4)
 
             if !self.group.displayCountryName.isEmpty {
                 Text(self.group.displayCountryName)
                     .font(TypographyTokens.artistName)
                     .foregroundStyle(.white.opacity(0.9))
-                    .lineLimit(1)
+                    .lineLimit(2)
                     .minimumScaleFactor(0.9)
                     .fixedSize(horizontal: false, vertical: true)
+                    .layoutPriority(1)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -191,10 +272,13 @@ private struct FoodCityCardCountBadge: View {
             Text(self.count == 1 ? "restaurant" : "restaurants")
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.white.opacity(0.84))
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
         }
         .frame(minWidth: self.minWidth, alignment: .trailing)
         .padding(.horizontal, SpacingTokens.small)
         .padding(.vertical, SpacingTokens.xSmall)
         .background(.thinMaterial, in: Capsule())
+        .fixedSize(horizontal: true, vertical: true)
     }
 }

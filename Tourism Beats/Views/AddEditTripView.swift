@@ -45,13 +45,18 @@ struct AddEditTripView: View {
     }
 
     private var normalizedNotes: String? {
-        let trimmedNotes = self.notes.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedNotes = self.notes.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
         return trimmedNotes.isEmpty ? nil : trimmedNotes
     }
 
     private var citySuggestions: [CityModel] {
         let trimmedQuery = self.trimmedCity
-        guard !trimmedQuery.isEmpty || !self.formViewModel.selectedCountryCode.isEmpty else {
+        guard
+            !trimmedQuery.isEmpty
+                || !self.formViewModel.selectedCountryCode.isEmpty
+        else {
             return []
         }
 
@@ -65,7 +70,11 @@ struct AddEditTripView: View {
         let defaultStartDate = trip?.startDate ?? Date.now
         let defaultEndDate =
             trip?.endDate
-            ?? Calendar.current.date(byAdding: .day, value: 5, to: defaultStartDate)
+            ?? Calendar.current.date(
+                byAdding: .day,
+                value: 5,
+                to: defaultStartDate
+            )
             ?? defaultStartDate
 
         self._formViewModel = State(
@@ -158,8 +167,14 @@ struct AddEditTripView: View {
                 || self.status != trip.status
                 || self.normalizedNotes != trip.trimmedNotes
                 || self.hasDates != (trip.startDate != nil)
-                || !Self.sameDay(self.hasDates ? self.startDate : nil, trip.startDate)
-                || !Self.sameDay(self.hasDates ? self.endDate : nil, trip.endDate)
+                || !Self.sameDay(
+                    self.hasDates ? self.startDate : nil,
+                    trip.startDate
+                )
+                || !Self.sameDay(
+                    self.hasDates ? self.endDate : nil,
+                    trip.endDate
+                )
         }
 
         return !self.trimmedName.isEmpty
@@ -186,7 +201,8 @@ struct AddEditTripView: View {
             return self.formViewModel.selectedCountryDisplayLabel
         }
 
-        return self.trimmedCountry.isEmpty ? "Choose a country" : self.trimmedCountry
+        return self.trimmedCountry.isEmpty
+            ? "Choose a country" : self.trimmedCountry
     }
 
     private func synchronizeCountryField() {
@@ -215,8 +231,12 @@ struct AddEditTripView: View {
             trip.name = self.trimmedName
             trip.city = self.trimmedCity
             trip.country = self.trimmedCountry
-            trip.startDate = self.hasDates ? Calendar.current.startOfDay(for: self.startDate) : nil
-            trip.endDate = self.hasDates ? Calendar.current.startOfDay(for: self.endDate) : nil
+            trip.startDate =
+                self.hasDates
+                ? Calendar.current.startOfDay(for: self.startDate) : nil
+            trip.endDate =
+                self.hasDates
+                ? Calendar.current.startOfDay(for: self.endDate) : nil
             trip.status = self.status
             trip.notes = self.normalizedNotes
             self.synchronizeDays(for: trip)
@@ -225,8 +245,10 @@ struct AddEditTripView: View {
                 name: self.trimmedName,
                 city: self.trimmedCity,
                 country: self.trimmedCountry,
-                startDate: self.hasDates ? Calendar.current.startOfDay(for: self.startDate) : nil,
-                endDate: self.hasDates ? Calendar.current.startOfDay(for: self.endDate) : nil,
+                startDate: self.hasDates
+                    ? Calendar.current.startOfDay(for: self.startDate) : nil,
+                endDate: self.hasDates
+                    ? Calendar.current.startOfDay(for: self.endDate) : nil,
                 notes: self.normalizedNotes,
                 status: self.status
             )
@@ -313,7 +335,13 @@ struct AddEditTripView: View {
         while currentDate <= normalizedEndDate {
             dates.append(currentDate)
 
-            guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else {
+            guard
+                let nextDate = calendar.date(
+                    byAdding: .day,
+                    value: 1,
+                    to: currentDate
+                )
+            else {
                 break
             }
 
@@ -344,13 +372,15 @@ private struct TripBasicsSection: View {
     let onSelectCountry: () -> Void
 
     var body: some View {
-        Section("Trip Details") {
+        Section {
             TextField("Trip Name", text: self.$name)
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
 
-            Button("Country", systemImage: "globe") {
+            Button(action: {
                 self.onSelectCountry()
+            }) {
+                Label("Country", systemImage: "globe")
             }
             .foregroundStyle(.primary)
             .overlay(alignment: .trailing) {
@@ -369,8 +399,12 @@ private struct TripBasicsSection: View {
                 .textContentType(.addressCity)
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
+        } header: {
+            Text("Trip Details")
         } footer: {
-            Text("Only the trip name and city are required. Dates, notes, and activities can stay flexible.")
+            Text(
+                "Only the trip name and city are required. Dates, notes, and activities can stay flexible."
+            )
         }
     }
 }
@@ -382,13 +416,16 @@ private struct TripCitySuggestionsSection: View {
     let onSelectCity: (CityModel) -> Void
 
     var body: some View {
-        Section("Suggested Cities") {
+        Section {
             ForEach(self.suggestions) { city in
                 Button {
                     self.onSelectCity(city)
                 } label: {
                     HStack(spacing: SpacingTokens.small) {
-                        VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                        VStack(
+                            alignment: .leading,
+                            spacing: SpacingTokens.xxSmall
+                        ) {
                             Text(city.name)
                                 .foregroundStyle(.primary)
 
@@ -405,6 +442,8 @@ private struct TripCitySuggestionsSection: View {
                 }
                 .buttonStyle(.plain)
             }
+        } header: {
+            Text("Suggested Cities")
         }
     }
 }
@@ -417,9 +456,12 @@ private struct TripDatesSection: View {
     @Binding var endDate: Date
 
     var body: some View {
-        Section("Travel Dates") {
-            Toggle("Set travel dates", isOn: self.$hasDates.animation(AnimationTokens.standard))
-                .tint(AppColors.coral)
+        Section {
+            Toggle(
+                "Set travel dates",
+                isOn: self.$hasDates.animation(AnimationTokens.standard)
+            )
+            .tint(AppColors.coral)
 
             if self.hasDates {
                 DatePicker(
@@ -435,9 +477,13 @@ private struct TripDatesSection: View {
                     displayedComponents: .date
                 )
             }
+        } header: {
+            Text("Travel Dates")
         } footer: {
             if self.hasDates {
-                Text("Saving dates automatically creates itinerary days for the range you choose.")
+                Text(
+                    "Saving dates automatically creates itinerary days for the range you choose."
+                )
             }
         }
     }
@@ -449,7 +495,7 @@ private struct TripStatusSection: View {
     @Binding var status: TripStatus
 
     var body: some View {
-        Section("Status") {
+        Section {
             Picker("Status", selection: self.$status) {
                 ForEach(TripStatus.allCases) { tripStatus in
                     Label(tripStatus.label, systemImage: tripStatus.systemImage)
@@ -457,6 +503,8 @@ private struct TripStatusSection: View {
                 }
             }
             .pickerStyle(.segmented)
+        } header: {
+            Text("Status")
         }
     }
 }
@@ -467,9 +515,15 @@ private struct TripNotesSection: View {
     @Binding var notes: String
 
     var body: some View {
-        Section("Notes") {
-            TextField("Trip notes (optional)", text: self.$notes, axis: .vertical)
-                .lineLimit(3 ... 8)
+        Section {
+            TextField(
+                "Trip notes (optional)",
+                text: self.$notes,
+                axis: .vertical
+            )
+            .lineLimit(3 ... 8)
+        } header: {
+            Text("Notes")
         }
     }
 }
