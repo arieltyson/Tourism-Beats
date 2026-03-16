@@ -136,7 +136,7 @@ final class MusicViewModel: ObservableObject {
 
     private func fetchTopSongMetadata() async {
         self.songTitle = "Loading Top Song…"
-        self.artistName = "for \(self.city.country.name)"
+        self.artistName = "for \(self.city.name)"
         self.songImage = nil
         self.isPlaying = false
         self.playableSong = nil
@@ -144,9 +144,7 @@ final class MusicViewModel: ObservableObject {
         self.spotifyMirroredSong = nil
 
         do {
-            let result = try await musicService.fetchTopSong(
-                countryCode: self.city.country.code
-            )
+            let result = try await musicService.fetchTopSong(for: self.city)
             self.appleSong = result
             self.songTitle = result.title
             self.artistName = result.artistName

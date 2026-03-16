@@ -70,10 +70,15 @@ struct AppleMusicChartResponse: Decodable, Sendable {
 
 struct ChartResults: Decodable, Sendable {
     let songs: [ChartData]?
+    let playlists: [PlaylistChartData]?
 }
 
 struct ChartData: Decodable, Sendable {
     let data: [AppleMusicAPISong]
+}
+
+struct PlaylistChartData: Decodable, Sendable {
+    let data: [AppleMusicAPIPlaylist]
 }
 
 /// Minimal song node from Apple Music API used for top charts.
@@ -82,11 +87,30 @@ struct AppleMusicAPISong: Decodable, Sendable {
     let attributes: SongAttributes?
 }
 
+struct AppleMusicAPIPlaylist: Decodable, Sendable {
+    let id: String
+    let attributes: PlaylistAttributes?
+    let relationships: PlaylistRelationships?
+}
+
 struct SongAttributes: Decodable, Sendable {
     let name: String
     let artistName: String
     let artwork: ArtworkAPI?
     let isrc: String?
+}
+
+struct PlaylistAttributes: Decodable, Sendable {
+    let name: String
+    let curatorName: String?
+}
+
+struct PlaylistRelationships: Decodable, Sendable {
+    let tracks: PlaylistTracksRelationship?
+}
+
+struct PlaylistTracksRelationship: Decodable, Sendable {
+    let data: [AppleMusicAPISong]?
 }
 
 struct ArtworkAPI: Decodable, Sendable {
@@ -100,6 +124,11 @@ struct ArtworkAPI: Decodable, Sendable {
             .replacingOccurrences(of: "{h}", with: "\(height)")
         return URL(string: sized)
     }
+}
+
+struct AppleMusicPlaylistResponse: Decodable, Sendable {
+    let data: [AppleMusicAPIPlaylist]
+    let included: [AppleMusicAPISong]?
 }
 
 // MARK: - Helpers to map AM API → AppSong

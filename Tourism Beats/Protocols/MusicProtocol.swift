@@ -1,3 +1,3 @@
 protocol MusicProtocol: Sendable {
-    func fetchTopSong(countryCode: String) async throws -> AppSong
+    func fetchTopSong(for city: CityModel) async throws -> AppSong
 }

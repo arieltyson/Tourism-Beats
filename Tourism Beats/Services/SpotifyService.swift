@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - SpotifyService
 
-/// Mirrors the Apple Music #1 (by country) on Spotify by searching the same song/artist.
+/// Mirrors the Apple Music top result on Spotify by searching the same song/artist.
 /// Keeps UX parity: same title/artist shown, but playback via Spotify deep link.
 actor SpotifyService: MusicProtocol {
     enum ServiceError: Swift.Error {
@@ -12,17 +12,13 @@ actor SpotifyService: MusicProtocol {
 
     private let base = URL(string: "https://api.spotify.com/v1")!
 
-    // Original protocol entry point (used if you want Spotify to fetch everything):
-    func fetchTopSong(countryCode: String) async throws -> AppSong {
-        // 1) Get Apple’s #1
-        let appleTop = try await MusicService.shared.fetchTopSong(
-            countryCode: countryCode
-        )
+    func fetchTopSong(for city: CityModel) async throws -> AppSong {
+        let appleTop = try await MusicService.shared.fetchTopSong(for: city)
         // 2) Mirror on Spotify
         return try await self.mirror(
             title: appleTop.title,
             artist: appleTop.artistName,
-            countryCode: countryCode
+            countryCode: city.country.code
         )
     }
 
