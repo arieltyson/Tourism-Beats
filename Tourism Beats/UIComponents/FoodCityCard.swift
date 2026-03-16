@@ -6,25 +6,26 @@ struct FoodCityCard: View {
     let group: FoodJournalCityGroup
 
     @Environment(\.colorScheme) private var colorScheme
+    @ScaledMetric(relativeTo: .title3) private var cardHeight = 188.0
+    @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 88.0
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottomLeading) {
             FoodCityCardBackground(group: self.group)
 
-            LinearGradient(
-                colors: [
-                    .clear,
-                    .black.opacity(0.18),
-                    .black.opacity(0.72)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
+            FoodCityCardVignette()
 
-            FoodCityCardContent(group: self.group)
+            FoodCityCardText(group: self.group, badgeInsetWidth: self.badgeMinWidth)
+        }
+        .overlay(alignment: .bottomTrailing) {
+            FoodCityCardCountBadge(
+                count: self.group.restaurantCount,
+                minWidth: self.badgeMinWidth
+            )
+            .padding(SpacingTokens.small)
         }
         .frame(maxWidth: .infinity)
-        .aspectRatio(1.45, contentMode: .fit)
+        .frame(height: self.cardHeight)
         .clipShape(.rect(cornerRadius: 26, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 26, style: .continuous)
@@ -38,6 +39,7 @@ struct FoodCityCard: View {
             radius: 16,
             y: 8
         )
+        .contentShape(.rect(cornerRadius: 26, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(self.group.accessibilityLabel)
     }
@@ -49,22 +51,27 @@ private struct FoodCityCardBackground: View {
     let group: FoodJournalCityGroup
 
     var body: some View {
-        Group {
+        ZStack {
+            Rectangle()
+                .fill(.ultraThinMaterial)
+
             if let imageURL = self.group.imageURL {
                 CachedCityImage(url: imageURL)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
             } else {
                 LinearGradient(
                     colors: [
-                        AppColors.info.opacity(0.95),
-                        AppColors.violet.opacity(0.9),
-                        AppColors.coral.opacity(0.85)
+                        AppColors.info.opacity(0.92),
+                        AppColors.violet.opacity(0.88),
+                        AppColors.coral.opacity(0.82)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
                 .overlay {
                     Image(systemName: "fork.knife.circle.fill")
-                        .font(.system(size: 72))
+                        .font(.system(size: 60))
                         .foregroundStyle(.white.opacity(0.24))
                 }
             }
@@ -72,24 +79,30 @@ private struct FoodCityCardBackground: View {
     }
 }
 
-// MARK: - FoodCityCardContent
+// MARK: - FoodCityCardVignette
 
-private struct FoodCityCardContent: View {
-    let group: FoodJournalCityGroup
-
+private struct FoodCityCardVignette: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-            Spacer()
-
-            HStack(alignment: .bottom, spacing: SpacingTokens.small) {
-                FoodCityCardText(group: self.group)
-
-                Spacer(minLength: SpacingTokens.small)
-
-                FoodCityCardCountBadge(count: self.group.restaurantCount)
-            }
+        LinearGradient(
+            colors: [
+                .black.opacity(0.08),
+                .clear,
+                .black.opacity(0.68)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        .overlay {
+            LinearGradient(
+                colors: [
+                    .clear,
+                    .black.opacity(0.12),
+                    .black.opacity(0.78)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         }
-        .padding(SpacingTokens.medium)
     }
 }
 
@@ -97,6 +110,7 @@ private struct FoodCityCardContent: View {
 
 private struct FoodCityCardText: View {
     let group: FoodJournalCityGroup
+    let badgeInsetWidth: CGFloat
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
@@ -105,15 +119,20 @@ private struct FoodCityCardText: View {
                 .bold()
                 .foregroundStyle(.white)
                 .lineLimit(2)
-                .shadow(color: .black.opacity(0.25), radius: 10, y: 4)
+                .minimumScaleFactor(0.88)
+                .shadow(color: .black.opacity(0.28), radius: 10, y: 4)
 
             if !self.group.displayCountryName.isEmpty {
                 Text(self.group.displayCountryName)
                     .font(TypographyTokens.artistName)
-                    .foregroundStyle(.white.opacity(0.88))
+                    .foregroundStyle(.white.opacity(0.9))
                     .lineLimit(1)
+                    .minimumScaleFactor(0.9)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(SpacingTokens.small)
+        .padding(.trailing, self.badgeInsetWidth + SpacingTokens.large)
     }
 }
 
@@ -121,6 +140,7 @@ private struct FoodCityCardText: View {
 
 private struct FoodCityCardCountBadge: View {
     let count: Int
+    let minWidth: CGFloat
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 2) {
@@ -131,8 +151,9 @@ private struct FoodCityCardCountBadge: View {
 
             Text(self.count == 1 ? "restaurant" : "restaurants")
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.82))
+                .foregroundStyle(.white.opacity(0.84))
         }
+        .frame(minWidth: self.minWidth, alignment: .trailing)
         .padding(.horizontal, SpacingTokens.small)
         .padding(.vertical, SpacingTokens.xSmall)
         .background(.thinMaterial, in: Capsule())

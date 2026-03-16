@@ -93,7 +93,7 @@ private struct FoodJournalContent: View {
     let onDelete: (Restaurant) -> Void
 
     var body: some View {
-        LazyVStack(spacing: SpacingTokens.large) {
+        LazyVStack(spacing: SpacingTokens.medium) {
             if self.cityGroups.isEmpty {
                 FoodNoResults(searchText: self.searchText)
                     .padding(.top, SpacingTokens.xxLarge)
