@@ -18,13 +18,12 @@ final class TripsViewModel {
 
     init(dataService: DataService = DataService()) {
         let catalogCities = (try? dataService.loadCities()) ?? []
-        self.catalogCitiesByLookupKey = Dictionary(
-            uniqueKeysWithValues: catalogCities.map {
-                (Self.lookupKey(cityName: $0.name, countryName: $0.country.name), $0)
-            }
-        )
-
         let countries = (try? dataService.loadCountries()) ?? []
+        self.init(catalogCities: catalogCities, countries: countries)
+    }
+
+    init(catalogCities: [CityModel], countries: [CountryModel]) {
+        self.catalogCitiesByLookupKey = Self.makeCityLookup(from: catalogCities)
         self.countryFlagsByNormalizedName = Dictionary(
             uniqueKeysWithValues: countries.map {
                 (Self.normalizedLookupValue($0.name), $0.flag)
@@ -55,9 +54,12 @@ final class TripsViewModel {
         return TripStatus.allCases
             .sorted { $0.sortOrder < $1.sortOrder }
             .compactMap { status in
-                guard let trips = grouped[status], !trips.isEmpty else { return nil }
+                guard let trips = grouped[status], !trips.isEmpty else {
+                    return nil
+                }
                 let sorted = trips.sorted { lhs, rhs in
-                    (lhs.startDate ?? .distantFuture) < (rhs.startDate ?? .distantFuture)
+                    (lhs.startDate ?? .distantFuture)
+                        < (rhs.startDate ?? .distantFuture)
                 }
                 return TripSection(status: status, trips: sorted)
             }
@@ -94,7 +96,9 @@ final class TripsViewModel {
             || trip.country.localizedStandardContains(query)
     }
 
-    private static func lookupKey(cityName: String, countryName: String) -> String {
+    private static func lookupKey(cityName: String, countryName: String)
+    -> String
+    {
         [
             self.normalizedLookupValue(cityName),
             self.normalizedLookupValue(countryName)
@@ -104,7 +108,28 @@ final class TripsViewModel {
 
     private static func normalizedLookupValue(_ value: String) -> String {
         value
-            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+            .folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
             .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private static func makeCityLookup(from catalogCities: [CityModel])
+    -> [String: CityModel]
+    {
+        catalogCities.reduce(into: [:]) { partialResult, city in
+            let key = Self.lookupKey(
+                cityName: city.name,
+                countryName: city.country.name
+            )
+
+            // The city catalog can legitimately contain duplicate rows for the
+            // same city/country pair. Keep the first stable match instead of
+            // crashing on duplicate dictionary keys.
+            if partialResult[key] == nil {
+                partialResult[key] = city
+            }
+        }
     }
 }

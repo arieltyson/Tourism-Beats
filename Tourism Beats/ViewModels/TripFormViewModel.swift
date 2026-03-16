@@ -18,6 +18,19 @@ final class TripFormViewModel {
         dataService: DataService = DataService()
     ) {
         let countries = (try? dataService.loadCountries()) ?? []
+        let cities = (try? dataService.loadCities()) ?? []
+        self.init(
+            countryName: countryName,
+            countries: countries,
+            cities: cities
+        )
+    }
+
+    init(
+        countryName: String = "",
+        countries: [CountryModel],
+        cities: [CityModel]
+    ) {
         self.countriesByCode = Dictionary(
             uniqueKeysWithValues: countries.map { ($0.code, $0) }
         )
@@ -26,7 +39,7 @@ final class TripFormViewModel {
                 (Self.normalizedLookupValue($0.name), $0.code)
             }
         )
-        self.allCities = (try? dataService.loadCities()) ?? []
+        self.allCities = Self.deduplicatedCities(from: cities)
         self.selectedCountryCode =
             self.countryCodesByNormalizedName[Self.normalizedLookupValue(countryName)] ?? ""
     }
@@ -88,6 +101,20 @@ final class TripFormViewModel {
         value
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private static func deduplicatedCities(from cities: [CityModel]) -> [CityModel] {
+        var seenLookupKeys = Set<String>()
+
+        return cities.filter { city in
+            let lookupKey = [
+                Self.normalizedLookupValue(city.name),
+                Self.normalizedLookupValue(city.country.name)
+            ]
+            .joined(separator: "|")
+
+            return seenLookupKeys.insert(lookupKey).inserted
+        }
     }
 }
 
