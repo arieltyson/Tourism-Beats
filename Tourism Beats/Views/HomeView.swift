@@ -139,9 +139,7 @@ private struct DiscoveryCityCard: View {
     var body: some View {
         Button(action: self.action) {
             ZStack(alignment: .bottomLeading) {
-                Image(self.city.imageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+                CachedCityImage(url: self.city.imageURL)
                     .frame(height: 140)
                     .clipped()
 

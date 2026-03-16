@@ -18,10 +18,9 @@ struct CityView: View {
             .padding(.bottom, 20)
 
             VStack {
-                Image(self.city.imageName)
-                    .resizable()
+                CachedCityImage(url: self.city.imageURL)
                     .aspectRatio(1, contentMode: .fit)
-                    .cornerRadius(15)
+                    .clipShape(.rect(cornerRadius: 15))
                     .padding()
             }
             .background(

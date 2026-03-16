@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import UIKit
 
@@ -63,8 +64,21 @@ final class AppDelegate: NSObject, UIApplicationDelegate, @unchecked Sendable {
         _ application: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        Self.configureImageCache()
         QuickAction.registerAll(in: application)
         return true
+    }
+
+    /// Configures the shared `URLCache` with generous disk capacity for city images.
+    ///
+    /// 20 MB memory / 200 MB disk keeps recently viewed images instantly available
+    /// while allowing the system to reclaim space when needed.
+    private static func configureImageCache() {
+        URLCache.shared = URLCache(
+            memoryCapacity: 20 * 1_024 * 1_024, // 20 MB
+            diskCapacity: 200 * 1_024 * 1_024, // 200 MB
+            directory: .cachesDirectory.appending(path: "CityImages")
+        )
     }
 
     func application(

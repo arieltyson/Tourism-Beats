@@ -2,7 +2,7 @@
   {
     "name": "London",
     "countryCode": "GB",
-    "imageName": "london_united_kingdom",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/1280px-London_Skyline_%28125508655%29.jpeg",
     "latitude": 51.5074,
     "longitude": -0.1278,
     "timeZoneIdentifier": "Europe/London"
@@ -10,7 +10,7 @@
   {
     "name": "Paris",
     "countryCode": "FR",
-    "imageName": "paris_france",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
     "latitude": 48.8566,
     "longitude": 2.3522,
     "timeZoneIdentifier": "Europe/Paris"
@@ -18,7 +18,7 @@
   {
     "name": "Tokyo",
     "countryCode": "JP",
-    "imageName": "tokyo_japan",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Skyscrapers_of_Shinjuku_2009_January.jpg/1280px-Skyscrapers_of_Shinjuku_2009_January.jpg",
     "latitude": 35.6895,
     "longitude": 139.6917,
     "timeZoneIdentifier": "Asia/Tokyo"
@@ -26,7 +26,7 @@
   {
     "name": "Berlin",
     "countryCode": "DE",
-    "imageName": "berlin_germany",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
     "latitude": 52.52,
     "longitude": 13.405,
     "timeZoneIdentifier": "Europe/Berlin"
@@ -34,7 +34,7 @@
   {
     "name": "Barcelona",
     "countryCode": "ES",
-    "imageName": "barcelona_spain",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Aerial_view_of_Barcelona%2C_Spain_%2851227309370%29_edited.jpg/1280px-Aerial_view_of_Barcelona%2C_Spain_%2851227309370%29_edited.jpg",
     "latitude": 41.3851,
     "longitude": 2.1734,
     "timeZoneIdentifier": "Europe/Madrid"
@@ -42,7 +42,7 @@
   {
     "name": "Rome",
     "countryCode": "IT",
-    "imageName": "rome_italy",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
     "latitude": 41.9028,
     "longitude": 12.4964,
     "timeZoneIdentifier": "Europe/Rome"
@@ -50,7 +50,7 @@
   {
     "name": "Beijing",
     "countryCode": "CN",
-    "imageName": "beijing_china",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Skyline_of_Beijing_CBD_from_the_southeast_%2820210907094201%29.jpg/1280px-Skyline_of_Beijing_CBD_from_the_southeast_%2820210907094201%29.jpg",
     "latitude": 39.9042,
     "longitude": 116.4074,
     "timeZoneIdentifier": "Asia/Shanghai"
@@ -58,7 +58,7 @@
   {
     "name": "Cairo",
     "countryCode": "EG",
-    "imageName": "cairo_egypt",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Cairo_Skyline_%282020%29.jpg/960px-Cairo_Skyline_%282020%29.jpg",
     "latitude": 30.0444,
     "longitude": 31.2357,
     "timeZoneIdentifier": "Africa/Cairo"
@@ -66,7 +66,7 @@
   {
     "name": "New Delhi",
     "countryCode": "IN",
-    "imageName": "new_delhi_india",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Forecourt%2C_Rashtrapati_Bhavan_-_1.jpg/1280px-Forecourt%2C_Rashtrapati_Bhavan_-_1.jpg",
     "latitude": 28.6139,
     "longitude": 77.209,
     "timeZoneIdentifier": "Asia/Kolkata"
@@ -74,7 +74,7 @@
   {
     "name": "Rio De Janeiro",
     "countryCode": "BR",
-    "imageName": "rio_de_janeiro_brazil",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Cidade_Maravilhosa.jpg/1280px-Cidade_Maravilhosa.jpg",
     "latitude": -22.9068,
     "longitude": -43.1729,
     "timeZoneIdentifier": "America/Sao_Paulo"
@@ -82,7 +82,7 @@
   {
     "name": "Moscow",
     "countryCode": "RU",
-    "imageName": "moscow_russia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Saint_Basil%27s_Cathedral_and_the_Red_Square.jpg/1280px-Saint_Basil%27s_Cathedral_and_the_Red_Square.jpg",
     "latitude": 55.7558,
     "longitude": 37.6176,
     "timeZoneIdentifier": "Europe/Moscow"
@@ -90,7 +90,7 @@
   {
     "name": "Amsterdam",
     "countryCode": "NL",
-    "imageName": "amsterdam_netherlands",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Imagen_de_los_canales_conc%C3%A9ntricos_en_%C3%81msterdam.png/1280px-Imagen_de_los_canales_conc%C3%A9ntricos_en_%C3%81msterdam.png",
     "latitude": 52.3676,
     "longitude": 4.9041,
     "timeZoneIdentifier": "Europe/Amsterdam"
@@ -98,7 +98,7 @@
   {
     "name": "Athens",
     "countryCode": "GR",
-    "imageName": "athens_greece",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg/1280px-Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg",
     "latitude": 37.9838,
     "longitude": 23.7275,
     "timeZoneIdentifier": "Europe/Athens"
@@ -106,7 +106,7 @@
   {
     "name": "Bangkok",
     "countryCode": "TH",
-    "imageName": "bangkok_thailand",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bangkok_Montage_2024_2.jpg/1280px-Bangkok_Montage_2024_2.jpg",
     "latitude": 13.7563,
     "longitude": 100.5018,
     "timeZoneIdentifier": "Asia/Bangkok"
@@ -114,7 +114,7 @@
   {
     "name": "Lagos",
     "countryCode": "NG",
-    "imageName": "lagos_nigeria",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/2014_Tinubu_Square_Lagos_Nigeria_14640600637.jpg/1280px-2014_Tinubu_Square_Lagos_Nigeria_14640600637.jpg",
     "latitude": 6.5244,
     "longitude": 3.3792,
     "timeZoneIdentifier": "Africa/Lagos"
@@ -122,7 +122,7 @@
   {
     "name": "Cape Town",
     "countryCode": "ZA",
-    "imageName": "cape_town_south_africa",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Camps_bay_%2853460319478%29_%28cropped%29.jpg/1280px-Camps_bay_%2853460319478%29_%28cropped%29.jpg",
     "latitude": -33.9249,
     "longitude": 18.4241,
     "timeZoneIdentifier": "Africa/Johannesburg"
@@ -130,7 +130,7 @@
   {
     "name": "Nairobi",
     "countryCode": "KE",
-    "imageName": "nairobi_kenya",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nairobi_skyline_from_Gem_Hotel.jpg/1280px-Nairobi_skyline_from_Gem_Hotel.jpg",
     "latitude": -1.286389,
     "longitude": 36.817223,
     "timeZoneIdentifier": "Africa/Nairobi"
@@ -138,7 +138,7 @@
   {
     "name": "Stockholm",
     "countryCode": "SE",
-    "imageName": "stockholm_sweden",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Royal_Dramatic_Theatre_Stockholm.jpg/1280px-Royal_Dramatic_Theatre_Stockholm.jpg",
     "latitude": 59.3293,
     "longitude": 18.0686,
     "timeZoneIdentifier": "Europe/Stockholm"
@@ -146,7 +146,7 @@
   {
     "name": "Istanbul",
     "countryCode": "TR",
-    "imageName": "istanbul_turkey",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Historical_peninsula_and_modern_skyline_of_Istanbul.jpg/1280px-Historical_peninsula_and_modern_skyline_of_Istanbul.jpg",
     "latitude": 41.0082,
     "longitude": 28.9784,
     "timeZoneIdentifier": "Europe/Istanbul"
@@ -154,7 +154,7 @@
   {
     "name": "Copenhagen",
     "countryCode": "DK",
-    "imageName": "copenhagen_denmark",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/2018_-_Christiansborg_from_the_Marble_Bridge.jpg/1280px-2018_-_Christiansborg_from_the_Marble_Bridge.jpg",
     "latitude": 55.6761,
     "longitude": 12.5683,
     "timeZoneIdentifier": "Europe/Copenhagen"
@@ -162,7 +162,7 @@
   {
     "name": "Dubai",
     "countryCode": "AE",
-    "imageName": "dubai_united_arab_emirates",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c7/Burj_Khalifa_2021.jpg/1280px-Burj_Khalifa_2021.jpg",
     "latitude": 25.2048,
     "longitude": 55.2708,
     "timeZoneIdentifier": "Asia/Dubai"
@@ -170,7 +170,7 @@
   {
     "name": "Tehran",
     "countryCode": "IR",
-    "imageName": "tehran_iran",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/North_of_Tehran_Skyline_view.jpg/1280px-North_of_Tehran_Skyline_view.jpg",
     "latitude": 35.6892,
     "longitude": 51.389,
     "timeZoneIdentifier": "Asia/Tehran"
@@ -178,7 +178,7 @@
   {
     "name": "Shanghai",
     "countryCode": "CN",
-    "imageName": "shanghai_china",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Huangpu_Park_20124-Shanghai_%2832208802494%29.jpg/1280px-Huangpu_Park_20124-Shanghai_%2832208802494%29.jpg",
     "latitude": 31.2304,
     "longitude": 121.4737,
     "timeZoneIdentifier": "Asia/Shanghai"
@@ -186,7 +186,7 @@
   {
     "name": "Sydney",
     "countryCode": "AU",
-    "imageName": "sydney_australia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg/1280px-Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg",
     "latitude": -33.8688,
     "longitude": 151.2093,
     "timeZoneIdentifier": "Australia/Sydney"
@@ -194,7 +194,7 @@
   {
     "name": "Melbourne",
     "countryCode": "AU",
-    "imageName": "melbourne_australia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Melburnian_Skyline.jpg/1280px-Melburnian_Skyline.jpg",
     "latitude": -37.8136,
     "longitude": 144.9631,
     "timeZoneIdentifier": "Australia/Melbourne"
@@ -202,7 +202,7 @@
   {
     "name": "Buenos Aires",
     "countryCode": "AR",
-    "imageName": "buenos_aires_argentina",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Avenida_9_de_Julio%2C_Buenos_Aires_%2840089810910%29.jpg/1280px-Avenida_9_de_Julio%2C_Buenos_Aires_%2840089810910%29.jpg",
     "latitude": -34.6037,
     "longitude": -58.3816,
     "timeZoneIdentifier": "America/Argentina/Buenos_Aires"
@@ -210,7 +210,7 @@
   {
     "name": "Santiago",
     "countryCode": "CL",
-    "imageName": "santiago_chile",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Palacio_de_La_Moneda_-_miguelreflex.jpg/1280px-Palacio_de_La_Moneda_-_miguelreflex.jpg",
     "latitude": -33.4489,
     "longitude": -70.6693,
     "timeZoneIdentifier": "America/Santiago"
@@ -218,7 +218,7 @@
   {
     "name": "Lima",
     "countryCode": "PE",
-    "imageName": "lima_peru",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sanisidroskyscrapers.jpg/1280px-Sanisidroskyscrapers.jpg",
     "latitude": -12.0464,
     "longitude": -77.0428,
     "timeZoneIdentifier": "America/Lima"
@@ -226,7 +226,7 @@
   {
     "name": "Bogota",
     "countryCode": "CO",
-    "imageName": "bogota_colombia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bogota%2C_Colombia_%2836668708290%29.jpg/1280px-Bogota%2C_Colombia_%2836668708290%29.jpg",
     "latitude": 4.711,
     "longitude": -74.0721,
     "timeZoneIdentifier": "America/Bogota"
@@ -234,7 +234,7 @@
   {
     "name": "Caracas",
     "countryCode": "VE",
-    "imageName": "caracas_venezuela",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Caracas_desde_el_%C3%A1vila.jpg/1280px-Caracas_desde_el_%C3%A1vila.jpg",
     "latitude": 10.4806,
     "longitude": -66.9036,
     "timeZoneIdentifier": "America/Caracas"
@@ -242,7 +242,7 @@
   {
     "name": "Port of Spain",
     "countryCode": "TT",
-    "imageName": "port_of_spain_trinidad_and_tobago",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/eb/POS_at_night_Skyline.jpg",
     "latitude": 10.652,
     "longitude": -61.5157,
     "timeZoneIdentifier": "America/Port_of_Spain"
@@ -250,7 +250,7 @@
   {
     "name": "Kingston",
     "countryCode": "JM",
-    "imageName": "kingston_jamaica",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/PortofKingston.jpg/330px-PortofKingston.jpg",
     "latitude": 17.9714,
     "longitude": -76.7936,
     "timeZoneIdentifier": "America/Jamaica"
@@ -258,7 +258,7 @@
   {
     "name": "Mexico City",
     "countryCode": "MX",
-    "imageName": "mexico_city_mexico",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Sobrevuelos_CDMX_HJ2A4913_%2825514321687%29_%28cropped%29.jpg/1280px-Sobrevuelos_CDMX_HJ2A4913_%2825514321687%29_%28cropped%29.jpg",
     "latitude": 19.4326,
     "longitude": -99.1332,
     "timeZoneIdentifier": "America/Mexico_City"
@@ -266,7 +266,7 @@
   {
     "name": "Los Angeles",
     "countryCode": "US",
-    "imageName": "los_angeles_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hollywood_Sign_%28Zuschnitt%29.jpg/1280px-Hollywood_Sign_%28Zuschnitt%29.jpg",
     "latitude": 34.0522,
     "longitude": -118.2437,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -274,7 +274,7 @@
   {
     "name": "San Francisco",
     "countryCode": "US",
-    "imageName": "san_francisco_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
     "latitude": 37.7749,
     "longitude": -122.4194,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -282,7 +282,7 @@
   {
     "name": "Vancouver",
     "countryCode": "CA",
-    "imageName": "vancouver_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
     "latitude": 49.2827,
     "longitude": -123.1207,
     "timeZoneIdentifier": "America/Vancouver"
@@ -290,7 +290,7 @@
   {
     "name": "Houston",
     "countryCode": "US",
-    "imageName": "houston_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Texas_medical_center.jpg/1280px-Texas_medical_center.jpg",
     "latitude": 29.7604,
     "longitude": -95.3698,
     "timeZoneIdentifier": "America/Chicago"
@@ -298,7 +298,7 @@
   {
     "name": "Dallas",
     "countryCode": "US",
-    "imageName": "dallas_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Dallas_Skyline_%2816780190385%29.jpg/960px-Dallas_Skyline_%2816780190385%29.jpg",
     "latitude": 32.7767,
     "longitude": -96.797,
     "timeZoneIdentifier": "America/Chicago"
@@ -306,7 +306,7 @@
   {
     "name": "Chicago",
     "countryCode": "US",
-    "imageName": "chicago_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Chicago_River_ferry_b.jpg/1280px-Chicago_River_ferry_b.jpg",
     "latitude": 41.8781,
     "longitude": -87.6298,
     "timeZoneIdentifier": "America/Chicago"
@@ -314,7 +314,7 @@
   {
     "name": "Washington",
     "countryCode": "US",
-    "imageName": "washington_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/12-07-13-washington-by-RalfR-08.jpg/1280px-12-07-13-washington-by-RalfR-08.jpg",
     "latitude": 38.9072,
     "longitude": -77.0369,
     "timeZoneIdentifier": "America/New_York"
@@ -322,7 +322,7 @@
   {
     "name": "New York",
     "countryCode": "US",
-    "imageName": "new_york_united_states_of_america",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg/1280px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg",
     "latitude": 40.7128,
     "longitude": -74.006,
     "timeZoneIdentifier": "America/New_York"
@@ -330,7 +330,7 @@
   {
     "name": "Toronto",
     "countryCode": "CA",
-    "imageName": "toronto_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Toronto_Skyline_viewed_from_Algonquin_Island_%2816-9_crop%29.jpg/1280px-Toronto_Skyline_viewed_from_Algonquin_Island_%2816-9_crop%29.jpg",
     "latitude": 43.6511,
     "longitude": -79.3832,
     "timeZoneIdentifier": "America/Toronto"
@@ -338,7 +338,7 @@
   {
     "name": "Montreal",
     "countryCode": "CA",
-    "imageName": "montreal_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Mtl_from_mont_royal_%28cropped%29.jpg/1280px-Mtl_from_mont_royal_%28cropped%29.jpg",
     "latitude": 45.5017,
     "longitude": -73.5673,
     "timeZoneIdentifier": "America/Toronto"
@@ -346,7 +346,7 @@
   {
     "name": "Madrid",
     "countryCode": "ES",
-    "imageName": "madrid_spain",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Madrid_-_Sky_Bar_360%C2%BA_%28Hotel_Riu_Plaza_Espa%C3%B1a%29%2C_vistas_19.jpg/1280px-Madrid_-_Sky_Bar_360%C2%BA_%28Hotel_Riu_Plaza_Espa%C3%B1a%29%2C_vistas_19.jpg",
     "latitude": 40.4168,
     "longitude": -3.7038,
     "timeZoneIdentifier": "Europe/Madrid"
@@ -354,7 +354,7 @@
   {
     "name": "Hong Kong",
     "countryCode": "HK",
-    "imageName": "hong_kong_china",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/1280px-Flag_of_Hong_Kong.svg.png",
     "latitude": 22.3193,
     "longitude": 114.1694,
     "timeZoneIdentifier": "Asia/Hong_Kong"
@@ -362,7 +362,7 @@
   {
     "name": "Seoul",
     "countryCode": "KR",
-    "imageName": "seoul_south_korea",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/%EC%A4%91%ED%99%94%EC%A0%84%EC%9D%98_%EB%82%AE.jpg/1280px-%EC%A4%91%ED%99%94%EC%A0%84%EC%9D%98_%EB%82%AE.jpg",
     "latitude": 37.5665,
     "longitude": 126.978,
     "timeZoneIdentifier": "Asia/Seoul"
@@ -370,7 +370,7 @@
   {
     "name": "Mumbai",
     "countryCode": "IN",
-    "imageName": "mumbai_india",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/%E0%A6%93%E0%A6%B0%E0%A6%B2%E0%A6%BF%E0%A6%B0_%E0%A6%97%E0%A6%97%E0%A6%A8%E0%A6%B0%E0%A7%88%E0%A6%96%E0%A6%BF%E0%A6%95_%E0%A6%A6%E0%A7%83%E0%A6%B6%E0%A7%8D%E0%A6%AF.jpg/1280px-%E0%A6%93%E0%A6%B0%E0%A6%B2%E0%A6%BF%E0%A6%B0_%E0%A6%97%E0%A6%97%E0%A6%A8%E0%A6%B0%E0%A7%88%E0%A6%96%E0%A6%BF%E0%A6%95_%E0%A6%A6%E0%A7%83%E0%A6%B6%E0%A7%8D%E0%A6%AF.jpg",
     "latitude": 19.076,
     "longitude": 72.8777,
     "timeZoneIdentifier": "Asia/Kolkata"
@@ -378,7 +378,7 @@
   {
     "name": "Havana",
     "countryCode": "CU",
-    "imageName": "havana_cuba",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/DJI_0197_crp_wiki.jpg/1280px-DJI_0197_crp_wiki.jpg",
     "latitude": 23.1136,
     "longitude": -82.3666,
     "timeZoneIdentifier": "America/Havana"
@@ -386,7 +386,7 @@
   {
     "name": "Santo Domingo",
     "countryCode": "DO",
-    "imageName": "santo_domingo_dominican_republic",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/SantoDomingoedit.JPG/1280px-SantoDomingoedit.JPG",
     "latitude": 18.4861,
     "longitude": -69.9312,
     "timeZoneIdentifier": "America/Santo_Domingo"
@@ -394,7 +394,7 @@
   {
     "name": "Port-Au-Prince",
     "countryCode": "HT",
-    "imageName": "port_au_prince_haiti",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Port-au-Prince_Haiti_Temple_-_Pierre.jpg/500px-Port-au-Prince_Haiti_Temple_-_Pierre.jpg",
     "latitude": 18.5944,
     "longitude": -72.3074,
     "timeZoneIdentifier": "America/Port-au-Prince"
@@ -402,7 +402,7 @@
   {
     "name": "San Juan",
     "countryCode": "PR",
-    "imageName": "san_juan_puerto_rico",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/2013_Old_San_Juan_01.JPG/1280px-2013_Old_San_Juan_01.JPG",
     "latitude": 18.4663,
     "longitude": -66.1057,
     "timeZoneIdentifier": "America/Puerto_Rico"
@@ -410,7 +410,7 @@
   {
     "name": "Nassau",
     "countryCode": "BS",
-    "imageName": "nassau_bahamas",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Nassau_-_panoramio_%284%29.jpg/1280px-Nassau_-_panoramio_%284%29.jpg",
     "latitude": 25.048,
     "longitude": -77.3554,
     "timeZoneIdentifier": "America/Nassau"
@@ -418,7 +418,7 @@
   {
     "name": "Guatemala City",
     "countryCode": "GT",
-    "imageName": "guatemala_city_guatemala",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Ciudad_de_Guatemala%2C_CA.jpg/1280px-Ciudad_de_Guatemala%2C_CA.jpg",
     "latitude": 14.6349,
     "longitude": -90.5069,
     "timeZoneIdentifier": "America/Guatemala"
@@ -426,7 +426,7 @@
   {
     "name": "Panama City",
     "countryCode": "PA",
-    "imageName": "panama_city_panama",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Panama_Papers_%28148830809%29.jpeg/1280px-Panama_Papers_%28148830809%29.jpeg",
     "latitude": 8.9833,
     "longitude": -79.5167,
     "timeZoneIdentifier": "America/Panama"
@@ -434,7 +434,7 @@
   {
     "name": "Belize City",
     "countryCode": "BZ",
-    "imageName": "belize_city_belize",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Belize_City_Montage.jpeg/1280px-Belize_City_Montage.jpeg",
     "latitude": 17.4995,
     "longitude": -88.1976,
     "timeZoneIdentifier": "America/Belize"
@@ -442,7 +442,7 @@
   {
     "name": "Seattle",
     "countryCode": "US",
-    "imageName": "seattle_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Seattle_Center_as_night_falls.jpg/1280px-Seattle_Center_as_night_falls.jpg",
     "latitude": 47.6062,
     "longitude": -122.3321,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -450,7 +450,7 @@
   {
     "name": "Victoria",
     "countryCode": "CA",
-    "imageName": "victoria_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Victoria_Montage_2020.jpg/1280px-Victoria_Montage_2020.jpg",
     "latitude": 48.4284,
     "longitude": -123.3656,
     "timeZoneIdentifier": "America/Vancouver"
@@ -458,7 +458,7 @@
   {
     "name": "Anchorage",
     "countryCode": "US",
-    "imageName": "anchorage_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Anchorage_Skyline_in_Winter_-_Hotel_Captain_Cook_-_Anchorage_Alaska.jpg/1280px-Anchorage_Skyline_in_Winter_-_Hotel_Captain_Cook_-_Anchorage_Alaska.jpg",
     "latitude": 61.2181,
     "longitude": -149.9003,
     "timeZoneIdentifier": "America/Anchorage"
@@ -466,7 +466,7 @@
   {
     "name": "Calgary",
     "countryCode": "CA",
-    "imageName": "calgary_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Downtown_Calgary_2020-4.jpg/960px-Downtown_Calgary_2020-4.jpg",
     "latitude": 51.0447,
     "longitude": -114.0719,
     "timeZoneIdentifier": "America/Edmonton"
@@ -474,7 +474,7 @@
   {
     "name": "Miami",
     "countryCode": "US",
-    "imageName": "miami_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Villa_Vizcaya_20110228.jpg/1280px-Villa_Vizcaya_20110228.jpg",
     "latitude": 25.7617,
     "longitude": -80.1918,
     "timeZoneIdentifier": "America/New_York"
@@ -482,7 +482,7 @@
   {
     "name": "Denver",
     "countryCode": "US",
-    "imageName": "denver_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Denver_Downtown_Aerial%2C_December_2025.jpg/1280px-Denver_Downtown_Aerial%2C_December_2025.jpg",
     "latitude": 39.7392,
     "longitude": -104.9903,
     "timeZoneIdentifier": "America/Denver"
@@ -490,7 +490,7 @@
   {
     "name": "Reykjavik",
     "countryCode": "IS",
-    "imageName": "reykjavik_iceland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Reykjav%C3%ADk%2C_view_from_Hallgr%C3%ADmskirkja_%282%29.jpg/1280px-Reykjav%C3%ADk%2C_view_from_Hallgr%C3%ADmskirkja_%282%29.jpg",
     "latitude": 64.1466,
     "longitude": -21.9426,
     "timeZoneIdentifier": "Atlantic/Reykjavik"
@@ -498,7 +498,7 @@
   {
     "name": "Nuuk",
     "countryCode": "GL",
-    "imageName": "nuuk_greenland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Nuuk%2C_Greenland_skyline_aerial_view.jpg/1280px-Nuuk%2C_Greenland_skyline_aerial_view.jpg",
     "latitude": 64.1835,
     "longitude": -51.7216,
     "timeZoneIdentifier": "America/Nuuk"
@@ -506,7 +506,7 @@
   {
     "name": "Dublin",
     "countryCode": "IE",
-    "imageName": "dublin_ireland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Dublin_-_aerial_-_2025-07-07_01.jpg/1280px-Dublin_-_aerial_-_2025-07-07_01.jpg",
     "latitude": 53.3498,
     "longitude": -6.2603,
     "timeZoneIdentifier": "Europe/Dublin"
@@ -514,7 +514,7 @@
   {
     "name": "Edinburgh",
     "countryCode": "GB",
-    "imageName": "edinburgh_scotland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Skyline_of_Edinburgh.jpg/1280px-Skyline_of_Edinburgh.jpg",
     "latitude": 55.9533,
     "longitude": -3.1883,
     "timeZoneIdentifier": "Europe/London"
@@ -522,7 +522,7 @@
   {
     "name": "Belfast",
     "countryCode": "GB",
-    "imageName": "belfast_northern_ireland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/StormontGeneral.jpg/1280px-StormontGeneral.jpg",
     "latitude": 54.5973,
     "longitude": -5.9301,
     "timeZoneIdentifier": "Europe/Belfast"
@@ -530,7 +530,7 @@
   {
     "name": "Glasgow",
     "countryCode": "GB",
-    "imageName": "glasgow_scotland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Glasgow_-_aerial_-_2025-04-17_10.jpg/1280px-Glasgow_-_aerial_-_2025-04-17_10.jpg",
     "latitude": 55.8642,
     "longitude": -4.2518,
     "timeZoneIdentifier": "Europe/London"
@@ -538,7 +538,7 @@
   {
     "name": "Cardiff",
     "countryCode": "GB",
-    "imageName": "cardiff_wales",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Cardiff_Bay_WMC.jpg",
     "latitude": 51.4816,
     "longitude": -3.1791,
     "timeZoneIdentifier": "Europe/London"
@@ -546,7 +546,7 @@
   {
     "name": "Oslo",
     "countryCode": "NO",
-    "imageName": "oslo_norway",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Nationaltheatret_evening.jpg/1280px-Nationaltheatret_evening.jpg",
     "latitude": 59.9139,
     "longitude": 10.7522,
     "timeZoneIdentifier": "Europe/Oslo"
@@ -554,7 +554,7 @@
   {
     "name": "Helsinki",
     "countryCode": "FI",
-    "imageName": "helsinki_finland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Suomenlinna_%28cropped%29.jpg/1280px-Suomenlinna_%28cropped%29.jpg",
     "latitude": 60.1699,
     "longitude": 24.9384,
     "timeZoneIdentifier": "Europe/Helsinki"
@@ -562,7 +562,7 @@
   {
     "name": "Saint Petersburg",
     "countryCode": "RU",
-    "imageName": "saint_petersburg_russia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Spb_06-2017_img20_StMichael_Castle_%28cropped%29.jpg/1280px-Spb_06-2017_img20_StMichael_Castle_%28cropped%29.jpg",
     "latitude": 59.9343,
     "longitude": 30.3351,
     "timeZoneIdentifier": "Europe/Moscow"
@@ -570,7 +570,7 @@
   {
     "name": "Brussels",
     "countryCode": "BE",
-    "imageName": "brussels_belgium",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Grand_Place_Bruselas_2.jpg/1280px-Grand_Place_Bruselas_2.jpg",
     "latitude": 50.8503,
     "longitude": 4.3517,
     "timeZoneIdentifier": "Europe/Brussels"
@@ -578,7 +578,7 @@
   {
     "name": "Geneva",
     "countryCode": "CH",
-    "imageName": "geneva_switzerland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Geneve_2005_001_Ork.ch.jpg/1280px-Geneve_2005_001_Ork.ch.jpg",
     "latitude": 46.2044,
     "longitude": 6.1432,
     "timeZoneIdentifier": "Europe/Zurich"
@@ -586,7 +586,7 @@
   {
     "name": "Luxembourg City",
     "countryCode": "LU",
-    "imageName": "luxembourg_city_luxembourg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Luxembourg_Grand_Ducal_Palace_01.jpg/1280px-Luxembourg_Grand_Ducal_Palace_01.jpg",
     "latitude": 49.6116,
     "longitude": 6.1319,
     "timeZoneIdentifier": "Europe/Luxembourg"
@@ -594,7 +594,7 @@
   {
     "name": "Budapest",
     "countryCode": "HU",
-    "imageName": "budapest_hungary",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/View_from_Gell%C3%A9rt_Hill_to_the_Danube%2C_Hungary_-_Budapest_%2828493220635%29.jpg/1280px-View_from_Gell%C3%A9rt_Hill_to_the_Danube%2C_Hungary_-_Budapest_%2828493220635%29.jpg",
     "latitude": 47.4979,
     "longitude": 19.0402,
     "timeZoneIdentifier": "Europe/Budapest"
@@ -602,7 +602,7 @@
   {
     "name": "Warsaw",
     "countryCode": "PL",
-    "imageName": "warsaw_poland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Aleja_Niepdleglosci_Warsaw_2022_aerial_%28cropped%29.jpg/1280px-Aleja_Niepdleglosci_Warsaw_2022_aerial_%28cropped%29.jpg",
     "latitude": 52.2297,
     "longitude": 21.0122,
     "timeZoneIdentifier": "Europe/Warsaw"
@@ -610,7 +610,7 @@
   {
     "name": "Kyiv",
     "countryCode": "UA",
-    "imageName": "kyiv_ukraine",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/P1130119-1.JPG/1280px-P1130119-1.JPG",
     "latitude": 50.4501,
     "longitude": 30.5234,
     "timeZoneIdentifier": "Europe/Kiev"
@@ -618,7 +618,7 @@
   {
     "name": "Taipei City",
     "countryCode": "TW",
-    "imageName": "taipei_city_taiwan",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Taipei_Skyline_2022.06.29.jpg/1280px-Taipei_Skyline_2022.06.29.jpg",
     "latitude": 25.033,
     "longitude": 121.5654,
     "timeZoneIdentifier": "Asia/Taipei"
@@ -626,7 +626,7 @@
   {
     "name": "Manila",
     "countryCode": "PH",
-    "imageName": "manila_philippines",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Cityscape_of_Manila%2C_2025_%2801%29.jpg/1280px-Cityscape_of_Manila%2C_2025_%2801%29.jpg",
     "latitude": 14.5995,
     "longitude": 120.9842,
     "timeZoneIdentifier": "Asia/Manila"
@@ -634,7 +634,7 @@
   {
     "name": "Jakarta",
     "countryCode": "ID",
-    "imageName": "jakarta_indonesia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Bundaran_Hotel_Indonesia_%282025%29.jpg/1280px-Bundaran_Hotel_Indonesia_%282025%29.jpg",
     "latitude": -6.2088,
     "longitude": 106.8456,
     "timeZoneIdentifier": "Asia/Jakarta"
@@ -642,7 +642,7 @@
   {
     "name": "Auckland",
     "countryCode": "NZ",
-    "imageName": "auckland_new_zealand",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Auckland_skyline_-_May_2024_%282%29.jpg/1280px-Auckland_skyline_-_May_2024_%282%29.jpg",
     "latitude": -36.8485,
     "longitude": 174.7633,
     "timeZoneIdentifier": "Pacific/Auckland"
@@ -650,7 +650,7 @@
   {
     "name": "Kuala Lumpur",
     "countryCode": "MY",
-    "imageName": "kuala_lumpur_malaysia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bukit_Bintang_junction_in_2024_2.jpg/1280px-Bukit_Bintang_junction_in_2024_2.jpg",
     "latitude": 3.139,
     "longitude": 101.6869,
     "timeZoneIdentifier": "Asia/Kuala_Lumpur"
@@ -658,7 +658,7 @@
   {
     "name": "Singapore",
     "countryCode": "SG",
-    "imageName": "singapore_singapore",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/1280px-Flag_of_Singapore.svg.png",
     "latitude": 1.3521,
     "longitude": 103.8198,
     "timeZoneIdentifier": "Asia/Singapore"
@@ -666,7 +666,7 @@
   {
     "name": "Dhaka",
     "countryCode": "BD",
-    "imageName": "dhaka_bangladesh",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Drone_view_from_Kamal_Atat%C3%BCrk_Avenue.jpg/1280px-Drone_view_from_Kamal_Atat%C3%BCrk_Avenue.jpg",
     "latitude": 23.8103,
     "longitude": 90.4125,
     "timeZoneIdentifier": "Asia/Dhaka"
@@ -674,7 +674,7 @@
   {
     "name": "Colombo",
     "countryCode": "LK",
-    "imageName": "colombo_sri_lanka",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Colombo_city_skyline_at_night.png/1280px-Colombo_city_skyline_at_night.png",
     "latitude": 6.9271,
     "longitude": 79.8612,
     "timeZoneIdentifier": "Asia/Colombo"
@@ -682,7 +682,7 @@
   {
     "name": "Islamabad",
     "countryCode": "PK",
-    "imageName": "islamabad_pakistan",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Faisal_Mosque%2C_Islamabad_III.jpg/1280px-Faisal_Mosque%2C_Islamabad_III.jpg",
     "latitude": 33.6844,
     "longitude": 73.0479,
     "timeZoneIdentifier": "Asia/Karachi"
@@ -690,7 +690,7 @@
   {
     "name": "Rabat",
     "countryCode": "MA",
-    "imageName": "rabat_morocco",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Morocco_-_Rabat_%2831387775324%29.jpg/1280px-Morocco_-_Rabat_%2831387775324%29.jpg",
     "latitude": 34.0209,
     "longitude": -6.8417,
     "timeZoneIdentifier": "Africa/Casablanca"
@@ -698,7 +698,7 @@
   {
     "name": "Accra",
     "countryCode": "GH",
-    "imageName": "accra_ghana",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Acca.jpg/960px-Acca.jpg",
     "latitude": 5.6037,
     "longitude": -0.187,
     "timeZoneIdentifier": "Africa/Accra"
@@ -706,7 +706,7 @@
   {
     "name": "Abuja",
     "countryCode": "NG",
-    "imageName": "abuja_nigeria",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/The_National_Assembly_Globe.jpg/1280px-The_National_Assembly_Globe.jpg",
     "latitude": 9.0765,
     "longitude": 7.3986,
     "timeZoneIdentifier": "Africa/Lagos"
@@ -714,7 +714,7 @@
   {
     "name": "Kinshasa",
     "countryCode": "CD",
-    "imageName": "kinshasa_democratic_republic_of_the_congo",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/La_Gombe%2C_Kinshasa%2C_RDC_%28cropped%29.jpg/1280px-La_Gombe%2C_Kinshasa%2C_RDC_%28cropped%29.jpg",
     "latitude": -4.4419,
     "longitude": 15.2663,
     "timeZoneIdentifier": "Africa/Kinshasa"
@@ -722,7 +722,7 @@
   {
     "name": "Addis Ababa",
     "countryCode": "ET",
-    "imageName": "addis_ababa_ethiopia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Addis_in_night.jpg/1280px-Addis_in_night.jpg",
     "latitude": 9.0249,
     "longitude": 38.7469,
     "timeZoneIdentifier": "Africa/Addis_Ababa"
@@ -730,7 +730,7 @@
   {
     "name": "Dodoma",
     "countryCode": "TZ",
-    "imageName": "dodoma_tanzania",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Street_in_Viwandani_ward%2C_Dodoma_City.jpg/1280px-Street_in_Viwandani_ward%2C_Dodoma_City.jpg",
     "latitude": -6.163,
     "longitude": 35.7516,
     "timeZoneIdentifier": "Africa/Dodoma"
@@ -738,7 +738,7 @@
   {
     "name": "Pretoria",
     "countryCode": "ZA",
-    "imageName": "pretoria_south_africa",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Uniegebou.jpg/500px-Uniegebou.jpg",
     "latitude": -25.7479,
     "longitude": 28.2293,
     "timeZoneIdentifier": "Africa/Johannesburg"
@@ -746,7 +746,7 @@
   {
     "name": "Khartoum",
     "countryCode": "SD",
-    "imageName": "khartoum_sudan",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/%C2%A9Nile-Project_-Sari_Omer_0025.jpg/1280px-%C2%A9Nile-Project_-Sari_Omer_0025.jpg",
     "latitude": 15.5007,
     "longitude": 32.5599,
     "timeZoneIdentifier": "Africa/Khartoum"
@@ -754,7 +754,7 @@
   {
     "name": "Kampala",
     "countryCode": "UG",
-    "imageName": "kampala_uganda",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Urban_Rising%2C_KAMPALA%2C_Uganda.jpg/1280px-Urban_Rising%2C_KAMPALA%2C_Uganda.jpg",
     "latitude": 0.3476,
     "longitude": 32.5825,
     "timeZoneIdentifier": "Africa/Kampala"
@@ -762,7 +762,7 @@
   {
     "name": "Algiers",
     "countryCode": "DZ",
-    "imageName": "algiers_algeria",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Botanical_Garden_Hamma.jpg/1280px-Botanical_Garden_Hamma.jpg",
     "latitude": 36.7754,
     "longitude": 3.0588,
     "timeZoneIdentifier": "Africa/Algiers"
@@ -770,7 +770,7 @@
   {
     "name": "Maputo",
     "countryCode": "MZ",
-    "imageName": "maputo_mozambique",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Maputo_seen_from_southeast_-_October_2006_%28cropped%29.jpg/1280px-Maputo_seen_from_southeast_-_October_2006_%28cropped%29.jpg",
     "latitude": -25.9692,
     "longitude": 32.5732,
     "timeZoneIdentifier": "Africa/Maputo"
@@ -778,7 +778,7 @@
   {
     "name": "Luanda",
     "countryCode": "AO",
-    "imageName": "luanda_angola",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Luanda_2025_focused_%28cropped%29.jpg/1280px-Luanda_2025_focused_%28cropped%29.jpg",
     "latitude": -8.8399,
     "longitude": 13.2894,
     "timeZoneIdentifier": "Africa/Luanda"
@@ -786,7 +786,7 @@
   {
     "name": "Yamoussoukro",
     "countryCode": "CI",
-    "imageName": "yamoussoukro_côte_d’ivoire",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Yamoussoukro_panorama.jpg/1280px-Yamoussoukro_panorama.jpg",
     "latitude": 6.8206,
     "longitude": -5.2768,
     "timeZoneIdentifier": "Africa/Abidjan"
@@ -794,7 +794,7 @@
   {
     "name": "Lusaka",
     "countryCode": "ZM",
-    "imageName": "lusaka_zambia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Downtown_Lusaka.JPG/1280px-Downtown_Lusaka.JPG",
     "latitude": -15.3875,
     "longitude": 28.3228,
     "timeZoneIdentifier": "Africa/Lusaka"
@@ -802,7 +802,7 @@
   {
     "name": "Johannesburg",
     "countryCode": "ZA",
-    "imageName": "johannesburg_south_africa",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Johannesburg_skyline_2017.jpg/1280px-Johannesburg_skyline_2017.jpg",
     "latitude": -26.2041,
     "longitude": 28.0473,
     "timeZoneIdentifier": "Africa/Johannesburg"
@@ -810,7 +810,7 @@
   {
     "name": "Gaborone",
     "countryCode": "BW",
-    "imageName": "gaborone_botswana",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/View_from_I-Tower_SE_20200712.jpg/1280px-View_from_I-Tower_SE_20200712.jpg",
     "latitude": -24.6282,
     "longitude": 25.9231,
     "timeZoneIdentifier": "Africa/Gaborone"
@@ -818,7 +818,7 @@
   {
     "name": "Ho Chi Minh City",
     "countryCode": "VN",
-    "imageName": "ho_chi_minh_city_vietnam",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Ho_Chi_Minh_City_panorama_2019_%28cropped2%29.jpg/1280px-Ho_Chi_Minh_City_panorama_2019_%28cropped2%29.jpg",
     "latitude": 10.7769,
     "longitude": 106.7009,
     "timeZoneIdentifier": "Asia/Ho_Chi_Minh"
@@ -826,7 +826,7 @@
   {
     "name": "San Diego",
     "countryCode": "US",
-    "imageName": "san_diego_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/La_Jolla_Shores_view_%28cropped%29.jpg/1280px-La_Jolla_Shores_view_%28cropped%29.jpg",
     "latitude": 32.7157,
     "longitude": -117.1611,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -834,7 +834,7 @@
   {
     "name": "Las Vegas",
     "countryCode": "US",
-    "imageName": "las_vegas_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Las_Vegas_from_above_%2840064746644%29.jpg/1280px-Las_Vegas_from_above_%2840064746644%29.jpg",
     "latitude": 36.1699,
     "longitude": -115.1398,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -842,7 +842,7 @@
   {
     "name": "Astana",
     "countryCode": "KZ",
-    "imageName": "astana_kazakhstan",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Astana_DSC04362_%287711355642%29.jpg/1280px-Astana_DSC04362_%287711355642%29.jpg",
     "latitude": 51.1694,
     "longitude": 71.4491,
     "timeZoneIdentifier": "Asia/Almaty"
@@ -850,7 +850,7 @@
   {
     "name": "Lisbon",
     "countryCode": "PT",
-    "imageName": "lisbon_portugal",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Lisboa_-_Portugal_%2852597836992%29.jpg/1280px-Lisboa_-_Portugal_%2852597836992%29.jpg",
     "latitude": 38.7223,
     "longitude": -9.1393,
     "timeZoneIdentifier": "Europe/Lisbon"
@@ -858,7 +858,7 @@
   {
     "name": "Belgrade",
     "countryCode": "RS",
-    "imageName": "belgrade_serbia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Panorama_Belgrad.jpg/1280px-Panorama_Belgrad.jpg",
     "latitude": 44.7866,
     "longitude": 20.4489,
     "timeZoneIdentifier": "Europe/Belgrade"
@@ -866,7 +866,7 @@
   {
     "name": "Zagreb",
     "countryCode": "HR",
-    "imageName": "zagreb_croatia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Zagreb_%2829255640143%29.jpg/1280px-Zagreb_%2829255640143%29.jpg",
     "latitude": 45.815,
     "longitude": 15.9819,
     "timeZoneIdentifier": "Europe/Zagreb"
@@ -874,7 +874,7 @@
   {
     "name": "Vienna",
     "countryCode": "AT",
-    "imageName": "vienna_austria",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Schoenbrunn_philharmoniker_2012.jpg/1280px-Schoenbrunn_philharmoniker_2012.jpg",
     "latitude": 48.2082,
     "longitude": 16.3738,
     "timeZoneIdentifier": "Europe/Vienna"
@@ -882,7 +882,7 @@
   {
     "name": "Dakar",
     "countryCode": "SN",
-    "imageName": "dakar_senegal",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Dakar-place-de-l%27Ind%C3%A9pendance.jpg/1280px-Dakar-place-de-l%27Ind%C3%A9pendance.jpg",
     "latitude": 14.7167,
     "longitude": -17.4677,
     "timeZoneIdentifier": "Africa/Dakar"
@@ -890,7 +890,7 @@
   {
     "name": "Banjul",
     "countryCode": "GM",
-    "imageName": "banjul_the_gambia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Gambia03Banjul005_%285400110617%29.jpg/1280px-Gambia03Banjul005_%285400110617%29.jpg",
     "latitude": 13.4549,
     "longitude": -16.579,
     "timeZoneIdentifier": "Africa/Banjul"
@@ -898,7 +898,7 @@
   {
     "name": "Nouakchott",
     "countryCode": "MR",
-    "imageName": "nouakchott_mauritania",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Nouakchott.jpg",
     "latitude": 18.0735,
     "longitude": -15.9582,
     "timeZoneIdentifier": "Africa/Nouakchott"
@@ -906,7 +906,7 @@
   {
     "name": "Freetown",
     "countryCode": "SL",
-    "imageName": "freetown_sierra_leone",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Freetown-aerialview.jpg/1280px-Freetown-aerialview.jpg",
     "latitude": 8.4844,
     "longitude": -13.2299,
     "timeZoneIdentifier": "Africa/Freetown"
@@ -914,7 +914,7 @@
   {
     "name": "Port Moresby",
     "countryCode": "PG",
-    "imageName": "port_moresby_papua_new_guinea",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Port_Moresby_Town2_Mschlauch.jpg/500px-Port_Moresby_Town2_Mschlauch.jpg",
     "latitude": -9.4438,
     "longitude": 147.1803,
     "timeZoneIdentifier": "Pacific/Port_Moresby"
@@ -922,7 +922,7 @@
   {
     "name": "Ulaanbaatar",
     "countryCode": "MN",
-    "imageName": "ulaanbaatar_mongolia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/UB_downtown.jpg/1280px-UB_downtown.jpg",
     "latitude": 47.9185,
     "longitude": 106.917,
     "timeZoneIdentifier": "Asia/Ulaanbaatar"
@@ -930,7 +930,7 @@
   {
     "name": "Bucharest",
     "countryCode": "RO",
-    "imageName": "bucharest_romania",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bucharest_University_Square_%28cropped%29.jpg/1280px-Bucharest_University_Square_%28cropped%29.jpg",
     "latitude": 44.4268,
     "longitude": 26.1025,
     "timeZoneIdentifier": "Europe/Bucharest"
@@ -938,7 +938,7 @@
   {
     "name": "Sofia",
     "countryCode": "BG",
-    "imageName": "sofia_bulgaria",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Russian_church_%2837591925970%29.jpg/1280px-Russian_church_%2837591925970%29.jpg",
     "latitude": 42.6977,
     "longitude": 23.3219,
     "timeZoneIdentifier": "Europe/Sofia"
@@ -946,7 +946,7 @@
   {
     "name": "Salt Lake City",
     "countryCode": "US",
-    "imageName": "salt_lake_city_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Salt_Lake_Union_Pacific_Railroad_Station%2C_South_Temple_at_400_West%2C_Central_City_West%2C_Salt_Lake_City%2C_UT%2C_USA.jpg/1280px-Salt_Lake_Union_Pacific_Railroad_Station%2C_South_Temple_at_400_West%2C_Central_City_West%2C_Salt_Lake_City%2C_UT%2C_USA.jpg",
     "latitude": 40.7608,
     "longitude": -111.891,
     "timeZoneIdentifier": "America/Denver"
@@ -954,7 +954,7 @@
   {
     "name": "Phoenix",
     "countryCode": "US",
-    "imageName": "phoenix_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Downtown_Phoenix_Aerial_Looking_Northeast.jpg/1280px-Downtown_Phoenix_Aerial_Looking_Northeast.jpg",
     "latitude": 33.4484,
     "longitude": -112.074,
     "timeZoneIdentifier": "America/Phoenix"
@@ -962,7 +962,7 @@
   {
     "name": "Portland",
     "countryCode": "US",
-    "imageName": "portland_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Portland_Oregon_Aerial%2C_June_2025.jpg/1280px-Portland_Oregon_Aerial%2C_June_2025.jpg",
     "latitude": 45.5051,
     "longitude": -122.675,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -970,7 +970,7 @@
   {
     "name": "Charlotte",
     "countryCode": "US",
-    "imageName": "charlotte_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Uptown_Charlotte_2018_taking_by_DJI_Phantom_4_pro.jpg/1280px-Uptown_Charlotte_2018_taking_by_DJI_Phantom_4_pro.jpg",
     "latitude": 35.2271,
     "longitude": -80.8431,
     "timeZoneIdentifier": "America/New_York"
@@ -978,7 +978,7 @@
   {
     "name": "Oklahoma City",
     "countryCode": "US",
-    "imageName": "oklahoma_city_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Downtown_Oklahoma_City_skyline_at_twilight.jpg/1280px-Downtown_Oklahoma_City_skyline_at_twilight.jpg",
     "latitude": 35.4676,
     "longitude": -97.5164,
     "timeZoneIdentifier": "America/Chicago"
@@ -986,7 +986,7 @@
   {
     "name": "Kansas City",
     "countryCode": "US",
-    "imageName": "kansas_city_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Kansas_City_-_Downtown_-_panoramio_%2815%29.jpg/1280px-Kansas_City_-_Downtown_-_panoramio_%2815%29.jpg",
     "latitude": 39.0997,
     "longitude": -94.5786,
     "timeZoneIdentifier": "America/Chicago"
@@ -994,7 +994,7 @@
   {
     "name": "Minneapolis",
     "countryCode": "US",
-    "imageName": "minneapolis_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Minneapolis_Skyline_looking_south.jpg/1280px-Minneapolis_Skyline_looking_south.jpg",
     "latitude": 44.9778,
     "longitude": -93.265,
     "timeZoneIdentifier": "America/Chicago"
@@ -1002,7 +1002,7 @@
   {
     "name": "Detroit",
     "countryCode": "US",
-    "imageName": "detroit_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Detroit_Skyline_from_Windsor_2025-09-01.jpg/1280px-Detroit_Skyline_from_Windsor_2025-09-01.jpg",
     "latitude": 42.3314,
     "longitude": -83.0458,
     "timeZoneIdentifier": "America/Detroit"
@@ -1010,7 +1010,7 @@
   {
     "name": "Winnipeg",
     "countryCode": "CA",
-    "imageName": "winnipeg_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Winnipeg%2C_Manitoba_skyline_%28cropped%29.jpg/1280px-Winnipeg%2C_Manitoba_skyline_%28cropped%29.jpg",
     "latitude": 49.8951,
     "longitude": -97.1384,
     "timeZoneIdentifier": "America/Winnipeg"
@@ -1018,7 +1018,7 @@
   {
     "name": "Edmonton",
     "countryCode": "CA",
-    "imageName": "edmonton_canada",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Alberta_Legislature_Building_at_night.jpg/1280px-Alberta_Legislature_Building_at_night.jpg",
     "latitude": 53.5461,
     "longitude": -113.4938,
     "timeZoneIdentifier": "America/Edmonton"
@@ -1026,7 +1026,7 @@
   {
     "name": "Boston",
     "countryCode": "US",
-    "imageName": "boston_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/ISH_WC_Boston4.jpg/1280px-ISH_WC_Boston4.jpg",
     "latitude": 42.3601,
     "longitude": -71.0589,
     "timeZoneIdentifier": "America/New_York"
@@ -1034,7 +1034,7 @@
   {
     "name": "Hamilton",
     "countryCode": "BM",
-    "imageName": "hamilton_bermuda",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/City_of_Hamilton%2C_from_North_Warwick_Parish%2C_Bermuda.jpg/1280px-City_of_Hamilton%2C_from_North_Warwick_Parish%2C_Bermuda.jpg",
     "latitude": 32.2948,
     "longitude": -64.7814,
     "timeZoneIdentifier": "Atlantic/Bermuda"
@@ -1042,7 +1042,7 @@
   {
     "name": "Atlanta",
     "countryCode": "US",
-    "imageName": "atlanta_united_states",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/A2ATL20250614-0721_%28cropped%29.jpg/1280px-A2ATL20250614-0721_%28cropped%29.jpg",
     "latitude": 33.749,
     "longitude": -84.388,
     "timeZoneIdentifier": "America/New_York"
