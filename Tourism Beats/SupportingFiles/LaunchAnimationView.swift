@@ -21,31 +21,15 @@ struct LaunchAnimationView: View {
     var body: some View {
         ZStack {
             // Gradient background matching the app's warm palette.
-            LinearGradient(
-                colors: [
-                    Color(red: 0.95, green: 0.3, blue: 0.2),
-                    Color(red: 0.85, green: 0.2, blue: 0.5),
-                    Color(red: 0.55, green: 0.2, blue: 0.8)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            AppGradients.launch
+                .ignoresSafeArea()
 
             VStack(spacing: 20) {
                 ZStack {
                     // Animated progress ring.
                     Circle()
                         .stroke(
-                            AngularGradient(
-                                colors: [
-                                    .white.opacity(0.9),
-                                    .orange,
-                                    .pink,
-                                    .white.opacity(0.9)
-                                ],
-                                center: .center
-                            ),
+                            AppGradients.launchRing,
                             style: StrokeStyle(lineWidth: 4, lineCap: .round)
                         )
                         .frame(width: 80, height: 80)

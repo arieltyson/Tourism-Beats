@@ -39,7 +39,8 @@ enum QuickAction: String, CaseIterable, Sendable {
     }
 
     /// Registers all quick actions on the shared application.
-    static func registerAll(in application: UIApplication = .shared) {
+    @MainActor
+    static func registerAll(in application: UIApplication) {
         application.shortcutItems = allCases.map(\.shortcutItem)
     }
 }

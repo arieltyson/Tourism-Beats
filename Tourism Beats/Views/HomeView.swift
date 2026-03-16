@@ -14,17 +14,8 @@ struct HomeView: View {
                 .ignoresSafeArea()
 
             // Readability vignette
-            RadialGradient(
-                colors: [
-                    Color.black.opacity(0.08),
-                    Color.black.opacity(0.32),
-                    Color.black.opacity(0.55)
-                ],
-                center: .center,
-                startRadius: 60,
-                endRadius: 520
-            )
-            .ignoresSafeArea()
+            AppGradients.vignette
+                .ignoresSafeArea()
 
             GeometryReader { proxy in
                 // Ensure we never pass a negative available width downstream
@@ -191,12 +182,12 @@ private struct GlassCTA: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(
-                            .white.opacity(self.scheme == .dark ? 0.12 : 0.18),
+                            AppColors.glassBorder(for: self.scheme),
                             lineWidth: 1
                         )
                 )
                 .shadow(
-                    color: .black.opacity(self.scheme == .dark ? 0.35 : 0.18),
+                    color: AppColors.glassShadow(for: self.scheme),
                     radius: 18,
                     y: 6
                 )

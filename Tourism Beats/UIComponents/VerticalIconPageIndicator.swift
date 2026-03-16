@@ -44,13 +44,13 @@ struct VerticalIconPageIndicator: View {
                 .overlay(
                     Capsule(style: .continuous)
                         .strokeBorder(
-                            .white.opacity(self.scheme == .dark ? 0.12 : 0.18),
+                            AppColors.glassBorder(for: self.scheme),
                             lineWidth: 1
                         )
                 )
         )
         .shadow(
-            color: .black.opacity(self.scheme == .dark ? 0.25 : 0.12),
+            color: AppColors.glassShadow(for: self.scheme),
             radius: 8,
             y: 4
         )

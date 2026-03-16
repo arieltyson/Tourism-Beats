@@ -8,8 +8,8 @@ struct NeumorphicButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         let isPressed = configuration.isPressed
         let bg = Color(.systemBackground)
-        let lightShadow = Color.white.opacity(0.7)
-        let darkShadow = Color.black.opacity(0.2)
+        let lightShadow = AppColors.neumorphicLight
+        let darkShadow = AppColors.neumorphicDark
 
         return configuration.label
             .padding() // inner content padding

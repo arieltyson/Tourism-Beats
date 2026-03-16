@@ -97,16 +97,16 @@ private struct HeroCard: View {
             // Decorative glyph
             Image(systemName: "shield.checkered")
                 .font(.system(size: 24, weight: .semibold))
-                .foregroundStyle(.blue)
+                .foregroundStyle(AppColors.info)
                 .symbolRenderingMode(.hierarchical)
                 .padding(12)
                 .background(
-                    .blue.opacity(0.1),
+                    AppColors.info.opacity(0.1),
                     in: RoundedRectangle(cornerRadius: 12, style: .continuous)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .strokeBorder(.blue.opacity(0.2), lineWidth: 1)
+                        .strokeBorder(AppColors.info.opacity(0.2), lineWidth: 1)
                 )
         }
         .padding(12)
@@ -116,12 +116,12 @@ private struct HeroCard: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(
-                            .white.opacity(self.scheme == .dark ? 0.10 : 0.16),
+                            AppColors.glassBorder(for: self.scheme),
                             lineWidth: 1
                         )
                 )
                 .shadow(
-                    color: .black.opacity(self.scheme == .dark ? 0.30 : 0.08),
+                    color: AppColors.glassShadow(for: self.scheme),
                     radius: 14,
                     y: 8
                 )
@@ -153,12 +153,12 @@ private struct AdvisoryCard<Content: View>: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(
-                            .white.opacity(self.scheme == .dark ? 0.10 : 0.16),
+                            AppColors.glassBorder(for: self.scheme),
                             lineWidth: 1
                         )
                 )
                 .shadow(
-                    color: .black.opacity(self.scheme == .dark ? 0.30 : 0.08),
+                    color: AppColors.glassShadow(for: self.scheme),
                     radius: 14,
                     y: 8
                 )
