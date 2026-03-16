@@ -7,9 +7,11 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
     case french
     case spanish
     case mediterranean
+    case middleEastern
     case greek
     case turkish
     case lebanese
+    case persian
     case mexican
     case peruvian
     case brazilian
@@ -47,12 +49,16 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
             "Spanish"
         case .mediterranean:
             "Mediterranean"
+        case .middleEastern:
+            "Middle Eastern"
         case .greek:
             "Greek"
         case .turkish:
             "Turkish"
         case .lebanese:
             "Lebanese"
+        case .persian:
+            "Persian"
         case .mexican:
             "Mexican"
         case .peruvian:

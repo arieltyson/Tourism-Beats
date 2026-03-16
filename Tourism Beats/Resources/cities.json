@@ -288,6 +288,38 @@
     "timeZoneIdentifier": "America/Vancouver"
   },
   {
+    "name": "Burnaby",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "latitude": 49.2488,
+    "longitude": -122.9805,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Richmond",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "latitude": 49.1666,
+    "longitude": -123.1336,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Surrey",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "latitude": 49.1913,
+    "longitude": -122.849,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Coquitlam",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "latitude": 49.2838,
+    "longitude": -122.7932,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
     "name": "Houston",
     "countryCode": "US",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Texas_medical_center.jpg/1280px-Texas_medical_center.jpg",
