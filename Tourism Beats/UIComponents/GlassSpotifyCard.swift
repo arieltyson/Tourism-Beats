@@ -127,12 +127,16 @@ private struct GlassSpotifyCardAction: View {
                 .tint(.white)
                 .frame(width: 32, height: 32)
         } else {
-            Button("Open in Spotify", systemImage: "arrow.up.right", action: self.onOpen)
+            Button(action: self.onOpen) {
+                Label {
+                    Text("Open in Spotify")
+                } icon: {
+                    ProviderLogo.spotify.actionIcon
+                }
                 .labelStyle(.iconOnly)
-                .font(.title3)
-                .foregroundStyle(.white)
-                .buttonStyle(.plain)
-                .accessibilityHint("Opens this song in Spotify")
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Opens this song in Spotify")
         }
     }
 }

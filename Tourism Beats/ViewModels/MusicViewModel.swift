@@ -219,24 +219,12 @@ final class MusicViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Skip Controls
+    // MARK: - Playback Controls
 
-    /// Skips backward: restarts the current song.
+    /// Restarts the current song from the beginning.
     func skipBackward() {
         guard self.playableSong != nil else { return }
         ApplicationMusicPlayer.shared.restartCurrentEntry()
-    }
-
-    /// Skips forward to the next entry in the queue.
-    /// No-op when the queue has only one song.
-    func skipForward() async {
-        guard self.playableSong != nil else { return }
-        let player = ApplicationMusicPlayer.shared
-        do {
-            try await player.skipToNextEntry()
-        } catch {
-            // Gracefully ignore — no next entry in a single-song queue.
-        }
     }
 
     // MARK: - Spotify

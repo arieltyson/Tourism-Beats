@@ -9,15 +9,14 @@ import SwiftUI
 // MARK: - GlassMusicCard
 
 /// A glass-styled card for Apple Music showing artwork, song metadata,
-/// and inline playback controls (skip back, play/pause, skip forward).
+/// and inline playback controls (restart and play/pause).
 struct GlassMusicCard: View {
     let artworkURL: URL?
     let songTitle: String
     let artistName: String
     let isPlaying: Bool
     let onPlayPause: () -> Void
-    let onSkipForward: () -> Void
-    let onSkipBackward: () -> Void
+    let onRestart: () -> Void
 
     var body: some View {
         GlassCard(cornerRadius: 20) {
@@ -33,9 +32,8 @@ struct GlassMusicCard: View {
 
                 GlassMusicCardControls(
                     isPlaying: self.isPlaying,
-                    onSkipBackward: self.onSkipBackward,
-                    onPlayPause: self.onPlayPause,
-                    onSkipForward: self.onSkipForward
+                    onRestart: self.onRestart,
+                    onPlayPause: self.onPlayPause
                 )
             }
         }
@@ -122,13 +120,12 @@ private struct GlassMusicCardInfo: View {
 
 private struct GlassMusicCardControls: View {
     let isPlaying: Bool
-    let onSkipBackward: () -> Void
+    let onRestart: () -> Void
     let onPlayPause: () -> Void
-    let onSkipForward: () -> Void
 
     var body: some View {
-        HStack(spacing: SpacingTokens.small) {
-            Button("Skip Back", systemImage: "backward.fill", action: self.onSkipBackward)
+        HStack(spacing: SpacingTokens.medium) {
+            Button("Restart", systemImage: "backward.end.fill", action: self.onRestart)
                 .labelStyle(.iconOnly)
                 .font(.callout)
                 .accessibilityHint("Restarts the current song")
@@ -143,11 +140,6 @@ private struct GlassMusicCardControls: View {
             .accessibilityHint(
                 self.isPlaying ? "Pauses playback" : "Plays the song"
             )
-
-            Button("Skip Forward", systemImage: "forward.fill", action: self.onSkipForward)
-                .labelStyle(.iconOnly)
-                .font(.callout)
-                .accessibilityHint("Skips to next song")
         }
         .foregroundStyle(.white)
         .buttonStyle(.plain)
@@ -172,8 +164,7 @@ private struct GlassMusicCardControls: View {
                 artistName: "Queen",
                 isPlaying: false,
                 onPlayPause: {},
-                onSkipForward: {},
-                onSkipBackward: {}
+                onRestart: {}
             )
 
             GlassMusicCard(
@@ -182,8 +173,7 @@ private struct GlassMusicCardControls: View {
                 artistName: "Artist With A Long Name",
                 isPlaying: true,
                 onPlayPause: {},
-                onSkipForward: {},
-                onSkipBackward: {}
+                onRestart: {}
             )
         }
         .padding()

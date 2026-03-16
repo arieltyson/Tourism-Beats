@@ -40,10 +40,7 @@ struct MusicView: View {
                         onPlayPause: {
                             Task { await self.viewModel.handleAppleMusicAction() }
                         },
-                        onSkipForward: {
-                            Task { await self.viewModel.skipForward() }
-                        },
-                        onSkipBackward: {
+                        onRestart: {
                             self.viewModel.skipBackward()
                         }
                     )
