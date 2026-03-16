@@ -36,7 +36,7 @@ struct MapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        mapView.mapType = .standard
+        mapView.preferredConfiguration = MKStandardMapConfiguration(emphasisStyle: .muted)
         mapView.overrideUserInterfaceStyle = .dark
         mapView.setRegion(self.region, animated: false)
 
