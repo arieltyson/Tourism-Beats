@@ -3,81 +3,57 @@ import SwiftUI
 // MARK: - HomeView
 
 struct HomeView: View {
+    let onExplore: () -> Void
+    let onCitySelected: (CityModel) -> Void
+
     @Environment(\.dynamicTypeSize) private var typeSize
 
-    // Measured sizes
     @State private var subtitleSize: CGSize = .zero
+    @State private var featuredCities: [CityModel] = []
+    @State private var haptic = HapticTrigger()
 
     var body: some View {
         ZStack {
             EarthView()
                 .ignoresSafeArea()
 
-            // Readability vignette
             AppGradients.vignette
                 .ignoresSafeArea()
 
             GeometryReader { proxy in
-                // Ensure we never pass a negative available width downstream
                 let safeWidth = max(0, proxy.size.width - self.horizontalPadding * 2)
 
                 VStack(spacing: 16) {
                     Spacer(minLength: 0)
 
-                    // Title & subtitle
-                    VStack(spacing: 10) {
-                        Text("Tourism Beats")
-                            .font(
-                                .system(.largeTitle, design: .rounded).weight(
-                                    .black
-                                )
-                            )
-                            .kerning(0.5)
-                            .foregroundStyle(.white)
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.75)
-                            .shadow(
-                                color: .black.opacity(0.35),
-                                radius: 8,
-                                y: 2
-                            )
-                            .accessibilityAddTraits(.isHeader)
+                    HeroTitle(subtitleSize: self.$subtitleSize)
+                        .padding(.horizontal, self.horizontalPadding)
 
-                        Text("an immersive tourist experience")
-                            .font(.system(.title3, design: .rounded).italic())
-                            .foregroundStyle(.white.opacity(0.92))
-                            .multilineTextAlignment(.center)
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.85)
-                            .shadow(
-                                color: .black.opacity(0.25),
-                                radius: 6,
-                                y: 1
-                            )
-                            .measureSize { size in
-                                // Update only on meaningful change to avoid thrash
-                                if abs(size.width - self.subtitleSize.width) > 0.5
-                                    || abs(size.height - self.subtitleSize.height)
-                                    > 0.5
-                                {
-                                    self.subtitleSize = size
-                                }
-                            }
-                    }
-                    .padding(.horizontal, self.horizontalPadding)
-
-                    // CTA — width matches subtitle when possible, otherwise expands to fit text
-                    GlassCTA(
-                        title: "Explore destinations",
-                        subtitle: "Tap the Search icon below",
+                    // Interactive CTA
+                    ExploreCTA(
                         matchToWidth: self.subtitleSize.width,
-                        maxAvailableWidth: safeWidth
+                        maxAvailableWidth: safeWidth,
+                        action: {
+                            self.haptic.fire(.searchOpen)
+                            self.onExplore()
+                        }
                     )
                     .padding(.horizontal, self.horizontalPadding)
-                    .accessibilityHint(
-                        "Tap the Search tab below to begin exploring."
-                    )
+
+                    // Featured destination chips
+                    if self.typeSize < .accessibility1,
+                       !self.featuredCities.isEmpty
+                    {
+                        FeaturedCitiesRow(
+                            cities: self.featuredCities,
+                            onSelect: { city in
+                                self.haptic.fire(.citySelect)
+                                self.onCitySelected(city)
+                            }
+                        )
+                        .padding(.horizontal, self.horizontalPadding)
+                        .transition(.opacity)
+                    }
 
                     Spacer(minLength: 0)
                 }
@@ -85,7 +61,14 @@ struct HomeView: View {
                 .safeAreaPadding(.bottom, 16)
             }
         }
+        .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .navigationBarBackButtonHidden(true)
+        .task {
+            guard self.featuredCities.isEmpty else { return }
+            if let cities = try? DataService().loadCities() {
+                self.featuredCities = Array(cities.shuffled().prefix(3))
+            }
+        }
     }
 
     private var horizontalPadding: CGFloat {
@@ -96,18 +79,51 @@ struct HomeView: View {
     }
 }
 
-// MARK: - GlassCTA
+// MARK: - HeroTitle
 
-private struct GlassCTA: View {
-    let title: String
-    let subtitle: String
-    let matchToWidth: CGFloat // measured width of the subtitle above
-    let maxAvailableWidth: CGFloat // container width minus outer padding
+private struct HeroTitle: View {
+    @Binding var subtitleSize: CGSize
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Text("Tourism Beats")
+                .font(.system(.largeTitle, design: .rounded).weight(.black))
+                .kerning(0.5)
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.75)
+                .shadow(color: .black.opacity(0.35), radius: 8, y: 2)
+                .accessibilityAddTraits(.isHeader)
+
+            Text("an immersive tourist experience")
+                .font(.system(.title3, design: .rounded).italic())
+                .foregroundStyle(.white.opacity(0.92))
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
+                .shadow(color: .black.opacity(0.25), radius: 6, y: 1)
+                .measureSize { size in
+                    if abs(size.width - self.subtitleSize.width) > 0.5
+                        || abs(size.height - self.subtitleSize.height) > 0.5
+                    {
+                        self.subtitleSize = size
+                    }
+                }
+        }
+    }
+}
+
+// MARK: - ExploreCTA
+
+private struct ExploreCTA: View {
+    let matchToWidth: CGFloat
+    let maxAvailableWidth: CGFloat
+    let action: () -> Void
 
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    // Internals
     @State private var titleSize: CGSize = .zero
     @State private var subtitleSize: CGSize = .zero
 
@@ -115,52 +131,48 @@ private struct GlassCTA: View {
     private let innerVPad: CGFloat = 14
     private let iconWidth: CGFloat = 28
     private let hSpacing: CGFloat = 12
-    private let minReadable: CGFloat = 220 // floor so it never looks cramped
+    private let minReadable: CGFloat = 220
 
     var body: some View {
-        // Measure intrinsic widths of the two text lines (invisibly)
-        ZStack {
-            self.content
-            self.measuringOverlay
+        Button(action: self.action) {
+            ZStack {
+                self.cardContent
+                self.measuringOverlay
+            }
         }
-        .allowsHitTesting(false) // CTA instructs; not tappable
+        .buttonStyle(GlassCTAButtonStyle(scheme: self.scheme))
+        .accessibilityLabel("Explore destinations. Discover cities around the world.")
+        .accessibilityHint("Opens the search tab to explore destinations")
     }
 
-    private var content: some View {
-        // Calculate the text block width we actually need
+    private var cardContent: some View {
         let neededTextWidth = max(
-            titleSize.width.isFinite ? self.titleSize.width : 0,
+            self.titleSize.width.isFinite ? self.titleSize.width : 0,
             self.subtitleSize.width.isFinite ? self.subtitleSize.width : 0
         )
 
-        // Proposed content width: match subtitle above, but never less than what we need
         let safeMatchWidth = self.matchToWidth.isFinite ? max(0, self.matchToWidth) : 0
         var contentWidth = max(safeMatchWidth, neededTextWidth)
-
-        // Add space for the trailing icon + spacing
         contentWidth += (self.hSpacing + self.iconWidth)
 
-        // Clamp to available space and ensure a minimum readable width
-        let available = max(0, maxAvailableWidth.isFinite ? self.maxAvailableWidth : 0)
+        let available = max(0, self.maxAvailableWidth.isFinite ? self.maxAvailableWidth : 0)
         if available > 0 {
             contentWidth = min(max(contentWidth, self.minReadable), available)
         } else {
-            // No available width reported yet; still ensure we never pass a negative/non-finite value
             contentWidth = max(contentWidth, self.minReadable)
         }
 
-        // Final sanitization: only pass a valid width to .frame; otherwise let SwiftUI size it
         let frameWidth: CGFloat? = (contentWidth.isFinite && contentWidth > 0) ? contentWidth : nil
 
         return HStack(spacing: self.hSpacing) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(self.title)
+                Text("Explore destinations")
                     .font(.system(.title3, design: .rounded).weight(.semibold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
                     .minimumScaleFactor(0.9)
 
-                Text(self.subtitle)
+                Text("Discover cities around the world")
                     .font(.footnote)
                     .foregroundStyle(.white.opacity(0.9))
                     .lineLimit(1)
@@ -176,42 +188,115 @@ private struct GlassCTA: View {
         .padding(.horizontal, self.innerHPad)
         .padding(.vertical, self.innerVPad)
         .frame(width: frameWidth)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .strokeBorder(
-                            AppColors.glassBorder(for: self.scheme),
-                            lineWidth: 1
-                        )
-                )
-                .shadow(
-                    color: AppColors.glassShadow(for: self.scheme),
-                    radius: 18,
-                    y: 6
-                )
-        )
-        .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(self.title). \(self.subtitle).")
     }
 
-    // Invisible measurement so we can size precisely without truncation
     private var measuringOverlay: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(self.title)
+            Text("Explore destinations")
                 .font(.system(.title3, design: .rounded).weight(.semibold))
-                .fixedSize() // measure intrinsic single-line width
+                .fixedSize()
                 .measureSize { self.titleSize = $0 }
 
-            Text(self.subtitle)
+            Text("Discover cities around the world")
                 .font(.footnote)
                 .fixedSize()
                 .measureSize { self.subtitleSize = $0 }
         }
-        .opacity(0.001) // effectively invisible but doesn’t collapse
+        .opacity(0.001)
         .allowsHitTesting(false)
+    }
+}
+
+// MARK: - GlassCTAButtonStyle
+
+private struct GlassCTAButtonStyle: ButtonStyle {
+    let scheme: ColorScheme
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .strokeBorder(
+                                AppColors.glassBorder(for: self.scheme),
+                                lineWidth: 1
+                            )
+                    )
+                    .shadow(
+                        color: AppColors.glassShadow(for: self.scheme),
+                        radius: 18,
+                        y: 6
+                    )
+            )
+            .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .opacity(configuration.isPressed ? 0.9 : 1.0)
+            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+    }
+}
+
+// MARK: - FeaturedCitiesRow
+
+private struct FeaturedCitiesRow: View {
+    let cities: [CityModel]
+    let onSelect: (CityModel) -> Void
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 10) {
+                ForEach(self.cities) { city in
+                    FeaturedCityChip(city: city) {
+                        self.onSelect(city)
+                    }
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+    }
+}
+
+// MARK: - FeaturedCityChip
+
+private struct FeaturedCityChip: View {
+    let city: CityModel
+    let action: () -> Void
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        Button(action: self.action) {
+            HStack(spacing: 6) {
+                Text(self.city.country.flag)
+                    .font(.body)
+
+                Text(self.city.name)
+                    .font(.system(.subheadline, design: .rounded).weight(.medium))
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+
+                Image(systemName: "chevron.right")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.6))
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .overlay(
+                        Capsule(style: .continuous)
+                            .strokeBorder(
+                                AppColors.glassBorder(for: self.scheme),
+                                lineWidth: 1
+                            )
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(self.city.country.flag) \(self.city.name), \(self.city.country.name)")
+        .accessibilityHint("Opens city details")
     }
 }
 
@@ -227,7 +312,6 @@ private struct AnimatedSearchIcon: View {
                 .foregroundStyle(.white)
 
             if !self.reduceMotion {
-                // Slow breathe (~9s)
                 TimelineView(.animation) { timeline in
                     let t = timeline.date.timeIntervalSinceReferenceDate
                     let scale = 1.0 + 0.03 * CGFloat(sin(t * 0.7))
@@ -238,7 +322,6 @@ private struct AnimatedSearchIcon: View {
                         .allowsHitTesting(false)
                 }
 
-                // Subtle ping (~3.6s per ring, staggered)
                 TimelineView(.animation) { timeline in
                     let t = timeline.date.timeIntervalSinceReferenceDate
                     Canvas { ctx, size in
@@ -284,9 +367,7 @@ private struct ViewSizeKey: PreferenceKey {
 }
 
 private extension View {
-    func measureSize(_ onChange: @escaping (CGSize) -> Void)
-    -> some View
-    {
+    func measureSize(_ onChange: @escaping (CGSize) -> Void) -> some View {
         background(
             GeometryReader { proxy in
                 Color.clear

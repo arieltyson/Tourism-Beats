@@ -13,7 +13,15 @@ struct MainTabView: View {
                 value: .home
             ) {
                 NavigationStack(path: self.$homePath) {
-                    HomeView()
+                    HomeView(
+                        onExplore: {
+                            self.selectedTab = .search
+                        },
+                        onCitySelected: { city in
+                            self.selectedTab = .search
+                            self.searchPath.append(city)
+                        }
+                    )
                 }
             }
 
@@ -41,8 +49,10 @@ struct MainTabView: View {
         .tint(.white)
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
-        .onChange(of: self.selectedTab) { _, new in
-            switch new {
+        .onChange(of: self.selectedTab) { old, _ in
+            // Reset the tab we're *leaving*, not the one we're arriving at.
+            // This preserves any path appended before the switch (e.g. featured city).
+            switch old {
             case .home: self.homePath = NavigationPath()
             case .search: self.searchPath = NavigationPath()
             }
