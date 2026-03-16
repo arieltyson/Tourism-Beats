@@ -69,24 +69,8 @@ struct HomeView: View {
 
     // MARK: - Featured Cards Layout
 
-    @ViewBuilder
     private var featuredCardsLayout: some View {
-        if self.typeSize >= .accessibility1 {
-            // Single column at large accessibility sizes
-            VStack(spacing: 12) {
-                ForEach(self.viewModel.featuredCities) { city in
-                    DiscoveryCityCard(
-                        city: city,
-                        localTime: self.viewModel.localTime(for: city),
-                        scheme: self.scheme
-                    ) {
-                        self.haptic.fire(.citySelect)
-                        self.onCitySelected(city)
-                    }
-                }
-            }
-            .padding(.horizontal, self.horizontalPadding)
-        } else {
+        ScrollView(.horizontal) {
             HStack(spacing: 12) {
                 ForEach(self.viewModel.featuredCities) { city in
                     DiscoveryCityCard(
@@ -97,10 +81,18 @@ struct HomeView: View {
                         self.haptic.fire(.citySelect)
                         self.onCitySelected(city)
                     }
+                    .frame(width: self.cardWidth)
                 }
             }
+            .scrollTargetLayout()
             .padding(.horizontal, self.horizontalPadding)
         }
+        .scrollTargetBehavior(.viewAligned)
+        .scrollIndicators(.hidden)
+    }
+
+    private var cardWidth: CGFloat {
+        self.typeSize >= .accessibility1 ? 200 : 160
     }
 
     // MARK: - Layout Constants

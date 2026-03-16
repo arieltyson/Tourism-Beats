@@ -18,7 +18,7 @@ final class HomeViewModel {
         guard !self.isLoaded else { return }
         guard let cities = try? DataService().loadCities() else { return }
         self.allCityCount = cities.count
-        self.featuredCities = Array(cities.shuffled().prefix(2))
+        self.featuredCities = Array(cities.shuffled().prefix(6))
         self.isLoaded = true
     }
 
