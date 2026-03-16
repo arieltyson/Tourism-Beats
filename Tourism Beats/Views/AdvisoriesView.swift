@@ -65,7 +65,6 @@ struct AdvisoriesView: View {
             .onAppear { self.appeared = true }
         }
         .background(Color.clear.ignoresSafeArea())
-        .navigationBarBackButtonHidden(true)
         .safeAreaPadding(.bottom, 8)
     }
 }

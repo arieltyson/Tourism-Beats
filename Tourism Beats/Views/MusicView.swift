@@ -67,7 +67,6 @@ struct MusicView: View {
         }
         .scrollIndicators(.hidden)
         .safeAreaPadding(.bottom, SpacingTokens.medium)
-        .navigationBarBackButtonHidden(true)
         .task { await self.viewModel.requestAccessAndLoadTopSong() }
     }
 }

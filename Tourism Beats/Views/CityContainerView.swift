@@ -58,11 +58,10 @@ struct CityContainerView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                if self.pageIndex != 0 {
-                    Text(self.city.country.flag)
-                        .font(.system(size: 40))
-                        .transition(.opacity.animation(.easeInOut))
-                }
+                Text(self.city.country.flag)
+                    .font(.system(size: 40))
+                    .opacity(self.pageIndex != 0 ? 1 : 0)
+                    .animation(.easeInOut, value: self.pageIndex)
             }
         }
     }
