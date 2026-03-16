@@ -13,7 +13,7 @@ final class TripFormViewModel {
     private let countryCodesByNormalizedName: [String: String]
     private let allCities: [CityModel]
 
-    init(
+    convenience init(
         countryName: String = "",
         dataService: DataService = DataService()
     ) {
@@ -41,7 +41,9 @@ final class TripFormViewModel {
         )
         self.allCities = Self.deduplicatedCities(from: cities)
         self.selectedCountryCode =
-            self.countryCodesByNormalizedName[Self.normalizedLookupValue(countryName)] ?? ""
+            self.countryCodesByNormalizedName[
+                Self.normalizedLookupValue(countryName)
+            ] ?? ""
     }
 
     var selectedCountry: CountryModel? {
@@ -66,26 +68,33 @@ final class TripFormViewModel {
     func matchingCities(for query: String) -> [CityModel] {
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        let countryScopedCities: [CityModel] = if self.selectedCountryCode.isEmpty {
-            self.allCities
-        } else {
-            self.allCities.filter { $0.country.code == self.selectedCountryCode }
-        }
-
-        let filteredCities: [CityModel] = if trimmedQuery.isEmpty {
-            countryScopedCities
-        } else {
-            countryScopedCities.filter { city in
-                city.name.localizedStandardContains(trimmedQuery)
-                    || city.country.name.localizedStandardContains(trimmedQuery)
+        let countryScopedCities: [CityModel] =
+            if self.selectedCountryCode.isEmpty {
+                self.allCities
+            } else {
+                self.allCities.filter {
+                    $0.country.code == self.selectedCountryCode
+                }
             }
-        }
+
+        let filteredCities: [CityModel] =
+            if trimmedQuery.isEmpty {
+                countryScopedCities
+            } else {
+                countryScopedCities.filter { city in
+                    city.name.localizedStandardContains(trimmedQuery)
+                        || city.country.name.localizedStandardContains(
+                            trimmedQuery
+                        )
+                }
+            }
 
         return filteredCities.sorted { lhs, rhs in
             if lhs.name != rhs.name {
                 return lhs.name.localizedCompare(rhs.name) == .orderedAscending
             }
-            return lhs.country.name.localizedCompare(rhs.country.name) == .orderedAscending
+            return lhs.country.name.localizedCompare(rhs.country.name)
+                == .orderedAscending
         }
     }
 
@@ -99,11 +108,16 @@ final class TripFormViewModel {
 
     private static func normalizedLookupValue(_ value: String) -> String {
         value
-            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+            .folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private static func deduplicatedCities(from cities: [CityModel]) -> [CityModel] {
+    private static func deduplicatedCities(from cities: [CityModel])
+    -> [CityModel]
+    {
         var seenLookupKeys = Set<String>()
 
         return cities.filter { city in

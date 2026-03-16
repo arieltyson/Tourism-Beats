@@ -60,7 +60,7 @@ final class Trip {
             self.city.trimmingCharacters(in: .whitespacesAndNewlines),
             self.country.trimmingCharacters(in: .whitespacesAndNewlines)
         ) {
-        case let ("", ""):
+        case ("", ""):
             "Custom trip"
         case let ("", country):
             country
@@ -89,7 +89,8 @@ final class Trip {
 
     var progressLabel: String? {
         guard self.activityCount > 0 else { return nil }
-        return "\(self.completedActivityCount.formatted(.number))/\(self.activityCount.formatted(.number)) done"
+        return
+            "\(self.completedActivityCount.formatted(.number))/\(self.activityCount.formatted(.number)) done"
     }
 
     var notesSummary: String? {
@@ -98,13 +99,15 @@ final class Trip {
     }
 
     var scheduleSummaryLabel: String {
-        let dayLabel = self.dayCount == 1
+        let dayLabel =
+            self.dayCount == 1
             ? "1 day"
             : "\(self.dayCount.formatted(.number)) days"
 
         guard self.activityCount > 0 else { return dayLabel }
 
-        let activityLabel = self.activityCount == 1
+        let activityLabel =
+            self.activityCount == 1
             ? "1 activity"
             : "\(self.activityCount.formatted(.number)) activities"
         return "\(dayLabel) • \(activityLabel)"
@@ -114,7 +117,8 @@ final class Trip {
         guard let start = self.startDate else { return nil }
         let formatter = Self.dateRangeFormatter
         if let end = self.endDate {
-            return "\(formatter.string(from: start)) – \(formatter.string(from: end))"
+            return
+                "\(formatter.string(from: start)) – \(formatter.string(from: end))"
         }
         return formatter.string(from: start)
     }

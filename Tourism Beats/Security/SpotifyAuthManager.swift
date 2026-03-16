@@ -13,10 +13,36 @@ final class WebAuthPresenter: NSObject,
     func presentationAnchor(for _: ASWebAuthenticationSession)
     -> ASPresentationAnchor
     {
-        UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
+        // Prefer the key window from the foreground active scene
+        if let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .filter({ $0.activationState == .foregroundActive })
             .flatMap(\.windows)
-            .first(where: { $0.isKeyWindow }) ?? UIWindow()
+            .first(where: { $0.isKeyWindow })
+        {
+            return keyWindow
+        }
+
+        // Fallback: any existing window
+        if let anyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap(\.windows)
+            .first
+        {
+            return anyWindow
+        }
+
+        // Fallback: create a window attached to the first available scene
+        if let scene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first
+        {
+            return UIWindow(windowScene: scene)
+        }
+
+        // Final fallback: create a window without attaching to a scene
+        // (only used if no scenes are available; should be extremely rare)
+        return UIWindow(frame: UIScreen.main.bounds)
     }
 }
 

@@ -16,7 +16,7 @@ final class TripsViewModel {
     private let catalogCitiesByLookupKey: [String: CityModel]
     private let countryFlagsByNormalizedName: [String: String]
 
-    init(dataService: DataService = DataService()) {
+    convenience init(dataService: DataService = DataService()) {
         let catalogCities = (try? dataService.loadCities()) ?? []
         let countries = (try? dataService.loadCountries()) ?? []
         self.init(catalogCities: catalogCities, countries: countries)
