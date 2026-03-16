@@ -1,19 +1,27 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State private var selectedTab: AppTab = .home
+    @Binding var selectedTab: AppTab
     @State private var homePath = NavigationPath()
     @State private var searchPath = NavigationPath()
 
     var body: some View {
         TabView(selection: self.$selectedTab) {
-            Tab("Home", systemImage: "house", value: .home) {
+            Tab(
+                AppTab.home.title,
+                systemImage: AppTab.home.systemImage,
+                value: .home
+            ) {
                 NavigationStack(path: self.$homePath) {
                     HomeView()
                 }
             }
 
-            Tab("Search", systemImage: "magnifyingglass", value: .search) {
+            Tab(
+                AppTab.search.title,
+                systemImage: AppTab.search.systemImage,
+                value: .search
+            ) {
                 NavigationStack(path: self.$searchPath) {
                     WorldView { city in
                         self.searchPath.append(city)
