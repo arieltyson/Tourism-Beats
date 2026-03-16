@@ -5,7 +5,7 @@
 --indent 4
 --maxwidth 120
 --self insert
---swiftversion 6.1.1
+--swiftversion 6.2
 --wraparguments before-first
 
 # Rules

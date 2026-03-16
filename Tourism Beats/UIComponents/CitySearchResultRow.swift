@@ -57,7 +57,7 @@ struct CitySearchResultRow: View {
     }
 
     private func highlightedText(_ text: String, searchText: String)
-        -> AttributedString
+    -> AttributedString
     {
         var attributed = AttributedString(text)
         guard !searchText.isEmpty else { return attributed }
@@ -81,14 +81,14 @@ private struct CountryFlagView: View {
     let isoCode: String
 
     private var resolvedFlag: String {
-        let trimmed = flagEmoji.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? isoCode.flagEmoji : trimmed
+        let trimmed = self.flagEmoji.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? self.isoCode.flagEmoji : trimmed
     }
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8).fill(.quaternary)
-            Text(resolvedFlag)
+            Text(self.resolvedFlag)
                 .font(.system(size: 18))
                 .minimumScaleFactor(0.6)
         }
@@ -100,16 +100,16 @@ private struct CountryFlagView: View {
 extension String {
     /// All ranges of `searchString` within the string.
     func ranges(of searchString: String, options: String.CompareOptions = [])
-        -> [Range<String.Index>]
+    -> [Range<String.Index>]
     {
         var result: [Range<String.Index>] = []
         var start = startIndex
         while start < endIndex,
-            let r = range(
+              let r = range(
                 of: searchString,
                 options: options,
-                range: start..<endIndex
-            )
+                range: start ..< endIndex
+              )
         {
             result.append(r)
             start = r.upperBound
@@ -121,7 +121,7 @@ extension String {
     var flagEmoji: String {
         let u = uppercased()
         guard u.count == 2,
-            u.unicodeScalars.allSatisfy({ ("A"..."Z").contains(Character($0)) })
+              u.unicodeScalars.allSatisfy({ ("A" ... "Z").contains(Character($0)) })
         else { return "🏳️" }
         let base: UInt32 = 0x1F1E6
         var scalars = String.UnicodeScalarView()

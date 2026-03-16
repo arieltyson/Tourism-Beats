@@ -5,7 +5,7 @@ actor MusicService: MusicProtocol {
     static let shared = MusicService()
 
     private var chartCache: [String: (Date, AppSong)] = [:]
-    private let cacheDuration: TimeInterval = 3 * 60 * 60  // 3 hours
+    private let cacheDuration: TimeInterval = 3 * 60 * 60 // 3 hours
     private static let decoder = JSONDecoder()
 
     private init() {}
@@ -28,7 +28,7 @@ actor MusicService: MusicProtocol {
         }
 
         if let (ts, song) = chartCache[code],
-            Date().timeIntervalSince(ts) < cacheDuration
+           Date().timeIntervalSince(ts) < cacheDuration
         {
             return song
         }
@@ -58,7 +58,7 @@ actor MusicService: MusicProtocol {
         if http.statusCode == 400 || http.statusCode == 404 {
             throw MusicServiceError.storefrontNotAvailable
         }
-        guard (200...299).contains(http.statusCode) else {
+        guard (200 ... 299).contains(http.statusCode) else {
             throw MusicServiceError.apiError(statusCode: http.statusCode)
         }
 

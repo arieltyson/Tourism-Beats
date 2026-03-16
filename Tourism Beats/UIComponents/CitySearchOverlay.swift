@@ -22,10 +22,11 @@ struct CitySearchOverlay: View {
         let countryLC: String
         let nameWords: [Substring]
     }
+
     @State private var index: [IndexRow] = []
 
     private var searchResults: [CityModel] {
-        searchText.isEmpty ? Array(cities.prefix(10)) : filteredCities
+        self.searchText.isEmpty ? Array(self.cities.prefix(10)) : self.filteredCities
     }
 
     var body: some View {
@@ -49,7 +50,7 @@ struct CitySearchOverlay: View {
         .onAppear {
             self.setupInitialState()
             // Build a lowercased index once
-            if index.isEmpty {
+            if self.index.isEmpty {
                 self.index = self.cities.map {
                     .init(
                         city: $0,
@@ -129,8 +130,7 @@ struct CitySearchOverlay: View {
         ScrollView {
             LazyVStack(spacing: 8) {
                 ForEach(self.searchResults, id: \.id) { city in
-                    CitySearchResultRow(city: city, searchText: self.searchText)
-                    {
+                    CitySearchResultRow(city: city, searchText: self.searchText) {
                         self.selectCity(city)
                     }
                 }
@@ -165,7 +165,7 @@ struct CitySearchOverlay: View {
         nameMatches.reserveCapacity(32)
         countryMatches.reserveCapacity(32)
 
-        for row in index {
+        for row in self.index {
             if row.nameLC.contains(q)
                 || row.nameWords.contains(where: {
                     $0.lowercased().hasPrefix(q)

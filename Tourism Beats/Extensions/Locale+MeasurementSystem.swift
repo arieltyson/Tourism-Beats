@@ -17,7 +17,8 @@ extension Locale {
             var letters = String.UnicodeScalarView()
             letters.reserveCapacity(scalars.count)
             for s in scalars.unicodeScalars
-            where CharacterSet.letters.contains(s) {
+            where CharacterSet.letters.contains(s)
+            {
                 letters.append(s)
             }
             return String(letters).uppercased() != "US"

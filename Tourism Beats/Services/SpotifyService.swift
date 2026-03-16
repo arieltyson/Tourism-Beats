@@ -28,7 +28,7 @@ actor SpotifyService: MusicProtocol {
 
     // New helper: given Apple’s title/artist, produce a Spotify deep link AppSong.
     func mirror(title: String, artist: String, countryCode: String) async throws
-        -> AppSong
+    -> AppSong
     {
         let token = try await SpotifyAuthManager.shared.validAccessToken()
         let market = countryCode.uppercased()
@@ -49,8 +49,8 @@ actor SpotifyService: MusicProtocol {
         }
         let deep: URL? =
             best.external_urls?["spotify"]
-                .flatMap { URL(string: $0) }
-                ?? URL(string: "https://open.spotify.com/track/\(best.id)")
+            .flatMap { URL(string: $0) }
+            ?? URL(string: "https://open.spotify.com/track/\(best.id)")
 
         return AppSong(
             source: .spotify,
@@ -105,7 +105,7 @@ actor SpotifyService: MusicProtocol {
     }
 
     private func searchOnce(q: String, market: String, token: String)
-        async throws -> Track?
+    async throws -> Track?
     {
         var comps = URLComponents(
             url: base.appendingPathComponent("search"),

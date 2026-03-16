@@ -1,8 +1,12 @@
 import Foundation
 
+// MARK: - VisaError
+
 enum VisaError: Error {
     case fileNotFound, decodingError, requirementNotFound
 }
+
+// MARK: - VisaService
 
 actor VisaService: VisaProtocol {
     private let fileName = "visa_requirements_2025"
@@ -38,7 +42,7 @@ actor VisaService: VisaProtocol {
     }
 
     func fetchVisaRequirement(passport: String, destination: String)
-        async throws -> VisaModel
+    async throws -> VisaModel
     {
         let map = try loadAll()
         if let entry = map[

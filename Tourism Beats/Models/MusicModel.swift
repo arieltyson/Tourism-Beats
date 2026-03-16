@@ -96,8 +96,8 @@ struct ArtworkAPI: Decodable, Sendable {
     func artworkURL(width: Int = 600, height: Int = 600) -> URL? {
         let sized =
             self.url
-                .replacingOccurrences(of: "{w}", with: "\(width)")
-                .replacingOccurrences(of: "{h}", with: "\(height)")
+            .replacingOccurrences(of: "{w}", with: "\(width)")
+            .replacingOccurrences(of: "{h}", with: "\(height)")
         return URL(string: sized)
     }
 }

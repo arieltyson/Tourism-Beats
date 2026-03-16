@@ -1,10 +1,14 @@
 import CoreLocation
 import Foundation
 
+// MARK: - DataServiceError
+
 enum DataServiceError: Error {
     case fileNotFound(String)
     case decodingError(Error)
 }
+
+// MARK: - CityJSON
 
 // Raw JSON row
 private struct CityJSON: Decodable {
@@ -15,6 +19,8 @@ private struct CityJSON: Decodable {
     let longitude: CLLocationDegrees
     let timeZoneIdentifier: String
 }
+
+// MARK: - DataService
 
 @MainActor
 final class DataService {

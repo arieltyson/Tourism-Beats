@@ -1,6 +1,8 @@
 import MapKit
 import SwiftUI
 
+// MARK: - MapView
+
 struct MapView: UIViewRepresentable {
     @Binding var selectedCity: CityModel?
     @Binding var showAlert: Bool
@@ -54,10 +56,10 @@ struct MapView: UIViewRepresentable {
         }
 
         if self.selectedCity == nil, !self.showAlert,
-            !uiView.selectedAnnotations.isEmpty
+           !uiView.selectedAnnotations.isEmpty
         {
-            uiView.selectedAnnotations.forEach {
-                uiView.deselectAnnotation($0, animated: true)
+            for selectedAnnotation in uiView.selectedAnnotations {
+                uiView.deselectAnnotation(selectedAnnotation, animated: true)
             }
         }
     }
@@ -71,7 +73,7 @@ struct MapView: UIViewRepresentable {
 
         func mapView(_: MKMapView, didSelect view: MKAnnotationView) {
             guard
-                let titleProvider = view.annotation?.title,  // String??
+                let titleProvider = view.annotation?.title, // String??
                 let name = titleProvider,
                 let city = parent.cityByName[name]
             else { return }

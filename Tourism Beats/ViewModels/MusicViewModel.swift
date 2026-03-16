@@ -437,7 +437,7 @@ final class MusicViewModel: ObservableObject {
     }
 
     private func searchSongByTitleAndArtist(title: String, artist: String)
-        async throws -> Song?
+    async throws -> Song?
     {
         var search = MusicCatalogSearchRequest(
             term: "\(title) \(artist)",
@@ -452,10 +452,10 @@ final class MusicViewModel: ObservableObject {
                 title,
                 options: [.caseInsensitive, .diacriticInsensitive]
             ) == .orderedSame
-                && song.artistName.compare(
-                    artist,
-                    options: [.caseInsensitive, .diacriticInsensitive]
-                ) == .orderedSame
+            && song.artistName.compare(
+                artist,
+                options: [.caseInsensitive, .diacriticInsensitive]
+            ) == .orderedSame
         }) {
             return exact
         }

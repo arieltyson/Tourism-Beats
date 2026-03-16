@@ -420,3 +420,6 @@ xcuserdata/
 
 # Ignore Apple Music API secrets
 Secrets.swift
+
+# Claude Code local settings
+.claude/

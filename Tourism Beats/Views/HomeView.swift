@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - HomeView
+
 struct HomeView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
 
@@ -16,7 +18,7 @@ struct HomeView: View {
                 colors: [
                     Color.black.opacity(0.08),
                     Color.black.opacity(0.32),
-                    Color.black.opacity(0.55),
+                    Color.black.opacity(0.55)
                 ],
                 center: .center,
                 startRadius: 60,
@@ -26,7 +28,7 @@ struct HomeView: View {
 
             GeometryReader { proxy in
                 // Ensure we never pass a negative available width downstream
-                let safeWidth = max(0, proxy.size.width - horizontalPadding * 2)
+                let safeWidth = max(0, proxy.size.width - self.horizontalPadding * 2)
 
                 VStack(spacing: 16) {
                     Spacer(minLength: 0)
@@ -64,24 +66,24 @@ struct HomeView: View {
                             )
                             .measureSize { size in
                                 // Update only on meaningful change to avoid thrash
-                                if abs(size.width - subtitleSize.width) > 0.5
-                                    || abs(size.height - subtitleSize.height)
-                                        > 0.5
+                                if abs(size.width - self.subtitleSize.width) > 0.5
+                                    || abs(size.height - self.subtitleSize.height)
+                                    > 0.5
                                 {
-                                    subtitleSize = size
+                                    self.subtitleSize = size
                                 }
                             }
                     }
-                    .padding(.horizontal, horizontalPadding)
+                    .padding(.horizontal, self.horizontalPadding)
 
                     // CTA — width matches subtitle when possible, otherwise expands to fit text
                     GlassCTA(
                         title: "Explore destinations",
                         subtitle: "Tap the Search icon below",
-                        matchToWidth: subtitleSize.width,
+                        matchToWidth: self.subtitleSize.width,
                         maxAvailableWidth: safeWidth
                     )
-                    .padding(.horizontal, horizontalPadding)
+                    .padding(.horizontal, self.horizontalPadding)
                     .accessibilityHint(
                         "Tap the Search tab below to begin exploring."
                     )
@@ -96,20 +98,20 @@ struct HomeView: View {
     }
 
     private var horizontalPadding: CGFloat {
-        switch typeSize {
+        switch self.typeSize {
         case ...DynamicTypeSize.xxxLarge: 24
         default: 20
         }
     }
 }
 
-// MARK: - Glass CTA that sizes to its own text (with subtitle-width matching)
+// MARK: - GlassCTA
 
 private struct GlassCTA: View {
     let title: String
     let subtitle: String
-    let matchToWidth: CGFloat  // measured width of the subtitle above
-    let maxAvailableWidth: CGFloat  // container width minus outer padding
+    let matchToWidth: CGFloat // measured width of the subtitle above
+    let maxAvailableWidth: CGFloat // container width minus outer padding
 
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -122,52 +124,52 @@ private struct GlassCTA: View {
     private let innerVPad: CGFloat = 14
     private let iconWidth: CGFloat = 28
     private let hSpacing: CGFloat = 12
-    private let minReadable: CGFloat = 220  // floor so it never looks cramped
+    private let minReadable: CGFloat = 220 // floor so it never looks cramped
 
     var body: some View {
         // Measure intrinsic widths of the two text lines (invisibly)
         ZStack {
-            content
-            measuringOverlay
+            self.content
+            self.measuringOverlay
         }
-        .allowsHitTesting(false)  // CTA instructs; not tappable
+        .allowsHitTesting(false) // CTA instructs; not tappable
     }
 
     private var content: some View {
         // Calculate the text block width we actually need
         let neededTextWidth = max(
-            titleSize.width.isFinite ? titleSize.width : 0,
-            subtitleSize.width.isFinite ? subtitleSize.width : 0
+            titleSize.width.isFinite ? self.titleSize.width : 0,
+            self.subtitleSize.width.isFinite ? self.subtitleSize.width : 0
         )
 
         // Proposed content width: match subtitle above, but never less than what we need
-        let safeMatchWidth = matchToWidth.isFinite ? max(0, matchToWidth) : 0
+        let safeMatchWidth = self.matchToWidth.isFinite ? max(0, self.matchToWidth) : 0
         var contentWidth = max(safeMatchWidth, neededTextWidth)
 
         // Add space for the trailing icon + spacing
-        contentWidth += (hSpacing + iconWidth)
+        contentWidth += (self.hSpacing + self.iconWidth)
 
         // Clamp to available space and ensure a minimum readable width
-        let available = max(0, maxAvailableWidth.isFinite ? maxAvailableWidth : 0)
+        let available = max(0, maxAvailableWidth.isFinite ? self.maxAvailableWidth : 0)
         if available > 0 {
-            contentWidth = min(max(contentWidth, minReadable), available)
+            contentWidth = min(max(contentWidth, self.minReadable), available)
         } else {
             // No available width reported yet; still ensure we never pass a negative/non-finite value
-            contentWidth = max(contentWidth, minReadable)
+            contentWidth = max(contentWidth, self.minReadable)
         }
 
         // Final sanitization: only pass a valid width to .frame; otherwise let SwiftUI size it
         let frameWidth: CGFloat? = (contentWidth.isFinite && contentWidth > 0) ? contentWidth : nil
 
-        return HStack(spacing: hSpacing) {
+        return HStack(spacing: self.hSpacing) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(title)
+                Text(self.title)
                     .font(.system(.title3, design: .rounded).weight(.semibold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
                     .minimumScaleFactor(0.9)
 
-                Text(subtitle)
+                Text(self.subtitle)
                     .font(.footnote)
                     .foregroundStyle(.white.opacity(0.9))
                     .lineLimit(1)
@@ -176,12 +178,12 @@ private struct GlassCTA: View {
 
             Spacer(minLength: 0)
 
-            AnimatedSearchIcon(reduceMotion: reduceMotion)
-                .frame(width: iconWidth, height: iconWidth)
+            AnimatedSearchIcon(reduceMotion: self.reduceMotion)
+                .frame(width: self.iconWidth, height: self.iconWidth)
                 .accessibilityHidden(true)
         }
-        .padding(.horizontal, innerHPad)
-        .padding(.vertical, innerVPad)
+        .padding(.horizontal, self.innerHPad)
+        .padding(.vertical, self.innerVPad)
         .frame(width: frameWidth)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -189,40 +191,40 @@ private struct GlassCTA: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .strokeBorder(
-                            .white.opacity(scheme == .dark ? 0.12 : 0.18),
+                            .white.opacity(self.scheme == .dark ? 0.12 : 0.18),
                             lineWidth: 1
                         )
                 )
                 .shadow(
-                    color: .black.opacity(scheme == .dark ? 0.35 : 0.18),
+                    color: .black.opacity(self.scheme == .dark ? 0.35 : 0.18),
                     radius: 18,
                     y: 6
                 )
         )
         .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title). \(subtitle).")
+        .accessibilityLabel("\(self.title). \(self.subtitle).")
     }
 
     // Invisible measurement so we can size precisely without truncation
     private var measuringOverlay: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(title)
+            Text(self.title)
                 .font(.system(.title3, design: .rounded).weight(.semibold))
-                .fixedSize()  // measure intrinsic single-line width
-                .measureSize { titleSize = $0 }
+                .fixedSize() // measure intrinsic single-line width
+                .measureSize { self.titleSize = $0 }
 
-            Text(subtitle)
+            Text(self.subtitle)
                 .font(.footnote)
                 .fixedSize()
-                .measureSize { subtitleSize = $0 }
+                .measureSize { self.subtitleSize = $0 }
         }
-        .opacity(0.001)  // effectively invisible but doesn’t collapse
+        .opacity(0.001) // effectively invisible but doesn’t collapse
         .allowsHitTesting(false)
     }
 }
 
-// MARK: - Animated Search Icon (calm / natural pacing)
+// MARK: - AnimatedSearchIcon
 
 private struct AnimatedSearchIcon: View {
     var reduceMotion: Bool
@@ -233,7 +235,7 @@ private struct AnimatedSearchIcon: View {
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(.white)
 
-            if !reduceMotion {
+            if !self.reduceMotion {
                 // Slow breathe (~9s)
                 TimelineView(.animation) { timeline in
                     let t = timeline.date.timeIntervalSinceReferenceDate
@@ -281,7 +283,7 @@ private struct AnimatedSearchIcon: View {
     }
 }
 
-// MARK: - Size measuring helper
+// MARK: - ViewSizeKey
 
 private struct ViewSizeKey: PreferenceKey {
     static let defaultValue: CGSize = .zero
@@ -290,9 +292,9 @@ private struct ViewSizeKey: PreferenceKey {
     }
 }
 
-extension View {
-    fileprivate func measureSize(_ onChange: @escaping (CGSize) -> Void)
-        -> some View
+private extension View {
+    func measureSize(_ onChange: @escaping (CGSize) -> Void)
+    -> some View
     {
         background(
             GeometryReader { proxy in

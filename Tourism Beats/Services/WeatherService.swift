@@ -32,7 +32,7 @@ class WeatherFetcherService {
     }()
 
     func fetchWeather(at coordinate: CLLocationCoordinate2D) async throws
-        -> WeatherDisplayInfo
+    -> WeatherDisplayInfo
     {
         let location = CLLocation(
             latitude: coordinate.latitude,

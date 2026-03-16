@@ -1,37 +1,13 @@
 # .pre-commit-config.yaml
-# Order: SwiftFormat → SwiftLint autocorrect → restage changes → SwiftLint (blocking)
-# Runs against the whole tree for consistent results.
+# Single hook: format → autocorrect → restage → lint (all atomic).
 
 repos:
   - repo: local
     hooks:
-      - id: swiftformat
-        name: SwiftFormat
-        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftformat . --swiftversion 6.1.1 --config .swiftformat'
+      - id: swift-format-and-lint
+        name: SwiftFormat + SwiftLint
+        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftformat . --swiftversion 6.2 --config .swiftformat && swiftlint --autocorrect --format --quiet; git add -A && swiftlint'
         language: system
         types: [swift]
         pass_filenames: false
-        stages: [commit]
-
-      - id: swiftlint-autocorrect
-        name: SwiftLint (autocorrect)
-        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftlint autocorrect --format --quiet || true'
-        language: system
-        types: [swift]
-        pass_filenames: false
-        stages: [commit]
-
-      - id: restage
-        name: Restage formatting changes
-        entry: bash -lc 'git add -A'
-        language: system
-        pass_filenames: false
-        stages: [commit]
-
-      - id: swiftlint
-        name: SwiftLint (check)
-        entry: bash -lc 'export PATH="/opt/homebrew/bin:$PATH"; swiftlint'
-        language: system
-        types: [swift]
-        pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]
