@@ -150,6 +150,7 @@ final class FoodViewModel {
         return restaurant.name.localizedStandardContains(self.searchText)
             || restaurant.city.localizedStandardContains(self.searchText)
             || restaurant.country.localizedStandardContains(self.searchText)
+            || restaurant.displayCuisine.label.localizedStandardContains(self.searchText)
             || (restaurant.bestDish?.localizedStandardContains(self.searchText) ?? false)
             || (restaurant.notes?.localizedStandardContains(self.searchText) ?? false)
     }

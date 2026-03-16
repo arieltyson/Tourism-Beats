@@ -15,11 +15,7 @@ struct FoodRestaurantCard: View {
                 FoodRestaurantScoreView(score: score)
             }
 
-            if let dish = self.restaurant.bestDish,
-               !dish.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            {
-                FoodRestaurantBestDishRow(dish: dish)
-            }
+            FoodRestaurantCuisineRow(cuisine: self.restaurant.displayCuisine)
 
             if let notes = self.restaurant.notes,
                !notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -58,6 +54,7 @@ struct FoodRestaurantCard: View {
         if let score = self.restaurant.clampedScore {
             parts.append("\(score) out of 10")
         }
+        parts.append("Cuisine: \(self.restaurant.displayCuisine.label)")
         if let dish = self.restaurant.bestDish,
            !dish.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         {
@@ -146,10 +143,10 @@ private struct FoodRestaurantScoreView: View {
     }
 }
 
-// MARK: - FoodRestaurantBestDishRow
+// MARK: - FoodRestaurantCuisineRow
 
-private struct FoodRestaurantBestDishRow: View {
-    let dish: String
+private struct FoodRestaurantCuisineRow: View {
+    let cuisine: RestaurantCuisine
 
     var body: some View {
         HStack(spacing: SpacingTokens.xxSmall) {
@@ -157,7 +154,7 @@ private struct FoodRestaurantBestDishRow: View {
                 .font(.caption2)
                 .foregroundStyle(.secondary)
 
-            Text(self.dish)
+            Text(self.cuisine.label)
                 .font(TypographyTokens.caption)
                 .foregroundStyle(.secondary)
                 .italic()
