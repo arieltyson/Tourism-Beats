@@ -5,46 +5,42 @@ import SwiftUI
 struct CitySearchResultRow: View {
     let city: CityModel
     let searchText: String
-    let onTap: () -> Void
 
     var body: some View {
-        Button(action: self.onTap) {
-            HStack(spacing: 16) {
-                // Country flag
-                self.cityIcon
+        HStack(spacing: SpacingTokens.medium) {
+            // Country flag
+            self.cityIcon
 
-                // City info
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(
-                        self.highlightedText(
-                            self.city.name,
-                            searchText: self.searchText
-                        )
+            // City info
+            VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                Text(
+                    self.highlightedText(
+                        self.city.name,
+                        searchText: self.searchText
                     )
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.primary)
+                )
+                .font(TypographyTokens.cardLabel)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.leading)
+
+                Text(self.city.country.name)
+                    .font(TypographyTokens.caption)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
-
-                    Text(self.city.country.name)
-                        .font(.system(size: 14))
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.leading)
-                }
-
-                Spacer()
-
-                Image(systemName: "location.fill")
-                    .foregroundStyle(.blue)
-                    .font(.system(size: 14, weight: .medium))
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(
-                .quaternary.opacity(0.5),
-                in: RoundedRectangle(cornerRadius: 12)
-            )
+
+            Spacer()
+
+            Image(systemName: "location.fill")
+                .foregroundStyle(.blue)
+                .font(TypographyTokens.caption)
         }
-        .buttonStyle(.plain)
+        .padding(.horizontal, SpacingTokens.medium)
+        .padding(.vertical, SpacingTokens.small)
+        .background(
+            .quaternary.opacity(0.5),
+            in: RoundedRectangle(cornerRadius: 12)
+        )
     }
 
     private var cityIcon: some View {
@@ -64,7 +60,6 @@ struct CitySearchResultRow: View {
 
         let ranges = text.ranges(of: searchText, options: .caseInsensitive)
         for r in ranges {
-            // Convert String range -> AttributedString range safely
             if let ar = Range(r, in: attributed) {
                 attributed[ar].backgroundColor = .blue.opacity(0.30)
                 attributed[ar].font = .system(size: 16, weight: .semibold)

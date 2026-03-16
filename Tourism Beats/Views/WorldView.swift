@@ -1,10 +1,19 @@
+// WorldView.swift
+// Tourism Beats
+//
+// Map-based city exploration with native searchable
+// interface following Apple Human Interface Guidelines.
+
 import MapKit
 import SwiftUI
+
+// MARK: - WorldView
 
 struct WorldView: View {
     let onCitySelected: (CityModel) -> Void
 
-    // Map state
+    // MARK: Map state
+
     @State private var selectedCity: CityModel?
     @State private var showAlert = false
     @State private var region = MKCoordinateRegion(
@@ -14,16 +23,10 @@ struct WorldView: View {
     @State private var lastRegion: MKCoordinateRegion?
     @State private var alertTimeoutTask: Task<Void, Never>?
 
-    // Search state
-    @State private var showSearchOverlay = false
+    // MARK: Search state
 
-    // Selection source tracking
-    private enum SelectionSource {
-        case search
-        case map
-    }
-
-    @State private var selectionSource: SelectionSource = .map
+    @State private var searchText = ""
+    @State private var searchIndex: [SearchIndexRow] = []
 
     private let cities: [CityModel]
 
@@ -33,154 +36,145 @@ struct WorldView: View {
     }
 
     var body: some View {
-        ZStack {
-            // Map view
-            VStack(spacing: 0) {
-                // Header with search button
-                self.headerView
-
-                MapView(
-                    selectedCity: self.$selectedCity,
-                    showAlert: self.$showAlert,
-                    region: self.$region,
-                    lastRegion: self.$lastRegion,
-                    cities: self.cities,
-                    onCitySelected: { _ in
-                        // This callback is not used for map selections
-                        // Map selections only show alert, navigation happens in alert
-                    }
-                )
-                .edgesIgnoringSafeArea(.all)
-            }
-
-            // Search overlay
-            if self.showSearchOverlay {
-                CitySearchOverlay(
-                    isPresented: self.$showSearchOverlay,
-                    selectedCity: self.$selectedCity,
-                    region: self.$region,
-                    showAlert: self.$showAlert,
-                    cities: self.cities,
-                    onCitySelected: { city in
-                        self.selectionSource = .search
-                        // Direct navigation for search - no alert
-                        self.onCitySelected(city)
-                    }
-                )
-                .onChange(of: self.showSearchOverlay) { _, isPresented in
-                    if !isPresented {
-                        // Reset to map source when search is dismissed
-                        self.selectionSource = .map
-                    }
-                }
-                .transition(.asymmetric(
-                    insertion: .opacity.combined(with: .scale(scale: 0.95)),
-                    removal: .opacity.combined(with: .scale(scale: 0.95))
-                ))
-            }
+        MapView(
+            selectedCity: self.$selectedCity,
+            showAlert: self.$showAlert,
+            region: self.$region,
+            lastRegion: self.$lastRegion,
+            cities: self.cities,
+            onCitySelected: { _ in }
+        )
+        .ignoresSafeArea()
+        .navigationTitle("Explore")
+        .navigationBarTitleDisplayMode(.inline)
+        .searchable(
+            text: self.$searchText,
+            placement: .toolbar,
+            prompt: "Search cities or countries"
+        )
+        .searchSuggestions {
+            self.searchSuggestionsContent
         }
-        .background(Color.black.ignoresSafeArea())
         .onAppear {
-            // Reset state when returning to map view to ensure clean state
-            self.selectedCity = nil
-            self.showAlert = false
-            self.lastRegion = nil
-            self.selectionSource = .map
-            self.alertTimeoutTask?.cancel()
+            self.resetState()
+            self.buildSearchIndexIfNeeded()
         }
         .onDisappear {
-            // Clean up state when leaving the view
-            self.selectedCity = nil
-            self.showAlert = false
-            self.lastRegion = nil
-            self.alertTimeoutTask?.cancel()
+            self.resetState()
         }
         .onChange(of: self.showAlert) { _, newValue in
-            if newValue {
-                // Set a timeout to automatically dismiss the alert if it gets stuck
-                self.alertTimeoutTask = Task {
-                    try? await Task.sleep(nanoseconds: 10_000_000_000) // 10 seconds
-                    if !Task.isCancelled {
-                        await MainActor.run {
-                            self.showAlert = false
-                            self.selectedCity = nil
-                            self.lastRegion = nil
-                        }
-                    }
-                }
-            } else {
-                // Cancel timeout when alert is dismissed
-                self.alertTimeoutTask?.cancel()
-            }
+            self.handleAlertVisibilityChange(newValue)
         }
-        .alert(isPresented: Binding(
-            get: { self.showAlert && self.selectionSource == .map },
-            set: { self.showAlert = $0 }
-        )) {
-            Alert(
-                title: Text("Explore \(self.selectedCity?.name ?? "")?"),
-                message: Text(
-                    "Would you like to explore \(self.selectedCity?.name ?? ""), \(self.selectedCity?.country.name ?? "")?"
-                ),
-                primaryButton: .default(Text("Yes")) {
-                    // Navigate to city view
-                    if let city = selectedCity {
-                        self.onCitySelected(city)
-                    }
-                    // Clear state immediately
-                    self.selectedCity = nil
-                    self.showAlert = false
-                    self.lastRegion = nil
-                },
-                secondaryButton: .cancel {
-                    // Restore region and clear state
-                    self.region = self.lastRegion ?? self.region
-                    self.lastRegion = nil
-                    self.selectedCity = nil
-                    self.showAlert = false
+        .alert(
+            "Explore \(self.selectedCity?.name ?? "")?",
+            isPresented: self.$showAlert
+        ) {
+            Button("Yes") {
+                if let city = self.selectedCity {
+                    self.onCitySelected(city)
                 }
-            )
+                self.clearSelectionState()
+            }
+            Button("Cancel", role: .cancel) {
+                self.region = self.lastRegion ?? self.region
+                self.clearSelectionState()
+            }
+        } message: {
+            if let city = self.selectedCity {
+                Text("Would you like to explore \(city.name), \(city.country.name)?")
+            }
         }
     }
 
-    // MARK: - Header View
+    // MARK: - Search Suggestions
 
-    private var headerView: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Select a City")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-
-                Text("Tap to explore or search")
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.8))
-            }
-
-            Spacer()
-
-            // Search button
-            Button(action: {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                    self.showSearchOverlay = true
-                }
-            }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 16, weight: .medium))
-                    Text("Search")
-                        .font(.system(size: 16, weight: .medium))
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+    @ViewBuilder
+    private var searchSuggestionsContent: some View {
+        let results = self.filteredCities
+        ForEach(results, id: \.id) { city in
+            Button {
+                self.navigateToCity(city)
+            } label: {
+                CitySearchResultRow(
+                    city: city,
+                    searchText: self.searchText
+                )
             }
             .buttonStyle(.plain)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 10)
-        .padding(.bottom, 16)
+    }
+
+    private var filteredCities: [CityModel] {
+        let query = self.searchText
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !query.isEmpty else {
+            return Array(self.cities.prefix(10))
+        }
+
+        var nameMatches: [CityModel] = []
+        var countryMatches: [CityModel] = []
+
+        for row in self.searchIndex {
+            if row.city.name.localizedStandardContains(query) {
+                nameMatches.append(row.city)
+            } else if row.city.country.name.localizedStandardContains(query) {
+                countryMatches.append(row.city)
+            }
+        }
+
+        return nameMatches + countryMatches
+    }
+
+    // MARK: - Navigation
+
+    private func navigateToCity(_ city: CityModel) {
+        self.searchText = ""
+        self.region = MKCoordinateRegion(
+            center: city.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
+        )
+        self.selectedCity = city
+        self.onCitySelected(city)
+    }
+
+    // MARK: - State Management
+
+    private func resetState() {
+        self.selectedCity = nil
+        self.showAlert = false
+        self.lastRegion = nil
+        self.alertTimeoutTask?.cancel()
+    }
+
+    private func clearSelectionState() {
+        self.selectedCity = nil
+        self.showAlert = false
+        self.lastRegion = nil
+    }
+
+    private func handleAlertVisibilityChange(_ isVisible: Bool) {
+        if isVisible {
+            self.alertTimeoutTask = Task {
+                try? await Task.sleep(for: .seconds(10))
+                guard !Task.isCancelled else { return }
+                self.showAlert = false
+                self.selectedCity = nil
+                self.lastRegion = nil
+            }
+        } else {
+            self.alertTimeoutTask?.cancel()
+        }
+    }
+
+    // MARK: - Search Index
+
+    private struct SearchIndexRow {
+        let city: CityModel
+    }
+
+    private func buildSearchIndexIfNeeded() {
+        guard self.searchIndex.isEmpty else { return }
+        self.searchIndex = self.cities.map { SearchIndexRow(city: $0) }
     }
 }
