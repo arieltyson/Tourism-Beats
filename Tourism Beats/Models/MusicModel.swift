@@ -131,6 +131,11 @@ struct AppleMusicPlaylistResponse: Decodable, Sendable {
     let included: [AppleMusicAPISong]?
 }
 
+struct AppleMusicPlaylistsResponse: Decodable, Sendable {
+    let data: [AppleMusicAPIPlaylist]
+    let next: String?
+}
+
 // MARK: - Helpers to map AM API → AppSong
 
 extension AppSong {

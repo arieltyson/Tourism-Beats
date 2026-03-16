@@ -3,6 +3,7 @@ import MusicKit
 
 actor MusicService: MusicProtocol {
     static let shared = MusicService()
+    private static let cacheVersion = "v2"
 
     private var chartCache: [String: (Date, AppSong)] = [:]
     private let cacheDuration: TimeInterval = 3 * 60 * 60 // 3 hours
@@ -146,33 +147,44 @@ actor MusicService: MusicProtocol {
         storefront: String,
         developerToken: String
     ) async throws -> [AppleMusicAPIPlaylist] {
-        let url = try self.makeURL(
-            path: "/v1/catalog/\(storefront)/charts",
+        var nextURL: URL? = try self.makeURL(
+            path: "/v1/catalog/\(storefront)/playlists",
             queryItems: [
-                URLQueryItem(name: "types", value: "playlists"),
-                URLQueryItem(name: "with", value: "cityCharts"),
-                URLQueryItem(name: "limit", value: "100")
+                URLQueryItem(
+                    name: "filter[storefront-chart]",
+                    value: storefront
+                )
             ]
         )
 
-        guard let data = try await self.performRequest(
-            url: url,
-            developerToken: developerToken,
-            storefrontFailure: nil
-        )
-        else {
-            return []
+        var playlists: [AppleMusicAPIPlaylist] = []
+        var pageCount = 0
+
+        while let url = nextURL, pageCount < 8 {
+            pageCount += 1
+
+            guard let data = try await self.performRequest(
+                url: url,
+                developerToken: developerToken,
+                storefrontFailure: nil
+            )
+            else {
+                break
+            }
+
+            do {
+                let decoded = try Self.decoder.decode(
+                    AppleMusicPlaylistsResponse.self,
+                    from: data
+                )
+                playlists.append(contentsOf: decoded.data)
+                nextURL = Self.nextURL(from: decoded.next)
+            } catch let decodeErr {
+                throw MusicServiceError.decodingError(decodeErr)
+            }
         }
 
-        do {
-            let decoded = try Self.decoder.decode(
-                AppleMusicChartResponse.self,
-                from: data
-            )
-            return decoded.results?.playlists?.flatMap(\.data) ?? []
-        } catch let decodeErr {
-            throw MusicServiceError.decodingError(decodeErr)
-        }
+        return playlists
     }
 
     private func fetchFirstTrack(
@@ -273,11 +285,11 @@ actor MusicService: MusicProtocol {
     }
 
     private static func countryCacheKey(storefront: String) -> String {
-        "country|\(storefront)"
+        "country|\(self.cacheVersion)|\(storefront)"
     }
 
     private static func cityCacheKey(for city: CityModel, storefront: String) -> String {
-        "city|\(storefront)|\(self.normalizedSearchText(city.name))"
+        "city|\(self.cacheVersion)|\(storefront)|\(self.normalizedSearchText(city.name))"
     }
 
     private static func bestMatchingCityPlaylist(
@@ -285,14 +297,22 @@ actor MusicService: MusicProtocol {
         in playlists: [AppleMusicAPIPlaylist]
     ) -> AppleMusicAPIPlaylist? {
         let searchTerms = Self.citySearchTerms(for: city)
+        let preferredTitles = Set(
+            Self.preferredCityChartTitles(for: city).map(Self.normalizedSearchText)
+        )
 
         return playlists
             .compactMap { playlist -> (playlist: AppleMusicAPIPlaylist, score: Int)? in
                 guard let name = playlist.attributes?.name else { return nil }
+                let normalizedName = Self.normalizedSearchText(name)
+                let exactTitleBonus = preferredTitles.contains(normalizedName) ? 400 : 0
+                let curatorBonus =
+                    playlist.attributes?.curatorName?.localizedStandardContains("Apple Music") == true
+                    ? 25 : 0
                 let score = Self.matchScore(
                     playlistName: name,
                     cityTerms: searchTerms
-                )
+                ) + exactTitleBonus + curatorBonus
                 guard score > 0 else { return nil }
                 return (playlist, score)
             }
@@ -301,7 +321,7 @@ actor MusicService: MusicProtocol {
     }
 
     private static func citySearchTerms(for city: CityModel) -> [String] {
-        var terms: [String] = [city.name]
+        var terms = Self.cityDisplayNames(for: city)
 
         if let simplifiedName = city.name.split(separator: ",").first {
             terms.append(String(simplifiedName))
@@ -324,6 +344,25 @@ actor MusicService: MusicProtocol {
         }
     }
 
+    private static func preferredCityChartTitles(for city: CityModel) -> [String] {
+        let displayNames = Self.cityDisplayNames(for: city)
+        var titles: [String] = []
+
+        for name in displayNames {
+            titles.append("Top 25: \(name)")
+            titles.append("Top 25 \(name)")
+        }
+
+        return Self.uniquedStrings(titles)
+    }
+
+    private static func cityDisplayNames(for city: CityModel) -> [String] {
+        let aliasKey =
+            "\(city.country.code.uppercased())|\(Self.normalizedSearchText(city.name))"
+        let aliases = Self.cityChartAliases[aliasKey] ?? []
+        return Self.uniquedStrings(aliases + [city.name])
+    }
+
     private static func normalizedSearchText(_ text: String) -> String {
         text
             .folding(
@@ -343,12 +382,55 @@ actor MusicService: MusicProtocol {
         let paddedName = " \(normalizedName) "
 
         return cityTerms.reduce(0) { currentBest, term in
-            let exactScore = normalizedName == term ? 120 : 0
+            let exactScore = normalizedName == term ? 180 : 0
+            let top25ExactScore =
+                normalizedName == "top 25 \(term)" ||
+                normalizedName == "top 25 \(term) apple music" ||
+                normalizedName == "top 25 \(term) city"
+                ? 240 : 0
+            let top25BoundaryScore =
+                paddedName.contains(" top 25 \(term) ") ? 220 : 0
             let wordBoundaryScore = paddedName.contains(" \(term) ") ? 100 : 0
             let substringScore = normalizedName.contains(term) ? 70 : 0
-            return max(currentBest, exactScore, wordBoundaryScore, substringScore)
+            return max(
+                currentBest,
+                exactScore,
+                top25ExactScore,
+                top25BoundaryScore,
+                wordBoundaryScore,
+                substringScore
+            )
         }
     }
+
+    private static func nextURL(from next: String?) -> URL? {
+        guard let next else { return nil }
+
+        if let absoluteURL = URL(string: next), absoluteURL.scheme != nil {
+            return absoluteURL
+        }
+
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.music.apple.com"
+        components.path = next
+        return components.url
+    }
+
+    private static func uniquedStrings(_ strings: [String]) -> [String] {
+        var seen = Set<String>()
+
+        return strings.compactMap { value in
+            let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmed.isEmpty else { return nil }
+            guard seen.insert(trimmed.lowercased()).inserted else { return nil }
+            return trimmed
+        }
+    }
+
+    private static let cityChartAliases: [String: [String]] = [
+        "US|new york": ["New York City"]
+    ]
 
     private static func firstPlayableSong(
         from response: AppleMusicPlaylistResponse
