@@ -17,20 +17,19 @@ struct CityView: View {
             .padding(.top, 20)
             .padding(.bottom, 20)
 
-            VStack {
-                CachedCityImage(url: self.city.imageURL)
-                    .aspectRatio(1, contentMode: .fit)
-                    .clipShape(.rect(cornerRadius: 15))
-                    .padding()
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.black.opacity(0.5))
-                    .shadow(radius: 5)
-            )
-            .padding(.horizontal)
-            .frame(maxHeight: .infinity)
-            .layoutPriority(1)
+            CachedCityImage(url: self.city.imageURL)
+                .aspectRatio(1, contentMode: .fill)
+                .frame(maxWidth: .infinity)
+                .aspectRatio(1, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 15))
+                .background(
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color.black.opacity(0.5))
+                        .shadow(radius: 5)
+                )
+                .padding(.horizontal)
+                .frame(maxHeight: .infinity)
+                .layoutPriority(1)
 
             Spacer(minLength: 20)
 

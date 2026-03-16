@@ -111,26 +111,17 @@ private struct ModernIconPageButton: View {
 
     var body: some View {
         Button(action: self.action) {
-            ZStack {
-                if self.isActive {
-                    Color.clear
-                        .frame(width: 54, height: 64)
-                        .glassEffect(.regular.interactive(), in: .capsule)
-                        .glassEffectID("page-indicator-selection", in: self.selectionNamespace)
-                        .glassEffectTransition(.matchedGeometry)
-                }
-
-                Label(self.page.label, systemImage: self.page.icon)
-                    .labelStyle(.iconOnly)
-                    .font(.title3)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(self.isActive ? .primary : .secondary)
-                    .frame(width: 54, height: 64)
-                    .contentShape(.capsule)
-            }
+            Label(self.page.label, systemImage: self.page.icon)
+                .labelStyle(.iconOnly)
+                .font(.title3)
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(self.isActive ? .white : .white.opacity(0.5))
+                .frame(width: 44, height: 44)
+                .contentShape(.capsule)
         }
         .buttonStyle(.plain)
-        .scaleEffect(self.isActive ? 1 : 0.92)
+        .scaleEffect(self.isActive ? 1.15 : 0.92)
+        .opacity(self.isActive ? 1 : 0.7)
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")

@@ -354,7 +354,7 @@
   {
     "name": "Hong Kong",
     "countryCode": "HK",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/1280px-Flag_of_Hong_Kong.svg.png",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Hong_Kong_Night_Skyline_2.jpg/1280px-Hong_Kong_Night_Skyline_2.jpg",
     "latitude": 22.3193,
     "longitude": 114.1694,
     "timeZoneIdentifier": "Asia/Hong_Kong"
@@ -658,7 +658,7 @@
   {
     "name": "Singapore",
     "countryCode": "SG",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/1280px-Flag_of_Singapore.svg.png",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Marina_Bay_Sands_in_the_evening_-_20101120.jpg/1280px-Marina_Bay_Sands_in_the_evening_-_20101120.jpg",
     "latitude": 1.3521,
     "longitude": 103.8198,
     "timeZoneIdentifier": "Asia/Singapore"
