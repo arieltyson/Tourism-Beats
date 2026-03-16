@@ -22,7 +22,8 @@ struct AdvisoriesView: View {
 
                 AdvisoryCard {
                     SectionHeader(
-                        title: "Safety & Advisories"
+                        title: "Safety Advisory",
+                        subtitle: "Global Peace Index 2024"
                     )
                     .padding(.bottom, 2)
 
@@ -36,7 +37,8 @@ struct AdvisoriesView: View {
 
                 AdvisoryCard {
                     SectionHeader(
-                        title: "Visa & Entry"
+                        title: "Visa Entry",
+                        subtitle: "Personalized by your selected passport"
                     )
                     .padding(.bottom, 2)
 
@@ -51,6 +53,25 @@ struct AdvisoriesView: View {
                 }
                 .accessibilityHint(
                     "Shows visa information for travelers to \(self.city.name)"
+                )
+
+                // MARK: Getting Around
+
+                AdvisoryCard {
+                    SectionHeader(
+                        title: "Getting Around",
+                        subtitle: "Walk Score\u{00AE} Index"
+                    )
+                    .padding(.bottom, 2)
+
+                    WalkabilityView(
+                        viewModel: WalkabilityViewModel(city: self.city)
+                    )
+                    .fixedSize(horizontal: false, vertical: true)
+                    .transition(.opacity.combined(with: .scale))
+                }
+                .accessibilityHint(
+                    "Shows walkability and transit scores for \(self.city.name)"
                 )
             }
             .padding(.horizontal, 20)
@@ -175,6 +196,7 @@ private struct AdvisoryCard<Content: View>: View {
 
 private struct SectionHeader: View {
     let title: String
+    var subtitle: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -182,6 +204,12 @@ private struct SectionHeader: View {
                 .font(.system(.title3, design: .rounded).weight(.semibold))
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
+
+            if let subtitle {
+                Text(subtitle)
+                    .font(TypographyTokens.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
