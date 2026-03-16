@@ -120,8 +120,7 @@ private struct ModernIconPageButton: View {
                 .contentShape(.capsule)
         }
         .buttonStyle(.plain)
-        .scaleEffect(self.isActive ? 1.15 : 0.92)
-        .opacity(self.isActive ? 1 : 0.7)
+        .opacity(self.isActive ? 1 : 0.5)
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")
