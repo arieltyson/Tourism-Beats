@@ -14,7 +14,7 @@ enum DataServiceError: Error {
 private struct CityJSON: Decodable {
     let name: String
     let countryCode: String
-    let imageName: String
+    let imageURL: URL
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
     let timeZoneIdentifier: String
@@ -71,7 +71,7 @@ final class DataService {
                 id: "\(entry.name)-\(entry.countryCode)",
                 name: entry.name,
                 country: country,
-                imageName: entry.imageName,
+                imageURL: entry.imageURL,
                 coordinate: .init(
                     latitude: entry.latitude,
                     longitude: entry.longitude

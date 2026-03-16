@@ -4,7 +4,7 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
     let id: String
     let name: String
     let country: CountryModel
-    let imageName: String
+    let imageURL: URL
     let coordinate: CLLocationCoordinate2D
     let timeZoneIdentifier: String
 
