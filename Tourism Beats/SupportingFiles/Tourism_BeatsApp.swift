@@ -10,46 +10,16 @@ struct Tourism_BeatsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     @State private var selectedTab: AppTab = .home
-    @State private var launchPhase: LaunchPhase = .branded
 
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                // Content layer — visible once launch animation completes.
-                if self.launchPhase == .ready {
-                    MainTabView(selectedTab: self.$selectedTab)
-                        .transition(.opacity)
-                }
-
-                // Branded overlay — dismisses itself after animation.
-                if self.launchPhase == .branded {
-                    LaunchAnimationView {
-                        withAnimation(.easeInOut(duration: 0.35)) {
-                            self.launchPhase = .ready
-                        }
-                    }
-                    .transition(.opacity)
-                    .zIndex(1)
-                }
-            }
-            .animation(.easeInOut(duration: 0.35), value: self.launchPhase)
-            .task {
-                self.appDelegate.onQuickAction = { action in
-                    self.selectedTab = action.targetTab
-                }
-            }
+            AppSceneRootView(
+                appDelegate: self.appDelegate,
+                selectedTab: self.$selectedTab
+            )
             .modelContainer(for: [Restaurant.self, RestaurantMealPhoto.self])
         }
     }
-}
-
-// MARK: - LaunchPhase
-
-private enum LaunchPhase: Equatable {
-    /// Branded animation is playing.
-    case branded
-    /// Full content is visible.
-    case ready
 }
 
 // MARK: - AppDelegate

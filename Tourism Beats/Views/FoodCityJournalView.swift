@@ -12,15 +12,9 @@ struct FoodCityJournalView: View {
 
     @Query(sort: \Restaurant.dateAdded, order: .reverse)
     private var restaurants: [Restaurant]
-    @Query(sort: \RestaurantMealPhoto.dateAdded, order: .forward)
-    private var mealPhotos: [RestaurantMealPhoto]
 
     private var cityRestaurants: [Restaurant] {
         self.restaurants.filter { self.group.contains($0) }
-    }
-
-    private var mealPhotosByRestaurantIdentifier: [UUID: [RestaurantMealPhoto]] {
-        Dictionary(grouping: self.mealPhotos, by: \.restaurantIdentifier)
     }
 
     var body: some View {
@@ -40,7 +34,7 @@ struct FoodCityJournalView: View {
                         } label: {
                             FoodRestaurantCard(
                                 restaurant: restaurant,
-                                mealPhotos: self.mealPhotosByRestaurantIdentifier[restaurant.restaurantIdentifier] ?? []
+                                mealPhotos: restaurant.sortedMealPhotos
                             )
                         }
                         .buttonStyle(.plain)

@@ -10,6 +10,10 @@ import SwiftData
 /// property.
 @Model
 final class Restaurant {
+    /// Legacy stable identifier used by older builds to associate meal photos.
+    ///
+    /// The app now uses the `mealPhotos` relationship as the source of truth,
+    /// but this identifier remains in place to repair and migrate existing data.
     var restaurantIdentifier: UUID = UUID()
     var name: String = ""
     var city: String = ""
@@ -22,6 +26,8 @@ final class Restaurant {
     var menuURLString: String?
     var notes: String?
     var dateAdded: Date = Date.now
+    @Relationship(deleteRule: .cascade, inverse: \RestaurantMealPhoto.restaurant)
+    var mealPhotos: [RestaurantMealPhoto]? = []
 
     init(
         restaurantIdentifier: UUID = UUID(),
@@ -68,6 +74,15 @@ final class Restaurant {
         self.cuisine ?? .other
     }
 
+    var sortedMealPhotos: [RestaurantMealPhoto] {
+        (self.mealPhotos ?? []).sorted { lhs, rhs in
+            if lhs.dateAdded != rhs.dateAdded {
+                return lhs.dateAdded < rhs.dateAdded
+            }
+            return lhs.photoIdentifier.uuidString < rhs.photoIdentifier.uuidString
+        }
+    }
+
     var locationURL: URL? {
         guard let locationURLString else { return nil }
         return URL(string: locationURLString)
@@ -82,6 +97,19 @@ final class Restaurant {
     var clampedScore: Int? {
         guard let score else { return nil }
         return min(max(score, 0), 10)
+    }
+
+    func attachMealPhoto(_ mealPhoto: RestaurantMealPhoto) {
+        mealPhoto.restaurant = self
+        mealPhoto.restaurantIdentifier = self.restaurantIdentifier
+
+        if self.mealPhotos == nil {
+            self.mealPhotos = [mealPhoto]
+        } else if !(self.mealPhotos?.contains { existing in
+            existing.photoIdentifier == mealPhoto.photoIdentifier
+        } ?? false) {
+            self.mealPhotos?.append(mealPhoto)
+        }
     }
 }
 

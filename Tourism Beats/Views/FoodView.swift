@@ -6,8 +6,6 @@ import SwiftUI
 struct FoodView: View {
     @Query(sort: \Restaurant.dateAdded, order: .reverse)
     private var restaurants: [Restaurant]
-    @Query(sort: \RestaurantMealPhoto.dateAdded, order: .forward)
-    private var mealPhotos: [RestaurantMealPhoto]
 
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = FoodViewModel()
@@ -65,19 +63,12 @@ struct FoodView: View {
     }
 
     private func deleteRestaurant(_ restaurant: Restaurant) {
-        let mealPhotos = self.mealPhotos.filter {
-            $0.restaurantIdentifier == restaurant.restaurantIdentifier
-        }
-
-        for mealPhoto in mealPhotos {
-            self.modelContext.delete(mealPhoto)
-        }
+        let deletedPaths = restaurant.sortedMealPhotos.map(\.relativePath)
 
         withAnimation(AnimationTokens.standard) {
             self.modelContext.delete(restaurant)
         }
 
-        let deletedPaths = mealPhotos.map(\.relativePath)
         Task {
             try? await RestaurantMealPhotoStore.shared.deleteFiles(at: deletedPaths)
         }

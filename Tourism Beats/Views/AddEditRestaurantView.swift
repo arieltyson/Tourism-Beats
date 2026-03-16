@@ -8,9 +8,6 @@ struct AddEditRestaurantView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
-    @Query(sort: \RestaurantMealPhoto.dateAdded, order: .forward)
-    private var allMealPhotos: [RestaurantMealPhoto]
-
     private let restaurant: Restaurant?
     private let restaurantIdentifier: UUID
     let existingCities: [String]
@@ -47,9 +44,8 @@ struct AddEditRestaurantView: View {
     }
 
     private var existingMealPhotos: [RestaurantMealPhoto] {
-        self.allMealPhotos.filter {
-            $0.restaurantIdentifier == self.restaurantIdentifier
-                && !self.removedPhotoIdentifiers.contains($0.photoIdentifier)
+        (self.restaurant?.sortedMealPhotos ?? []).filter {
+            !self.removedPhotoIdentifiers.contains($0.photoIdentifier)
         }
     }
 
@@ -382,10 +378,11 @@ struct AddEditRestaurantView: View {
     }
 
     private func save() {
-        let mealPhotosToDelete = self.allMealPhotos.filter {
-            $0.restaurantIdentifier == self.restaurantIdentifier
-                && self.removedPhotoIdentifiers.contains($0.photoIdentifier)
+        let mealPhotosToDelete = (self.restaurant?.sortedMealPhotos ?? []).filter {
+            self.removedPhotoIdentifiers.contains($0.photoIdentifier)
         }
+
+        let targetRestaurant: Restaurant
 
         if let restaurant = self.restaurant {
             restaurant.name = self.trimmedName
@@ -398,6 +395,7 @@ struct AddEditRestaurantView: View {
             restaurant.locationURLString = Self.normalizedURLString(from: self.locationURLString)
             restaurant.menuURLString = Self.normalizedURLString(from: self.menuURLString)
             restaurant.notes = self.trimmedNotes.isEmpty ? nil : self.trimmedNotes
+            targetRestaurant = restaurant
         } else {
             let restaurant = Restaurant(
                 restaurantIdentifier: self.restaurantIdentifier,
@@ -413,6 +411,7 @@ struct AddEditRestaurantView: View {
                 notes: self.trimmedNotes.isEmpty ? nil : self.trimmedNotes
             )
             self.modelContext.insert(restaurant)
+            targetRestaurant = restaurant
         }
 
         for mealPhoto in mealPhotosToDelete {
@@ -422,9 +421,11 @@ struct AddEditRestaurantView: View {
         for stagedMealPhoto in self.stagedMealPhotos {
             let mealPhoto = RestaurantMealPhoto(
                 photoIdentifier: stagedMealPhoto.photoIdentifier,
-                restaurantIdentifier: self.restaurantIdentifier,
-                relativePath: stagedMealPhoto.relativePath
+                restaurantIdentifier: targetRestaurant.restaurantIdentifier,
+                relativePath: stagedMealPhoto.relativePath,
+                restaurant: targetRestaurant
             )
+            targetRestaurant.attachMealPhoto(mealPhoto)
             self.modelContext.insert(mealPhoto)
         }
 
@@ -440,14 +441,8 @@ struct AddEditRestaurantView: View {
     private func deleteRestaurant() {
         guard let restaurant = self.restaurant else { return }
 
-        let mealPhotos = self.allMealPhotos.filter {
-            $0.restaurantIdentifier == self.restaurantIdentifier
-        }
+        let mealPhotos = restaurant.sortedMealPhotos
         let stagedPaths = self.stagedMealPhotos.map(\.relativePath)
-
-        for mealPhoto in mealPhotos {
-            self.modelContext.delete(mealPhoto)
-        }
 
         self.modelContext.delete(restaurant)
         self.hasCommittedChanges = true
