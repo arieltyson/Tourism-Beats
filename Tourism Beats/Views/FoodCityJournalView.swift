@@ -4,15 +4,23 @@ import SwiftUI
 // MARK: - FoodCityJournalView
 
 struct FoodCityJournalView: View {
+    @Environment(\.dismiss) private var dismiss
+
     let group: FoodJournalCityGroup
     let onEdit: (Restaurant) -> Void
     let onDelete: (Restaurant) -> Void
 
     @Query(sort: \Restaurant.dateAdded, order: .reverse)
     private var restaurants: [Restaurant]
+    @Query(sort: \RestaurantMealPhoto.dateAdded, order: .forward)
+    private var mealPhotos: [RestaurantMealPhoto]
 
     private var cityRestaurants: [Restaurant] {
         self.restaurants.filter { self.group.contains($0) }
+    }
+
+    private var mealPhotosByRestaurantIdentifier: [UUID: [RestaurantMealPhoto]] {
+        Dictionary(grouping: self.mealPhotos, by: \.restaurantIdentifier)
     }
 
     var body: some View {
@@ -30,9 +38,17 @@ struct FoodCityJournalView: View {
                         Button {
                             self.onEdit(restaurant)
                         } label: {
-                            FoodRestaurantCard(restaurant: restaurant)
+                            FoodRestaurantCard(
+                                restaurant: restaurant,
+                                mealPhotos: self.mealPhotosByRestaurantIdentifier[restaurant.restaurantIdentifier] ?? []
+                            )
                         }
                         .buttonStyle(.plain)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button("Delete", systemImage: "trash", role: .destructive) {
+                                self.onDelete(restaurant)
+                            }
+                        }
                         .contextMenu {
                             Button("Edit", systemImage: "pencil") {
                                 self.onEdit(restaurant)
@@ -56,6 +72,10 @@ struct FoodCityJournalView: View {
         .background(Color.clear.ignoresSafeArea())
         .navigationTitle(self.group.displayCityName)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: self.cityRestaurants.count) { oldCount, newCount in
+            guard oldCount > 0, newCount == 0 else { return }
+            self.dismiss()
+        }
     }
 }
 

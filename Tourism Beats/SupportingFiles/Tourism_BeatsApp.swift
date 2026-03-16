@@ -38,7 +38,7 @@ struct Tourism_BeatsApp: App {
                     self.selectedTab = action.targetTab
                 }
             }
-            .modelContainer(for: Restaurant.self)
+            .modelContainer(for: [Restaurant.self, RestaurantMealPhoto.self])
         }
     }
 }

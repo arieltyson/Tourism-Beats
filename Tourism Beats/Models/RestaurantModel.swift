@@ -10,6 +10,7 @@ import SwiftData
 /// property.
 @Model
 final class Restaurant {
+    var restaurantIdentifier: UUID = UUID()
     var name: String = ""
     var city: String = ""
     var country: String = ""
@@ -23,6 +24,7 @@ final class Restaurant {
     var dateAdded: Date = Date.now
 
     init(
+        restaurantIdentifier: UUID = UUID(),
         name: String,
         city: String,
         country: String,
@@ -34,6 +36,7 @@ final class Restaurant {
         menuURLString: String? = nil,
         notes: String? = nil
     ) {
+        self.restaurantIdentifier = restaurantIdentifier
         self.name = name
         self.city = city
         self.country = country

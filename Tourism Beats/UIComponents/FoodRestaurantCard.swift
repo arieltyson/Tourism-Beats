@@ -4,11 +4,27 @@ import SwiftUI
 
 struct FoodRestaurantCard: View {
     let restaurant: Restaurant
+    let mealPhotos: [RestaurantMealPhoto]
 
     @Environment(\.colorScheme) private var colorScheme
 
+    init(
+        restaurant: Restaurant,
+        mealPhotos: [RestaurantMealPhoto] = []
+    ) {
+        self.restaurant = restaurant
+        self.mealPhotos = mealPhotos
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
+            if let leadMealPhoto = self.mealPhotos.first {
+                FoodRestaurantMealPhotoPreview(
+                    mealPhoto: leadMealPhoto,
+                    additionalPhotoCount: max(0, self.mealPhotos.count - 1)
+                )
+            }
+
             FoodRestaurantCardHeader(restaurant: self.restaurant)
 
             if let score = self.restaurant.clampedScore {
@@ -81,6 +97,60 @@ private struct FoodRestaurantCardHeader: View {
             Spacer(minLength: SpacingTokens.xSmall)
 
             FoodRestaurantStatusBadge(status: self.restaurant.status)
+        }
+    }
+}
+
+// MARK: - FoodRestaurantMealPhotoPreview
+
+private struct FoodRestaurantMealPhotoPreview: View {
+    let mealPhoto: RestaurantMealPhoto
+    let additionalPhotoCount: Int
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            AsyncImage(
+                url: RestaurantMealPhotoStore.fileURL(for: self.mealPhoto.relativePath),
+                transaction: .init(animation: .smooth)
+            ) { phase in
+                switch phase {
+                case .empty:
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            ProgressView()
+                        }
+                case let .success(image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                case .failure:
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            Image(systemName: "photo")
+                                .font(.title3)
+                                .foregroundStyle(.secondary)
+                        }
+                @unknown default:
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .aspectRatio(1.45, contentMode: .fit)
+            .clipShape(.rect(cornerRadius: 14, style: .continuous))
+
+            if self.additionalPhotoCount > 0 {
+                Text("+\(self.additionalPhotoCount, format: .number)")
+                    .font(TypographyTokens.footnote.monospacedDigit())
+                    .bold()
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, SpacingTokens.xSmall)
+                    .padding(.vertical, SpacingTokens.xxSmall)
+                    .background(.thinMaterial, in: Capsule())
+                    .padding(SpacingTokens.xSmall)
+            }
         }
     }
 }
