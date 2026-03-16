@@ -1710,5 +1710,221 @@
     "latitude": 11.18333333,
     "longitude": -60.7375,
     "timeZoneIdentifier": "America/Port_of_Spain"
+  },
+  {
+    "name": "Zurich",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Geneva_aerial_view_2024.jpg/1280px-Geneva_aerial_view_2024.jpg",
+    "latitude": 47.3769,
+    "longitude": 8.5417,
+    "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Munich",
+    "countryCode": "DE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
+    "latitude": 48.1351,
+    "longitude": 11.582,
+    "timeZoneIdentifier": "Europe/Berlin"
+  },
+  {
+    "name": "Prague",
+    "countryCode": "CZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 50.0755,
+    "longitude": 14.4378,
+    "timeZoneIdentifier": "Europe/Prague"
+  },
+  {
+    "name": "Milan",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "latitude": 45.4642,
+    "longitude": 9.19,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Turin",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "latitude": 45.0703,
+    "longitude": 7.6869,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Palermo",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "latitude": 38.1157,
+    "longitude": 13.3615,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Naples",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "latitude": 40.8518,
+    "longitude": 14.2681,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Cagliari",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "latitude": 39.2238,
+    "longitude": 9.1217,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Marseille",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+    "latitude": 43.2965,
+    "longitude": 5.3698,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Nice",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+    "latitude": 43.7102,
+    "longitude": 7.262,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Monte Carlo",
+    "countryCode": "MC",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+    "latitude": 43.7384,
+    "longitude": 7.4246,
+    "timeZoneIdentifier": "Europe/Monaco"
+  },
+  {
+    "name": "Cologne",
+    "countryCode": "DE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
+    "latitude": 50.9375,
+    "longitude": 6.9603,
+    "timeZoneIdentifier": "Europe/Berlin"
+  },
+  {
+    "name": "Hamburg",
+    "countryCode": "DE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
+    "latitude": 53.5511,
+    "longitude": 9.9937,
+    "timeZoneIdentifier": "Europe/Berlin"
+  },
+  {
+    "name": "Bratislava",
+    "countryCode": "SK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 48.1486,
+    "longitude": 17.1077,
+    "timeZoneIdentifier": "Europe/Bratislava"
+  },
+  {
+    "name": "Mykonos",
+    "countryCode": "GR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg/1280px-Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg",
+    "latitude": 37.4467,
+    "longitude": 25.3289,
+    "timeZoneIdentifier": "Europe/Athens"
+  },
+  {
+    "name": "Tirana",
+    "countryCode": "AL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg/1280px-Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg",
+    "latitude": 41.3275,
+    "longitude": 19.8187,
+    "timeZoneIdentifier": "Europe/Tirane"
+  },
+  {
+    "name": "Skopje",
+    "countryCode": "MK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 41.9981,
+    "longitude": 21.4254,
+    "timeZoneIdentifier": "Europe/Skopje"
+  },
+  {
+    "name": "Podgorica",
+    "countryCode": "ME",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 42.4304,
+    "longitude": 19.2594,
+    "timeZoneIdentifier": "Europe/Podgorica"
+  },
+  {
+    "name": "Pristina",
+    "countryCode": "XK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 42.6629,
+    "longitude": 21.1655,
+    "timeZoneIdentifier": "Europe/Belgrade"
+  },
+  {
+    "name": "Ljubljana",
+    "countryCode": "SI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 46.0569,
+    "longitude": 14.5058,
+    "timeZoneIdentifier": "Europe/Ljubljana"
+  },
+  {
+    "name": "Sarajevo",
+    "countryCode": "BA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 43.8563,
+    "longitude": 18.4131,
+    "timeZoneIdentifier": "Europe/Sarajevo"
+  },
+  {
+    "name": "Chisinau",
+    "countryCode": "MD",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 47.0105,
+    "longitude": 28.8638,
+    "timeZoneIdentifier": "Europe/Chisinau"
+  },
+  {
+    "name": "Tbilisi",
+    "countryCode": "GE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 41.7151,
+    "longitude": 44.8271,
+    "timeZoneIdentifier": "Asia/Tbilisi"
+  },
+  {
+    "name": "Yerevan",
+    "countryCode": "AM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "latitude": 40.1792,
+    "longitude": 44.4991,
+    "timeZoneIdentifier": "Asia/Yerevan"
+  },
+  {
+    "name": "Asmara",
+    "countryCode": "ER",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nairobi_skyline_from_Gem_Hotel.jpg/1280px-Nairobi_skyline_from_Gem_Hotel.jpg",
+    "latitude": 15.3229,
+    "longitude": 38.9251,
+    "timeZoneIdentifier": "Africa/Asmara"
+  },
+  {
+    "name": "Djibouti",
+    "countryCode": "DJ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nairobi_skyline_from_Gem_Hotel.jpg/1280px-Nairobi_skyline_from_Gem_Hotel.jpg",
+    "latitude": 11.5721,
+    "longitude": 43.1456,
+    "timeZoneIdentifier": "Africa/Djibouti"
+  },
+  {
+    "name": "Mandalay",
+    "countryCode": "MM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bangkok_Montage_2024_2.jpg/1280px-Bangkok_Montage_2024_2.jpg",
+    "latitude": 21.9588,
+    "longitude": 96.0891,
+    "timeZoneIdentifier": "Asia/Yangon"
   }
 ]
