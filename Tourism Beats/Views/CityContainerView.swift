@@ -7,6 +7,7 @@ struct CityContainerView: View {
     @State private var dragOffset: CGFloat = 0
     @State private var isPaging: Bool = false
     @State private var containerSize: CGSize = .zero
+    @State private var haptic = HapticTrigger()
 
     private let pageCount = 3
 
@@ -46,13 +47,12 @@ struct CityContainerView: View {
             VerticalIconPageIndicator(
                 activeIndex: self.pageIndex,
                 onSelect: { index in
-                    withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
-                        self.pageIndex = index
-                    }
+                    self.selectPage(index)
                 }
             )
-            .padding(.trailing)
+            .padding(.trailing, 12)
         }
+        .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -71,6 +71,13 @@ struct CityContainerView: View {
 
     private func offset(for index: Int) -> CGFloat {
         CGFloat(index - self.pageIndex) * self.containerSize.height + self.dragOffset
+    }
+
+    private func selectPage(_ index: Int) {
+        guard index != self.pageIndex else { return }
+
+        self.pageIndex = index
+        self.haptic.fire(.pageChange)
     }
 
     // MARK: - Paging Gesture
@@ -111,9 +118,9 @@ struct CityContainerView: View {
 
                 if commitByDistance || commitByVelocity {
                     if drag < 0, self.pageIndex < self.pageCount - 1 {
-                        self.pageIndex += 1
+                        self.selectPage(self.pageIndex + 1)
                     } else if drag > 0, self.pageIndex > 0 {
-                        self.pageIndex -= 1
+                        self.selectPage(self.pageIndex - 1)
                     }
                 }
             }

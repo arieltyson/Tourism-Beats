@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - PageDescriptor
 
 /// Describes a page in the vertical pager with its icon and label.
-struct PageDescriptor: Identifiable {
+struct PageDescriptor: Identifiable, Hashable, Sendable {
     let id: Int
     let icon: String
     let label: String
@@ -24,64 +24,169 @@ struct VerticalIconPageIndicator: View {
     var pages: [PageDescriptor] = PageDescriptor.defaults
     let onSelect: (Int) -> Void
 
-    @Environment(\.colorScheme) private var scheme
+    @Namespace private var selectionNamespace
 
     var body: some View {
-        VStack(spacing: 4) {
-            ForEach(self.pages) { page in
-                IconPageButton(
-                    page: page,
-                    isActive: self.activeIndex == page.id,
-                    action: { self.onSelect(page.id) }
+        Group {
+            if #available(iOS 26.0, *) {
+                ModernVerticalIconPageIndicator(
+                    activeIndex: self.activeIndex,
+                    pages: self.pages,
+                    onSelect: self.onSelect,
+                    selectionNamespace: self.selectionNamespace
+                )
+            } else {
+                LegacyVerticalIconPageIndicator(
+                    activeIndex: self.activeIndex,
+                    pages: self.pages,
+                    onSelect: self.onSelect,
+                    selectionNamespace: self.selectionNamespace
                 )
             }
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 10)
-        .background(
-            Capsule(style: .continuous)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    Capsule(style: .continuous)
-                        .strokeBorder(
-                            AppColors.glassBorder(for: self.scheme),
-                            lineWidth: 1
-                        )
-                )
+        .motionSensitiveAnimation(
+            .snappy(duration: 0.28, extraBounce: 0.04),
+            reduced: .easeInOut(duration: 0.18),
+            value: self.activeIndex
         )
-        .shadow(
-            color: AppColors.glassShadow(for: self.scheme),
-            radius: 8,
-            y: 4
-        )
-        .animation(.easeInOut(duration: 0.2), value: self.activeIndex)
     }
 }
 
-// MARK: - IconPageButton
+// MARK: - ModernVerticalIconPageIndicator
+
+@available(iOS 26.0, *)
+private struct ModernVerticalIconPageIndicator: View {
+    let activeIndex: Int
+    let pages: [PageDescriptor]
+    let onSelect: (Int) -> Void
+    let selectionNamespace: Namespace.ID
+
+    var body: some View {
+        GlassEffectContainer(spacing: 12) {
+            VStack(spacing: 10) {
+                ForEach(self.pages) { page in
+                    ModernIconPageButton(
+                        page: page,
+                        isActive: self.activeIndex == page.id,
+                        action: { self.onSelect(page.id) },
+                        selectionNamespace: self.selectionNamespace
+                    )
+                }
+            }
+        }
+    }
+}
+
+// MARK: - LegacyVerticalIconPageIndicator
+
+private struct LegacyVerticalIconPageIndicator: View {
+    let activeIndex: Int
+    let pages: [PageDescriptor]
+    let onSelect: (Int) -> Void
+    let selectionNamespace: Namespace.ID
+
+    var body: some View {
+        VStack(spacing: 10) {
+            ForEach(self.pages) { page in
+                LegacyIconPageButton(
+                    page: page,
+                    isActive: self.activeIndex == page.id,
+                    action: { self.onSelect(page.id) },
+                    selectionNamespace: self.selectionNamespace
+                )
+            }
+        }
+    }
+}
+
+// MARK: - ModernIconPageButton
 
 /// A single icon button within the page indicator strip.
-private struct IconPageButton: View {
+@available(iOS 26.0, *)
+private struct ModernIconPageButton: View {
     let page: PageDescriptor
     let isActive: Bool
     let action: () -> Void
+    let selectionNamespace: Namespace.ID
 
     var body: some View {
-        Button(self.page.label, systemImage: self.page.icon, action: self.action)
-            .labelStyle(.iconOnly)
-            .font(.system(size: 16, weight: self.isActive ? .semibold : .regular))
-            .foregroundStyle(self.isActive ? .white : .white.opacity(0.45))
-            .scaleEffect(self.isActive ? 1.0 : 0.8)
-            .frame(width: 44, height: 44)
-            .background {
+        Button(action: self.action) {
+            ZStack {
                 if self.isActive {
-                    Circle()
-                        .fill(.white.opacity(0.2))
-                        .transition(.opacity)
+                    Color.clear
+                        .frame(width: 54, height: 64)
+                        .glassEffect(.regular.interactive(), in: .capsule)
+                        .glassEffectID("page-indicator-selection", in: self.selectionNamespace)
+                        .glassEffectTransition(.matchedGeometry)
                 }
+
+                Label(self.page.label, systemImage: self.page.icon)
+                    .labelStyle(.iconOnly)
+                    .font(.title3)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(self.isActive ? .primary : .secondary)
+                    .frame(width: 54, height: 64)
+                    .contentShape(.capsule)
             }
-            .contentShape(.circle)
-            .accessibilityLabel(self.page.label)
-            .accessibilityAddTraits(self.isActive ? .isSelected : [])
+        }
+        .buttonStyle(.plain)
+        .scaleEffect(self.isActive ? 1 : 0.92)
+        .accessibilityLabel(self.page.label)
+        .accessibilityValue(self.isActive ? "Selected" : "Not selected")
+        .accessibilityHint("Shows \(self.page.label)")
+        .accessibilityAddTraits(self.isActive ? .isSelected : [])
+    }
+}
+
+// MARK: - LegacyIconPageButton
+
+private struct LegacyIconPageButton: View {
+    let page: PageDescriptor
+    let isActive: Bool
+    let action: () -> Void
+    let selectionNamespace: Namespace.ID
+
+    @Environment(\.colorScheme) private var scheme
+
+    var body: some View {
+        Button(action: self.action) {
+            ZStack {
+                if self.isActive {
+                    Capsule(style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .frame(width: 54, height: 64)
+                        .overlay(
+                            Capsule(style: .continuous)
+                                .strokeBorder(
+                                    AppColors.glassBorder(for: self.scheme),
+                                    lineWidth: 1
+                                )
+                        )
+                        .shadow(
+                            color: AppColors.glassShadow(for: self.scheme),
+                            radius: 10,
+                            y: 4
+                        )
+                        .matchedGeometryEffect(
+                            id: "page-indicator-selection",
+                            in: self.selectionNamespace
+                        )
+                }
+
+                Label(self.page.label, systemImage: self.page.icon)
+                    .labelStyle(.iconOnly)
+                    .font(.title3)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(self.isActive ? .white : .white.opacity(0.72))
+                    .frame(width: 54, height: 64)
+                    .contentShape(.capsule)
+            }
+        }
+        .buttonStyle(.plain)
+        .scaleEffect(self.isActive ? 1 : 0.92)
+        .accessibilityLabel(self.page.label)
+        .accessibilityValue(self.isActive ? "Selected" : "Not selected")
+        .accessibilityHint("Shows \(self.page.label)")
+        .accessibilityAddTraits(self.isActive ? .isSelected : [])
     }
 }
