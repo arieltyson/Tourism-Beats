@@ -17,7 +17,15 @@ struct Tourism_BeatsApp: App {
                 appDelegate: self.appDelegate,
                 selectedTab: self.$selectedTab
             )
-            .modelContainer(for: [Restaurant.self, RestaurantMealPhoto.self])
+            .modelContainer(
+                for: [
+                    Restaurant.self,
+                    RestaurantMealPhoto.self,
+                    Trip.self,
+                    TripDay.self,
+                    TripActivity.self
+                ]
+            )
         }
     }
 }

@@ -13,7 +13,7 @@ struct AppSceneRootView: View {
     @Environment(\.modelContext) private var modelContext
 
     @State private var launchPhase: LaunchPhase = .branded
-    @State private var hasPerformedStartupRepair = false
+    @State private var hasPerformedStartupTasks = false
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
@@ -45,8 +45,8 @@ struct AppSceneRootView: View {
             self.appDelegate.flushDeferredActionIfNeeded()
         }
         .task {
-            guard !self.hasPerformedStartupRepair else { return }
-            self.hasPerformedStartupRepair = true
+            guard !self.hasPerformedStartupTasks else { return }
+            self.hasPerformedStartupTasks = true
 
             do {
                 try RestaurantMealPhotoOwnershipRepairService().repairIfNeeded(
@@ -55,6 +55,14 @@ struct AppSceneRootView: View {
             } catch {
                 self.logger.error(
                     "Meal photo ownership repair failed: \(error.localizedDescription, privacy: .public)"
+                )
+            }
+
+            do {
+                try TripSeedService.seedIfNeeded(in: self.modelContext)
+            } catch {
+                self.logger.error(
+                    "Trip sample seeding failed: \(error.localizedDescription, privacy: .public)"
                 )
             }
         }

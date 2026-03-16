@@ -13,6 +13,7 @@ final class Trip {
     var name: String = ""
     var city: String = ""
     var country: String = ""
+    var isSample: Bool = false
     var startDate: Date?
     var endDate: Date?
     var notes: String?
@@ -26,6 +27,7 @@ final class Trip {
         name: String,
         city: String,
         country: String = "",
+        isSample: Bool = false,
         startDate: Date? = nil,
         endDate: Date? = nil,
         notes: String? = nil,
@@ -34,11 +36,12 @@ final class Trip {
         self.name = name
         self.city = city
         self.country = country
+        self.isSample = isSample
         self.startDate = startDate
         self.endDate = endDate
         self.notes = notes
         self.statusRaw = status.rawValue
-        self.dateCreated = .now
+        self.dateCreated = Date.now
     }
 
     // MARK: Computed
@@ -52,8 +55,59 @@ final class Trip {
         (self.days ?? []).sorted { $0.dayNumber < $1.dayNumber }
     }
 
+    var displayLocation: String {
+        switch (
+            self.city.trimmingCharacters(in: .whitespacesAndNewlines),
+            self.country.trimmingCharacters(in: .whitespacesAndNewlines)
+        ) {
+        case let ("", ""):
+            "Custom trip"
+        case let ("", country):
+            country
+        case let (city, ""):
+            city
+        case let (city, country):
+            "\(city), \(country)"
+        }
+    }
+
     var dayCount: Int {
         (self.days ?? []).count
+    }
+
+    var activityCount: Int {
+        self.sortedDays.reduce(0) { partialResult, day in
+            partialResult + day.activityCount
+        }
+    }
+
+    var completedActivityCount: Int {
+        self.sortedDays.reduce(0) { partialResult, day in
+            partialResult + day.completedActivityCount
+        }
+    }
+
+    var progressLabel: String? {
+        guard self.activityCount > 0 else { return nil }
+        return "\(self.completedActivityCount.formatted(.number))/\(self.activityCount.formatted(.number)) done"
+    }
+
+    var notesSummary: String? {
+        guard let trimmedNotes else { return nil }
+        return trimmedNotes
+    }
+
+    var scheduleSummaryLabel: String {
+        let dayLabel = self.dayCount == 1
+            ? "1 day"
+            : "\(self.dayCount.formatted(.number)) days"
+
+        guard self.activityCount > 0 else { return dayLabel }
+
+        let activityLabel = self.activityCount == 1
+            ? "1 activity"
+            : "\(self.activityCount.formatted(.number)) activities"
+        return "\(dayLabel) • \(activityLabel)"
     }
 
     var dateRangeLabel: String? {
@@ -68,6 +122,18 @@ final class Trip {
     var nextDayNumber: Int {
         let maxDay = (self.days ?? []).map(\.dayNumber).max() ?? 0
         return maxDay + 1
+    }
+
+    var nextDayDate: Date? {
+        self.sortedDays.compactMap(\.date).last.flatMap { lastDate in
+            Calendar.current.date(byAdding: .day, value: 1, to: lastDate)
+        }
+    }
+
+    var trimmedNotes: String? {
+        guard let notes else { return nil }
+        let trimmedNotes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmedNotes.isEmpty ? nil : trimmedNotes
     }
 
     private static let dateRangeFormatter: DateFormatter = {
@@ -131,6 +197,14 @@ final class TripDay {
 
     var activityCount: Int {
         (self.activities ?? []).count
+    }
+
+    var completedActivityCount: Int {
+        self.sortedActivities.count(where: { $0.activityStatus == .done })
+    }
+
+    var pendingActivityCount: Int {
+        self.sortedActivities.count(where: { $0.activityStatus == .planned })
     }
 
     private static let dayDateFormatter: DateFormatter = {

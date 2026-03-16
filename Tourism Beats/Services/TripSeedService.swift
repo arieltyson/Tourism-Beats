@@ -9,25 +9,36 @@ import SwiftData
 /// inserts three skeleton itineraries demonstrating the feature.
 enum TripSeedService {
     @MainActor
-    static func seedIfNeeded(in context: ModelContext) {
+    static func seedIfNeeded(in context: ModelContext) throws {
         let descriptor = FetchDescriptor<Trip>()
-        let count = (try? context.fetchCount(descriptor)) ?? 0
+        let count = try context.fetchCount(descriptor)
         guard count == 0 else { return }
 
-        Self.seedTrinidad(in: context)
-        Self.seedVancouver(in: context)
-        Self.seedSanFrancisco(in: context)
+        try self.restoreSamples(in: context)
+    }
+
+    @MainActor
+    static func restoreSamples(in context: ModelContext) throws {
+        self.seedTrinidad(in: context)
+        self.seedVancouver(in: context)
+        self.seedSanFrancisco(in: context)
+
+        if context.hasChanges {
+            try context.save()
+        }
     }
 
     // MARK: - Trinidad & Tobago
 
     private static func seedTrinidad(in context: ModelContext) {
         let trip = Trip(
-            name: "Christmas in Trinidad",
+            name: "Trinidad and Tobago",
             city: "Port of Spain",
             country: "Trinidad and Tobago",
+            isSample: true,
             startDate: Self.date(2_026, 12, 20),
             endDate: Self.date(2_026, 12, 27),
+            notes: "Sample itinerary balancing beaches, local food, and light city exploration.",
             status: .upcoming
         )
         context.insert(trip)
@@ -63,11 +74,13 @@ enum TripSeedService {
 
     private static func seedVancouver(in context: ModelContext) {
         let trip = Trip(
-            name: "Vancouver Winter Getaway",
+            name: "Vancouver, BC",
             city: "Vancouver",
             country: "Canada",
+            isSample: true,
             startDate: Self.date(2_027, 2, 14),
             endDate: Self.date(2_027, 2, 20),
+            notes: "Sample itinerary mixing food stops, neighborhood walks, and one bigger mountain day.",
             status: .upcoming
         )
         context.insert(trip)
@@ -102,11 +115,13 @@ enum TripSeedService {
 
     private static func seedSanFrancisco(in context: ModelContext) {
         let trip = Trip(
-            name: "San Francisco Summer",
+            name: "San Francisco",
             city: "San Francisco",
             country: "United States",
+            isSample: true,
             startDate: Self.date(2_027, 7, 5),
             endDate: Self.date(2_027, 7, 10),
+            notes: "Sample itinerary covering iconic sights with flexible space for food and neighborhoods.",
             status: .upcoming
         )
         context.insert(trip)
@@ -175,13 +190,13 @@ enum TripSeedService {
         components.year = year
         components.month = month
         components.day = day
-        return Calendar.current.date(from: components) ?? .now
+        return Calendar.current.date(from: components) ?? Date.now
     }
 
     private static func time(_ hour: Int, _ minute: Int) -> Date {
         var components = DateComponents()
         components.hour = hour
         components.minute = minute
-        return Calendar.current.date(from: components) ?? .now
+        return Calendar.current.date(from: components) ?? Date.now
     }
 }

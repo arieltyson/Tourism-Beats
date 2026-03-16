@@ -21,6 +21,7 @@ struct AddEditActivityView: View {
     @State private var time: Date
     @State private var status: ActivityStatus
     @State private var notes: String
+    @State private var saveErrorMessage: String?
 
     private var isEditing: Bool { self.activity != nil }
 
@@ -65,6 +66,14 @@ struct AddEditActivityView: View {
             }
         }
         .interactiveDismissDisabled(self.hasUnsavedChanges)
+        .alert(
+            "Couldn't Save Activity",
+            isPresented: self.saveErrorPresented
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(self.saveErrorMessage ?? "Please try again.")
+        }
     }
 
     // MARK: - Sections
@@ -128,6 +137,44 @@ struct AddEditActivityView: View {
     // MARK: - Save
 
     private func save() {
+        do {
+            try self.persistActivity()
+            self.dismiss()
+        } catch {
+            self.saveErrorMessage = error.localizedDescription
+        }
+    }
+
+    private var hasUnsavedChanges: Bool {
+        if let activity {
+            return self.name.trimmingCharacters(in: .whitespacesAndNewlines) != activity.name
+                || self.location.trimmingCharacters(in: .whitespacesAndNewlines) != (activity.location ?? "")
+                || self.type != activity.type
+                || self.hasTime != (activity.time != nil)
+                || !Self.sameTime(self.hasTime ? self.time : nil, activity.time)
+                || self.status != activity.activityStatus
+                || self.notes.trimmingCharacters(in: .whitespacesAndNewlines) != (activity.notes ?? "")
+        }
+        return !self.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            || !self.location.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            || self.type != .other
+            || self.hasTime
+            || self.status != .planned
+            || !self.notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private var saveErrorPresented: Binding<Bool> {
+        Binding(
+            get: { self.saveErrorMessage != nil },
+            set: { isPresented in
+                if !isPresented {
+                    self.saveErrorMessage = nil
+                }
+            }
+        )
+    }
+
+    private func persistActivity() throws {
         let trimmedName = self.name.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedLocation = self.location.trimmingCharacters(in: .whitespacesAndNewlines)
         let trimmedNotes = self.notes.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -152,25 +199,35 @@ struct AddEditActivityView: View {
             self.modelContext.insert(newActivity)
         }
 
-        self.dismiss()
-    }
-
-    private var hasUnsavedChanges: Bool {
-        if let a = self.activity {
-            return self.name != a.name || self.type != a.type || self.status != a.activityStatus
+        if self.modelContext.hasChanges {
+            try self.modelContext.save()
         }
-        return !self.name.isEmpty
     }
 
     /// Generates a sensible default time based on the day's existing activities.
     private static func defaultTime(for day: TripDay) -> Date {
         if let lastTime = day.sortedActivities.compactMap(\.time).last {
-            return Calendar.current.date(byAdding: .hour, value: 1, to: lastTime) ?? .now
+            return Calendar.current.date(byAdding: .hour, value: 1, to: lastTime) ?? Date.now
         }
         // Default to 9 AM
-        var components = Calendar.current.dateComponents([.year, .month, .day], from: day.date ?? .now)
+        var components = Calendar.current.dateComponents([.year, .month, .day], from: day.date ?? Date.now)
         components.hour = 9
         components.minute = 0
-        return Calendar.current.date(from: components) ?? .now
+        return Calendar.current.date(from: components) ?? Date.now
+    }
+
+    private static func sameTime(_ lhs: Date?, _ rhs: Date?) -> Bool {
+        switch (lhs, rhs) {
+        case (nil, nil):
+            return true
+        case let (.some(leftDate), .some(rightDate)):
+            let calendar = Calendar.current
+            let leftComponents = calendar.dateComponents([.hour, .minute], from: leftDate)
+            let rightComponents = calendar.dateComponents([.hour, .minute], from: rightDate)
+            return leftComponents.hour == rightComponents.hour
+                && leftComponents.minute == rightComponents.minute
+        default:
+            return false
+        }
     }
 }

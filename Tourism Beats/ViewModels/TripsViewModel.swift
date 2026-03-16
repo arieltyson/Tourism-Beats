@@ -13,6 +13,25 @@ final class TripsViewModel {
     var isAddTripSheetPresented: Bool = false
     var tripToEdit: Trip?
 
+    private let catalogCitiesByLookupKey: [String: CityModel]
+    private let countryFlagsByNormalizedName: [String: String]
+
+    init(dataService: DataService = DataService()) {
+        let catalogCities = (try? dataService.loadCities()) ?? []
+        self.catalogCitiesByLookupKey = Dictionary(
+            uniqueKeysWithValues: catalogCities.map {
+                (Self.lookupKey(cityName: $0.name, countryName: $0.country.name), $0)
+            }
+        )
+
+        let countries = (try? dataService.loadCountries()) ?? []
+        self.countryFlagsByNormalizedName = Dictionary(
+            uniqueKeysWithValues: countries.map {
+                (Self.normalizedLookupValue($0.name), $0.flag)
+            }
+        )
+    }
+
     // MARK: - Grouping
 
     /// A section of trips sharing the same status.
@@ -44,6 +63,22 @@ final class TripsViewModel {
             }
     }
 
+    func cityModel(for trip: Trip) -> CityModel? {
+        self.catalogCitiesByLookupKey[
+            Self.lookupKey(cityName: trip.city, countryName: trip.country)
+        ]
+    }
+
+    func countryFlag(for trip: Trip) -> String {
+        if let city = self.cityModel(for: trip) {
+            return city.country.flag
+        }
+
+        return self.countryFlagsByNormalizedName[
+            Self.normalizedLookupValue(trip.country)
+        ] ?? "🧳"
+    }
+
     // MARK: - Private
 
     private func matchesStatusFilter(_ trip: Trip) -> Bool {
@@ -57,5 +92,19 @@ final class TripsViewModel {
         return trip.name.localizedStandardContains(query)
             || trip.city.localizedStandardContains(query)
             || trip.country.localizedStandardContains(query)
+    }
+
+    private static func lookupKey(cityName: String, countryName: String) -> String {
+        [
+            self.normalizedLookupValue(cityName),
+            self.normalizedLookupValue(countryName)
+        ]
+        .joined(separator: "|")
+    }
+
+    private static func normalizedLookupValue(_ value: String) -> String {
+        value
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
