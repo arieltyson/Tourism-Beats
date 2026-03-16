@@ -2,6 +2,7 @@ import SwiftUI
 
 /// A neumorphic button style that renders a soft card and animates on press.
 /// Uses system background so it adapts to light/dark automatically.
+@available(*, deprecated, message: "Use GlassCard with .buttonStyle(.plain) instead")
 struct NeumorphicButtonStyle: ButtonStyle {
     var cornerRadius: CGFloat = 18
 

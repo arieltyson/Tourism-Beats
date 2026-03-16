@@ -1,43 +1,60 @@
+// FallbackMusicView.swift
+// Tourism Beats
+//
+// Displayed when Apple Music access is unavailable.
+// Prompts the user to enable access in Settings.
+
 import SwiftUI
 
 struct FallbackMusicView: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        VStack {
+        VStack(spacing: SpacingTokens.medium) {
+            Image(systemName: "music.note.house")
+                .font(.system(size: 44))
+                .foregroundStyle(.white.opacity(0.6))
+
             Text("Apple Music Unavailable")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding(.top, 50)
+                .font(TypographyTokens.sectionHeader)
+                .foregroundStyle(.white)
 
             Text(
                 "Enable Apple Music access to view top tracks for your selected city."
             )
-            .font(.subheadline)
-            .foregroundColor(.white)
-            .padding(.top, 10)
+            .font(TypographyTokens.artistName)
+            .foregroundStyle(.white.opacity(0.8))
             .multilineTextAlignment(.center)
 
-            Button(action: {
-                // Open settings for music access
+            Button("Open Settings", systemImage: "gear") {
                 if let settingsURL = URL(
                     string: UIApplication.openSettingsURLString
                 ) {
                     UIApplication.shared.open(settingsURL)
                 }
-            }) {
-                Text("Open Settings")
-                    .font(.headline)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding(.top, 20)
             }
+            .buttonStyle(.borderedProminent)
+            .tint(AppColors.info)
+            .padding(.top, SpacingTokens.xSmall)
         }
-        .frame(maxWidth: .infinity, maxHeight: 300)
-        .background(Color.white.opacity(0.2))
-        .cornerRadius(20)
-        .shadow(radius: 10)
-        .padding()
+        .padding(SpacingTokens.large)
+        .frame(maxWidth: .infinity)
+        .background(
+            .ultraThinMaterial,
+            in: .rect(cornerRadius: 20, style: .continuous)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .strokeBorder(
+                    AppColors.glassBorder(for: self.colorScheme),
+                    lineWidth: 0.5
+                )
+        }
+        .shadow(
+            color: AppColors.glassShadow(for: self.colorScheme),
+            radius: 12,
+            y: 6
+        )
+        .padding(SpacingTokens.medium)
     }
 }

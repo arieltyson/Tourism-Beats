@@ -83,7 +83,7 @@ final class MusicViewModel: ObservableObject {
         self.playbackStateTask = Task {
             while !Task.isCancelled {
                 await self.syncPlaybackState()
-                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1s
+                try? await Task.sleep(for: .seconds(1))
             }
         }
     }
@@ -216,6 +216,26 @@ final class MusicViewModel: ObservableObject {
             self.isPlaying = true
         } catch {
             self.isPlaying = false
+        }
+    }
+
+    // MARK: - Skip Controls
+
+    /// Skips backward: restarts the current song.
+    func skipBackward() {
+        guard self.playableSong != nil else { return }
+        ApplicationMusicPlayer.shared.restartCurrentEntry()
+    }
+
+    /// Skips forward to the next entry in the queue.
+    /// No-op when the queue has only one song.
+    func skipForward() async {
+        guard self.playableSong != nil else { return }
+        let player = ApplicationMusicPlayer.shared
+        do {
+            try await player.skipToNextEntry()
+        } catch {
+            // Gracefully ignore — no next entry in a single-song queue.
         }
     }
 

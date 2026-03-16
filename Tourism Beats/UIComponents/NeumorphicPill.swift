@@ -1,29 +1,5 @@
 import SwiftUI
 
-// MARK: - ProviderLogo
-
-enum ProviderLogo {
-    case spotify, appleMusic
-
-    @ViewBuilder
-    var view: some View {
-        switch self {
-        case .spotify:
-            if let ui = UIImage(named: "spotify_logo") {
-                Image(uiImage: ui).resizable().scaledToFit()
-            } else {
-                Image(systemName: "link").resizable().scaledToFit()
-            }
-        case .appleMusic:
-            if let ui = UIImage(named: "apple_music_logo") {
-                Image(uiImage: ui).resizable().scaledToFit()
-            } else {
-                Image(systemName: "apple.logo").resizable().scaledToFit()
-            }
-        }
-    }
-}
-
 // MARK: - PillRightKind
 
 enum PillRightKind {

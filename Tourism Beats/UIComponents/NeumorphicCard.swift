@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// A container that wraps any content in a soft, adaptive neumorphic card
+/// A container that wraps any content in a soft, adaptive neumorphic card.
+@available(*, deprecated, message: "Use GlassCard instead")
 struct NeumorphicCard<Content: View>: View {
     @GestureState private var isPressed = false
     let cornerRadius: CGFloat
