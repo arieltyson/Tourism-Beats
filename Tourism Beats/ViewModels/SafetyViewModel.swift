@@ -66,7 +66,7 @@ class SafetyViewModel: ObservableObject {
     }
 
     var riskLevelScoreText: String? {
-        guard let score = safetyData?.score else { return nil }
-        return String(format: "%.1f / 5", score)
+        guard let score = self.safetyData?.score else { return nil }
+        return "\(score.formatted(.number.precision(.fractionLength(1)))) / 5"
     }
 }

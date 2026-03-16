@@ -1,3 +1,9 @@
+// SearchableCountryPicker.swift
+// Tourism Beats
+//
+// A searchable country list presented in a sheet,
+// grouped alphabetically with section index titles.
+
 import SwiftUI
 
 // MARK: - SearchableCountryPicker
@@ -11,21 +17,12 @@ struct SearchableCountryPicker: View {
         (try? DataService().loadCountries()) ?? []
 
     private var groupedCountries: [String: [CountryModel]] {
-        let filtered: [CountryModel]
-
-        if self.searchText.isEmpty {
-            filtered = self.allCountries
+        let filtered: [CountryModel] = if self.searchText.isEmpty {
+            self.allCountries
         } else {
-            let lowercasedSearchText = self.searchText.lowercased()
-            filtered = self.allCountries.filter { country in
-                let nameWords = country.name.split(separator: " ")
-                let nameMatches = nameWords.contains {
-                    $0.lowercased().hasPrefix(lowercasedSearchText)
-                }
-                let codeMatches = country.code.localizedCaseInsensitiveContains(
-                    self.searchText
-                )
-                return nameMatches || codeMatches
+            self.allCountries.filter { country in
+                country.name.localizedStandardContains(self.searchText)
+                    || country.code.localizedStandardContains(self.searchText)
             }
         }
 
@@ -42,18 +39,18 @@ struct SearchableCountryPicker: View {
         NavigationStack {
             List {
                 ForEach(self.sectionLetters, id: \.self) { letter in
-                    Section(header: SectionHeader(letter: letter)) {
-                        ForEach(self.groupedCountries[letter] ?? [], id: \.id) {
-                            country in
-                            CountryRow(
-                                country: country,
-                                selectedCode: self.$selectedCode
-                            )
-                            .contentShape(Rectangle())
-                            .onTapGesture {
+                    Section(header: PickerSectionHeader(letter: letter)) {
+                        ForEach(self.groupedCountries[letter] ?? [], id: \.id) { country in
+                            Button {
                                 self.selectedCode = country.code
                                 self.dismiss()
+                            } label: {
+                                CountryRow(
+                                    country: country,
+                                    isSelected: self.selectedCode == country.code
+                                )
                             }
+                            .buttonStyle(.plain)
                         }
                     }
                 }
@@ -72,18 +69,17 @@ struct SearchableCountryPicker: View {
     }
 }
 
-// MARK: - SectionHeader
+// MARK: - PickerSectionHeader
 
-private struct SectionHeader: View {
+private struct PickerSectionHeader: View {
     let letter: String
 
     var body: some View {
         Text(self.letter)
             .font(.system(.headline, design: .rounded))
-            .foregroundColor(.accentColor)
+            .foregroundStyle(.tint)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 8)
-            .background(Color(.systemBackground))
+            .padding(.vertical, SpacingTokens.xSmall)
     }
 }
 
@@ -91,21 +87,22 @@ private struct SectionHeader: View {
 
 private struct CountryRow: View {
     let country: CountryModel
-    @Binding var selectedCode: String
+    let isSelected: Bool
 
     var body: some View {
         HStack {
             Text("\(self.country.flag) \(self.country.name)")
                 .font(.callout)
+                .foregroundStyle(.primary)
 
             Spacer()
 
-            if self.selectedCode == self.country.code {
+            if self.isSelected {
                 Image(systemName: "checkmark")
-                    .foregroundColor(.accentColor)
+                    .foregroundStyle(.tint)
             }
         }
-        .contentShape(Rectangle())
+        .contentShape(.rect)
     }
 }
 
@@ -113,34 +110,16 @@ private struct CountryRow: View {
 
 private struct SectionIndexTitles: View {
     let letters: [String]
-    @State private var selectedLetter: String?
 
     var body: some View {
         VStack(spacing: 2) {
             ForEach(self.letters, id: \.self) { letter in
                 Text(letter)
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(
-                        self.selectedLetter == letter ? .accentColor : .secondary
-                    )
-                    .frame(width: 20, height: 20)
-                    .background(
-                        GeometryReader { proxy in
-                            Color.clear.onAppear {
-                                let frame = proxy.frame(
-                                    in: .named("SectionIndex")
-                                )
-                                if frame.midY > 0,
-                                   frame.midY < UIScreen.main.bounds.height
-                                {
-                                    self.selectedLetter = letter
-                                }
-                            }
-                        }
-                    )
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 16, height: 14)
             }
         }
-        .coordinateSpace(name: "SectionIndex")
-        .padding(.trailing, 4)
+        .padding(.trailing, SpacingTokens.xxSmall)
     }
 }

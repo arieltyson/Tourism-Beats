@@ -175,12 +175,4 @@ enum AppColors {
     static func glassShadow(for scheme: ColorScheme) -> Color {
         .black.opacity(scheme == .dark ? 0.30 : 0.12)
     }
-
-    // MARK: - Neumorphic Tokens
-
-    /// Light shadow for raised neumorphic elements.
-    static let neumorphicLight = Color.white.opacity(0.7)
-
-    /// Dark shadow for raised neumorphic elements.
-    static let neumorphicDark = Color.black.opacity(0.2)
 }
