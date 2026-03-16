@@ -8,28 +8,23 @@ struct FoodCityCard: View {
     @Environment(\.colorScheme) private var colorScheme
     @ScaledMetric(relativeTo: .title3) private var cardHeight = 188.0
     @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 84.0
-    @ScaledMetric(relativeTo: .body) private var textBottomInset = 18.0
+    @ScaledMetric(relativeTo: .body) private var footerHeight = 78.0
 
     var body: some View {
         ZStack {
             FoodCityCardBackground(group: self.group)
 
             FoodCityCardVignette()
-        }
-        .overlay(alignment: .bottomLeading) {
-            FoodCityCardText(
-                group: self.group,
-                badgeInsetWidth: self.badgeMinWidth,
-                bottomInset: self.textBottomInset
-            )
-        }
-        .overlay(alignment: .bottomTrailing) {
-            FoodCityCardCountBadge(
-                count: self.group.restaurantCount,
-                minWidth: self.badgeMinWidth
-            )
-            .padding(.horizontal, SpacingTokens.small)
-            .padding(.bottom, SpacingTokens.small)
+
+            VStack(spacing: 0) {
+                Spacer(minLength: 0)
+
+                FoodCityCardFooter(
+                    group: self.group,
+                    badgeMinWidth: self.badgeMinWidth,
+                    footerHeight: self.footerHeight
+                )
+            }
         }
         .frame(maxWidth: .infinity)
         .frame(height: self.cardHeight)
@@ -113,12 +108,48 @@ private struct FoodCityCardVignette: View {
     }
 }
 
+// MARK: - FoodCityCardFooter
+
+private struct FoodCityCardFooter: View {
+    let group: FoodJournalCityGroup
+    let badgeMinWidth: CGFloat
+    let footerHeight: CGFloat
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            LinearGradient(
+                colors: [
+                    .clear,
+                    .black.opacity(0.16),
+                    .black.opacity(0.82)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+
+            HStack(alignment: .bottom, spacing: SpacingTokens.small) {
+                FoodCityCardText(group: self.group)
+
+                Spacer(minLength: SpacingTokens.small)
+
+                FoodCityCardCountBadge(
+                    count: self.group.restaurantCount,
+                    minWidth: self.badgeMinWidth
+                )
+            }
+            .padding(.horizontal, SpacingTokens.small)
+            .padding(.bottom, SpacingTokens.small)
+            .padding(.top, SpacingTokens.medium)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: self.footerHeight)
+    }
+}
+
 // MARK: - FoodCityCardText
 
 private struct FoodCityCardText: View {
     let group: FoodJournalCityGroup
-    let badgeInsetWidth: CGFloat
-    let bottomInset: CGFloat
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
@@ -141,10 +172,6 @@ private struct FoodCityCardText: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.leading, SpacingTokens.small)
-        .padding(.trailing, self.badgeInsetWidth + SpacingTokens.xLarge)
-        .padding(.top, SpacingTokens.small)
-        .padding(.bottom, self.bottomInset)
     }
 }
 
