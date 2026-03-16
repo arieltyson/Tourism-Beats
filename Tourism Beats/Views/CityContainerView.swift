@@ -32,6 +32,7 @@ struct CityContainerView: View {
             }
             .clipped()
             .contentShape(.rect)
+            .highPriorityGesture(self.pagingGesture)
             .onGeometryChange(for: CGSize.self) { proxy in
                 proxy.size
             } action: { newSize in
@@ -41,15 +42,14 @@ struct CityContainerView: View {
                 .interactiveSpring(response: 0.35, dampingFraction: 0.85),
                 value: self.pageIndex
             )
-            .highPriorityGesture(self.pagingGesture)
-        }
-        .overlay(alignment: .trailing) {
+
             VerticalIconPageIndicator(
                 activeIndex: self.pageIndex,
                 onSelect: { index in
                     self.selectPage(index)
                 }
             )
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
             .padding(.trailing, 12)
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)

@@ -117,7 +117,7 @@ private struct ModernIconPageButton: View {
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(self.isActive ? .white : .white.opacity(0.5))
                 .frame(width: 44, height: 44)
-                .contentShape(.capsule)
+                .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .opacity(self.isActive ? 1 : 0.5)
@@ -169,7 +169,7 @@ private struct LegacyIconPageButton: View {
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(self.isActive ? .white : .white.opacity(0.72))
                     .frame(width: 54, height: 64)
-                    .contentShape(.capsule)
+                    .contentShape(.rect)
             }
         }
         .buttonStyle(.plain)
