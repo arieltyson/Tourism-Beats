@@ -31,7 +31,6 @@ struct MainTabView: View {
             }
         }
         .tint(.white)
-        .toolbarColorScheme(.dark, for: .tabBar)
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
         .onChange(of: self.selectedTab) { _, new in

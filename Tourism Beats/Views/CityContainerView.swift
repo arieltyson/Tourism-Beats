@@ -6,86 +6,53 @@ struct CityContainerView: View {
     @State private var pageIndex: Int = 0
     @State private var dragOffset: CGFloat = 0
     @State private var isPaging: Bool = false
+    @State private var containerSize: CGSize = .zero
+
+    private let pageCount = 3
 
     var body: some View {
-        GeometryReader { geo in
+        ZStack {
             self.backgroundForCurrentPage
                 .ignoresSafeArea()
-
-            let pageHeight = geo.size.height
-            let pageWidth = geo.size.width
+                .animation(.easeInOut(duration: 0.4), value: self.pageIndex)
 
             ZStack {
                 CityView(city: self.city)
-                    .frame(width: pageWidth, height: pageHeight)
-                    .offset(y: self.offset(for: 0, height: pageHeight))
+                    .containerRelativeFrame([.horizontal, .vertical])
+                    .offset(y: self.offset(for: 0))
 
                 MusicView(city: self.city, fallbackView: FallbackMusicView())
-                    .frame(width: pageWidth, height: pageHeight)
-                    .offset(y: self.offset(for: 1, height: pageHeight))
+                    .containerRelativeFrame([.horizontal, .vertical])
+                    .offset(y: self.offset(for: 1))
 
                 AdvisoriesView(city: self.city)
-                    .frame(width: pageWidth, height: pageHeight)
-                    .offset(y: self.offset(for: 2, height: pageHeight))
+                    .containerRelativeFrame([.horizontal, .vertical])
+                    .offset(y: self.offset(for: 2))
             }
             .clipped()
-            .contentShape(Rectangle())
+            .contentShape(.rect)
+            .onGeometryChange(for: CGSize.self) { proxy in
+                proxy.size
+            } action: { newSize in
+                self.containerSize = newSize
+            }
             .animation(
                 .interactiveSpring(response: 0.35, dampingFraction: 0.85),
                 value: self.pageIndex
             )
-            .highPriorityGesture(
-                DragGesture(minimumDistance: 12)
-                    .onChanged { value in
-                        if !self.isPaging {
-                            let v = abs(value.translation.height)
-                            let h = abs(value.translation.width)
-                            guard v > h * 0.7 else { return }
-                            self.isPaging = true
-                        }
-                        self.dragOffset = value.translation.height
-                    }
-                    .onEnded { value in
-                        defer {
-                            dragOffset = 0
-                            isPaging = false
-                        }
-
-                        let v = abs(value.translation.height)
-                        let h = abs(value.translation.width)
-                        guard v > h * 0.7 else { return }
-
-                        let height = pageHeight
-                        let base = height * 0.14
-                        let threshold = min(140, max(80, base))
-
-                        let dy = value.translation.height
-                        let predicted = value.predictedEndTranslation.height
-                        let sameDirection =
-                            (dy >= 0 && predicted >= 0)
-                            || (dy <= 0 && predicted <= 0)
-                        let commitByDistance = abs(dy) > threshold
-                        let commitByVelocity =
-                            sameDirection && abs(predicted) > threshold * 0.6
-
-                        if commitByDistance || commitByVelocity {
-                            if dy < 0, self.pageIndex < 2 {
-                                self.pageIndex += 1
-                            } else if dy > 0, self.pageIndex > 0 {
-                                self.pageIndex -= 1
-                            }
-                        }
-                    }
-            )
-            .overlay(
-                VerticalPageIndicator(activeIndex: self.pageIndex, count: 3)
-                    .padding(.trailing, max(8, geo.safeAreaInsets.trailing + 4))
-                    .padding(.vertical, max(60, geo.safeAreaInsets.top + 40))
-                    .frame(maxHeight: .infinity),
-                alignment: .trailing
-            )
+            .highPriorityGesture(self.pagingGesture)
         }
-        .navigationBarHidden(false)
+        .overlay(alignment: .trailing) {
+            VerticalIconPageIndicator(
+                activeIndex: self.pageIndex,
+                onSelect: { index in
+                    withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
+                        self.pageIndex = index
+                    }
+                }
+            )
+            .padding(.trailing)
+        }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -100,13 +67,62 @@ struct CityContainerView: View {
         }
     }
 
-    private func offset(for index: Int, height: CGFloat) -> CGFloat {
-        CGFloat(index - self.pageIndex) * height + self.dragOffset
+    // MARK: - Offset Calculation
+
+    private func offset(for index: Int) -> CGFloat {
+        CGFloat(index - self.pageIndex) * self.containerSize.height + self.dragOffset
     }
+
+    // MARK: - Paging Gesture
+
+    private var pagingGesture: some Gesture {
+        DragGesture(minimumDistance: 12)
+            .onChanged { value in
+                if !self.isPaging {
+                    let vertical = abs(value.translation.height)
+                    let horizontal = abs(value.translation.width)
+                    guard vertical > horizontal * 0.7 else { return }
+                    self.isPaging = true
+                }
+                self.dragOffset = value.translation.height
+            }
+            .onEnded { value in
+                defer {
+                    self.dragOffset = 0
+                    self.isPaging = false
+                }
+
+                let vertical = abs(value.translation.height)
+                let horizontal = abs(value.translation.width)
+                guard vertical > horizontal * 0.7 else { return }
+
+                let height = self.containerSize.height
+                let base = height * 0.14
+                let threshold = min(140, max(80, base))
+
+                let drag = value.translation.height
+                let predicted = value.predictedEndTranslation.height
+                let sameDirection =
+                    (drag >= 0 && predicted >= 0)
+                    || (drag <= 0 && predicted <= 0)
+                let commitByDistance = abs(drag) > threshold
+                let commitByVelocity =
+                    sameDirection && abs(predicted) > threshold * 0.6
+
+                if commitByDistance || commitByVelocity {
+                    if drag < 0, self.pageIndex < self.pageCount - 1 {
+                        self.pageIndex += 1
+                    } else if drag > 0, self.pageIndex > 0 {
+                        self.pageIndex -= 1
+                    }
+                }
+            }
+    }
+
+    // MARK: - Background
 
     private var backgroundForCurrentPage: some View {
         let all = GradientProvider.gradients
-        // Use bitPattern to avoid overflow on Int.min when taking abs.
         let base = UInt(bitPattern: self.city.id.hashValue)
         let seed: UInt =
             switch self.pageIndex {
