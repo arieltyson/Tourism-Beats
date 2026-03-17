@@ -69,31 +69,30 @@ private struct FoodCityCardBackground: View {
     let group: FoodJournalCityGroup
 
     var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(.ultraThinMaterial)
-
-            if let imageURL = self.group.imageURL {
-                CachedCityImage(url: imageURL)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
-            } else {
-                LinearGradient(
-                    colors: [
-                        AppColors.info.opacity(0.92),
-                        AppColors.violet.opacity(0.88),
-                        AppColors.coral.opacity(0.82)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .overlay {
-                    Image(systemName: "fork.knife.circle.fill")
-                        .font(.system(size: 60))
-                        .foregroundStyle(.white.opacity(0.24))
+        Rectangle()
+            .fill(.ultraThinMaterial)
+            .overlay {
+                if let imageURL = self.group.imageURL {
+                    CachedCityImage(url: imageURL)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .clipped()
+                } else {
+                    LinearGradient(
+                        colors: [
+                            AppColors.info.opacity(0.92),
+                            AppColors.violet.opacity(0.88),
+                            AppColors.coral.opacity(0.82)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .overlay {
+                        Image(systemName: "fork.knife.circle.fill")
+                            .font(.system(size: 60))
+                            .foregroundStyle(.white.opacity(0.24))
+                    }
                 }
             }
-        }
     }
 }
 
