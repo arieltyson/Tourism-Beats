@@ -8,6 +8,7 @@ struct TourismFloatingTabBar: View {
     @Namespace private var selectionNamespace
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.colorScheme) private var colorScheme
+    @ScaledMetric(relativeTo: .body) private var itemHeight = 56
 
     var body: some View {
         HStack(alignment: .bottom, spacing: SpacingTokens.small) {
@@ -17,12 +18,14 @@ struct TourismFloatingTabBar: View {
                         tab: tab,
                         isSelected: self.selectedTab == tab,
                         selectionNamespace: self.selectionNamespace,
+                        itemHeight: self.itemHeight,
                         action: {
                             self.selectedTab = tab
                         }
                     )
                 }
             }
+            .frame(maxWidth: .infinity)
             .padding(SpacingTokens.xSmall)
             .background(self.backgroundFill, in: Capsule())
             .overlay {
@@ -40,11 +43,13 @@ struct TourismFloatingTabBar: View {
 
             TourismFloatingSettingsButton(
                 isSelected: self.selectedTab == .settings,
+                diameter: self.itemHeight + (SpacingTokens.xSmall * 2),
                 action: {
                     self.selectedTab = .settings
                 }
             )
         }
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.top, SpacingTokens.xSmall)
         .padding(.bottom, SpacingTokens.small)

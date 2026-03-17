@@ -4,13 +4,12 @@ import SwiftUI
 
 struct TourismFloatingSettingsButton: View {
     let isSelected: Bool
+    let diameter: CGFloat
     let action: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.colorScheme) private var colorScheme
-
-    @ScaledMetric(relativeTo: .body) private var diameter = 64
 
     var body: some View {
         Button {

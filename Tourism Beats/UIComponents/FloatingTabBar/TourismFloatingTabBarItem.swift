@@ -6,12 +6,11 @@ struct TourismFloatingTabBarItem: View {
     let tab: AppTab
     let isSelected: Bool
     let selectionNamespace: Namespace.ID
+    let itemHeight: CGFloat
     let action: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    @ScaledMetric(relativeTo: .caption) private var minimumHeight = 56
 
     var body: some View {
         Button {
@@ -34,7 +33,7 @@ struct TourismFloatingTabBarItem: View {
                     self.iconOnlyContent
                 }
                 .frame(maxWidth: .infinity)
-                .frame(minHeight: self.minimumHeight)
+                .frame(minHeight: self.itemHeight, maxHeight: self.itemHeight)
                 .padding(.horizontal, SpacingTokens.small)
                 .padding(.vertical, SpacingTokens.xxSmall)
             }
@@ -65,6 +64,6 @@ struct TourismFloatingTabBarItem: View {
         Image(systemName: self.tab.systemImage)
             .font(.title3)
             .foregroundStyle(self.isSelected ? AppColors.label : AppColors.secondaryLabel)
-            .frame(maxWidth: .infinity, minHeight: self.minimumHeight)
+            .frame(maxWidth: .infinity, minHeight: self.itemHeight, maxHeight: self.itemHeight)
     }
 }
