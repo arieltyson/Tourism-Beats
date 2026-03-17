@@ -121,58 +121,74 @@ private struct FoodRestaurantTitleText: View {
 // MARK: - FoodRestaurantMealPhotoPreview
 
 private struct FoodRestaurantMealPhotoPreview: View {
+    private static let previewAspectRatio: CGFloat = 1.45
+    private static let cornerRadius: CGFloat = 14
+
     let mealPhoto: RestaurantMealPhoto
     let additionalPhotoCount: Int
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            AsyncImage(
-                url: RestaurantMealPhotoStore.fileURL(for: self.mealPhoto.relativePath),
-                transaction: .init(animation: .smooth)
-            ) { phase in
-                switch phase {
-                case .empty:
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            ProgressView()
-                        }
-                case let .success(image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                case .failure:
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            Image(systemName: "photo")
-                                .font(.title3)
-                                .foregroundStyle(.secondary)
-                        }
-                @unknown default:
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
+        RoundedRectangle(cornerRadius: Self.cornerRadius, style: .continuous)
+            .fill(.ultraThinMaterial)
+            .frame(maxWidth: .infinity)
+            .aspectRatio(Self.previewAspectRatio, contentMode: .fit)
+            .overlay {
+                self.photoContent
+            }
+            .clipShape(.rect(cornerRadius: Self.cornerRadius, style: .continuous))
+            .overlay(alignment: .topTrailing) {
+                if self.additionalPhotoCount > 0 {
+                    self.additionalPhotoBadge
                 }
             }
-            .frame(maxWidth: .infinity)
-            .aspectRatio(1.45, contentMode: .fit)
-            .clipShape(.rect(cornerRadius: 14, style: .continuous))
+    }
 
-            if self.additionalPhotoCount > 0 {
-                Text("+\(self.additionalPhotoCount, format: .number)")
-                    .font(TypographyTokens.footnote.monospacedDigit())
-                    .bold()
-                    .foregroundStyle(AppColors.onImagePrimary)
-                    .padding(.horizontal, SpacingTokens.xSmall)
-                    .padding(.vertical, SpacingTokens.xxSmall)
-                    .background(AppColors.imageBadgeFill, in: Capsule())
+    @ViewBuilder
+    private var photoContent: some View {
+        AsyncImage(
+            url: RestaurantMealPhotoStore.fileURL(for: self.mealPhoto.relativePath),
+            transaction: .init(animation: .smooth)
+        ) { phase in
+            switch phase {
+            case .empty:
+                Rectangle()
+                    .fill(.ultraThinMaterial)
                     .overlay {
-                        Capsule()
-                            .strokeBorder(AppColors.imageBadgeBorder, lineWidth: 1)
+                        ProgressView()
                     }
-                    .padding(SpacingTokens.xSmall)
+            case let .success(image):
+                image
+                    .resizable()
+                    .scaledToFill()
+            case .failure:
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .overlay {
+                        Image(systemName: "photo")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                    }
+            @unknown default:
+                Rectangle()
+                    .fill(.ultraThinMaterial)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var additionalPhotoBadge: some View {
+        Text("+\(self.additionalPhotoCount, format: .number)")
+            .font(TypographyTokens.footnote.monospacedDigit())
+            .bold()
+            .foregroundStyle(AppColors.onImagePrimary)
+            .padding(.horizontal, SpacingTokens.xSmall)
+            .padding(.vertical, SpacingTokens.xxSmall)
+            .background(AppColors.imageBadgeFill, in: Capsule())
+            .overlay {
+                Capsule()
+                    .strokeBorder(AppColors.imageBadgeBorder, lineWidth: 1)
+            }
+            .padding(SpacingTokens.xSmall)
     }
 }
 
