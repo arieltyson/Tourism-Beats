@@ -10,39 +10,52 @@ final class WebAuthPresenter: NSObject,
                               ASWebAuthenticationPresentationContextProviding
 {
     static let shared = WebAuthPresenter()
+
     func presentationAnchor(for _: ASWebAuthenticationSession)
     -> ASPresentationAnchor
     {
-        // Prefer the key window from the foreground active scene
-        if let keyWindow = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .filter({ $0.activationState == .foregroundActive })
-            .flatMap(\.windows)
-            .first(where: { $0.isKeyWindow })
-        {
+        guard let scene = self.preferredWindowScene else {
+            preconditionFailure(
+                "A window scene is required to present Spotify authentication."
+            )
+        }
+
+        if let keyWindow = scene.windows.first(where: \.isKeyWindow) {
             return keyWindow
         }
 
-        // Fallback: any existing window
-        if let anyWindow = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .flatMap(\.windows)
-            .first
-        {
-            return anyWindow
+        if let visibleWindow = scene.windows.first(where: { !$0.isHidden }) {
+            return visibleWindow
         }
 
-        // Fallback: create a window attached to the first available scene
-        if let scene = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .first
-        {
-            return UIWindow(windowScene: scene)
-        }
+        return UIWindow(windowScene: scene)
+    }
 
-        // Final fallback: create a window without attaching to a scene
-        // (only used if no scenes are available; should be extremely rare)
-        return UIWindow(frame: UIScreen.main.bounds)
+    private var preferredWindowScene: UIWindowScene? {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .sorted {
+                Self.activationPriority(for: $0.activationState)
+                    < Self.activationPriority(for: $1.activationState)
+            }
+            .first
+    }
+
+    private static func activationPriority(
+        for state: UIScene.ActivationState
+    ) -> Int {
+        switch state {
+        case .foregroundActive:
+            return 0
+        case .foregroundInactive:
+            return 1
+        case .background:
+            return 2
+        case .unattached:
+            return 3
+        @unknown default:
+            return 4
+        }
     }
 }
 
