@@ -4,6 +4,8 @@ import SwiftUI
 // MARK: - FoodView
 
 struct FoodView: View {
+    private static let navigationSubtitle = "Save restaurants by city. Remember your favourite meals"
+
     @Query(sort: \Restaurant.dateAdded, order: .reverse)
     private var restaurants: [Restaurant]
 
@@ -12,27 +14,38 @@ struct FoodView: View {
 
     var body: some View {
         ScrollView {
-            if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
-                FoodEmptyState {
-                    self.viewModel.isAddSheetPresented = true
-                }
-                .padding(.top, SpacingTokens.xxLarge)
-            } else {
-                FoodJournalContent(
-                    cityGroups: self.viewModel.cityGroups(from: self.restaurants),
-                    searchText: self.viewModel.searchText,
-                    onEdit: { restaurant in
-                        self.viewModel.restaurantToEdit = restaurant
-                    },
-                    onDelete: { restaurant in
-                        self.deleteRestaurant(restaurant)
-                    }
+            VStack(alignment: .leading, spacing: SpacingTokens.medium) {
+                FoodJournalHeader(
+                    title: "Food Journal",
+                    subtitle: Self.navigationSubtitle
                 )
+                .padding(.horizontal, SpacingTokens.medium)
+
+                if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
+                    FoodEmptyState {
+                        self.viewModel.isAddSheetPresented = true
+                    }
+                    .padding(.top, SpacingTokens.large)
+                } else {
+                    FoodJournalContent(
+                        cityGroups: self.viewModel.cityGroups(from: self.restaurants),
+                        searchText: self.viewModel.searchText,
+                        onEdit: { restaurant in
+                            self.viewModel.restaurantToEdit = restaurant
+                        },
+                        onDelete: { restaurant in
+                            self.deleteRestaurant(restaurant)
+                        }
+                    )
+                }
             }
+            .padding(.top, SpacingTokens.small)
         }
         .scrollIndicators(.hidden)
         .background(Color.clear.ignoresSafeArea())
-        .navigationTitle("Food Journal")
+        .navigationTitle("")
+        .toolbar(removing: .title)
+        .toolbarTitleDisplayMode(.inline)
         .searchable(
             text: self.$viewModel.searchText,
             placement: .toolbar,
@@ -72,6 +85,28 @@ struct FoodView: View {
         Task {
             try? await RestaurantMealPhotoStore.shared.deleteFiles(at: deletedPaths)
         }
+    }
+}
+
+// MARK: - FoodJournalHeader
+
+private struct FoodJournalHeader: View {
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+            Text(self.title)
+                .font(TypographyTokens.heroTitle.weight(.bold))
+                .foregroundStyle(.primary)
+                .accessibilityAddTraits(.isHeader)
+
+            Text(self.subtitle)
+                .font(TypographyTokens.body)
+                .foregroundStyle(.secondary)
+                .italic()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
