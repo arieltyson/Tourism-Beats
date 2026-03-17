@@ -26,9 +26,36 @@ struct TourismFloatingSettingsButton: View {
                         : AppColors.label
                 )
                 .frame(width: self.diameter, height: self.diameter)
+                .modifier(
+                    TourismFloatingSettingsSurfaceModifier(
+                        isSelected: self.isSelected,
+                        reduceTransparency: self.reduceTransparency,
+                        colorScheme: self.colorScheme
+                    )
+                )
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Settings")
+        .accessibilityValue(self.isSelected ? "Selected" : "")
+        .accessibilityHint("Opens settings and feedback")
+        .accessibilityInputLabels(["Settings", "Open Settings"])
+    }
+}
+
+// MARK: - TourismFloatingSettingsSurfaceModifier
+
+private struct TourismFloatingSettingsSurfaceModifier: ViewModifier {
+    let isSelected: Bool
+    let reduceTransparency: Bool
+    let colorScheme: ColorScheme
+
+    func body(content: Content) -> some View {
+        if self.reduceTransparency {
+            content
                 .background(
                     Circle()
-                        .fill(self.buttonBackgroundFill)
+                        .fill(self.reduceTransparencyBackground)
                 )
                 .overlay {
                     Circle()
@@ -42,22 +69,35 @@ struct TourismFloatingSettingsButton: View {
                     radius: 18,
                     y: 10
                 )
+        } else if self.isSelected {
+            content
+                .background(
+                    Circle()
+                        .fill(AppGradients.hero(for: self.colorScheme))
+                )
+                .overlay {
+                    Circle()
+                        .strokeBorder(
+                            AppColors.glassBorder(for: self.colorScheme),
+                            lineWidth: 0.75
+                        )
+                }
+                .shadow(
+                    color: AppColors.glassShadow(for: self.colorScheme),
+                    radius: 18,
+                    y: 10
+                )
+        } else {
+            content
+                .glassEffect(in: Circle())
         }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Settings")
-        .accessibilityValue(self.isSelected ? "Selected" : "")
-        .accessibilityHint("Opens settings and feedback")
-        .accessibilityInputLabels(["Settings", "Open Settings"])
     }
 
-    private var buttonBackgroundFill: AnyShapeStyle {
+    private var reduceTransparencyBackground: AnyShapeStyle {
         if self.isSelected {
             return AnyShapeStyle(AppGradients.hero(for: self.colorScheme))
         }
 
-        return self.reduceTransparency
-            ? AnyShapeStyle(AppColors.surfaceSecondary.opacity(0.98))
-            : AnyShapeStyle(.ultraThinMaterial)
+        return AnyShapeStyle(AppColors.surfaceSecondary.opacity(0.98))
     }
 }

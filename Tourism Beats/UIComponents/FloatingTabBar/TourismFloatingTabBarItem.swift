@@ -10,6 +10,7 @@ struct TourismFloatingTabBarItem: View {
     let action: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -29,7 +30,7 @@ struct TourismFloatingTabBarItem: View {
             .background {
                 if self.isSelected {
                     Capsule()
-                        .fill(AppColors.surfaceSecondary.opacity(0.92))
+                        .fill(self.selectionFill)
                         .matchedGeometryEffect(
                             id: "tourism-floating-primary-selection",
                             in: self.selectionNamespace
@@ -66,5 +67,10 @@ struct TourismFloatingTabBarItem: View {
             .font(.title3)
             .foregroundStyle(self.isSelected ? AppColors.label : AppColors.secondaryLabel)
             .frame(maxWidth: .infinity, minHeight: self.itemHeight, maxHeight: self.itemHeight)
+    }
+
+    private var selectionFill: Color {
+        let baseOpacity = self.colorSchemeContrast == .increased ? 0.18 : 0.10
+        return AppColors.label.opacity(baseOpacity)
     }
 }
