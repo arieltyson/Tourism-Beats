@@ -10,6 +10,7 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
     case dessert
     case english
     case ethiopian
+    case fastFood
     case french
     case fusion
     case german
@@ -60,6 +61,8 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
             "English"
         case .ethiopian:
             "Ethiopian"
+        case .fastFood:
+            "Fast Food"
         case .french:
             "French"
         case .fusion:

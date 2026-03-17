@@ -280,6 +280,78 @@
     "timeZoneIdentifier": "America/Los_Angeles"
   },
   {
+    "name": "Cupertino",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 37.323,
+    "longitude": -122.0322,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "San Jose",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 37.3382,
+    "longitude": -121.8863,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Oakland",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 37.8044,
+    "longitude": -122.2712,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "South Lake Tahoe",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 38.9399,
+    "longitude": -119.9772,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Sacramento",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 38.5816,
+    "longitude": -121.4944,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Santa Cruz",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 36.9741,
+    "longitude": -122.0308,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Monterey",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 36.6002,
+    "longitude": -121.8947,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Santa Barbara",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hollywood_Sign_%28Zuschnitt%29.jpg/1280px-Hollywood_Sign_%28Zuschnitt%29.jpg",
+    "latitude": 34.4208,
+    "longitude": -119.6982,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Berkeley",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "latitude": 37.8715,
+    "longitude": -122.273,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
     "name": "Vancouver",
     "countryCode": "CA",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
