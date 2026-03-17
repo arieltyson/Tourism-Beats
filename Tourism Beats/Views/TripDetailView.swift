@@ -163,11 +163,7 @@ struct TripDetailView: View {
         self.isTripDeleteConfirmationPresented = false
 
         do {
-            self.modelContext.delete(self.trip)
-
-            if self.modelContext.hasChanges {
-                try self.modelContext.save()
-            }
+            try TripSeedService.deleteTrip(self.trip, in: self.modelContext)
 
             self.dismiss()
         } catch {

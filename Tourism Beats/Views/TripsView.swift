@@ -29,7 +29,7 @@ struct TripsView: View {
     }
 
     private var shouldOfferSampleTrips: Bool {
-        !TripSeedService.hasCreatedCustomTrip()
+        !self.trips.contains(where: { !$0.isSample })
     }
 
     var body: some View {
@@ -153,10 +153,10 @@ struct TripsView: View {
         guard let tripPendingDeletion else { return }
 
         do {
-            self.modelContext.delete(tripPendingDeletion)
-            if self.modelContext.hasChanges {
-                try self.modelContext.save()
-            }
+            try TripSeedService.deleteTrip(
+                tripPendingDeletion,
+                in: self.modelContext
+            )
             self.tripPendingDeletion = nil
         } catch {
             self.errorMessage = error.localizedDescription

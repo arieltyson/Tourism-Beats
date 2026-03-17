@@ -3,46 +3,46 @@ import SwiftData
 
 // MARK: - TripSeedService
 
-/// Manages one-time sample trips for the Trips tab.
+/// Manages sample trips for the Trips tab.
 ///
-/// Samples are seeded only before a user creates their own trip.
-/// Once the user starts planning real trips, sample itineraries are
-/// removed so the library only reflects the user's own planning.
+/// Samples are visible only when the user has no custom trips.
+/// Creating a real trip removes them, and deleting the last real trip
+/// restores them so the library never feels blank.
 enum TripSeedService {
-    private static let hasCreatedCustomTripDefaultsKey =
-        "TripSeedService.hasCreatedCustomTrip"
-
     @MainActor
-    static func seedIfNeeded(
-        in context: ModelContext,
-        userDefaults: UserDefaults = .standard
-    ) throws {
-        try self.synchronizeSampleTrips(in: context, userDefaults: userDefaults)
+    static func seedIfNeeded(in context: ModelContext) throws {
+        let trips = try context.fetch(FetchDescriptor<Trip>())
 
-        guard !self.hasCreatedCustomTrip(userDefaults: userDefaults) else {
+        if trips.contains(where: { !$0.isSample }) {
+            try self.deleteSampleTripsIfNeeded(in: context, trips: trips)
             return
         }
 
-        let descriptor = FetchDescriptor<Trip>()
-        let count = try context.fetchCount(descriptor)
-        guard count == 0 else { return }
+        guard !trips.contains(where: \.isSample) else { return }
 
         try self.restoreSamples(in: context)
     }
 
     @MainActor
-    static func registerUserCreatedTrip(
-        in context: ModelContext,
-        userDefaults: UserDefaults = .standard
-    ) throws {
-        self.markHasCreatedCustomTrip(userDefaults: userDefaults)
+    static func registerUserCreatedTrip(in context: ModelContext) throws {
         try self.deleteSampleTripsIfNeeded(in: context)
     }
 
-    static func hasCreatedCustomTrip(
-        userDefaults: UserDefaults = .standard
-    ) -> Bool {
-        userDefaults.bool(forKey: self.hasCreatedCustomTripDefaultsKey)
+    @MainActor
+    static func deleteTrip(_ trip: Trip, in context: ModelContext) throws {
+        let deletedTripWasUserCreated = !trip.isSample
+
+        context.delete(trip)
+
+        if context.hasChanges {
+            try context.save()
+        }
+
+        guard deletedTripWasUserCreated else { return }
+
+        try self.restoreSamplesIfNeededAfterDeletingLastCustomTrip(
+            in: context
+        )
     }
 
     @MainActor
@@ -57,15 +57,14 @@ enum TripSeedService {
     }
 
     @MainActor
-    private static func synchronizeSampleTrips(
-        in context: ModelContext,
-        userDefaults: UserDefaults
+    private static func restoreSamplesIfNeededAfterDeletingLastCustomTrip(
+        in context: ModelContext
     ) throws {
         let trips = try context.fetch(FetchDescriptor<Trip>())
-        guard trips.contains(where: { !$0.isSample }) else { return }
+        guard !trips.contains(where: { !$0.isSample }) else { return }
+        guard !trips.contains(where: \.isSample) else { return }
 
-        self.markHasCreatedCustomTrip(userDefaults: userDefaults)
-        try self.deleteSampleTripsIfNeeded(in: context, trips: trips)
+        try self.restoreSamples(in: context)
     }
 
     @MainActor
@@ -90,12 +89,6 @@ enum TripSeedService {
         if context.hasChanges {
             try context.save()
         }
-    }
-
-    private static func markHasCreatedCustomTrip(
-        userDefaults: UserDefaults
-    ) {
-        userDefaults.set(true, forKey: self.hasCreatedCustomTripDefaultsKey)
     }
 
     // MARK: - Trinidad & Tobago
