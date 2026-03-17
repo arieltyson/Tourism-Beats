@@ -104,6 +104,10 @@ private struct CountryRow: View {
             }
         }
         .contentShape(.rect)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(self.country.flag) \(self.country.name)")
+        .accessibilityValue(self.isSelected ? "Selected" : "")
+        .accessibilityHint("Selects this passport country")
     }
 }
 
@@ -122,5 +126,6 @@ private struct SectionIndexTitles: View {
             }
         }
         .padding(.trailing, SpacingTokens.xxSmall)
+        .accessibilityHidden(true)
     }
 }

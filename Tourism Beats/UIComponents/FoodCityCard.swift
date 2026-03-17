@@ -103,9 +103,9 @@ private struct FoodCityCardVignette: View {
     var body: some View {
         LinearGradient(
             colors: [
-                .black.opacity(0.08),
+                AppColors.imageScrimTop,
                 .clear,
-                .black.opacity(0.68)
+                AppColors.imageScrimMid
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -114,8 +114,8 @@ private struct FoodCityCardVignette: View {
             LinearGradient(
                 colors: [
                     .clear,
-                    .black.opacity(0.12),
-                    .black.opacity(0.78)
+                    AppColors.imageScrimMid,
+                    AppColors.imageScrimBottom
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -136,8 +136,8 @@ private struct FoodCityCardFooter: View {
             LinearGradient(
                 colors: [
                     .clear,
-                    .black.opacity(0.28),
-                    .black.opacity(0.9)
+                    AppColors.imageScrimMid,
+                    AppColors.imageScrimBottom
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -235,7 +235,7 @@ private struct FoodCityCardText: View {
             Text(self.group.displayCityName)
                 .font(TypographyTokens.songTitle)
                 .bold()
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.onImagePrimary)
                 .lineLimit(2)
                 .minimumScaleFactor(0.88)
                 .fixedSize(horizontal: false, vertical: true)
@@ -245,7 +245,7 @@ private struct FoodCityCardText: View {
             if !self.group.displayCountryName.isEmpty {
                 Text(self.group.displayCountryName)
                     .font(TypographyTokens.artistName)
-                    .foregroundStyle(.white.opacity(0.94))
+                    .foregroundStyle(AppColors.onImageSecondary)
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
                     .fixedSize(horizontal: false, vertical: true)
@@ -268,12 +268,12 @@ private struct FoodCityCardCountBadge: View {
             Text("\(self.count, format: .number)")
                 .font(TypographyTokens.cardLabel.monospacedDigit())
                 .bold()
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.onImagePrimary)
                 .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
 
             Text(self.count == 1 ? "restaurant" : "restaurants")
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.94))
+                .foregroundStyle(AppColors.onImageSecondary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
                 .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
@@ -283,10 +283,10 @@ private struct FoodCityCardCountBadge: View {
         .padding(.vertical, SpacingTokens.xSmall)
         .background {
             Capsule()
-                .fill(.thinMaterial)
+                .fill(AppColors.imageBadgeFill)
                 .overlay {
                     Capsule()
-                        .fill(.black.opacity(0.18))
+                        .strokeBorder(AppColors.imageBadgeBorder, lineWidth: 1)
                 }
         }
         .fixedSize(horizontal: true, vertical: true)

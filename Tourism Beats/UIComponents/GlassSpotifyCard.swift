@@ -17,26 +17,46 @@ struct GlassSpotifyCard: View {
     let isSearching: Bool
     let onOpen: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         GlassCard(cornerRadius: 20) {
-            HStack(spacing: SpacingTokens.small) {
-                GlassSpotifyCardArtwork(url: self.artworkURL)
+            if self.dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                    HStack(spacing: SpacingTokens.small) {
+                        GlassSpotifyCardArtwork(url: self.artworkURL)
 
-                GlassSpotifyCardInfo(
-                    songTitle: self.songTitle,
-                    artistName: self.artistName
-                )
+                        GlassSpotifyCardInfo(
+                            songTitle: self.songTitle,
+                            artistName: self.artistName
+                        )
+                    }
 
-                Spacer(minLength: SpacingTokens.xxSmall)
+                    GlassSpotifyCardAction(
+                        isSearching: self.isSearching,
+                        onOpen: self.onOpen
+                    )
+                }
+            } else {
+                HStack(spacing: SpacingTokens.small) {
+                    GlassSpotifyCardArtwork(url: self.artworkURL)
 
-                GlassSpotifyCardAction(
-                    isSearching: self.isSearching,
-                    onOpen: self.onOpen
-                )
+                    GlassSpotifyCardInfo(
+                        songTitle: self.songTitle,
+                        artistName: self.artistName
+                    )
+
+                    Spacer(minLength: SpacingTokens.xxSmall)
+
+                    GlassSpotifyCardAction(
+                        isSearching: self.isSearching,
+                        onOpen: self.onOpen
+                    )
+                }
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Spotify")
+        .accessibilityLabel("Spotify. \(self.songTitle) by \(self.artistName)")
     }
 }
 
@@ -62,7 +82,7 @@ private struct GlassSpotifyCardArtwork: View {
                             .overlay {
                                 ProgressView()
                                     .controlSize(.small)
-                                    .tint(.white)
+                                    .tint(.primary)
                             }
                     }
                 }
@@ -85,7 +105,7 @@ private struct GlassSpotifyCardArtworkPlaceholder: View {
             .overlay {
                 Image(systemName: "music.note")
                     .font(.title3)
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.secondary)
             }
     }
 }
@@ -96,21 +116,27 @@ private struct GlassSpotifyCardInfo: View {
     let songTitle: String
     let artistName: String
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
             ProviderLogo.spotify.view
                 .frame(width: 16, height: 16)
+                .accessibilityHidden(true)
 
             Text(self.songTitle)
                 .font(TypographyTokens.cardLabel.weight(.semibold))
-                .foregroundStyle(.white)
-                .lineLimit(1)
+                .foregroundStyle(.primary)
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Text(self.artistName)
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.7))
-                .lineLimit(1)
+                .foregroundStyle(.secondary)
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -124,7 +150,7 @@ private struct GlassSpotifyCardAction: View {
         if self.isSearching {
             ProgressView()
                 .controlSize(.small)
-                .tint(.white)
+                .tint(.primary)
                 .frame(width: 32, height: 32)
         } else {
             Button(action: self.onOpen) {
@@ -137,6 +163,7 @@ private struct GlassSpotifyCardAction: View {
             }
             .buttonStyle(.plain)
             .accessibilityHint("Opens this song in Spotify")
+            .accessibilityInputLabels(["Open in Spotify", "Open Spotify"])
         }
     }
 }

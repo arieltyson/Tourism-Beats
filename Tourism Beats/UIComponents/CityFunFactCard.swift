@@ -79,12 +79,12 @@ struct CityFunFactCard: View {
         }
         .motionSensitiveAnimation(
             .easeInOut(duration: 0.2),
-            reduced: .none,
+            reduced: .linear(duration: 0.01),
             value: self.viewModel.isLoading
         )
         .motionSensitiveAnimation(
             .spring(response: 0.35, dampingFraction: 0.88),
-            reduced: .none,
+            reduced: .linear(duration: 0.01),
             value: self.viewModel.displayedFact?.text
         )
     }
@@ -151,7 +151,7 @@ private struct CityFunFactTitle: View {
             Text("Fun Fact")
                 .font(.system(.headline, design: .rounded))
                 .bold()
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.label)
         }
     }
 }
@@ -167,11 +167,13 @@ private struct CityFunFactRefreshButton: View {
         }
         .font(TypographyTokens.footnote)
         .bold()
-        .foregroundStyle(.white)
+        .foregroundStyle(AppColors.label)
         .padding(.horizontal, SpacingTokens.xSmall)
         .padding(.vertical, SpacingTokens.xxSmall)
-        .background(.white.opacity(0.12), in: Capsule())
+        .background(AppColors.surfaceSecondary.opacity(0.92), in: Capsule())
         .buttonStyle(.plain)
+        .accessibilityHint("Shows another fun fact")
+        .accessibilityInputLabels(["Another Fact", "Show Another Fact"])
     }
 }
 
@@ -203,10 +205,10 @@ private struct CityFunFactContent: View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
             Text(self.fact.text)
                 .font(TypographyTokens.body)
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.label)
                 .lineLimit(
                     self.dynamicTypeSize.isAccessibilitySize
-                        ? nil
+                        ? 12
                         : CityFunFactLayout.compactFactLineLimit,
                     reservesSpace: !self.dynamicTypeSize.isAccessibilitySize
                 )
@@ -254,13 +256,13 @@ private struct CityFunFactSourceLabel: View {
         if let sourceURL = self.fact.sourceURL {
             Link("Source: \(self.fact.sourceName)", destination: sourceURL)
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AppColors.secondaryLabel)
                 .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                 .truncationMode(.tail)
         } else {
             Text("Source: \(self.fact.sourceName)")
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AppColors.secondaryLabel)
                 .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                 .truncationMode(.tail)
         }
@@ -277,10 +279,10 @@ private struct CityFunFactFallbackBadge: View {
             Text("Offline fallback")
                 .font(TypographyTokens.footnote)
                 .bold()
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AppColors.secondaryLabel)
                 .padding(.horizontal, SpacingTokens.xSmall)
                 .padding(.vertical, 2)
-                .background(.white.opacity(0.08), in: Capsule())
+                .background(AppColors.surfaceSecondary.opacity(0.88), in: Capsule())
                 .lineLimit(1)
         }
     }
@@ -294,17 +296,17 @@ private struct CityFunFactLoadingState: View {
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
             ProgressView()
-                .tint(.white)
+                .tint(AppColors.label)
 
             Text("Loading a quick local detail…")
                 .font(TypographyTokens.body)
-                .foregroundStyle(.white.opacity(0.88))
+                .foregroundStyle(AppColors.label)
                 .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? nil : 2)
                 .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Text("This uses a cached public summary when available.")
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.68))
+                .foregroundStyle(AppColors.secondaryLabel)
                 .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? nil : 2)
                 .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
@@ -325,10 +327,10 @@ private struct CityFunFactUnavailableState: View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
             Text("A city fact for \(self.city.name) is not available right now.")
                 .font(TypographyTokens.body)
-                .foregroundStyle(.white.opacity(0.88))
+                .foregroundStyle(AppColors.label)
                 .lineLimit(
                     self.dynamicTypeSize.isAccessibilitySize
-                        ? nil
+                        ? 12
                         : CityFunFactLayout.compactFactLineLimit,
                     reservesSpace: !self.dynamicTypeSize.isAccessibilitySize
                 )

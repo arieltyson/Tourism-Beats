@@ -92,7 +92,7 @@ struct HomeView: View {
     }
 
     private var cardWidth: CGFloat {
-        self.typeSize >= .accessibility1 ? 200 : 160
+        self.typeSize >= .accessibility1 ? 240 : 160
     }
 
     // MARK: - Layout Constants
@@ -110,7 +110,7 @@ private struct HomeHeaderSection: View {
             Text("Tourism Beats")
                 .font(.system(.largeTitle, design: .rounded).weight(.black))
                 .kerning(0.5)
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.onImagePrimary)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .minimumScaleFactor(0.75)
@@ -119,7 +119,7 @@ private struct HomeHeaderSection: View {
 
             Text("an immersive tourist experience")
                 .font(.system(.title3, design: .rounded).italic())
-                .foregroundStyle(.white.opacity(0.92))
+                .foregroundStyle(AppColors.onImageSecondary)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .minimumScaleFactor(0.85)
@@ -136,15 +136,17 @@ private struct DiscoveryCityCard: View {
     let scheme: ColorScheme
     let action: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         Button(action: self.action) {
             ZStack(alignment: .bottomLeading) {
                 CachedCityImage(url: self.city.imageURL)
-                    .frame(height: 140)
+                    .frame(height: self.cardHeight)
                     .clipped()
 
                 LinearGradient(
-                    colors: [.clear, .black.opacity(0.65)],
+                    colors: [AppColors.imageScrimTop, AppColors.imageScrimBottom],
                     startPoint: UnitPoint(x: 0.5, y: 0.3),
                     endPoint: .bottom
                 )
@@ -156,18 +158,19 @@ private struct DiscoveryCityCard: View {
 
                         Text(self.city.name)
                             .font(.system(.subheadline, design: .rounded).weight(.semibold))
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
+                            .foregroundStyle(AppColors.onImagePrimary)
+                            .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                             .minimumScaleFactor(0.75)
                     }
 
                     Text(self.localTime)
                         .font(.system(.caption2, design: .monospaced))
-                        .foregroundStyle(.white.opacity(0.8))
+                        .foregroundStyle(AppColors.onImageSecondary)
+                        .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                 }
                 .padding(12)
             }
-            .frame(height: 140)
+            .frame(height: self.cardHeight)
             .clipShape(.rect(cornerRadius: 16, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -187,6 +190,11 @@ private struct DiscoveryCityCard: View {
             "\(self.city.country.flag) \(self.city.name), \(self.city.country.name). Local time \(self.localTime)"
         )
         .accessibilityHint("Opens city details")
+        .accessibilityInputLabels(["\(self.city.name)", "Open \(self.city.name)"])
+    }
+
+    private var cardHeight: CGFloat {
+        self.dynamicTypeSize.isAccessibilitySize ? 168 : 140
     }
 }
 
@@ -203,11 +211,11 @@ private struct DiscoveryCTACard: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Explore all destinations")
                         .font(.system(.headline, design: .rounded))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColors.onImagePrimary)
 
                     Text("\(self.cityCount) cities worldwide")
                         .font(.caption)
-                        .foregroundStyle(.white.opacity(0.8))
+                        .foregroundStyle(AppColors.onImageSecondary)
                 }
 
                 Spacer()
@@ -215,17 +223,17 @@ private struct DiscoveryCTACard: View {
                 Image(systemName: "arrow.right.circle.fill")
                     .font(.title3)
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColors.onImagePrimary)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(.ultraThinMaterial)
+                    .fill(AppColors.imageBadgeFill)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
+                                AppColors.imageBadgeBorder,
                                 lineWidth: 1
                             )
                     )

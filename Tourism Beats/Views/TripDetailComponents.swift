@@ -395,6 +395,7 @@ struct TripDayHeaderMenu: View {
                 }
             }
             .labelStyle(.iconOnly)
+            .accessibilityInputLabels(["Day Actions", "More Day Actions"])
         }
     }
 }
@@ -424,6 +425,8 @@ struct TripsInlineCount: View {
             self.tint.opacity(0.10),
             in: .rect(cornerRadius: 14, style: .continuous)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(self.title): \(self.value)")
     }
 }
 
@@ -445,6 +448,7 @@ struct TripActivityRow: View {
             }
             .labelStyle(.iconOnly)
             .foregroundStyle(self.activity.activityStatus.color)
+            .accessibilityInputLabels(["Update Status", "Mark \(self.activity.activityStatus.next.label)"])
 
             Button {
                 self.onEdit()
@@ -486,6 +490,9 @@ struct TripActivityRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(self.activitySummary)
+            .accessibilityHint("Edits this activity")
+            .accessibilityInputLabels(["Edit \(self.activity.name)", self.activity.name])
 
             Menu("Activity Actions", systemImage: "ellipsis.circle") {
                 Button("Edit Activity", systemImage: "pencil") {
@@ -504,6 +511,7 @@ struct TripActivityRow: View {
                 }
             }
             .labelStyle(.iconOnly)
+            .accessibilityInputLabels(["Activity Actions", "More Activity Actions"])
         }
         .padding(.vertical, SpacingTokens.xSmall)
         .padding(.horizontal, SpacingTokens.small)
@@ -511,5 +519,20 @@ struct TripActivityRow: View {
             AppColors.surfaceSecondary.opacity(0.75),
             in: .rect(cornerRadius: 18, style: .continuous)
         )
+    }
+
+    private var activitySummary: String {
+        [
+            self.activity.name,
+            self.activity.type.label,
+            self.activity.timeLabel,
+            self.activity.location,
+            self.activity.activityStatus.label
+        ]
+        .compactMap { value in
+            guard let value, !value.isEmpty else { return nil }
+            return value
+        }
+        .joined(separator: ", ")
     }
 }

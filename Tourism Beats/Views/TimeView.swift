@@ -54,7 +54,7 @@ private struct StandardTimeCard: View {
 
             Text(self.formattedTime)
                 .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.label)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
                 .padding(.horizontal, 10)
@@ -77,12 +77,12 @@ private struct AccessibilityTimeCard: View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
             Text("Local Time")
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.78))
+                .foregroundStyle(AppColors.secondaryLabel)
 
             Text(self.formattedTime)
                 .font(TypographyTokens.heroTitle.monospacedDigit())
                 .bold()
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.label)
                 .lineLimit(2)
                 .minimumScaleFactor(0.75)
         }

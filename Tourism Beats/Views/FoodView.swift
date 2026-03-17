@@ -91,9 +91,7 @@ private struct FoodJournalContent: View {
                 FoodNoResults(searchText: self.searchText)
                     .padding(.top, SpacingTokens.xxLarge)
             } else {
-                ForEach(self.cityGroups.indices, id: \.self) { index in
-                    let group = self.cityGroups[index]
-
+                ForEach(self.cityGroups.enumerated(), id: \.element.id) { index, group in
                     NavigationLink {
                         FoodCityJournalView(
                             group: group,
@@ -111,7 +109,7 @@ private struct FoodJournalContent: View {
                     )
                     .motionSensitiveAnimation(
                         AnimationTokens.stagger(index: index),
-                        reduced: .none,
+                        reduced: .linear(duration: 0.01),
                         value: self.cityGroups.count
                     )
                 }
@@ -169,6 +167,7 @@ private struct FoodJournalFilterMenu: View {
             }
         }
         .accessibilityLabel("Filter restaurants")
+        .accessibilityInputLabels(["Filter Restaurants", "Restaurant Filter"])
     }
 }
 

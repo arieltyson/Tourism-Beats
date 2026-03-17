@@ -28,9 +28,9 @@ struct MapView: UIViewRepresentable {
         _lastRegion = lastRegion
         self.cities = cities
         self.onCitySelected = onCitySelected
-        self.cityByName = Dictionary(
-            uniqueKeysWithValues: cities.map { ($0.name, $0) }
-        )
+        self.cityByName = cities.reduce(into: [:]) { partialResult, city in
+            partialResult[Self.annotationTitle(for: city)] = city
+        }
     }
 
     func makeUIView(context: Context) -> MKMapView {
@@ -39,11 +39,13 @@ struct MapView: UIViewRepresentable {
         mapView.preferredConfiguration = MKStandardMapConfiguration(emphasisStyle: .muted)
         mapView.overrideUserInterfaceStyle = .dark
         mapView.setRegion(self.region, animated: false)
+        mapView.accessibilityLabel = "Map of destinations"
+        mapView.accessibilityHint = "Select a city pin to open destination details"
 
         // Add all pins
         for city in self.cities {
             let pin = MKPointAnnotation()
-            pin.title = city.name
+            pin.title = Self.annotationTitle(for: city)
             pin.coordinate = city.coordinate
             mapView.addAnnotation(pin)
         }
@@ -65,6 +67,10 @@ struct MapView: UIViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    private static func annotationTitle(for city: CityModel) -> String {
+        "\(city.name), \(city.country.name)"
+    }
 
     @MainActor
     class Coordinator: NSObject, MKMapViewDelegate {

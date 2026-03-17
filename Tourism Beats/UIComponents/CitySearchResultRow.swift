@@ -32,7 +32,7 @@ struct CitySearchResultRow: View {
             Spacer()
 
             Image(systemName: "location.fill")
-                .foregroundStyle(.blue)
+                .foregroundStyle(AppColors.info)
                 .font(TypographyTokens.caption)
         }
         .padding(.horizontal, SpacingTokens.medium)
@@ -41,6 +41,9 @@ struct CitySearchResultRow: View {
             .quaternary.opacity(0.5),
             in: RoundedRectangle(cornerRadius: 12)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(self.city.name), \(self.city.country.name)")
+        .accessibilityHint("Opens city details")
     }
 
     private var cityIcon: some View {
@@ -61,7 +64,7 @@ struct CitySearchResultRow: View {
         let ranges = text.ranges(of: searchText, options: .caseInsensitive)
         for r in ranges {
             if let ar = Range(r, in: attributed) {
-                attributed[ar].backgroundColor = .blue.opacity(0.30)
+                attributed[ar].backgroundColor = AppColors.searchHighlight
             }
         }
         return attributed

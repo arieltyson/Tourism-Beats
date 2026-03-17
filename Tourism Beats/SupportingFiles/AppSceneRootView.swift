@@ -10,6 +10,7 @@ struct AppSceneRootView: View {
 
     @Binding var selectedTab: AppTab
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.modelContext) private var modelContext
 
     @State private var launchPhase: LaunchPhase = .branded
@@ -29,7 +30,9 @@ struct AppSceneRootView: View {
 
             if self.launchPhase == .branded {
                 LaunchAnimationView {
-                    withAnimation(.easeInOut(duration: 0.35)) {
+                    withAnimation(
+                        self.reduceMotion ? .none : .easeInOut(duration: 0.35)
+                    ) {
                         self.launchPhase = .ready
                     }
                 }
@@ -37,7 +40,10 @@ struct AppSceneRootView: View {
                 .zIndex(1)
             }
         }
-        .animation(.easeInOut(duration: 0.35), value: self.launchPhase)
+        .animation(
+            self.reduceMotion ? .none : .easeInOut(duration: 0.35),
+            value: self.launchPhase
+        )
         .task {
             self.appDelegate.onQuickAction = { action in
                 self.selectedTab = action.targetTab

@@ -443,6 +443,8 @@ private struct TripCountryPickerField: View {
                 ? "Country, \(self.countryDisplayLabel)"
                 : "Country, Choose a country"
         )
+        .accessibilityHint("Opens the list of countries")
+        .accessibilityInputLabels(["Country", "Choose Country"])
     }
 }
 
@@ -541,6 +543,8 @@ private struct TripCitySuggestionsSection: View {
 // MARK: - TripDatesSection
 
 private struct TripDatesSection: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @Binding var hasDates: Bool
     @Binding var startDate: Date
     @Binding var endDate: Date

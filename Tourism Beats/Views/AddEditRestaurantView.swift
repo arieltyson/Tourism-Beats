@@ -649,8 +649,9 @@ private struct EditableMealPhotoThumbnail: View {
             }
             .labelStyle(.iconOnly)
             .font(.title3)
-            .tint(.white)
+            .tint(AppColors.onImagePrimary)
             .padding(SpacingTokens.xxSmall)
+            .accessibilityInputLabels(["Remove Photo", "Delete Photo"])
         }
     }
 }

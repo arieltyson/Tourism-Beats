@@ -19,7 +19,7 @@ struct CityContainerView: View {
                 .ignoresSafeArea()
                 .motionSensitiveAnimation(
                     .easeInOut(duration: 0.4),
-                    reduced: .none,
+                    reduced: .linear(duration: 0.01),
                     value: self.pageIndex
                 )
 
@@ -46,7 +46,7 @@ struct CityContainerView: View {
             }
             .motionSensitiveAnimation(
                 .interactiveSpring(response: 0.35, dampingFraction: 0.85),
-                reduced: .none,
+                reduced: .linear(duration: 0.01),
                 value: self.pageIndex
             )
 
@@ -70,7 +70,7 @@ struct CityContainerView: View {
                     .opacity(self.pageIndex != 0 ? 1 : 0)
                     .motionSensitiveAnimation(
                         .easeInOut,
-                        reduced: .none,
+                        reduced: .linear(duration: 0.01),
                         value: self.pageIndex
                     )
             }

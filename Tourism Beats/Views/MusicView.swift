@@ -78,19 +78,22 @@ private struct MusicSongHeader: View {
         VStack(spacing: SpacingTokens.xxSmall) {
             Text(self.title)
                 .font(TypographyTokens.songTitle).bold()
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.onImagePrimary)
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
+                .lineLimit(3)
                 .minimumScaleFactor(0.75)
+                .shadow(color: .black.opacity(0.30), radius: 10, y: 4)
 
             Text(self.artist)
                 .font(TypographyTokens.artistName)
-                .foregroundStyle(.white.opacity(0.8))
+                .foregroundStyle(AppColors.onImageSecondary)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
                 .minimumScaleFactor(0.9)
+                .shadow(color: .black.opacity(0.24), radius: 8, y: 3)
         }
         .padding(.horizontal, SpacingTokens.medium)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -103,10 +106,11 @@ private struct MusicFeedbackBanner: View {
         if let message {
             Text(message)
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.7))
+                .foregroundStyle(AppColors.onImageSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, SpacingTokens.medium)
                 .transition(.opacity)
+                .shadow(color: .black.opacity(0.20), radius: 6, y: 2)
         }
     }
 }

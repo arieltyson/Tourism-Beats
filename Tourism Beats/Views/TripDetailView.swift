@@ -51,6 +51,7 @@ struct TripDetailView: View {
                     self.addDay()
                 }
                 .labelStyle(.iconOnly)
+                .accessibilityInputLabels(["Add Day", "Create Day"])
 
                 Menu {
                     Button("Edit Trip", systemImage: "pencil") {
@@ -65,6 +66,7 @@ struct TripDetailView: View {
                 }
                 .labelStyle(.iconOnly)
                 .accessibilityLabel("Trip actions")
+                .accessibilityInputLabels(["Trip Actions", "More Trip Actions"])
             }
         }
         .sheet(isPresented: self.$isEditTripPresented) {
@@ -264,9 +266,9 @@ private struct TripHeroCard: View {
 
             LinearGradient(
                 colors: [
-                    .black.opacity(0.12),
-                    .black.opacity(0.28),
-                    .black.opacity(0.84)
+                    AppColors.imageScrimTop,
+                    AppColors.imageScrimMid,
+                    AppColors.imageScrimBottom
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -281,20 +283,20 @@ private struct TripHeroCard: View {
                     Text(self.trip.name)
                         .font(TypographyTokens.heroTitle)
                         .bold()
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColors.onImagePrimary)
                         .lineLimit(2)
                         .minimumScaleFactor(0.88)
 
                     Text("\(self.countryFlag) \(self.trip.displayLocation)")
                         .font(TypographyTokens.songTitle)
-                        .foregroundStyle(.white.opacity(0.94))
+                        .foregroundStyle(AppColors.onImageSecondary)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
 
                     if let dateRangeLabel = self.trip.dateRangeLabel {
                         Label(dateRangeLabel, systemImage: "calendar")
                             .font(TypographyTokens.body)
-                            .foregroundStyle(.white.opacity(0.84))
+                            .foregroundStyle(AppColors.onImageSecondary)
                             .lineLimit(2)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -433,7 +435,7 @@ private struct TripHeroBackground: View {
                 .overlay {
                     Image(systemName: "globe.americas.fill")
                         .font(.system(size: 88))
-                        .foregroundStyle(.white.opacity(0.22))
+                        .foregroundStyle(AppColors.onImageTertiary.opacity(0.30))
                 }
             }
         }

@@ -118,11 +118,12 @@ struct TripsView: View {
                 .labelStyle(.iconOnly)
                 .padding(SpacingTokens.medium)
                 .background(AppGradients.hero(for: self.colorScheme), in: Circle())
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.onImagePrimary)
                 .shadow(color: .black.opacity(0.22), radius: 12, y: 8)
                 .padding(.trailing, SpacingTokens.medium)
                 .padding(.bottom, SpacingTokens.medium)
                 .accessibilityLabel("Create trip")
+                .accessibilityInputLabels(["Create Trip", "Add Trip"])
             }
         }
     }
@@ -292,9 +293,9 @@ private struct TripOverviewCard: View {
 
             LinearGradient(
                 colors: [
-                    .black.opacity(0.10),
-                    .black.opacity(0.28),
-                    .black.opacity(0.82)
+                    AppColors.imageScrimTop,
+                    AppColors.imageScrimMid,
+                    AppColors.imageScrimBottom
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -325,18 +326,18 @@ private struct TripOverviewCard: View {
                     Text(self.trip.name)
                         .font(TypographyTokens.songTitle)
                         .bold()
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColors.onImagePrimary)
                         .lineLimit(2)
 
                     Text("\(self.countryFlag) \(self.trip.displayLocation)")
                         .font(TypographyTokens.artistName)
-                        .foregroundStyle(.white.opacity(0.92))
+                        .foregroundStyle(AppColors.onImageSecondary)
                         .lineLimit(1)
 
                     if let dateRangeLabel = self.trip.dateRangeLabel {
                         Label(dateRangeLabel, systemImage: "calendar")
                             .font(TypographyTokens.caption)
-                            .foregroundStyle(.white.opacity(0.84))
+                            .foregroundStyle(AppColors.onImageSecondary)
                     }
                 }
 
@@ -430,15 +431,17 @@ struct TripsBadge: View {
     let systemImage: String
     let tint: Color
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         Label(self.title, systemImage: self.systemImage)
             .font(TypographyTokens.footnote)
-            .foregroundStyle(.white)
-            .lineLimit(1)
+            .foregroundStyle(AppColors.onImagePrimary)
+            .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
             .minimumScaleFactor(0.84)
             .padding(.vertical, SpacingTokens.xxSmall)
             .padding(.horizontal, SpacingTokens.xSmall)
-            .background(self.tint.opacity(0.72), in: Capsule())
+            .background(self.tint.opacity(0.82), in: Capsule())
     }
 }
 
@@ -448,15 +451,21 @@ struct TripsFootnotePill: View {
     let title: String
     let systemImage: String
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         Label(self.title, systemImage: self.systemImage)
             .font(TypographyTokens.footnote)
-            .foregroundStyle(.white)
-            .lineLimit(1)
+            .foregroundStyle(AppColors.onImagePrimary)
+            .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
             .minimumScaleFactor(0.84)
             .padding(.vertical, SpacingTokens.xxSmall)
             .padding(.horizontal, SpacingTokens.xSmall)
-            .background(.thinMaterial, in: Capsule())
+            .background(AppColors.imageBadgeFill, in: Capsule())
+            .overlay {
+                Capsule()
+                    .strokeBorder(AppColors.imageBadgeBorder, lineWidth: 1)
+            }
     }
 }
 
@@ -498,6 +507,7 @@ private struct TripsFilterMenu: View {
             }
         }
         .accessibilityLabel("Filter trips")
+        .accessibilityInputLabels(["Filter Trips", "Trip Filter"])
     }
 }
 
@@ -540,12 +550,14 @@ private struct TripsEmptyState: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(AppColors.coral)
+                .accessibilityInputLabels(["Create Trip", "Add Trip"])
 
                 if self.showsSampleTrips {
                     Button("Load Sample Trips", systemImage: "sparkles") {
                         self.onRestoreSamples()
                     }
                     .buttonStyle(.bordered)
+                    .accessibilityInputLabels(["Load Sample Trips", "Restore Sample Trips"])
                 }
             }
 

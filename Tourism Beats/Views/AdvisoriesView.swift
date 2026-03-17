@@ -82,7 +82,7 @@ struct AdvisoriesView: View {
             .scaleEffect(self.reduceMotion ? 1 : (self.appeared ? 1 : 0.98))
             .motionSensitiveAnimation(
                 .spring(response: 0.6, dampingFraction: 0.85),
-                reduced: .none,
+                reduced: .linear(duration: 0.01),
                 value: self.appeared
             )
             .onAppear { self.appeared = true }
@@ -147,14 +147,9 @@ private struct HeroCard: View {
                 )
         }
         .scrollTransition(axis: .vertical) { content, phase in
-            if self.reduceMotion {
-                content
-                    .opacity(phase.isIdentity ? 1 : 0.92)
-            } else {
-                content
-                    .opacity(phase.isIdentity ? 1 : 0.85)
-                    .scaleEffect(phase.isIdentity ? 1 : 0.98)
-            }
+            content
+                .opacity(phase.isIdentity ? 1 : (self.reduceMotion ? 0.92 : 0.85))
+                .scaleEffect(phase.isIdentity ? 1 : (self.reduceMotion ? 1 : 0.98))
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
@@ -190,14 +185,9 @@ private struct AdvisoryCard<Content: View>: View {
                 )
         }
         .scrollTransition(axis: .vertical) { view, phase in
-            if self.reduceMotion {
-                view
-                    .opacity(phase.isIdentity ? 1 : 0.96)
-            } else {
-                view
-                    .opacity(phase.isIdentity ? 1 : 0.92)
-                    .scaleEffect(phase.isIdentity ? 1 : 0.995)
-            }
+            view
+                .opacity(phase.isIdentity ? 1 : (self.reduceMotion ? 0.96 : 0.92))
+                .scaleEffect(phase.isIdentity ? 1 : (self.reduceMotion ? 1 : 0.995))
         }
         .accessibilityElement(children: .contain)
     }

@@ -86,6 +86,8 @@ private struct VisaPassportPicker: View {
             .buttonStyle(.plain)
             .accessibilityLabel("Select passport country")
             .accessibilityValue(self.currentCountry?.name ?? "None selected")
+            .accessibilityHint("Opens the list of passport countries")
+            .accessibilityInputLabels(["Passport Country", "Select Passport Country"])
         }
     }
 }

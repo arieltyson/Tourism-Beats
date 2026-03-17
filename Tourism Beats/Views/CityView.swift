@@ -52,8 +52,10 @@ private struct CityHeaderView: View {
             Text("\(self.city.country.name) \(self.city.country.flag)")
         }
         .font(.title2).bold().italic()
-        .foregroundStyle(.white)
+        .foregroundStyle(AppColors.onImagePrimary)
         .multilineTextAlignment(.center)
         .padding(.horizontal, 20)
+        .shadow(color: .black.opacity(0.30), radius: 8, y: 3)
+        .accessibilityAddTraits(.isHeader)
     }
 }

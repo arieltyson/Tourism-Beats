@@ -18,27 +18,48 @@ struct GlassMusicCard: View {
     let onPlayPause: () -> Void
     let onRestart: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         GlassCard(cornerRadius: 20) {
-            HStack(spacing: SpacingTokens.small) {
-                GlassMusicCardArtwork(url: self.artworkURL)
+            if self.dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                    HStack(spacing: SpacingTokens.small) {
+                        GlassMusicCardArtwork(url: self.artworkURL)
 
-                GlassMusicCardInfo(
-                    songTitle: self.songTitle,
-                    artistName: self.artistName
-                )
+                        GlassMusicCardInfo(
+                            songTitle: self.songTitle,
+                            artistName: self.artistName
+                        )
+                    }
 
-                Spacer(minLength: SpacingTokens.xxSmall)
+                    GlassMusicCardControls(
+                        isPlaying: self.isPlaying,
+                        onRestart: self.onRestart,
+                        onPlayPause: self.onPlayPause
+                    )
+                }
+            } else {
+                HStack(spacing: SpacingTokens.small) {
+                    GlassMusicCardArtwork(url: self.artworkURL)
 
-                GlassMusicCardControls(
-                    isPlaying: self.isPlaying,
-                    onRestart: self.onRestart,
-                    onPlayPause: self.onPlayPause
-                )
+                    GlassMusicCardInfo(
+                        songTitle: self.songTitle,
+                        artistName: self.artistName
+                    )
+
+                    Spacer(minLength: SpacingTokens.xxSmall)
+
+                    GlassMusicCardControls(
+                        isPlaying: self.isPlaying,
+                        onRestart: self.onRestart,
+                        onPlayPause: self.onPlayPause
+                    )
+                }
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Apple Music")
+        .accessibilityLabel("Apple Music. \(self.songTitle) by \(self.artistName)")
     }
 }
 
@@ -64,7 +85,7 @@ private struct GlassMusicCardArtwork: View {
                             .overlay {
                                 ProgressView()
                                     .controlSize(.small)
-                                    .tint(.white)
+                                    .tint(.primary)
                             }
                     }
                 }
@@ -87,7 +108,7 @@ private struct GlassMusicCardArtworkPlaceholder: View {
             .overlay {
                 Image(systemName: "music.note")
                     .font(.title3)
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(.secondary)
             }
     }
 }
@@ -98,21 +119,27 @@ private struct GlassMusicCardInfo: View {
     let songTitle: String
     let artistName: String
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
             ProviderLogo.appleMusic.view
                 .frame(width: 16, height: 16)
+                .accessibilityHidden(true)
 
             Text(self.songTitle)
                 .font(TypographyTokens.cardLabel.weight(.semibold))
-                .foregroundStyle(.white)
-                .lineLimit(1)
+                .foregroundStyle(.primary)
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Text(self.artistName)
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(.white.opacity(0.7))
-                .lineLimit(1)
+                .foregroundStyle(.secondary)
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -129,6 +156,7 @@ private struct GlassMusicCardControls: View {
                 .labelStyle(.iconOnly)
                 .font(.callout)
                 .accessibilityHint("Restarts the current song")
+                .accessibilityInputLabels(["Restart Song", "Restart"])
 
             Button(
                 self.isPlaying ? "Pause" : "Play",
@@ -140,9 +168,13 @@ private struct GlassMusicCardControls: View {
             .accessibilityHint(
                 self.isPlaying ? "Pauses playback" : "Plays the song"
             )
+            .accessibilityInputLabels(
+                self.isPlaying ? ["Pause Song", "Pause"] : ["Play Song", "Play"]
+            )
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(.primary)
         .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }
 

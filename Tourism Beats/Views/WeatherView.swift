@@ -24,7 +24,7 @@ struct WeatherView: View {
         VStack(spacing: 6) {
             if self.viewModel.isLoading {
                 ProgressView()
-                    .tint(.white)
+                    .tint(AppColors.label)
                     .progressViewStyle(.circular)
 
             } else if let error = self.viewModel.errorMessage {
@@ -32,17 +32,17 @@ struct WeatherView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 24, height: 24)
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(AppColors.caution)
                 Text(error)
                     .font(.caption2)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColors.label)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 4)
 
             } else if let info = self.viewModel.weatherInfo {
                 Text(info.condition)
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColors.label)
                     .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 3 : 1)
                     .minimumScaleFactor(self.dynamicTypeSize.isAccessibilitySize ? 1 : 0.5)
                     .multilineTextAlignment(.center)
@@ -55,7 +55,7 @@ struct WeatherView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 32)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColors.label)
 
                 VStack(spacing: 2) {
                     Text(info.temperatureCelsius)
@@ -68,7 +68,7 @@ struct WeatherView: View {
                         .fontWeight(self.prefersMetric ? .regular : .semibold)
                         .opacity(self.prefersMetric ? 0.6 : 1.0)
                 }
-                .foregroundStyle(.white)
+                .foregroundStyle(AppColors.label)
 
                 // MARK: - WeatherKit Attribution
 
@@ -82,19 +82,19 @@ struct WeatherView: View {
                         } placeholder: {
                             ProgressView()
                                 .progressViewStyle(.circular)
-                                .tint(.white)
+                                .tint(AppColors.label)
                                 .frame(height: 8)
                         }
 
                         Link("Legal", destination: attribution.legalPageURL)
                             .font(.caption2)
-                            .foregroundStyle(.white.opacity(0.7))
+                            .foregroundStyle(AppColors.secondaryLabel)
                     }
                     .padding(.top, 2)
                 }
             } else {
                 Text("---")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColors.label)
             }
         }
         .padding(12)
@@ -103,17 +103,20 @@ struct WeatherView: View {
             .ultraThinMaterial,
             in: .rect(cornerRadius: 16, style: .continuous)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Weather")
+        .accessibilityValue(self.accessibilityDescription)
         .task {
             await self.fetchAttribution()
         }
         .motionSensitiveAnimation(
             .easeInOut,
-            reduced: .none,
+            reduced: .linear(duration: 0.01),
             value: self.viewModel.isLoading
         )
         .motionSensitiveAnimation(
             .easeInOut,
-            reduced: .none,
+            reduced: .linear(duration: 0.01),
             value: self.viewModel.weatherInfo?.condition
         )
     }
@@ -135,5 +138,21 @@ struct WeatherView: View {
 
         return colorScheme == .dark
             ? attribution.combinedMarkDarkURL : attribution.combinedMarkLightURL
+    }
+
+    private var accessibilityDescription: String {
+        if self.viewModel.isLoading {
+            return "Loading weather"
+        }
+
+        if let error = self.viewModel.errorMessage {
+            return error
+        }
+
+        if let info = self.viewModel.weatherInfo {
+            return "\(info.condition), \(self.prefersMetric ? info.temperatureCelsius : info.temperatureFahrenheit)"
+        }
+
+        return "Weather unavailable"
     }
 }

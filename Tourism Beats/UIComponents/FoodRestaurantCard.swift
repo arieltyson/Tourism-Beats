@@ -86,18 +86,35 @@ private struct FoodRestaurantCardHeader: View {
     let restaurant: Restaurant
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(self.restaurant.name)
-                .font(TypographyTokens.songTitle)
-                .bold()
-                .foregroundStyle(.primary)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .firstTextBaseline, spacing: SpacingTokens.small) {
+                FoodRestaurantTitleText(name: self.restaurant.name)
 
-            Spacer(minLength: SpacingTokens.xSmall)
+                Spacer(minLength: SpacingTokens.xSmall)
 
-            FoodRestaurantStatusBadge(status: self.restaurant.status)
+                FoodRestaurantStatusBadge(status: self.restaurant.status)
+            }
+
+            VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
+                FoodRestaurantTitleText(name: self.restaurant.name)
+                FoodRestaurantStatusBadge(status: self.restaurant.status)
+            }
         }
+    }
+}
+
+// MARK: - FoodRestaurantTitleText
+
+private struct FoodRestaurantTitleText: View {
+    let name: String
+
+    var body: some View {
+        Text(self.name)
+            .font(TypographyTokens.songTitle)
+            .bold()
+            .foregroundStyle(.primary)
+            .lineLimit(2)
+            .multilineTextAlignment(.leading)
     }
 }
 
@@ -145,10 +162,14 @@ private struct FoodRestaurantMealPhotoPreview: View {
                 Text("+\(self.additionalPhotoCount, format: .number)")
                     .font(TypographyTokens.footnote.monospacedDigit())
                     .bold()
-                    .foregroundStyle(.white)
+                    .foregroundStyle(AppColors.onImagePrimary)
                     .padding(.horizontal, SpacingTokens.xSmall)
                     .padding(.vertical, SpacingTokens.xxSmall)
-                    .background(.thinMaterial, in: Capsule())
+                    .background(AppColors.imageBadgeFill, in: Capsule())
+                    .overlay {
+                        Capsule()
+                            .strokeBorder(AppColors.imageBadgeBorder, lineWidth: 1)
+                    }
                     .padding(SpacingTokens.xSmall)
             }
         }
@@ -182,6 +203,8 @@ private struct FoodRestaurantStatusBadge: View {
         .padding(.horizontal, SpacingTokens.xSmall)
         .padding(.vertical, SpacingTokens.xxSmall)
         .background(self.badgeColor.opacity(0.15), in: Capsule())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(self.status.label)
     }
 }
 

@@ -164,6 +164,101 @@ enum AppColors {
         }
     )
 
+    // MARK: - Image Overlay Foregrounds
+
+    /// High-emphasis text and icon color used over photography and gradients.
+    static let onImagePrimary = Color(
+        uiColor: UIColor { traits in
+            if traits.accessibilityContrast == .high {
+                return .white
+            }
+
+            return UIColor(white: 0.98, alpha: 1)
+        }
+    )
+
+    /// Secondary text color used over photography and gradients.
+    static let onImageSecondary = Color(
+        uiColor: UIColor { traits in
+            if traits.accessibilityContrast == .high {
+                return UIColor(white: 0.96, alpha: 1)
+            }
+
+            return UIColor(white: 0.90, alpha: 1)
+        }
+    )
+
+    /// Lower-emphasis text color used over photography and gradients.
+    static let onImageTertiary = Color(
+        uiColor: UIColor { traits in
+            if traits.accessibilityContrast == .high {
+                return UIColor(white: 0.92, alpha: 1)
+            }
+
+            return UIColor(white: 0.82, alpha: 1)
+        }
+    )
+
+    /// Subtle top scrim used to protect text contrast over bright imagery.
+    static let imageScrimTop = Color(
+        uiColor: UIColor { traits in
+            UIColor(
+                white: 0,
+                alpha: traits.accessibilityContrast == .high ? 0.22 : 0.08
+            )
+        }
+    )
+
+    /// Mid scrim used to keep text legible over mixed imagery.
+    static let imageScrimMid = Color(
+        uiColor: UIColor { traits in
+            UIColor(
+                white: 0,
+                alpha: traits.accessibilityContrast == .high ? 0.46 : 0.28
+            )
+        }
+    )
+
+    /// Strong bottom scrim used behind hero and footer content over imagery.
+    static let imageScrimBottom = Color(
+        uiColor: UIColor { traits in
+            UIColor(
+                white: 0,
+                alpha: traits.accessibilityContrast == .high ? 0.94 : 0.82
+            )
+        }
+    )
+
+    /// Capsule and badge fill used over imagery.
+    static let imageBadgeFill = Color(
+        uiColor: UIColor { traits in
+            UIColor(
+                white: traits.userInterfaceStyle == .dark ? 0.08 : 0.12,
+                alpha: traits.accessibilityContrast == .high ? 0.92 : 0.72
+            )
+        }
+    )
+
+    /// Thin highlight stroke layered on top of image badges.
+    static let imageBadgeBorder = Color(
+        uiColor: UIColor { traits in
+            UIColor(white: 1, alpha: traits.accessibilityContrast == .high ? 0.28 : 0.14)
+        }
+    )
+
+    /// Search highlight fill that remains distinct with increased contrast.
+    static let searchHighlight = Color(
+        uiColor: UIColor { traits in
+            if traits.accessibilityContrast == .high {
+                return traits.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.48, green: 0.68, blue: 0.98, alpha: 0.54)
+                    : UIColor(red: 0.16, green: 0.34, blue: 0.70, alpha: 0.28)
+            }
+
+            return UIColor(red: 0.30, green: 0.52, blue: 0.88, alpha: 0.22)
+        }
+    )
+
     // MARK: - Glass & Shadow Tokens
 
     /// Glass border stroke color. Adapts opacity to color scheme.

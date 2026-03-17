@@ -49,6 +49,29 @@ struct VerticalIconPageIndicator: View {
             reduced: .easeInOut(duration: 0.18),
             value: self.activeIndex
         )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("City detail sections")
+        .accessibilityValue(self.currentPageLabel)
+        .accessibilityHint("Select City, Music, or Advisories")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                self.selectPage(min(self.activeIndex + 1, self.pages.count - 1))
+            case .decrement:
+                self.selectPage(max(self.activeIndex - 1, 0))
+            @unknown default:
+                break
+            }
+        }
+    }
+
+    private var currentPageLabel: String {
+        self.pages.first(where: { $0.id == self.activeIndex })?.label ?? "Unknown"
+    }
+
+    private func selectPage(_ index: Int) {
+        guard index != self.activeIndex else { return }
+        self.onSelect(index)
     }
 }
 
@@ -115,7 +138,7 @@ private struct ModernIconPageButton: View {
                 .labelStyle(.iconOnly)
                 .font(.title3)
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(self.isActive ? .white : .white.opacity(0.5))
+                .foregroundStyle(self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary)
                 .frame(width: 44, height: 44)
                 .contentShape(.rect)
         }
@@ -125,6 +148,7 @@ private struct ModernIconPageButton: View {
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")
         .accessibilityAddTraits(self.isActive ? .isSelected : [])
+        .accessibilityInputLabels([self.page.label, "Show \(self.page.label)"])
     }
 }
 
@@ -167,7 +191,9 @@ private struct LegacyIconPageButton: View {
                     .labelStyle(.iconOnly)
                     .font(.title3)
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(self.isActive ? .white : .white.opacity(0.72))
+                    .foregroundStyle(
+                        self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary
+                    )
                     .frame(width: 54, height: 64)
                     .contentShape(.rect)
             }
@@ -178,5 +204,6 @@ private struct LegacyIconPageButton: View {
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")
         .accessibilityAddTraits(self.isActive ? .isSelected : [])
+        .accessibilityInputLabels([self.page.label, "Show \(self.page.label)"])
     }
 }

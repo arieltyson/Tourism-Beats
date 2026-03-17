@@ -94,7 +94,8 @@ private struct FoodCityJournalHeader: View {
                     Text(self.group.displayCountryName)
                         .font(TypographyTokens.artistName)
                         .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Text(
@@ -110,6 +111,7 @@ private struct FoodCityJournalHeader: View {
         }
         .padding(SpacingTokens.small)
         .background(.ultraThinMaterial, in: .rect(cornerRadius: 20, style: .continuous))
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -131,7 +133,7 @@ private struct FoodCityJournalHeaderArtwork: View {
                 .overlay {
                     Image(systemName: "fork.knife.circle.fill")
                         .font(.title)
-                        .foregroundStyle(.white.opacity(0.34))
+                        .foregroundStyle(AppColors.onImageTertiary.opacity(0.40))
                 }
             }
         }
