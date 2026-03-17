@@ -4,8 +4,6 @@ struct MainTabView: View {
     @Binding var selectedTab: AppTab
     let onSelectFeedback: (FeedbackCategory) -> Void
 
-    @ScaledMetric(relativeTo: .body) private var floatingTabItemHeight = 56
-
     @State private var homePath = NavigationPath()
     @State private var searchPath = NavigationPath()
     @State private var foodPath = NavigationPath()
@@ -14,11 +12,9 @@ struct MainTabView: View {
 
     var body: some View {
         self.currentTabContent
-            .toolbar(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
-            .safeAreaPadding(.bottom, self.tabBarClearance)
-            .overlay(alignment: .bottom) {
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 TourismFloatingTabBar(selectedTab: self.$selectedTab)
             }
             .onChange(of: self.selectedTab) { old, _ in
@@ -32,13 +28,6 @@ struct MainTabView: View {
                 case .settings: self.settingsPath = NavigationPath()
                 }
             }
-    }
-
-    private var tabBarClearance: CGFloat {
-        self.floatingTabItemHeight
-            + (SpacingTokens.xxSmall * 2)
-            + (SpacingTokens.xSmall * 3)
-            + SpacingTokens.small
     }
 
     @ViewBuilder
