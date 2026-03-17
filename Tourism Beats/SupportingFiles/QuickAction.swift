@@ -6,6 +6,8 @@ enum QuickAction: String, CaseIterable, Sendable {
     case exploreHome = "com.arieljtyson.TourismBeats.quickAction.explore"
     case foodJournal = "com.arieljtyson.TourismBeats.quickAction.food"
     case trips = "com.arieljtyson.TourismBeats.quickAction.trips"
+    case reportBug = "com.arieljtyson.TourismBeats.quickAction.reportBug"
+    case suggestFeature = "com.arieljtyson.TourismBeats.quickAction.suggestFeature"
 
     init?(shortcutItem: UIApplicationShortcutItem) {
         self.init(rawValue: shortcutItem.type)
@@ -18,6 +20,15 @@ enum QuickAction: String, CaseIterable, Sendable {
         case .exploreHome: .home
         case .foodJournal: .food
         case .trips: .trips
+        case .reportBug, .suggestFeature: .settings
+        }
+    }
+
+    var feedbackCategory: FeedbackCategory? {
+        switch self {
+        case .reportBug: .bug
+        case .suggestFeature: .feature
+        default: nil
         }
     }
 
@@ -55,12 +66,36 @@ enum QuickAction: String, CaseIterable, Sendable {
                 icon: UIApplicationShortcutIcon(systemImageName: "suitcase.rolling"),
                 userInfo: nil
             )
+        case .reportBug:
+            UIApplicationShortcutItem(
+                type: self.rawValue,
+                localizedTitle: "Report a Bug",
+                localizedSubtitle: "Open feedback",
+                icon: UIApplicationShortcutIcon(systemImageName: "ladybug"),
+                userInfo: nil
+            )
+        case .suggestFeature:
+            UIApplicationShortcutItem(
+                type: self.rawValue,
+                localizedTitle: "Suggest a Feature",
+                localizedSubtitle: "Share an idea",
+                icon: UIApplicationShortcutIcon(systemImageName: "lightbulb"),
+                userInfo: nil
+            )
         }
     }
+
+    /// iOS surfaces a maximum of four Home Screen quick actions.
+    static let displayedActions: [QuickAction] = [
+        .searchDestinations,
+        .trips,
+        .reportBug,
+        .suggestFeature
+    ]
 
     /// Registers all quick actions on the shared application.
     @MainActor
     static func registerAll(in application: UIApplication) {
-        application.shortcutItems = allCases.map(\.shortcutItem)
+        application.shortcutItems = self.displayedActions.map(\.shortcutItem)
     }
 }

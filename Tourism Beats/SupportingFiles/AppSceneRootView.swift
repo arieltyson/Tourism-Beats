@@ -15,6 +15,7 @@ struct AppSceneRootView: View {
 
     @State private var launchPhase: LaunchPhase = .branded
     @State private var hasPerformedStartupTasks = false
+    @State private var requestedFeedbackCategory: FeedbackCategory?
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
@@ -24,8 +25,13 @@ struct AppSceneRootView: View {
     var body: some View {
         ZStack {
             if self.launchPhase == .ready {
-                MainTabView(selectedTab: self.$selectedTab)
-                    .transition(.opacity)
+                MainTabView(
+                    selectedTab: self.$selectedTab,
+                    onSelectFeedback: { category in
+                        self.requestedFeedbackCategory = category
+                    }
+                )
+                .transition(.opacity)
             }
 
             if self.launchPhase == .branded {
@@ -46,7 +52,7 @@ struct AppSceneRootView: View {
         )
         .task {
             self.appDelegate.onQuickAction = { action in
-                self.selectedTab = action.targetTab
+                self.handleQuickAction(action)
             }
             self.appDelegate.flushDeferredActionIfNeeded()
         }
@@ -71,6 +77,25 @@ struct AppSceneRootView: View {
                     "Trip sample seeding failed: \(error.localizedDescription, privacy: .public)"
                 )
             }
+        }
+        .sheet(item: self.$requestedFeedbackCategory) { category in
+            FeedbackView(category: category)
+        }
+    }
+
+    private func handleQuickAction(_ action: QuickAction) {
+        if self.launchPhase == .ready {
+            withAnimation(
+                self.reduceMotion ? .none : AnimationTokens.standard
+            ) {
+                self.selectedTab = action.targetTab
+            }
+        } else {
+            self.selectedTab = action.targetTab
+        }
+
+        if let feedbackCategory = action.feedbackCategory {
+            self.requestedFeedbackCategory = feedbackCategory
         }
     }
 }

@@ -3,7 +3,9 @@ import SwiftUI
 // MARK: - AppTab
 
 enum AppTab: Hashable {
-    case home, search, food, trips
+    case home, search, food, trips, settings
+
+    static let primaryTabs: [AppTab] = [.home, .search, .food, .trips]
 
     var title: String {
         switch self {
@@ -11,6 +13,7 @@ enum AppTab: Hashable {
         case .search: "Search"
         case .food: "Food"
         case .trips: "Trips"
+        case .settings: "Settings"
         }
     }
 
@@ -20,6 +23,7 @@ enum AppTab: Hashable {
         case .search: "magnifyingglass"
         case .food: "fork.knife"
         case .trips: "suitcase.rolling"
+        case .settings: "gearshape"
         }
     }
 }
