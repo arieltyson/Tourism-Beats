@@ -4,6 +4,7 @@ import SwiftUI
 
 struct WeatherView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.locale) private var locale
     @StateObject private var viewModel: WeatherViewModel
 
@@ -42,8 +43,13 @@ struct WeatherView: View {
                 Text(info.condition)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.white)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
+                    .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 3 : 1)
+                    .minimumScaleFactor(self.dynamicTypeSize.isAccessibilitySize ? 1 : 0.5)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(
+                        horizontal: false,
+                        vertical: self.dynamicTypeSize.isAccessibilitySize
+                    )
 
                 Image(systemName: info.iconName)
                     .resizable()
@@ -100,8 +106,16 @@ struct WeatherView: View {
         .task {
             await self.fetchAttribution()
         }
-        .animation(.easeInOut, value: self.viewModel.isLoading)
-        .animation(.easeInOut, value: self.viewModel.weatherInfo?.condition)
+        .motionSensitiveAnimation(
+            .easeInOut,
+            reduced: .none,
+            value: self.viewModel.isLoading
+        )
+        .motionSensitiveAnimation(
+            .easeInOut,
+            reduced: .none,
+            value: self.viewModel.weatherInfo?.condition
+        )
     }
 
     // MARK: - Helper Functions

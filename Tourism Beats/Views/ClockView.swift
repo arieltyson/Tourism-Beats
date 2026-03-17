@@ -3,6 +3,8 @@ import SwiftUI
 // MARK: - ClockView
 
 struct ClockView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let date: Date
     let timeZone: TimeZone
 
@@ -48,7 +50,7 @@ struct ClockView: View {
                                 design: .rounded
                             )
                         )
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .position(x: x, y: y)
                 }
 
@@ -74,7 +76,8 @@ struct ClockView: View {
                     .frame(width: 8, height: 8)
             }
             .animation(
-                .interpolatingSpring(stiffness: 300, damping: 15),
+                self.reduceMotion
+                    ? .none : .interpolatingSpring(stiffness: 300, damping: 15),
                 value: calendar.component(.second, from: self.date)
             )
         }

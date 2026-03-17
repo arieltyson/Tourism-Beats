@@ -78,6 +78,8 @@ struct FoodView: View {
 // MARK: - FoodJournalContent
 
 private struct FoodJournalContent: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let cityGroups: [FoodJournalCityGroup]
     let searchText: String
     let onEdit: (Restaurant) -> Void
@@ -102,8 +104,16 @@ private struct FoodJournalContent: View {
                         FoodCityCard(group: group)
                     }
                     .buttonStyle(.plain)
-                    .transition(.opacity.combined(with: .scale(scale: 0.98)))
-                    .animation(AnimationTokens.stagger(index: index), value: self.cityGroups.count)
+                    .transition(
+                        self.reduceMotion
+                            ? .opacity
+                            : .opacity.combined(with: .scale(scale: 0.98))
+                    )
+                    .motionSensitiveAnimation(
+                        AnimationTokens.stagger(index: index),
+                        reduced: .none,
+                        value: self.cityGroups.count
+                    )
                 }
             }
         }
@@ -115,6 +125,8 @@ private struct FoodJournalContent: View {
 // MARK: - FoodJournalFilterMenu
 
 private struct FoodJournalFilterMenu: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @Binding var selectedFilter: RestaurantStatus?
 
     var body: some View {
@@ -141,12 +153,20 @@ private struct FoodJournalFilterMenu: View {
                 }
             }
         } label: {
-            Image(
-                systemName: self.selectedFilter == nil
-                    ? "line.3.horizontal.decrease.circle"
-                    : "line.3.horizontal.decrease.circle.fill"
-            )
-            .symbolEffect(.bounce, value: self.selectedFilter)
+            if self.reduceMotion {
+                Image(
+                    systemName: self.selectedFilter == nil
+                        ? "line.3.horizontal.decrease.circle"
+                        : "line.3.horizontal.decrease.circle.fill"
+                )
+            } else {
+                Image(
+                    systemName: self.selectedFilter == nil
+                        ? "line.3.horizontal.decrease.circle"
+                        : "line.3.horizontal.decrease.circle.fill"
+                )
+                .symbolEffect(.bounce, value: self.selectedFilter)
+            }
         }
         .accessibilityLabel("Filter restaurants")
     }
@@ -155,6 +175,8 @@ private struct FoodJournalFilterMenu: View {
 // MARK: - FoodEmptyState
 
 private struct FoodEmptyState: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let onAdd: () -> Void
 
     var body: some View {
@@ -162,7 +184,11 @@ private struct FoodEmptyState: View {
             Image(systemName: "fork.knife.circle")
                 .font(.system(size: 64))
                 .foregroundStyle(AppColors.coral.opacity(0.6))
-                .symbolEffect(.pulse, options: .repeating)
+                .symbolEffect(
+                    .pulse,
+                    options: .repeating,
+                    isActive: !self.reduceMotion
+                )
 
             VStack(spacing: SpacingTokens.xSmall) {
                 Text("Your Food Journal")

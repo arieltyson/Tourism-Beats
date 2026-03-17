@@ -8,6 +8,7 @@ import SwiftUI
 /// Only the activity name is required. Type, time, location, notes, and status
 /// are all optional, supporting users who prefer minimal planning detail.
 struct AddEditActivityView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
@@ -102,8 +103,13 @@ struct AddEditActivityView: View {
 
     private var timeSection: some View {
         Section("Time") {
-            Toggle("Set a time", isOn: self.$hasTime.animation(AnimationTokens.standard))
-                .tint(AppColors.coral)
+            Toggle(
+                "Set a time",
+                isOn: self.$hasTime.animation(
+                    self.reduceMotion ? .none : AnimationTokens.standard
+                )
+            )
+            .tint(AppColors.coral)
 
             if self.hasTime {
                 DatePicker(

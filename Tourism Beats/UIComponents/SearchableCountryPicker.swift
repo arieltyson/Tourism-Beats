@@ -11,6 +11,7 @@ import SwiftUI
 struct SearchableCountryPicker: View {
     @Binding var selectedCode: String
     @State private var searchText = ""
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.dismiss) private var dismiss
 
     private let allCountries: [CountryModel] =
@@ -56,7 +57,7 @@ struct SearchableCountryPicker: View {
                 }
             }
             .overlay(alignment: .trailing) {
-                if self.searchText.isEmpty {
+                if self.searchText.isEmpty, !self.dynamicTypeSize.isAccessibilitySize {
                     SectionIndexTitles(letters: self.sectionLetters)
                 }
             }
@@ -115,7 +116,7 @@ private struct SectionIndexTitles: View {
         VStack(spacing: 2) {
             ForEach(self.letters, id: \.self) { letter in
                 Text(letter)
-                    .font(.system(size: 11, weight: .bold))
+                    .font(TypographyTokens.footnote.bold())
                     .foregroundStyle(.secondary)
                     .frame(width: 16, height: 14)
             }

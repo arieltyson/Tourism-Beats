@@ -5,6 +5,7 @@ import SwiftUI
 struct AdvisoriesView: View {
     let city: CityModel
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
 
     var body: some View {
@@ -78,9 +79,10 @@ struct AdvisoriesView: View {
             .padding(.top, 12)
             .padding(.bottom, 16)
             .opacity(self.appeared ? 1 : 0.9)
-            .scaleEffect(self.appeared ? 1 : 0.98)
-            .animation(
+            .scaleEffect(self.reduceMotion ? 1 : (self.appeared ? 1 : 0.98))
+            .motionSensitiveAnimation(
                 .spring(response: 0.6, dampingFraction: 0.85),
+                reduced: .none,
                 value: self.appeared
             )
             .onAppear { self.appeared = true }
@@ -95,6 +97,7 @@ struct AdvisoriesView: View {
 private struct HeroCard: View {
     let city: CityModel
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         HStack(spacing: 12) {
@@ -144,9 +147,14 @@ private struct HeroCard: View {
                 )
         }
         .scrollTransition(axis: .vertical) { content, phase in
-            content
-                .opacity(phase.isIdentity ? 1 : 0.85)
-                .scaleEffect(phase.isIdentity ? 1 : 0.98)
+            if self.reduceMotion {
+                content
+                    .opacity(phase.isIdentity ? 1 : 0.92)
+            } else {
+                content
+                    .opacity(phase.isIdentity ? 1 : 0.85)
+                    .scaleEffect(phase.isIdentity ? 1 : 0.98)
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
@@ -157,6 +165,7 @@ private struct HeroCard: View {
 
 private struct AdvisoryCard<Content: View>: View {
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ViewBuilder var content: Content
 
     var body: some View {
@@ -181,9 +190,14 @@ private struct AdvisoryCard<Content: View>: View {
                 )
         }
         .scrollTransition(axis: .vertical) { view, phase in
-            view
-                .opacity(phase.isIdentity ? 1 : 0.92)
-                .scaleEffect(phase.isIdentity ? 1 : 0.995)
+            if self.reduceMotion {
+                view
+                    .opacity(phase.isIdentity ? 1 : 0.96)
+            } else {
+                view
+                    .opacity(phase.isIdentity ? 1 : 0.92)
+                    .scaleEffect(phase.isIdentity ? 1 : 0.995)
+            }
         }
         .accessibilityElement(children: .contain)
     }

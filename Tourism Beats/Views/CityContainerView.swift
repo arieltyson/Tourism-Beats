@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct CityContainerView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let city: CityModel
 
     @State private var pageIndex: Int = 0
@@ -15,7 +17,11 @@ struct CityContainerView: View {
         ZStack {
             self.backgroundForCurrentPage
                 .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.4), value: self.pageIndex)
+                .motionSensitiveAnimation(
+                    .easeInOut(duration: 0.4),
+                    reduced: .none,
+                    value: self.pageIndex
+                )
 
             ZStack {
                 CityView(city: self.city)
@@ -38,8 +44,9 @@ struct CityContainerView: View {
             } action: { newSize in
                 self.containerSize = newSize
             }
-            .animation(
+            .motionSensitiveAnimation(
                 .interactiveSpring(response: 0.35, dampingFraction: 0.85),
+                reduced: .none,
                 value: self.pageIndex
             )
 
@@ -59,9 +66,13 @@ struct CityContainerView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text(self.city.country.flag)
-                    .font(.system(size: 40))
+                    .font(.largeTitle)
                     .opacity(self.pageIndex != 0 ? 1 : 0)
-                    .animation(.easeInOut, value: self.pageIndex)
+                    .motionSensitiveAnimation(
+                        .easeInOut,
+                        reduced: .none,
+                        value: self.pageIndex
+                    )
             }
         }
     }

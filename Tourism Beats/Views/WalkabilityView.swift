@@ -91,8 +91,9 @@ private struct ScoreTile: View {
             }
 
             // Large score number
-            Text("\(self.score)")
-                .font(.system(size: 36, weight: .bold, design: .rounded))
+            Text(self.score, format: .number)
+                .font(.system(.title, design: .rounded))
+                .bold()
                 .foregroundStyle(.primary)
                 .contentTransition(.numericText())
 

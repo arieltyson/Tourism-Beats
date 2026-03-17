@@ -463,6 +463,8 @@ struct TripsFootnotePill: View {
 // MARK: - TripsFilterMenu
 
 private struct TripsFilterMenu: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @Binding var selectedFilter: TripStatus?
 
     var body: some View {
@@ -480,12 +482,20 @@ private struct TripsFilterMenu: View {
                 }
             }
         } label: {
-            Image(
-                systemName: self.selectedFilter == nil
-                    ? "line.3.horizontal.decrease.circle"
-                    : "line.3.horizontal.decrease.circle.fill"
-            )
-            .symbolEffect(.bounce, value: self.selectedFilter)
+            if self.reduceMotion {
+                Image(
+                    systemName: self.selectedFilter == nil
+                        ? "line.3.horizontal.decrease.circle"
+                        : "line.3.horizontal.decrease.circle.fill"
+                )
+            } else {
+                Image(
+                    systemName: self.selectedFilter == nil
+                        ? "line.3.horizontal.decrease.circle"
+                        : "line.3.horizontal.decrease.circle.fill"
+                )
+                .symbolEffect(.bounce, value: self.selectedFilter)
+            }
         }
         .accessibilityLabel("Filter trips")
     }
@@ -494,6 +504,8 @@ private struct TripsFilterMenu: View {
 // MARK: - TripsEmptyState
 
 private struct TripsEmptyState: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let showsSampleTrips: Bool
     let onCreateTrip: () -> Void
     let onRestoreSamples: () -> Void
@@ -503,7 +515,11 @@ private struct TripsEmptyState: View {
             Image(systemName: "suitcase.rolling.fill")
                 .font(.system(size: 62))
                 .foregroundStyle(AppColors.coral.opacity(0.72))
-                .symbolEffect(.pulse, options: .repeating)
+                .symbolEffect(
+                    .pulse,
+                    options: .repeating,
+                    isActive: !self.reduceMotion
+                )
 
             VStack(spacing: SpacingTokens.xSmall) {
                 Text("Plan Trips Your Way")

@@ -3,8 +3,8 @@ import SwiftUI
 // MARK: - CityFunFactLayout
 
 private enum CityFunFactLayout {
-    static let cardHeight: CGFloat = 196
-    static let factLineLimit = 4
+    static let minimumCardHeight: CGFloat = 196
+    static let compactFactLineLimit = 4
 }
 
 // MARK: - CityFunFactCard
@@ -13,6 +13,7 @@ struct CityFunFactCard: View {
     let city: CityModel
 
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var viewModel: CityFunFactViewModel
@@ -24,31 +25,12 @@ struct CityFunFactCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.small) {
-            HStack(alignment: .top, spacing: SpacingTokens.small) {
-                CityFunFactBadge()
-
-                VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                    Text("Fun Fact")
-                        .font(.system(.headline, design: .rounded))
-                        .bold()
-                        .foregroundStyle(.white)
+            CityFunFactHeader(
+                canShowAnotherFact: self.viewModel.canShowAnotherFact,
+                onShowAnotherFact: {
+                    self.viewModel.showAnotherFact()
                 }
-
-                Spacer(minLength: 0)
-
-                if self.viewModel.canShowAnotherFact {
-                    Button("Another Fact", systemImage: "shuffle") {
-                        self.viewModel.showAnotherFact()
-                    }
-                    .font(TypographyTokens.footnote)
-                    .bold()
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, SpacingTokens.xSmall)
-                    .padding(.vertical, SpacingTokens.xxSmall)
-                    .background(.white.opacity(0.12), in: Capsule())
-                    .buttonStyle(.plain)
-                }
-            }
+            )
 
             Group {
                 if self.viewModel.isLoading, self.viewModel.displayedFact == nil {
@@ -64,8 +46,9 @@ struct CityFunFactCard: View {
         .padding(SpacingTokens.medium)
         .frame(
             maxWidth: .infinity,
-            minHeight: CityFunFactLayout.cardHeight,
-            maxHeight: CityFunFactLayout.cardHeight,
+            minHeight: self.dynamicTypeSize.isAccessibilitySize
+                ? nil
+                : CityFunFactLayout.minimumCardHeight,
             alignment: .topLeading
         )
         .background {
@@ -94,9 +77,14 @@ struct CityFunFactCard: View {
         .task(id: self.city.id) {
             await self.viewModel.loadIfNeeded()
         }
-        .animation(.easeInOut(duration: 0.2), value: self.viewModel.isLoading)
-        .animation(
+        .motionSensitiveAnimation(
+            .easeInOut(duration: 0.2),
+            reduced: .none,
+            value: self.viewModel.isLoading
+        )
+        .motionSensitiveAnimation(
             .spring(response: 0.35, dampingFraction: 0.88),
+            reduced: .none,
             value: self.viewModel.displayedFact?.text
         )
     }
@@ -124,6 +112,69 @@ struct CityFunFactCard: View {
     }
 }
 
+// MARK: - CityFunFactHeader
+
+private struct CityFunFactHeader: View {
+    let canShowAnotherFact: Bool
+    let onShowAnotherFact: () -> Void
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .top, spacing: SpacingTokens.small) {
+                CityFunFactTitle()
+
+                Spacer(minLength: 0)
+
+                if self.canShowAnotherFact {
+                    CityFunFactRefreshButton(onShowAnotherFact: self.onShowAnotherFact)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                CityFunFactTitle()
+
+                if self.canShowAnotherFact {
+                    CityFunFactRefreshButton(onShowAnotherFact: self.onShowAnotherFact)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - CityFunFactTitle
+
+private struct CityFunFactTitle: View {
+    var body: some View {
+        HStack(alignment: .center, spacing: SpacingTokens.small) {
+            CityFunFactBadge()
+
+            Text("Fun Fact")
+                .font(.system(.headline, design: .rounded))
+                .bold()
+                .foregroundStyle(.white)
+        }
+    }
+}
+
+// MARK: - CityFunFactRefreshButton
+
+private struct CityFunFactRefreshButton: View {
+    let onShowAnotherFact: () -> Void
+
+    var body: some View {
+        Button("Another Fact", systemImage: "shuffle") {
+            self.onShowAnotherFact()
+        }
+        .font(TypographyTokens.footnote)
+        .bold()
+        .foregroundStyle(.white)
+        .padding(.horizontal, SpacingTokens.xSmall)
+        .padding(.vertical, SpacingTokens.xxSmall)
+        .background(.white.opacity(0.12), in: Capsule())
+        .buttonStyle(.plain)
+    }
+}
+
 // MARK: - CityFunFactBadge
 
 private struct CityFunFactBadge: View {
@@ -144,6 +195,8 @@ private struct CityFunFactBadge: View {
 // MARK: - CityFunFactContent
 
 private struct CityFunFactContent: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     let fact: CityFunFact
 
     var body: some View {
@@ -151,8 +204,13 @@ private struct CityFunFactContent: View {
             Text(self.fact.text)
                 .font(TypographyTokens.body)
                 .foregroundStyle(.white)
-                .lineLimit(CityFunFactLayout.factLineLimit, reservesSpace: true)
-                .truncationMode(.tail)
+                .lineLimit(
+                    self.dynamicTypeSize.isAccessibilitySize
+                        ? nil
+                        : CityFunFactLayout.compactFactLineLimit,
+                    reservesSpace: !self.dynamicTypeSize.isAccessibilitySize
+                )
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Spacer(minLength: 0)
 
@@ -168,34 +226,53 @@ private struct CityFunFactFooter: View {
     let fact: CityFunFact
 
     var body: some View {
-        HStack(spacing: SpacingTokens.xSmall) {
-            self.sourceLabel
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: SpacingTokens.xSmall) {
+                CityFunFactSourceLabel(fact: self.fact)
 
-            Spacer(minLength: 0)
+                Spacer(minLength: 0)
 
-            self.fallbackBadge
+                CityFunFactFallbackBadge(fact: self.fact)
+            }
+
+            VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
+                CityFunFactSourceLabel(fact: self.fact)
+                CityFunFactFallbackBadge(fact: self.fact)
+            }
         }
     }
+}
 
-    @ViewBuilder
-    private var sourceLabel: some View {
+// MARK: - CityFunFactSourceLabel
+
+private struct CityFunFactSourceLabel: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    let fact: CityFunFact
+
+    var body: some View {
         if let sourceURL = self.fact.sourceURL {
             Link("Source: \(self.fact.sourceName)", destination: sourceURL)
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.white.opacity(0.72))
-                .lineLimit(1)
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                 .truncationMode(.tail)
         } else {
             Text("Source: \(self.fact.sourceName)")
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.white.opacity(0.72))
-                .lineLimit(1)
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                 .truncationMode(.tail)
         }
     }
+}
 
-    @ViewBuilder
-    private var fallbackBadge: some View {
+// MARK: - CityFunFactFallbackBadge
+
+private struct CityFunFactFallbackBadge: View {
+    let fact: CityFunFact
+
+    var body: some View {
         if self.fact.isFallback {
             Text("Offline fallback")
                 .font(TypographyTokens.footnote)
@@ -212,6 +289,8 @@ private struct CityFunFactFooter: View {
 // MARK: - CityFunFactLoadingState
 
 private struct CityFunFactLoadingState: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
             ProgressView()
@@ -220,10 +299,14 @@ private struct CityFunFactLoadingState: View {
             Text("Loading a quick local detail…")
                 .font(TypographyTokens.body)
                 .foregroundStyle(.white.opacity(0.88))
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? nil : 2)
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Text("This uses a cached public summary when available.")
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.white.opacity(0.68))
+                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? nil : 2)
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Spacer(minLength: 0)
         }
@@ -234,6 +317,8 @@ private struct CityFunFactLoadingState: View {
 // MARK: - CityFunFactUnavailableState
 
 private struct CityFunFactUnavailableState: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     let city: CityModel
 
     var body: some View {
@@ -241,8 +326,13 @@ private struct CityFunFactUnavailableState: View {
             Text("A city fact for \(self.city.name) is not available right now.")
                 .font(TypographyTokens.body)
                 .foregroundStyle(.white.opacity(0.88))
-                .lineLimit(CityFunFactLayout.factLineLimit, reservesSpace: true)
-                .truncationMode(.tail)
+                .lineLimit(
+                    self.dynamicTypeSize.isAccessibilitySize
+                        ? nil
+                        : CityFunFactLayout.compactFactLineLimit,
+                    reservesSpace: !self.dynamicTypeSize.isAccessibilitySize
+                )
+                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
 
             Spacer(minLength: 0)
         }

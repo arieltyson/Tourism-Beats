@@ -62,7 +62,6 @@ struct CitySearchResultRow: View {
         for r in ranges {
             if let ar = Range(r, in: attributed) {
                 attributed[ar].backgroundColor = .blue.opacity(0.30)
-                attributed[ar].font = .system(size: 16, weight: .semibold)
             }
         }
         return attributed

@@ -8,6 +8,7 @@ import SwiftUI
 /// Only the trip name and city are required. Country, dates, notes, and status
 /// remain lightweight and optional so users can sketch a plan quickly.
 struct AddEditTripView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
@@ -548,7 +549,9 @@ private struct TripDatesSection: View {
         Section {
             Toggle(
                 "Set travel dates",
-                isOn: self.$hasDates.animation(AnimationTokens.standard)
+                isOn: self.$hasDates.animation(
+                    self.reduceMotion ? .none : AnimationTokens.standard
+                )
             )
             .tint(AppColors.coral)
 

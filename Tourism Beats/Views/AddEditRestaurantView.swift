@@ -7,6 +7,7 @@ import SwiftUI
 struct AddEditRestaurantView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let restaurant: Restaurant?
     private let restaurantIdentifier: UUID
@@ -239,8 +240,13 @@ struct AddEditRestaurantView: View {
 
     private var ratingSection: some View {
         Section("Rating") {
-            Toggle("Rate this restaurant", isOn: self.$hasScore.animation(AnimationTokens.standard))
-                .tint(AppColors.coral)
+            Toggle(
+                "Rate this restaurant",
+                isOn: self.$hasScore.animation(
+                    self.reduceMotion ? .none : AnimationTokens.standard
+                )
+            )
+            .tint(AppColors.coral)
 
             if self.hasScore {
                 VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
@@ -259,7 +265,9 @@ struct AddEditRestaurantView: View {
                     HStack(spacing: SpacingTokens.xxSmall) {
                         ForEach(1 ... 10, id: \.self) { index in
                             Button {
-                                withAnimation(AnimationTokens.press) {
+                                withAnimation(
+                                    self.reduceMotion ? .none : AnimationTokens.press
+                                ) {
                                     self.scoreValue = index
                                 }
                             } label: {
