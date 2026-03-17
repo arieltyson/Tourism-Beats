@@ -27,6 +27,7 @@ struct TourismFloatingTabBar: View {
             }
             .frame(maxWidth: .infinity)
             .padding(SpacingTokens.xSmall)
+            .frame(height: self.primaryGroupHeight)
             .background(self.backgroundFill, in: Capsule())
             .overlay {
                 Capsule()
@@ -43,7 +44,7 @@ struct TourismFloatingTabBar: View {
 
             TourismFloatingSettingsButton(
                 isSelected: self.selectedTab == .settings,
-                diameter: self.itemHeight + (SpacingTokens.xSmall * 2),
+                diameter: self.primaryGroupHeight,
                 action: {
                     self.selectedTab = .settings
                 }
@@ -59,5 +60,11 @@ struct TourismFloatingTabBar: View {
         self.reduceTransparency
             ? AnyShapeStyle(AppColors.surfaceSecondary.opacity(0.98))
             : AnyShapeStyle(.ultraThinMaterial)
+    }
+
+    private var primaryGroupHeight: CGFloat {
+        self.itemHeight
+            + (SpacingTokens.xxSmall * 2)
+            + (SpacingTokens.xSmall * 2)
     }
 }

@@ -18,7 +18,15 @@ struct TourismFloatingTabBarItem: View {
                 self.action()
             }
         } label: {
-            ZStack {
+            ViewThatFits {
+                self.labeledContent
+                self.iconOnlyContent
+            }
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: self.itemHeight, maxHeight: self.itemHeight)
+            .padding(.horizontal, SpacingTokens.small)
+            .padding(.vertical, SpacingTokens.xxSmall)
+            .background {
                 if self.isSelected {
                     Capsule()
                         .fill(AppColors.surfaceSecondary.opacity(0.92))
@@ -27,16 +35,9 @@ struct TourismFloatingTabBarItem: View {
                             in: self.selectionNamespace
                         )
                 }
-
-                ViewThatFits {
-                    self.labeledContent
-                    self.iconOnlyContent
-                }
-                .frame(maxWidth: .infinity)
-                .frame(minHeight: self.itemHeight, maxHeight: self.itemHeight)
-                .padding(.horizontal, SpacingTokens.small)
-                .padding(.vertical, SpacingTokens.xxSmall)
             }
+            .clipShape(.rect(cornerRadius: self.itemHeight / 2, style: .continuous))
+            .contentShape(.rect(cornerRadius: self.itemHeight / 2, style: .continuous))
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
