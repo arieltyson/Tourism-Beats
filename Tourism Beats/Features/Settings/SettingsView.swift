@@ -1,9 +1,12 @@
+import StoreKit
 import SwiftUI
 
 // MARK: - SettingsView
 
 struct SettingsView: View {
     let onSelectFeedback: (FeedbackCategory) -> Void
+
+    @Environment(\.requestReview) private var requestReview
 
     private let accessibilityURL = URL(
         string: "https://arieltyson.github.io/tourism-beats-accessibility/"
@@ -16,6 +19,9 @@ struct SettingsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: SpacingTokens.large) {
                 SettingsFeedbackSection(
+                    onRateApp: {
+                        self.requestReview()
+                    },
                     onReportBug: {
                         self.onSelectFeedback(.bug)
                     },
@@ -43,42 +49,45 @@ struct SettingsView: View {
 // MARK: - SettingsFeedbackSection
 
 private struct SettingsFeedbackSection: View {
+    let onRateApp: () -> Void
     let onReportBug: () -> Void
     let onSuggestFeature: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.small) {
-            Text("Feedback")
-                .font(TypographyTokens.heroTitle)
-                .bold()
-                .foregroundStyle(AppColors.label)
-                .accessibilityAddTraits(.isHeader)
+        GlassCard(cornerRadius: 28) {
+            VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                SettingsActionRow(
+                    title: "Rate Tourism Beats",
+                    subtitle: "Open the in-app rating prompt without leaving the app.",
+                    systemImage: "star.fill",
+                    tint: AppColors.gold,
+                    accessibilityHint: "Shows Apple's in-app rating prompt for Tourism Beats.",
+                    action: self.onRateApp
+                )
 
-            Text(
-                "Send issues and ideas through a lighter feedback flow that opens your mail app with the right context already attached."
-            )
-            .font(TypographyTokens.body)
-            .foregroundStyle(AppColors.secondaryLabel)
+                SettingsActionRow(
+                    title: FeedbackCategory.bug.title,
+                    subtitle: FeedbackCategory.bug.summary,
+                    systemImage: FeedbackCategory.bug.systemImage,
+                    tint: AppColors.coral,
+                    accessorySystemImage: "arrow.up.right",
+                    accessibilityHint: "Opens the bug report feedback flow.",
+                    accessibilityInputLabels: FeedbackCategory.bug.accessibilityInputLabels,
+                    action: self.onReportBug
+                )
 
-            GlassCard(cornerRadius: 28) {
-                VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                    SettingsSectionTitle(
-                        title: "Share with us",
-                        subtitle: "Choose the path that best matches what you want to send."
-                    )
-
-                    SettingsActionButton(
-                        category: .bug,
-                        action: self.onReportBug
-                    )
-
-                    SettingsActionButton(
-                        category: .feature,
-                        action: self.onSuggestFeature
-                    )
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                SettingsActionRow(
+                    title: FeedbackCategory.feature.title,
+                    subtitle: FeedbackCategory.feature.summary,
+                    systemImage: FeedbackCategory.feature.systemImage,
+                    tint: AppColors.info,
+                    accessorySystemImage: "arrow.up.right",
+                    accessibilityHint: "Opens the feature request feedback flow.",
+                    accessibilityInputLabels: FeedbackCategory.feature.accessibilityInputLabels,
+                    action: self.onSuggestFeature
+                )
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
@@ -93,8 +102,7 @@ private struct SettingsResourcesSection: View {
         GlassCard(cornerRadius: 28) {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
                 SettingsSectionTitle(
-                    title: "Support and policies",
-                    subtitle: "Open the public accessibility support page or privacy policy any time."
+                    title: "Policies"
                 )
 
                 if let accessibilityURL {
@@ -118,8 +126,6 @@ private struct SettingsResourcesSection: View {
                     }
                     .buttonStyle(.plain)
                 }
-
-                SettingsContactRow(email: FeedbackMailComposer.supportEmail)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -130,7 +136,12 @@ private struct SettingsResourcesSection: View {
 
 private struct SettingsSectionTitle: View {
     let title: String
-    let subtitle: String
+    var subtitle: String?
+
+    init(title: String, subtitle: String? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
@@ -139,35 +150,63 @@ private struct SettingsSectionTitle: View {
                 .bold()
                 .foregroundStyle(AppColors.label)
 
-            Text(self.subtitle)
-                .font(TypographyTokens.body)
-                .foregroundStyle(AppColors.secondaryLabel)
-                .fixedSize(horizontal: false, vertical: true)
+            if let subtitle {
+                Text(subtitle)
+                    .font(TypographyTokens.body)
+                    .foregroundStyle(AppColors.secondaryLabel)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 }
 
-// MARK: - SettingsActionButton
+// MARK: - SettingsActionRow
 
-private struct SettingsActionButton: View {
-    let category: FeedbackCategory
+private struct SettingsActionRow: View {
+    let title: String
+    let subtitle: String
+    let systemImage: String
+    let tint: Color
+    var accessorySystemImage: String?
+    var accessibilityHint: String?
+    var accessibilityInputLabels: [String] = []
     let action: () -> Void
+
+    init(
+        title: String,
+        subtitle: String,
+        systemImage: String,
+        tint: Color,
+        accessorySystemImage: String? = nil,
+        accessibilityHint: String? = nil,
+        accessibilityInputLabels: [String] = [],
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.systemImage = systemImage
+        self.tint = tint
+        self.accessorySystemImage = accessorySystemImage
+        self.accessibilityHint = accessibilityHint
+        self.accessibilityInputLabels = accessibilityInputLabels
+        self.action = action
+    }
 
     var body: some View {
         Button(action: self.action) {
             HStack(alignment: .center, spacing: SpacingTokens.small) {
-                Image(systemName: self.category.systemImage)
+                Image(systemName: self.systemImage)
                     .font(.title3)
-                    .foregroundStyle(self.iconTint)
+                    .foregroundStyle(self.tint)
                     .frame(width: 28)
 
                 VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                    Text(self.category.title)
+                    Text(self.title)
                         .font(TypographyTokens.cardLabel)
                         .bold()
                         .foregroundStyle(AppColors.label)
 
-                    Text(self.category.summary)
+                    Text(self.subtitle)
                         .font(TypographyTokens.caption)
                         .foregroundStyle(AppColors.secondaryLabel)
                         .fixedSize(horizontal: false, vertical: true)
@@ -175,9 +214,11 @@ private struct SettingsActionButton: View {
 
                 Spacer(minLength: SpacingTokens.small)
 
-                Image(systemName: "arrow.up.right")
-                    .font(.footnote)
-                    .foregroundStyle(AppColors.secondaryLabel)
+                if let accessorySystemImage {
+                    Image(systemName: accessorySystemImage)
+                        .font(.footnote)
+                        .foregroundStyle(AppColors.secondaryLabel)
+                }
             }
             .padding(SpacingTokens.medium)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -187,14 +228,8 @@ private struct SettingsActionButton: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityInputLabels(self.category.accessibilityInputLabels)
-    }
-
-    private var iconTint: Color {
-        switch self.category {
-        case .bug: AppColors.coral
-        case .feature: AppColors.info
-        }
+        .accessibilityHint(self.accessibilityHint ?? "")
+        .accessibilityInputLabels(self.accessibilityInputLabels)
     }
 }
 
@@ -229,32 +264,6 @@ private struct SettingsResourceRow: View {
             Image(systemName: "arrow.up.right")
                 .font(.footnote)
                 .foregroundStyle(AppColors.secondaryLabel)
-        }
-        .padding(SpacingTokens.medium)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            AppColors.surfaceSecondary,
-            in: .rect(cornerRadius: 22, style: .continuous)
-        )
-    }
-}
-
-// MARK: - SettingsContactRow
-
-private struct SettingsContactRow: View {
-    let email: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-            Text("Support Email")
-                .font(TypographyTokens.cardLabel)
-                .bold()
-                .foregroundStyle(AppColors.label)
-
-            Text(self.email)
-                .font(TypographyTokens.body.monospaced())
-                .foregroundStyle(AppColors.secondaryLabel)
-                .textSelection(.enabled)
         }
         .padding(SpacingTokens.medium)
         .frame(maxWidth: .infinity, alignment: .leading)
