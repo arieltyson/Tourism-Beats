@@ -147,20 +147,16 @@ private struct HeroCard: View {
                     radius: 14,
                     y: 8
                 )
-        } {
-            let reduceMotion = self.reduceMotion
-            return
-                $0
-                .scrollTransition(axis: .vertical) { content, phase in
-                    content
-                        .opacity(
-                            phase.isIdentity ? 1 : (reduceMotion ? 0.92 : 0.85)
-                        )
-                        .scaleEffect(
-                            phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.98)
-                        )
-                }
-        }(self)
+        }
+        .scrollTransition(axis: .vertical) { [reduceMotion = self.reduceMotion] content, phase in
+            content
+                .opacity(
+                    phase.isIdentity ? 1 : (reduceMotion ? 0.92 : 0.85)
+                )
+                .scaleEffect(
+                    phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.98)
+                )
+        }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
     }
@@ -193,20 +189,16 @@ private struct AdvisoryCard<Content: View>: View {
                     radius: 14,
                     y: 8
                 )
-        } {
-            let reduceMotion = self.reduceMotion
-            return
-                $0
-                .scrollTransition(axis: .vertical) { view, phase in
-                    view
-                        .opacity(
-                            phase.isIdentity ? 1 : (reduceMotion ? 0.96 : 0.92)
-                        )
-                        .scaleEffect(
-                            phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.995)
-                        )
-                }
-        }(self)
+        }
+        .scrollTransition(axis: .vertical) { [reduceMotion = self.reduceMotion] view, phase in
+            view
+                .opacity(
+                    phase.isIdentity ? 1 : (reduceMotion ? 0.96 : 0.92)
+                )
+                .scaleEffect(
+                    phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.995)
+                )
+        }
         .accessibilityElement(children: .contain)
     }
 }
