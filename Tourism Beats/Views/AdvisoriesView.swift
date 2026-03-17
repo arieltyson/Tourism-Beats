@@ -32,7 +32,9 @@ struct AdvisoriesView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .transition(.opacity.combined(with: .scale))
                 }
-                .accessibilityHint("Shows travel advisories for \(self.city.name)")
+                .accessibilityHint(
+                    "Shows travel advisories for \(self.city.name)"
+                )
 
                 // MARK: Visa
 
@@ -145,12 +147,20 @@ private struct HeroCard: View {
                     radius: 14,
                     y: 8
                 )
-        }
-        .scrollTransition(axis: .vertical) { content, phase in
-            content
-                .opacity(phase.isIdentity ? 1 : (self.reduceMotion ? 0.92 : 0.85))
-                .scaleEffect(phase.isIdentity ? 1 : (self.reduceMotion ? 1 : 0.98))
-        }
+        } {
+            let reduceMotion = self.reduceMotion
+            return
+                $0
+                .scrollTransition(axis: .vertical) { content, phase in
+                    content
+                        .opacity(
+                            phase.isIdentity ? 1 : (reduceMotion ? 0.92 : 0.85)
+                        )
+                        .scaleEffect(
+                            phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.98)
+                        )
+                }
+        }(self)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
     }
@@ -183,12 +193,20 @@ private struct AdvisoryCard<Content: View>: View {
                     radius: 14,
                     y: 8
                 )
-        }
-        .scrollTransition(axis: .vertical) { view, phase in
-            view
-                .opacity(phase.isIdentity ? 1 : (self.reduceMotion ? 0.96 : 0.92))
-                .scaleEffect(phase.isIdentity ? 1 : (self.reduceMotion ? 1 : 0.995))
-        }
+        } {
+            let reduceMotion = self.reduceMotion
+            return
+                $0
+                .scrollTransition(axis: .vertical) { view, phase in
+                    view
+                        .opacity(
+                            phase.isIdentity ? 1 : (reduceMotion ? 0.96 : 0.92)
+                        )
+                        .scaleEffect(
+                            phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.995)
+                        )
+                }
+        }(self)
         .accessibilityElement(children: .contain)
     }
 }
