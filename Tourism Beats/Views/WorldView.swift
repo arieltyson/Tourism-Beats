@@ -17,11 +17,12 @@ struct WorldView: View {
     @State private var selectedCity: CityModel?
     @State private var showAlert = false
     @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 54.5260, longitude: 15.2551),
-        span: MKCoordinateSpan(latitudeDelta: 20, longitudeDelta: 20)
+        center: CLLocationCoordinate2D(latitude: 20, longitude: 0),
+        span: MKCoordinateSpan(latitudeDelta: 140, longitudeDelta: 180)
     )
     @State private var lastRegion: MKCoordinateRegion?
     @State private var alertTimeoutTask: Task<Void, Never>?
+    @State private var lastVisitedCoordinate: CLLocationCoordinate2D?
 
     // MARK: Search state
 
@@ -56,6 +57,7 @@ struct WorldView: View {
             self.searchSuggestionsContent
         }
         .onAppear {
+            self.zoomOutOnReturn()
             self.resetState()
             self.buildSearchIndexIfNeeded()
         }
@@ -71,6 +73,7 @@ struct WorldView: View {
         ) {
             Button("Yes") {
                 if let city = self.selectedCity {
+                    self.lastVisitedCoordinate = city.coordinate
                     self.onCitySelected(city)
                 }
                 self.clearSelectionState()
@@ -130,6 +133,7 @@ struct WorldView: View {
 
     private func navigateToCity(_ city: CityModel) {
         self.searchText = ""
+        self.lastVisitedCoordinate = city.coordinate
         self.region = MKCoordinateRegion(
             center: city.coordinate,
             span: MKCoordinateSpan(latitudeDelta: 2, longitudeDelta: 2)
@@ -139,6 +143,14 @@ struct WorldView: View {
     }
 
     // MARK: - State Management
+
+    private func zoomOutOnReturn() {
+        guard let coordinate = self.lastVisitedCoordinate else { return }
+        self.region = MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 40, longitudeDelta: 40)
+        )
+    }
 
     private func resetState() {
         self.selectedCity = nil
