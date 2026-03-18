@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - VisaView
 
 struct VisaView: View {
-    @StateObject var viewModel: VisaViewModel
+    @Bindable var viewModel: VisaViewModel
     @State private var showingCountryPicker = false
 
     private let allCountries: [CountryModel] =
@@ -41,7 +41,32 @@ struct VisaView: View {
                 requirementColor: self.viewModel.requirementColor,
                 hasRequirement: self.viewModel.requirement != nil
             )
+
+            VisaDisclaimer()
         }
+        .task {
+            await self.viewModel.fetchRequirement()
+        }
+    }
+}
+
+// MARK: - VisaDisclaimer
+
+private struct VisaDisclaimer: View {
+    var body: some View {
+        Label {
+            Text(
+                "Visa requirements change frequently. Always verify with your destination's official embassy or consulate before traveling."
+            )
+            .font(TypographyTokens.caption)
+        } icon: {
+            Image(systemName: "info.circle")
+                .font(TypographyTokens.caption)
+        }
+        .foregroundStyle(.secondary)
+        .accessibilityLabel(
+            "Disclaimer: Visa requirements change frequently. Always verify with official sources before traveling."
+        )
     }
 }
 

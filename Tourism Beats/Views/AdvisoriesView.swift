@@ -7,6 +7,17 @@ struct AdvisoriesView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
+    @State private var visaViewModel: VisaViewModel
+
+    init(city: CityModel) {
+        self.city = city
+        _visaViewModel = State(
+            initialValue: VisaViewModel(
+                passportCode: "TT",
+                destinationCode: city.country.code
+            )
+        )
+    }
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -45,14 +56,9 @@ struct AdvisoriesView: View {
                     )
                     .padding(.bottom, 2)
 
-                    VisaView(
-                        viewModel: VisaViewModel(
-                            passportCode: "TT",
-                            destinationCode: self.city.country.code
-                        )
-                    )
-                    .fixedSize(horizontal: false, vertical: true)
-                    .transition(.opacity.combined(with: .scale))
+                    VisaView(viewModel: self.visaViewModel)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .transition(.opacity.combined(with: .scale))
                 }
                 .accessibilityHint(
                     "Shows visa information for travelers to \(self.city.name)"

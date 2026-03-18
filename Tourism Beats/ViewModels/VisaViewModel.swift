@@ -1,13 +1,16 @@
+import Observation
 import SwiftUI
 
 @MainActor
-class VisaViewModel: ObservableObject {
-    @Published var requirement: VisaModel?
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    @Published var passportCode: String
-    let destinationCode: String
-    private let service: VisaProtocol
+@Observable
+final class VisaViewModel {
+    private(set) var requirement: VisaModel?
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
+    var passportCode: String
+
+    @ObservationIgnored private let destinationCode: String
+    @ObservationIgnored private let service: VisaProtocol
 
     init(
         passportCode: String,
@@ -17,29 +20,29 @@ class VisaViewModel: ObservableObject {
         self.passportCode = passportCode
         self.destinationCode = destinationCode
         self.service = service
-        self.fetchRequirement()
     }
 
-    func fetchRequirement() {
+    func fetchRequirement() async {
         self.isLoading = true
         self.errorMessage = nil
 
-        Task { @MainActor in
-            do {
-                self.requirement = try await self.service.fetchVisaRequirement(
-                    passport: self.passportCode,
-                    destination: self.destinationCode
-                )
-            } catch {
-                self.errorMessage = "Could not load visa requirements."
-            }
-            self.isLoading = false
+        do {
+            self.requirement = try await self.service.fetchVisaRequirement(
+                passport: self.passportCode,
+                destination: self.destinationCode
+            )
+        } catch {
+            self.errorMessage = "Could not load visa requirements."
         }
+
+        self.isLoading = false
     }
 
     func updatePassport(to newCode: String) {
         self.passportCode = newCode
-        self.fetchRequirement()
+        Task {
+            await self.fetchRequirement()
+        }
     }
 
     var summaryText: String {
@@ -53,18 +56,16 @@ class VisaViewModel: ObservableObject {
         if self.passportCode.uppercased() == self.destinationCode.uppercased() {
             return .green
         }
-        guard let req = requirement?.requirement.lowercased() else {
+        guard let req = self.requirement?.requirement.lowercased() else {
             return .gray
         }
-        if req.contains("banned") {
-            return .red
-        } else if req.contains("visa required") {
+        if req.localizedStandardContains("visa required") {
             return .orange
-        } else if req.contains("visa-on-arrival") {
+        } else if req.localizedStandardContains("visa-on-arrival") {
             return .yellow
-        } else if req.contains("eta") {
+        } else if req.localizedStandardContains("eta") {
             return .purple
-        } else if req.contains("visa-free") {
+        } else if req.localizedStandardContains("visa-free") {
             return .green
         } else {
             return .gray
