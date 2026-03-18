@@ -99,36 +99,38 @@ private struct HomeFeaturedCitiesCarousel: View {
     private static let cardSpacing: CGFloat = 10
 
     var body: some View {
-        GeometryReader { geo in
-            let visibleWidth = geo.size.width - self.horizontalPadding * 2
-            let cardWidth = (visibleWidth - Self.cardSpacing * 2) / 2.5
-
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: Self.cardSpacing) {
-                    ForEach(self.featuredCities) { city in
-                        DiscoveryCityCard(
-                            city: city,
-                            localTime: self.localTime(city),
-                            scheme: self.scheme
-                        ) {
-                            self.onSelectCity(city)
-                        }
-                        .frame(width: cardWidth)
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: Self.cardSpacing) {
+                ForEach(self.featuredCities) { city in
+                    DiscoveryCityCard(
+                        city: city,
+                        localTime: self.localTime(city),
+                        scheme: self.scheme
+                    ) {
+                        self.onSelectCity(city)
                     }
+                    .containerRelativeFrame(
+                        .horizontal,
+                        count: self.columnCount,
+                        span: Self.columnSpan,
+                        spacing: Self.cardSpacing
+                    )
                 }
-                .scrollTargetLayout()
-                .padding(.horizontal, self.horizontalPadding)
             }
-            .scrollTargetBehavior(
-                .viewAligned(limitBehavior: .alwaysByOne, anchor: .leading)
-            )
-            .scrollIndicators(.hidden)
+            .scrollTargetLayout()
         }
-        .frame(height: self.carouselHeight)
+        .contentMargins(.horizontal, self.horizontalPadding, for: .scrollContent)
+        .scrollClipDisabled()
+        .scrollTargetBehavior(
+            .viewAligned(limitBehavior: .alwaysByOne, anchor: .leading)
+        )
+        .scrollIndicators(.hidden)
     }
 
-    private var carouselHeight: CGFloat {
-        self.dynamicTypeSize.isAccessibilitySize ? 168 : 140
+    private static let columnSpan = 2
+
+    private var columnCount: Int {
+        self.dynamicTypeSize >= .accessibility1 ? 3 : 5
     }
 }
 

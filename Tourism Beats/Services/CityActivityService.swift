@@ -7,65 +7,62 @@ actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
 
     private let session: URLSession
-    private let parser: WikivoyageActivityParser
-    private let decoder: JSONDecoder
-    private let encoder: JSONEncoder
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
         category: "CityActivityService"
     )
     private let cacheLifetime: TimeInterval = 60 * 60 * 24 * 14
 
-    private var payloadCache: [String: CachedActivityPayload] = [:]
-    private var pageWikitextCache: [String: String] = [:]
+    private var memoryCache: [String: CachedPayload] = [:]
 
-    init(
-        session: URLSession = .shared,
-        parser: WikivoyageActivityParser = WikivoyageActivityParser()
-    ) {
-        self.session = session
-        self.parser = parser
-
+    private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        self.decoder = decoder
+        return decoder
+    }()
 
+    private let encoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
-        self.encoder = encoder
+        return encoder
+    }()
+
+    init(session: URLSession = .shared) {
+        self.session = session
     }
 
     func activities(for city: CityModel) async -> [CityActivity] {
-        let cacheKey = Self.cacheKey(for: city)
+        let key = Self.cacheKey(for: city)
 
-        if let cachedPayload = self.payloadCache[cacheKey],
-           cachedPayload.fetchedAt.addingTimeInterval(self.cacheLifetime) > Date.now
+        if let cached = self.memoryCache[key],
+           cached.isValid(lifetime: self.cacheLifetime)
         {
-            return cachedPayload.activities
+            return cached.activities
         }
 
-        let cacheURL = self.cacheURL(for: city)
+        let diskURL = self.diskCacheURL(for: city)
 
-        if let cachedPayload = self.cachedPayload(at: cacheURL),
-           cachedPayload.fetchedAt.addingTimeInterval(self.cacheLifetime) > Date.now
+        if let cached = self.loadFromDisk(at: diskURL),
+           cached.isValid(lifetime: self.cacheLifetime)
         {
-            self.payloadCache[cacheKey] = cachedPayload
-            return cachedPayload.activities
+            self.memoryCache[key] = cached
+            return cached.activities
         }
 
         do {
-            let fetchedPayload = try await self.fetchPayload(for: city)
-            try self.store(fetchedPayload, at: cacheURL)
-            self.payloadCache[cacheKey] = fetchedPayload
-            return fetchedPayload.activities
+            let activities = try await self.fetchActivities(for: city)
+            let payload = CachedPayload(fetchedAt: .now, activities: activities)
+            try? self.writeToDisk(payload, at: diskURL)
+            self.memoryCache[key] = payload
+            return activities
         } catch {
             self.logger.error(
                 "Activity fetch failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
             )
 
-            if let stalePayload = self.cachedPayload(at: cacheURL) {
-                self.payloadCache[cacheKey] = stalePayload
-                return stalePayload.activities
+            if let stale = self.loadFromDisk(at: diskURL) {
+                self.memoryCache[key] = stale
+                return stale.activities
             }
 
             return []
@@ -73,437 +70,236 @@ actor CityActivityService: CityActivityProviding {
     }
 }
 
+// MARK: - Wikipedia Fetch Pipeline
+
 extension CityActivityService {
-    private struct CachedActivityPayload: Codable, Sendable {
-        let fetchedAt: Date
-        let activities: [CityActivity]
-    }
-
-    private struct ResolvedGuidePage: Sendable {
-        let title: String
-        let seeSectionIndex: String?
-        let doSectionIndex: String?
-    }
-
-    private struct SearchResponse: Decodable {
-        let query: SearchQuery
-    }
-
-    private struct SearchQuery: Decodable {
-        let search: [SearchResult]
-    }
-
-    private struct SearchResult: Decodable {
-        let title: String
-    }
-
-    private struct WikitextResponse: Decodable {
-        let parse: ParsedWikitext
-    }
-
-    private struct ParsedWikitext: Decodable {
-        let wikitext: String
-    }
-
-    private struct TocDataResponse: Decodable {
-        let parse: ParsedTocData
-    }
-
-    private struct ParsedTocData: Decodable {
-        let tocdata: TocData
-    }
-
-    private struct TocData: Decodable {
-        let sections: [SectionReference]
-    }
-
-    private struct SectionReference: Decodable {
-        let line: String
-        let index: String
-    }
-
-    private enum ServiceError: Error {
-        case invalidResponse
-        case invalidRequest
-        case httpStatus(Int)
-        case guideUnavailable
-    }
-
-    private func fetchPayload(for city: CityModel) async throws -> CachedActivityPayload {
-        let guidePage = try await self.resolveGuidePage(for: city)
-        let primaryActivities = try await self.primaryActivities(
-            for: guidePage,
-            city: city
-        )
-        let topActivities = Array(primaryActivities.prefix(6))
-        let enrichedActivities = try await self.enrichedActivities(
-            topActivities,
-            guidePageTitle: guidePage.title
-        )
-        let imageResolvedActivities = await self.activitiesWithWikidataImages(
-            enrichedActivities
+    private func fetchActivities(for city: CityModel) async throws -> [CityActivity] {
+        let geoResults = try await self.geoSearch(
+            latitude: city.coordinate.latitude,
+            longitude: city.coordinate.longitude
         )
 
-        return CachedActivityPayload(
-            fetchedAt: Date.now,
-            activities: imageResolvedActivities
-        )
-    }
+        let candidates = Self.filterGeoResults(geoResults, cityName: city.name)
+        guard !candidates.isEmpty else { return [] }
 
-    private func resolveGuidePage(for city: CityModel) async throws -> ResolvedGuidePage {
-        let candidateTitles = try await Self.uniquedTitles(
-            [
-                city.name,
-                "\(city.name) (\(city.country.name))",
-                "\(city.name), \(city.country.name)"
-            ] + (self.searchTitles(for: city))
-        )
+        let titles = candidates.prefix(20).map(\.title)
+        let pages = try await self.pageDetails(for: Array(titles))
 
-        for title in candidateTitles {
-            guard !title.contains("/") else { continue }
+        let ranked = Self.rankPages(pages)
+        let topPages = Array(ranked.prefix(6))
 
-            do {
-                let guidePage = try await self.guidePage(title: title)
-                if guidePage.seeSectionIndex != nil || guidePage.doSectionIndex != nil {
-                    return guidePage
-                }
-            } catch {
-                continue
-            }
+        let activities = topPages.map { page in
+            Self.mapToActivity(page: page)
         }
 
-        throw ServiceError.guideUnavailable
+        return await self.resolveWikidataImages(for: activities)
     }
 
-    private func searchTitles(for city: CityModel) async throws -> [String] {
-        var components = URLComponents(
-            string: "https://en.wikivoyage.org/w/api.php"
-        )
-        components?.queryItems = [
-            URLQueryItem(name: "action", value: "query"),
-            URLQueryItem(name: "format", value: "json"),
-            URLQueryItem(name: "formatversion", value: "2"),
-            URLQueryItem(name: "list", value: "search"),
-            URLQueryItem(name: "srlimit", value: "5"),
-            URLQueryItem(
-                name: "srsearch",
-                value: "\"\(city.name)\" \"\(city.country.name)\""
-            )
-        ]
-
-        guard let url = components?.url else {
-            throw ServiceError.invalidRequest
-        }
-
-        let data = try await self.fetchData(from: url)
-        let response = try self.decoder.decode(SearchResponse.self, from: data)
-        return response.query.search.map(\.title)
-    }
-
-    private func guidePage(title: String) async throws -> ResolvedGuidePage {
-        var components = URLComponents(
-            string: "https://en.wikivoyage.org/w/api.php"
-        )
-        components?.queryItems = [
-            URLQueryItem(name: "action", value: "parse"),
-            URLQueryItem(name: "page", value: title),
-            URLQueryItem(name: "prop", value: "tocdata"),
-            URLQueryItem(name: "format", value: "json"),
-            URLQueryItem(name: "formatversion", value: "2")
-        ]
-
-        guard let url = components?.url else {
-            throw ServiceError.invalidRequest
-        }
-
-        let data = try await self.fetchData(from: url)
-        let response = try self.decoder.decode(TocDataResponse.self, from: data)
-        let seeSectionIndex = response.parse.tocdata.sections
-            .first(where: { $0.line.caseInsensitiveCompare("See") == .orderedSame })?
-            .index
-        let doSectionIndex = response.parse.tocdata.sections
-            .first(where: { $0.line.caseInsensitiveCompare("Do") == .orderedSame })?
-            .index
-
-        return ResolvedGuidePage(
-            title: title,
-            seeSectionIndex: seeSectionIndex,
-            doSectionIndex: doSectionIndex
-        )
-    }
-
-    private func primaryActivities(
-        for guidePage: ResolvedGuidePage,
-        city: CityModel
-    ) async throws -> [CityActivity] {
-        var activities: [CityActivity] = []
-
-        if let seeSectionIndex = guidePage.seeSectionIndex {
-            let seeWikitext = try await self.sectionWikitext(
-                pageTitle: guidePage.title,
-                sectionIndex: seeSectionIndex
-            )
-            activities.append(
-                contentsOf: self.parser.activities(
-                    from: seeWikitext,
-                    defaultKind: .see,
-                    sourcePageTitle: guidePage.title
-                )
-            )
-        }
-
-        if let doSectionIndex = guidePage.doSectionIndex {
-            let doWikitext = try await self.sectionWikitext(
-                pageTitle: guidePage.title,
-                sectionIndex: doSectionIndex
-            )
-            activities.append(
-                contentsOf: self.parser.activities(
-                    from: doWikitext,
-                    defaultKind: .do,
-                    sourcePageTitle: guidePage.title
-                )
-            )
-        }
-
-        if activities.isEmpty {
-            self.logger.notice(
-                "No activity listings found for \(city.id, privacy: .public) using guide page \(guidePage.title, privacy: .public)"
-            )
-        }
-
-        return activities
-    }
-
-    private func enrichedActivities(
-        _ activities: [CityActivity],
-        guidePageTitle: String
-    ) async throws -> [CityActivity] {
-        var enrichedActivities: [CityActivity] = []
-
-        for activity in activities {
-            do {
-                let enrichedActivity = try await self.enrichedActivity(
-                    activity,
-                    guidePageTitle: guidePageTitle
-                )
-                enrichedActivities.append(enrichedActivity)
-            } catch {
-                self.logger.debug(
-                    "Detail enrichment failed for \(activity.name, privacy: .public): \(error.localizedDescription, privacy: .public)"
-                )
-                enrichedActivities.append(activity)
-            }
-        }
-
-        return enrichedActivities
-    }
-
-    private func enrichedActivity(
-        _ activity: CityActivity,
-        guidePageTitle: String
-    ) async throws -> CityActivity {
-        guard let detailPageTitle = activity.sourcePageTitle,
-              !detailPageTitle.isEmpty,
-              detailPageTitle.caseInsensitiveCompare(guidePageTitle) != .orderedSame
-        else {
-            return activity
-        }
-
-        let detailWikitext = try await self.pageWikitext(for: detailPageTitle)
-        let detailCandidates = self.parser.activities(
-            from: detailWikitext,
-            defaultKind: activity.kind,
-            sourcePageTitle: detailPageTitle
-        )
-
-        guard let detailMatch = self.match(activity, in: detailCandidates) else {
-            return activity
-        }
-
-        return Self.merged(base: activity, detail: detailMatch)
-    }
-
-    private func match(
-        _ activity: CityActivity,
-        in candidates: [CityActivity]
-    ) -> CityActivity? {
-        if let wikidataIdentifier = activity.wikidataIdentifier,
-           let exactMatch = candidates.first(where: {
-            $0.wikidataIdentifier == wikidataIdentifier
-           })
-        {
-            return exactMatch
-        }
-
-        if let sourceAnchor = activity.sourceAnchor,
-           let exactMatch = candidates.first(where: {
-            $0.wikidataIdentifier == sourceAnchor || $0.sourceAnchor == sourceAnchor
-           })
-        {
-            return exactMatch
-        }
-
-        let normalizedName = Self.normalizedLookupValue(activity.name)
-
-        return candidates.first(where: {
-            Self.normalizedLookupValue($0.name) == normalizedName
-        })
-    }
-
-    private func pageWikitext(for pageTitle: String) async throws -> String {
-        if let cached = self.pageWikitextCache[pageTitle] {
-            return cached
-        }
-
-        var components = URLComponents(
-            string: "https://en.wikivoyage.org/w/api.php"
-        )
-        components?.queryItems = [
-            URLQueryItem(name: "action", value: "parse"),
-            URLQueryItem(name: "page", value: pageTitle),
-            URLQueryItem(name: "prop", value: "wikitext"),
-            URLQueryItem(name: "format", value: "json"),
-            URLQueryItem(name: "formatversion", value: "2")
-        ]
-
-        guard let url = components?.url else {
-            throw ServiceError.invalidRequest
-        }
-
-        let data = try await self.fetchData(from: url)
-        let response = try self.decoder.decode(WikitextResponse.self, from: data)
-        self.pageWikitextCache[pageTitle] = response.parse.wikitext
-        return response.parse.wikitext
-    }
-
-    private func sectionWikitext(
-        pageTitle: String,
-        sectionIndex: String
-    ) async throws -> String {
-        var components = URLComponents(
-            string: "https://en.wikivoyage.org/w/api.php"
-        )
-        components?.queryItems = [
-            URLQueryItem(name: "action", value: "parse"),
-            URLQueryItem(name: "page", value: pageTitle),
-            URLQueryItem(name: "prop", value: "wikitext"),
-            URLQueryItem(name: "section", value: sectionIndex),
-            URLQueryItem(name: "format", value: "json"),
-            URLQueryItem(name: "formatversion", value: "2")
-        ]
-
-        guard let url = components?.url else {
-            throw ServiceError.invalidRequest
-        }
-
-        let data = try await self.fetchData(from: url)
-        let response = try self.decoder.decode(WikitextResponse.self, from: data)
-        return response.parse.wikitext
-    }
-
-    private func fetchData(from url: URL) async throws -> Data {
-        let request = self.makeRequest(url: url)
-        let (data, response) = try await self.session.data(for: request)
-        try Self.validate(response: response)
-        return data
-    }
-
-    private func makeRequest(url: URL) -> URLRequest {
-        var request = URLRequest(url: url)
-        request.cachePolicy = .returnCacheDataElseLoad
-        request.timeoutInterval = 10
-        request.setValue(
-            "TourismBeats/1.0 (\(Bundle.main.bundleIdentifier ?? "city-activities"))",
-            forHTTPHeaderField: "User-Agent"
-        )
-        return request
-    }
-
-    private func cachedPayload(at url: URL) -> CachedActivityPayload? {
-        do {
-            let data = try Data(contentsOf: url)
-            return try self.decoder.decode(CachedActivityPayload.self, from: data)
-        } catch {
-            return nil
-        }
-    }
-
-    private func store(_ payload: CachedActivityPayload, at url: URL) throws {
-        let directory = url.deletingLastPathComponent()
-        try FileManager.default.createDirectory(
-            at: directory,
-            withIntermediateDirectories: true,
-            attributes: nil
-        )
-
-        let data = try self.encoder.encode(payload)
-        try data.write(to: url, options: [.atomic])
-    }
-
-    private func cacheURL(for city: CityModel) -> URL {
-        URL.cachesDirectory
-            .appending(path: "CityActivities", directoryHint: .isDirectory)
-            .appending(
-                path: "\(Self.cacheKey(for: city)).json",
-                directoryHint: .notDirectory
-            )
-    }
-
-    private static func cacheKey(for city: CityModel) -> String {
-        self.normalizedLookupValue(city.id)
-            .split { !$0.isLetter && !$0.isNumber }
-            .map(String.init)
-            .joined(separator: "_")
-    }
-
-    private static func normalizedLookupValue(_ value: String) -> String {
-        value.folding(
+    private static func filterGeoResults(
+        _ results: [GeoSearchResult],
+        cityName: String
+    ) -> [GeoSearchResult] {
+        let cityNormalized = cityName.folding(
             options: [.caseInsensitive, .diacriticInsensitive],
             locale: .current
         )
+
+        return results.filter { result in
+            let titleNormalized = result.title.folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
+
+            guard titleNormalized != cityNormalized else { return false }
+
+            for excluded in Self.excludedTitleKeywords {
+                if titleNormalized.localizedStandardContains(excluded) {
+                    return false
+                }
+            }
+
+            return true
+        }
     }
 
-    private static func validate(response: URLResponse) throws {
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ServiceError.invalidResponse
-        }
+    private static let excludedTitleKeywords = [
+        "district", "neighborhood", "neighbourhood", "county",
+        "school", "university", "college", "hospital",
+        "cemetery", "freeway", "highway", "route ",
+        "interchange", "census", "election", "demographic"
+    ]
 
-        guard 200 ..< 300 ~= httpResponse.statusCode else {
-            throw ServiceError.httpStatus(httpResponse.statusCode)
-        }
+    private static func rankPages(_ pages: [PageDetail]) -> [PageDetail] {
+        pages
+            .filter { ($0.extract?.count ?? 0) >= 80 }
+            .sorted { lhs, rhs in
+                let lhsImage = lhs.thumbnail != nil || lhs.original != nil
+                let rhsImage = rhs.thumbnail != nil || rhs.original != nil
+                if lhsImage != rhsImage { return lhsImage }
+                return (lhs.extract?.count ?? 0) > (rhs.extract?.count ?? 0)
+            }
     }
 
-    private static func merged(base: CityActivity, detail: CityActivity) -> CityActivity {
-        CityActivity(
-            id: base.id,
-            name: detail.name.count > base.name.count ? detail.name : base.name,
-            summary: detail.summary.count > base.summary.count ? detail.summary : base.summary,
-            category: base.category,
-            kind: base.kind,
-            imageURL: detail.imageURL ?? base.imageURL,
-            officialURL: detail.officialURL ?? base.officialURL,
-            sourceURL: base.sourceURL ?? detail.sourceURL,
-            sourceName: base.sourceName,
-            hours: detail.hours ?? base.hours,
-            price: detail.price ?? base.price,
-            address: detail.address ?? base.address,
-            directions: detail.directions ?? base.directions,
-            timingTip: detail.timingTip ?? base.timingTip,
-            latitude: detail.latitude ?? base.latitude,
-            longitude: detail.longitude ?? base.longitude,
-            wikidataIdentifier: base.wikidataIdentifier ?? detail.wikidataIdentifier,
-            sourcePageTitle: base.sourcePageTitle ?? detail.sourcePageTitle,
-            sourceAnchor: base.sourceAnchor ?? detail.sourceAnchor
+    private static func mapToActivity(page: PageDetail) -> CityActivity {
+        let (category, kind) = Self.deriveCategory(
+            from: page.extract ?? "",
+            title: page.title
+        )
+
+        let imageURL: URL? = if let source = page.original?.source {
+            URL(string: source)
+        } else if let source = page.thumbnail?.source {
+            URL(string: source)
+        } else {
+            nil
+        }
+
+        let coordinate = page.coordinates?.first
+
+        let encodedTitle = page.title
+            .replacingOccurrences(of: " ", with: "_")
+            .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? page.title
+
+        let sourceURL = URL(
+            string: "https://en.wikipedia.org/wiki/\(encodedTitle)",
+            encodingInvalidCharacters: true
+        )
+
+        return CityActivity(
+            id: "wiki-\(page.pageid)",
+            name: page.title,
+            summary: Self.cleanExtract(page.extract ?? ""),
+            category: category,
+            kind: kind,
+            imageURL: imageURL,
+            officialURL: nil,
+            sourceURL: sourceURL,
+            sourceName: "Wikipedia",
+            hours: nil,
+            price: nil,
+            address: nil,
+            directions: nil,
+            timingTip: nil,
+            latitude: coordinate?.lat,
+            longitude: coordinate?.lon,
+            wikidataIdentifier: page.pageprops?.wikidataItem,
+            sourcePageTitle: page.title,
+            sourceAnchor: nil
         )
     }
 
-    // MARK: - Wikidata Image Resolution
+    private static func deriveCategory(
+        from extract: String,
+        title: String
+    ) -> (String, CityActivity.Kind) {
+        let text = "\(title) \(extract)".lowercased()
 
-    /// Resolves missing images by querying the Wikidata API (P18 property)
-    /// for any activity that has a `wikidataIdentifier` but no `imageURL`.
-    private func activitiesWithWikidataImages(
-        _ activities: [CityActivity]
+        for (keywords, category, kind) in Self.categoryRules {
+            for keyword in keywords {
+                if text.localizedStandardContains(keyword) {
+                    return (category, kind)
+                }
+            }
+        }
+
+        return ("Attraction", .see)
+    }
+
+    private static let categoryRules: [([String], String, CityActivity.Kind)] = [
+        (["museum", "gallery", "exhibit"], "Museum", .see),
+        (["park", "garden", "botanical", "forest", "trail"], "Nature", .do),
+        (["bridge", "tower", "monument", "statue", "memorial"], "Landmark", .see),
+        (["church", "cathedral", "temple", "mosque", "basilica", "chapel"], "Architecture", .see),
+        (["beach", "island", "bay", "lake", "waterfall", "reef"], "Nature", .see),
+        (["theater", "theatre", "opera", "concert", "performing"], "Entertainment", .do),
+        (["stadium", "arena", "ballpark"], "Sports", .do),
+        (["market", "square", "plaza", "bazaar", "wharf", "pier"], "Culture", .do),
+        (["palace", "castle", "fort", "fortress", "citadel"], "Heritage", .see),
+        (["zoo", "aquarium", "amusement", "theme park"], "Family", .do),
+        (["library", "university", "observatory", "planetarium"], "Education", .see),
+        (["harbor", "harbour", "lighthouse", "dam"], "Landmark", .see)
+    ]
+
+    private static func cleanExtract(_ text: String) -> String {
+        text
+            .replacingOccurrences(
+                of: "\\s*==.*$",
+                with: "",
+                options: .regularExpression
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+// MARK: - Wikipedia API
+
+extension CityActivityService {
+    private func geoSearch(
+        latitude: Double,
+        longitude: Double
+    ) async throws -> [GeoSearchResult] {
+        var components = URLComponents(
+            string: "https://en.wikipedia.org/w/api.php"
+        )
+        components?.queryItems = [
+            URLQueryItem(name: "action", value: "query"),
+            URLQueryItem(name: "list", value: "geosearch"),
+            URLQueryItem(name: "gscoord", value: "\(latitude)|\(longitude)"),
+            URLQueryItem(name: "gsradius", value: "15000"),
+            URLQueryItem(name: "gslimit", value: "50"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "formatversion", value: "2")
+        ]
+
+        guard let url = components?.url else {
+            throw ServiceError.invalidRequest
+        }
+
+        let data = try await self.fetchData(from: url)
+        let response = try self.decoder.decode(
+            GeoSearchResponse.self, from: data
+        )
+        return response.query.geosearch
+    }
+
+    private func pageDetails(
+        for titles: [String]
+    ) async throws -> [PageDetail] {
+        guard !titles.isEmpty else { return [] }
+
+        var components = URLComponents(
+            string: "https://en.wikipedia.org/w/api.php"
+        )
+        components?.queryItems = [
+            URLQueryItem(name: "action", value: "query"),
+            URLQueryItem(name: "titles", value: titles.joined(separator: "|")),
+            URLQueryItem(name: "prop", value: "extracts|pageimages|coordinates|pageprops"),
+            URLQueryItem(name: "exintro", value: "1"),
+            URLQueryItem(name: "explaintext", value: "1"),
+            URLQueryItem(name: "exlimit", value: "\(titles.count)"),
+            URLQueryItem(name: "piprop", value: "original|thumbnail"),
+            URLQueryItem(name: "pithumbsize", value: "800"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "formatversion", value: "2")
+        ]
+
+        guard let url = components?.url else {
+            throw ServiceError.invalidRequest
+        }
+
+        let data = try await self.fetchData(from: url)
+        let response = try self.decoder.decode(
+            PageQueryResponse.self, from: data
+        )
+        return response.query.pages
+    }
+}
+
+// MARK: - Wikidata Image Resolution
+
+extension CityActivityService {
+    private func resolveWikidataImages(
+        for activities: [CityActivity]
     ) async -> [CityActivity] {
         let needsImage = activities.filter {
             $0.imageURL == nil && $0.wikidataIdentifier != nil
@@ -546,12 +342,13 @@ extension CityActivityService {
         }
     }
 
-    /// Batch-fetches P18 (image) claims from Wikidata for up to 50 entity IDs.
     private func wikidataImageMap(for ids: [String]) async -> [String: URL] {
         let batch = Array(ids.prefix(50))
         let joined = batch.joined(separator: "|")
 
-        var components = URLComponents(string: "https://www.wikidata.org/w/api.php")
+        var components = URLComponents(
+            string: "https://www.wikidata.org/w/api.php"
+        )
         components?.queryItems = [
             URLQueryItem(name: "action", value: "wbgetentities"),
             URLQueryItem(name: "ids", value: joined),
@@ -564,9 +361,12 @@ extension CityActivityService {
 
         do {
             let data = try await self.fetchData(from: url)
-            let response = try self.decoder.decode(WikidataEntitiesResponse.self, from: data)
+            let response = try self.decoder.decode(
+                WikidataEntitiesResponse.self, from: data
+            )
 
             var map: [String: URL] = [:]
+
             for (qid, entity) in response.entities {
                 guard let claims = entity.claims?["P18"],
                       let firstClaim = claims.first,
@@ -575,7 +375,9 @@ extension CityActivityService {
 
                 let encoded = fileName
                     .replacingOccurrences(of: " ", with: "_")
-                    .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+                    .addingPercentEncoding(
+                        withAllowedCharacters: .urlPathAllowed
+                    ) ?? ""
 
                 guard !encoded.isEmpty,
                       let imageURL = URL(
@@ -585,6 +387,7 @@ extension CityActivityService {
 
                 map[qid] = imageURL
             }
+
             return map
         } catch {
             self.logger.debug(
@@ -593,8 +396,149 @@ extension CityActivityService {
             return [:]
         }
     }
+}
 
-    // MARK: - Wikidata Response Models
+// MARK: - Networking
+
+extension CityActivityService {
+    private func fetchData(from url: URL) async throws -> Data {
+        var request = URLRequest(url: url)
+        request.cachePolicy = .returnCacheDataElseLoad
+        request.timeoutInterval = 15
+        request.setValue(
+            "TourismBeats/1.0 (\(Bundle.main.bundleIdentifier ?? "city-activities"))",
+            forHTTPHeaderField: "User-Agent"
+        )
+
+        let (data, response) = try await self.session.data(for: request)
+
+        guard let http = response as? HTTPURLResponse else {
+            throw ServiceError.invalidResponse
+        }
+
+        guard 200 ..< 300 ~= http.statusCode else {
+            throw ServiceError.httpStatus(http.statusCode)
+        }
+
+        return data
+    }
+}
+
+// MARK: - Disk Cache
+
+extension CityActivityService {
+    private func loadFromDisk(at url: URL) -> CachedPayload? {
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return try? self.decoder.decode(CachedPayload.self, from: data)
+    }
+
+    private func writeToDisk(_ payload: CachedPayload, at url: URL) throws {
+        let directory = url.deletingLastPathComponent()
+        try FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
+        let data = try self.encoder.encode(payload)
+        try data.write(to: url, options: [.atomic])
+    }
+
+    private func diskCacheURL(for city: CityModel) -> URL {
+        URL.cachesDirectory
+            .appending(path: "CityActivities", directoryHint: .isDirectory)
+            .appending(
+                path: "\(Self.cacheKey(for: city)).json",
+                directoryHint: .notDirectory
+            )
+    }
+
+    private static func cacheKey(for city: CityModel) -> String {
+        city.id
+            .folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
+            .split { !$0.isLetter && !$0.isNumber }
+            .map(String.init)
+            .joined(separator: "_")
+    }
+}
+
+// MARK: - Response Models
+
+extension CityActivityService {
+    private struct CachedPayload: Codable, Sendable {
+        let fetchedAt: Date
+        let activities: [CityActivity]
+
+        func isValid(lifetime: TimeInterval) -> Bool {
+            self.fetchedAt.addingTimeInterval(lifetime) > .now
+        }
+    }
+
+    private enum ServiceError: Error {
+        case invalidResponse
+        case invalidRequest
+        case httpStatus(Int)
+    }
+
+    // MARK: Wikipedia
+
+    private struct GeoSearchResponse: Decodable {
+        let query: GeoSearchQuery
+    }
+
+    private struct GeoSearchQuery: Decodable {
+        let geosearch: [GeoSearchResult]
+    }
+
+    private struct GeoSearchResult: Decodable, Sendable {
+        let pageid: Int
+        let title: String
+        let lat: Double
+        let lon: Double
+        let dist: Double
+    }
+
+    private struct PageQueryResponse: Decodable {
+        let query: PageQueryData
+    }
+
+    private struct PageQueryData: Decodable {
+        let pages: [PageDetail]
+    }
+
+    private struct PageDetail: Decodable {
+        let pageid: Int
+        let title: String
+        let extract: String?
+        let thumbnail: PageImage?
+        let original: PageImage?
+        let coordinates: [PageCoordinate]?
+        let pageprops: PageProps?
+    }
+
+    private struct PageImage: Decodable {
+        let source: String
+        let width: Int?
+        let height: Int?
+    }
+
+    private struct PageCoordinate: Decodable {
+        let lat: Double
+        let lon: Double
+    }
+
+    private struct PageProps: Decodable {
+        let wikibase_item: String?
+
+        var wikidataItem: String? { self.wikibase_item }
+
+        private enum CodingKeys: String, CodingKey {
+            case wikibase_item
+        }
+    }
+
+    // MARK: Wikidata
 
     private struct WikidataEntitiesResponse: Decodable {
         let entities: [String: WikidataEntity]
@@ -623,20 +567,5 @@ extension CityActivityService {
             let container = try decoder.singleValueContainer()
             self.stringValue = try? container.decode(String.self)
         }
-    }
-
-    private static func uniquedTitles(_ titles: [String]) -> [String] {
-        var seen: Set<String> = []
-        var uniqueTitles: [String] = []
-
-        for title in titles {
-            let normalizedTitle = self.normalizedLookupValue(title)
-            guard !normalizedTitle.isEmpty, seen.insert(normalizedTitle).inserted else {
-                continue
-            }
-            uniqueTitles.append(title)
-        }
-
-        return uniqueTitles
     }
 }
