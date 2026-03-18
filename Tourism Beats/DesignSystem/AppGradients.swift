@@ -9,15 +9,21 @@ import SwiftUI
 enum AppGradients {
     // MARK: - Launch
 
-    /// Deep-space gradient used as the launch animation backdrop.
-    static let launch = LinearGradient(
+    /// Deep-space radial gradient used as the launch animation backdrop.
+    ///
+    /// A subtle luminous bloom radiates from the center — warm violet
+    /// undertones transition through the brand's deep navy, grounding
+    /// the splash screen in the same cosmic aesthetic as the home globe.
+    static let launch = RadialGradient(
         colors: [
-            Color(red: 0.03, green: 0.05, blue: 0.12),
-            Color(red: 0.07, green: 0.12, blue: 0.23),
-            Color(red: 0.10, green: 0.19, blue: 0.31)
+            Color(red: 0.14, green: 0.10, blue: 0.26),
+            Color(red: 0.09, green: 0.08, blue: 0.20),
+            Color(red: 0.05, green: 0.06, blue: 0.15),
+            Color(red: 0.03, green: 0.04, blue: 0.10)
         ],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
+        center: .center,
+        startRadius: 0,
+        endRadius: 520
     )
 
     /// Cool luminous ring gradient for the launch progress indicator.
