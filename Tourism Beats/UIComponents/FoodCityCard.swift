@@ -8,44 +8,33 @@ struct FoodCityCard: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    @ScaledMetric(relativeTo: .title3) private var standardCardHeight = 212.0
-    @ScaledMetric(relativeTo: .title3) private var accessibilityCardHeight = 260.0
-    @ScaledMetric(relativeTo: .caption) private var badgeMinWidth = 92.0
-    @ScaledMetric(relativeTo: .body) private var standardFooterMinHeight = 104.0
-    @ScaledMetric(relativeTo: .body) private var accessibilityFooterMinHeight = 152.0
+    @ScaledMetric(relativeTo: .title3) private var standardCardHeight = 220.0
+    @ScaledMetric(relativeTo: .title3) private var accessibilityCardHeight = 280.0
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottomLeading) {
             FoodCityCardBackground(group: self.group)
 
-            FoodCityCardVignette()
+            FoodCityCardScrim()
 
-            VStack(spacing: 0) {
-                Spacer(minLength: 0)
-
-                FoodCityCardFooter(
-                    group: self.group,
-                    badgeMinWidth: self.badgeMinWidth,
-                    footerMinHeight: self.footerMinHeight
-                )
-            }
+            FoodCityCardContent(group: self.group)
         }
         .frame(maxWidth: .infinity)
         .frame(height: self.cardHeight)
-        .clipShape(.rect(cornerRadius: 26, style: .continuous))
+        .clipShape(.rect(cornerRadius: 20, style: .continuous))
         .overlay {
-            RoundedRectangle(cornerRadius: 26, style: .continuous)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(
                     AppColors.glassBorder(for: self.colorScheme),
-                    lineWidth: 0.75
+                    lineWidth: 0.5
                 )
         }
         .shadow(
             color: AppColors.glassShadow(for: self.colorScheme),
-            radius: 16,
-            y: 8
+            radius: 12,
+            y: 6
         )
-        .contentShape(.rect(cornerRadius: 26, style: .continuous))
+        .contentShape(.rect(cornerRadius: 20, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(self.group.accessibilityLabel)
     }
@@ -54,12 +43,6 @@ struct FoodCityCard: View {
         self.dynamicTypeSize.isAccessibilitySize
             ? self.accessibilityCardHeight
             : self.standardCardHeight
-    }
-
-    private var footerMinHeight: CGFloat {
-        self.dynamicTypeSize.isAccessibilitySize
-            ? self.accessibilityFooterMinHeight
-            : self.standardFooterMinHeight
     }
 }
 
@@ -96,163 +79,75 @@ private struct FoodCityCardBackground: View {
     }
 }
 
-// MARK: - FoodCityCardVignette
+// MARK: - FoodCityCardScrim
 
-private struct FoodCityCardVignette: View {
+private struct FoodCityCardScrim: View {
     var body: some View {
         LinearGradient(
-            colors: [
-                AppColors.imageScrimTop,
-                .clear,
-                AppColors.imageScrimMid
+            stops: [
+                .init(color: .clear, location: 0.3),
+                .init(color: .black.opacity(0.25), location: 0.6),
+                .init(color: .black.opacity(0.65), location: 1.0)
             ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
+            startPoint: .top,
+            endPoint: .bottom
         )
-        .overlay {
-            LinearGradient(
-                colors: [
-                    .clear,
-                    AppColors.imageScrimMid,
-                    AppColors.imageScrimBottom
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        }
     }
 }
 
-// MARK: - FoodCityCardFooter
+// MARK: - FoodCityCardContent
 
-private struct FoodCityCardFooter: View {
+private struct FoodCityCardContent: View {
     let group: FoodJournalCityGroup
-    let badgeMinWidth: CGFloat
-    let footerMinHeight: CGFloat
-
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            LinearGradient(
-                colors: [
-                    .clear,
-                    AppColors.imageScrimMid,
-                    AppColors.imageScrimBottom
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-
-            FoodCityCardFooterContent(
-                group: self.group,
-                badgeMinWidth: self.badgeMinWidth
-            )
-            .padding(.horizontal, SpacingTokens.small)
-            .padding(.bottom, SpacingTokens.small)
-            .padding(.top, SpacingTokens.medium)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(minHeight: self.footerMinHeight, alignment: .bottom)
-    }
-}
-
-// MARK: - FoodCityCardFooterContent
-
-private struct FoodCityCardFooterContent: View {
-    let group: FoodJournalCityGroup
-    let badgeMinWidth: CGFloat
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         if self.dynamicTypeSize.isAccessibilitySize {
-            FoodCityCardVerticalFooterContent(
-                group: self.group,
-                badgeMinWidth: self.badgeMinWidth
-            )
+            self.verticalLayout
         } else {
-            ViewThatFits(in: .horizontal) {
-                FoodCityCardHorizontalFooterContent(
-                    group: self.group,
-                    badgeMinWidth: self.badgeMinWidth
-                )
-
-                FoodCityCardVerticalFooterContent(
-                    group: self.group,
-                    badgeMinWidth: self.badgeMinWidth
-                )
-            }
+            self.horizontalLayout
         }
     }
-}
 
-// MARK: - FoodCityCardHorizontalFooterContent
+    private var horizontalLayout: some View {
+        HStack(alignment: .bottom) {
+            self.cityInfo
 
-private struct FoodCityCardHorizontalFooterContent: View {
-    let group: FoodJournalCityGroup
-    let badgeMinWidth: CGFloat
+            Spacer(minLength: SpacingTokens.xSmall)
 
-    var body: some View {
-        HStack(alignment: .bottom, spacing: SpacingTokens.small) {
-            FoodCityCardText(group: self.group)
-
-            Spacer(minLength: SpacingTokens.small)
-
-            FoodCityCardCountBadge(
-                count: self.group.restaurantCount,
-                minWidth: self.badgeMinWidth
-            )
+            FoodCityCardCountBadge(count: self.group.restaurantCount)
         }
+        .padding(SpacingTokens.medium)
     }
-}
 
-// MARK: - FoodCityCardVerticalFooterContent
+    private var verticalLayout: some View {
+        VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
+            self.cityInfo
 
-private struct FoodCityCardVerticalFooterContent: View {
-    let group: FoodJournalCityGroup
-    let badgeMinWidth: CGFloat
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.small) {
-            FoodCityCardText(group: self.group)
-
-            FoodCityCardCountBadge(
-                count: self.group.restaurantCount,
-                minWidth: self.badgeMinWidth
-            )
+            FoodCityCardCountBadge(count: self.group.restaurantCount)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(SpacingTokens.medium)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
     }
-}
 
-// MARK: - FoodCityCardText
-
-private struct FoodCityCardText: View {
-    let group: FoodJournalCityGroup
-
-    var body: some View {
+    private var cityInfo: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
             Text(self.group.displayCityName)
-                .font(TypographyTokens.songTitle)
-                .bold()
-                .foregroundStyle(AppColors.onImagePrimary)
+                .font(.title2.bold())
+                .foregroundStyle(.white)
                 .lineLimit(2)
-                .minimumScaleFactor(0.88)
-                .fixedSize(horizontal: false, vertical: true)
-                .layoutPriority(1)
-                .shadow(color: .black.opacity(0.28), radius: 10, y: 4)
+                .minimumScaleFactor(0.85)
+                .shadow(color: .black.opacity(0.4), radius: 4, y: 2)
 
             if !self.group.displayCountryName.isEmpty {
                 Text(self.group.displayCountryName)
-                    .font(TypographyTokens.artistName)
-                    .foregroundStyle(AppColors.onImageSecondary)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.9)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .layoutPriority(1)
-                    .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.85))
+                    .lineLimit(1)
+                    .shadow(color: .black.opacity(0.4), radius: 4, y: 2)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -260,34 +155,18 @@ private struct FoodCityCardText: View {
 
 private struct FoodCityCardCountBadge: View {
     let count: Int
-    let minWidth: CGFloat
 
     var body: some View {
-        VStack(alignment: .trailing, spacing: 2) {
-            Text("\(self.count, format: .number)")
-                .font(TypographyTokens.cardLabel.monospacedDigit())
-                .bold()
-                .foregroundStyle(AppColors.onImagePrimary)
-                .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
-
-            Text(self.count == 1 ? "restaurant" : "restaurants")
-                .font(TypographyTokens.footnote)
-                .foregroundStyle(AppColors.onImageSecondary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.85)
-                .shadow(color: .black.opacity(0.45), radius: 8, y: 2)
-        }
-        .frame(minWidth: self.minWidth, alignment: .trailing)
-        .padding(.horizontal, SpacingTokens.small)
-        .padding(.vertical, SpacingTokens.xSmall)
-        .background {
-            Capsule()
-                .fill(AppColors.imageBadgeFill)
-                .overlay {
-                    Capsule()
-                        .strokeBorder(AppColors.imageBadgeBorder, lineWidth: 1)
-                }
-        }
-        .fixedSize(horizontal: true, vertical: true)
+        Text("\(self.count) \(self.count == 1 ? "restaurant" : "restaurants")")
+            .font(.caption.weight(.medium))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background {
+                Capsule(style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .environment(\.colorScheme, .dark)
+            }
+            .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
     }
 }

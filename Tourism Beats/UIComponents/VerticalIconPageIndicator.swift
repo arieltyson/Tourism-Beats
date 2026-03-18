@@ -85,8 +85,8 @@ private struct ModernVerticalIconPageIndicator: View {
     let selectionNamespace: Namespace.ID
 
     var body: some View {
-        GlassEffectContainer(spacing: 12) {
-            VStack(spacing: 10) {
+        GlassEffectContainer(spacing: 8) {
+            VStack(spacing: 6) {
                 ForEach(self.pages) { page in
                     ModernIconPageButton(
                         page: page,
@@ -109,7 +109,7 @@ private struct LegacyVerticalIconPageIndicator: View {
     let selectionNamespace: Namespace.ID
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 6) {
             ForEach(self.pages) { page in
                 LegacyIconPageButton(
                     page: page,
@@ -136,10 +136,11 @@ private struct ModernIconPageButton: View {
         Button(action: self.action) {
             Label(self.page.label, systemImage: self.page.icon)
                 .labelStyle(.iconOnly)
-                .font(.title3)
+                .font(.footnote.bold())
+                .fontWeight(.semibold)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 28, height: 28)
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)
@@ -168,18 +169,18 @@ private struct LegacyIconPageButton: View {
                 if self.isActive {
                     Capsule(style: .continuous)
                         .fill(.ultraThinMaterial)
-                        .frame(width: 54, height: 64)
+                        .frame(width: 32, height: 40)
                         .overlay(
                             Capsule(style: .continuous)
                                 .strokeBorder(
                                     AppColors.glassBorder(for: self.scheme),
-                                    lineWidth: 1
+                                    lineWidth: 0.5
                                 )
                         )
                         .shadow(
                             color: AppColors.glassShadow(for: self.scheme),
-                            radius: 10,
-                            y: 4
+                            radius: 6,
+                            y: 2
                         )
                         .matchedGeometryEffect(
                             id: "page-indicator-selection",
@@ -189,17 +190,19 @@ private struct LegacyIconPageButton: View {
 
                 Label(self.page.label, systemImage: self.page.icon)
                     .labelStyle(.iconOnly)
-                    .font(.title3)
+                    .font(.footnote.bold())
+                    .fontWeight(.semibold)
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(
                         self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary
                     )
-                    .frame(width: 54, height: 64)
+                    .frame(width: 32, height: 40)
                     .contentShape(.rect)
             }
         }
         .buttonStyle(.plain)
-        .scaleEffect(self.isActive ? 1 : 0.92)
+        .scaleEffect(self.isActive ? 1 : 0.88)
+        .opacity(self.isActive ? 1 : 0.5)
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")

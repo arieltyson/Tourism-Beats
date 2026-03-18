@@ -49,15 +49,15 @@ struct CityContainerView: View {
                 reduced: .linear(duration: 0.01),
                 value: self.pageIndex
             )
-
-            VerticalIconPageIndicator(
-                activeIndex: self.pageIndex,
-                onSelect: { index in
-                    self.selectPage(index)
-                }
-            )
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
-            .padding(.trailing, 12)
+            .overlay(alignment: .trailing) {
+                VerticalIconPageIndicator(
+                    activeIndex: self.pageIndex,
+                    onSelect: { index in
+                        self.selectPage(index)
+                    }
+                )
+                .padding(.trailing, -2)
+            }
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .navigationBarBackButtonHidden(true)
