@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CityContainerView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let city: CityModel
@@ -71,6 +72,21 @@ struct CityContainerView: View {
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    self.dismiss()
+                } label: {
+                    Image(systemName: "chevron.backward.circle.fill")
+                        .font(.title2)
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(
+                            AppColors.onImagePrimary,
+                            AppColors.imageBadgeFill
+                        )
+                }
+                .accessibilityLabel("Back to map")
+            }
+
             ToolbarItem(placement: .principal) {
                 Text(self.city.country.flag)
                     .font(.largeTitle)

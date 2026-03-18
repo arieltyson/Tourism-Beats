@@ -7,7 +7,7 @@ struct MainTabView: View {
     let onSelectFeedback: (FeedbackCategory) -> Void
 
     @State private var homePath = NavigationPath()
-    @State private var searchPath = NavigationPath()
+    @State private var mapPath = NavigationPath()
     @State private var foodPath = NavigationPath()
     @State private var tripsPath = NavigationPath()
     @State private var settingsPath = NavigationPath()
@@ -18,11 +18,11 @@ struct MainTabView: View {
                 NavigationStack(path: self.$homePath) {
                     HomeView(
                         onExplore: {
-                            self.selectedTab = .search
+                            self.selectedTab = .map
                         },
                         onCitySelected: { city in
-                            self.selectedTab = .search
-                            self.searchPath.append(city)
+                            self.selectedTab = .map
+                            self.mapPath.append(city)
                         }
                     )
                     .toolbarBackground(.hidden, for: .navigationBar)
@@ -30,10 +30,10 @@ struct MainTabView: View {
                 }
             }
 
-            Tab(AppTab.search.title, systemImage: AppTab.search.systemImage, value: .search) {
-                NavigationStack(path: self.$searchPath) {
+            Tab(AppTab.map.title, systemImage: AppTab.map.systemImage, value: .map) {
+                NavigationStack(path: self.$mapPath) {
                     WorldView { city in
-                        self.searchPath.append(city)
+                        self.mapPath.append(city)
                     }
                     .navigationDestination(for: CityModel.self) { city in
                         CityContainerView(city: city)
@@ -73,16 +73,24 @@ struct MainTabView: View {
                 }
             }
         }
-        .onChange(of: self.selectedTab) { old, _ in
-            // Reset the tab we're *leaving*, not the one we're arriving at.
-            // This preserves any path appended before the switch (e.g. featured city).
-            switch old {
-            case .home: self.homePath = NavigationPath()
-            case .search: self.searchPath = NavigationPath()
-            case .food: self.foodPath = NavigationPath()
-            case .trips: self.tripsPath = NavigationPath()
-            case .settings: self.settingsPath = NavigationPath()
+        .onChange(of: self.selectedTab) { old, new in
+            if old == new {
+                // Re-tapping the active tab pops to root.
+                self.popToRoot(for: new)
+            } else {
+                // Reset the tab we're leaving.
+                self.popToRoot(for: old)
             }
+        }
+    }
+
+    private func popToRoot(for tab: AppTab) {
+        switch tab {
+        case .home: self.homePath = NavigationPath()
+        case .map: self.mapPath = NavigationPath()
+        case .food: self.foodPath = NavigationPath()
+        case .trips: self.tripsPath = NavigationPath()
+        case .settings: self.settingsPath = NavigationPath()
         }
     }
 }

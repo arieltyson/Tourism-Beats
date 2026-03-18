@@ -16,7 +16,7 @@ enum QuickAction: String, CaseIterable, Sendable {
     /// The tab this quick action should navigate to.
     var targetTab: AppTab {
         switch self {
-        case .searchDestinations: .search
+        case .searchDestinations: .map
         case .exploreHome: .home
         case .foodJournal: .food
         case .trips: .trips
@@ -39,7 +39,7 @@ enum QuickAction: String, CaseIterable, Sendable {
                 type: self.rawValue,
                 localizedTitle: "Search Destinations",
                 localizedSubtitle: "Find cities to explore",
-                icon: UIApplicationShortcutIcon(systemImageName: "magnifyingglass.circle"),
+                icon: UIApplicationShortcutIcon(systemImageName: "map.circle"),
                 userInfo: nil
             )
         case .exploreHome:
