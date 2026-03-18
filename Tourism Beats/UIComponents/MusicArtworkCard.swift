@@ -15,44 +15,44 @@ struct MusicArtworkCard: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        Group {
-            if let artworkURL {
-                AsyncImage(url: artworkURL, transaction: .init(animation: .smooth)) { phase in
-                    switch phase {
-                    case .empty:
-                        MusicArtworkLoadingView()
-                    case let .success(image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    case .failure:
-                        MusicArtworkPlaceholderView()
-                    @unknown default:
-                        MusicArtworkPlaceholderView()
+        Color.clear
+            .aspectRatio(1, contentMode: .fit)
+            .overlay {
+                if let artworkURL {
+                    AsyncImage(url: artworkURL, transaction: .init(animation: .smooth)) { phase in
+                        switch phase {
+                        case .empty:
+                            MusicArtworkLoadingView()
+                        case let .success(image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure:
+                            MusicArtworkPlaceholderView()
+                        @unknown default:
+                            MusicArtworkPlaceholderView()
+                        }
                     }
+                } else {
+                    MusicArtworkPlaceholderView()
                 }
-            } else {
-                MusicArtworkPlaceholderView()
             }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1, contentMode: .fit)
-        .background(.ultraThinMaterial)
-        .clipShape(.rect(cornerRadius: 28, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .strokeBorder(
-                    AppColors.glassBorder(for: self.colorScheme),
-                    lineWidth: 1
-                )
-        }
-        .shadow(
-            color: AppColors.glassShadow(for: self.colorScheme),
-            radius: 18,
-            y: 10
-        )
-        .contentShape(.rect(cornerRadius: 28, style: .continuous))
-        .accessibilityHidden(true)
+            .background(.ultraThinMaterial)
+            .clipShape(.rect(cornerRadius: 28, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .strokeBorder(
+                        AppColors.glassBorder(for: self.colorScheme),
+                        lineWidth: 1
+                    )
+            }
+            .shadow(
+                color: AppColors.glassShadow(for: self.colorScheme),
+                radius: 18,
+                y: 10
+            )
+            .contentShape(.rect(cornerRadius: 28, style: .continuous))
+            .accessibilityHidden(true)
     }
 }
 

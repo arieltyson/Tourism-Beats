@@ -235,32 +235,32 @@ extension CityActivityDetailView.Hero {
         let activity: CityActivity
 
         var body: some View {
-            ZStack {
-                if let imageURL = self.activity.imageURL {
-                    AsyncImage(
-                        url: imageURL,
-                        transaction: .init(animation: .smooth)
-                    ) { phase in
-                        switch phase {
-                        case .empty:
-                            Self.placeholder
-                        case let .success(image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        case .failure:
-                            Self.placeholder
-                        @unknown default:
-                            Self.placeholder
+            Color.clear
+                .aspectRatio(4 / 3, contentMode: .fit)
+                .overlay {
+                    if let imageURL = self.activity.imageURL {
+                        AsyncImage(
+                            url: imageURL,
+                            transaction: .init(animation: .smooth)
+                        ) { phase in
+                            switch phase {
+                            case .empty:
+                                Self.placeholder
+                            case let .success(image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            case .failure:
+                                Self.placeholder
+                            @unknown default:
+                                Self.placeholder
+                            }
                         }
+                    } else {
+                        Self.placeholder
                     }
-                } else {
-                    Self.placeholder
                 }
-            }
-            .frame(maxWidth: .infinity)
-            .aspectRatio(4 / 3, contentMode: .fit)
-            .clipShape(.rect(cornerRadius: 20, style: .continuous))
+                .clipShape(.rect(cornerRadius: 20, style: .continuous))
         }
 
         private static var placeholder: some View {
