@@ -197,49 +197,51 @@ extension CityActivitiesView {
         @Environment(\.colorScheme) private var scheme
 
         var body: some View {
-            ZStack(alignment: .bottomLeading) {
-                Self.ActivityArtwork(activity: self.activity)
-
-                LinearGradient(
-                    colors: [
-                        AppColors.imageScrimTop.opacity(0.02),
-                        AppColors.imageScrimMid.opacity(0.52),
-                        AppColors.imageScrimBottom
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-
-                Text(self.activity.name)
-                    .font(.headline)
-                    .bold()
-                    .foregroundStyle(AppColors.onImagePrimary)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-                    .padding(SpacingTokens.small)
-            }
-            .frame(maxWidth: .infinity)
-            .aspectRatio(4 / 3, contentMode: .fit)
-            .background {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
-                                lineWidth: 1
-                            )
-                    }
-                    .shadow(
-                        color: AppColors.glassShadow(for: self.scheme),
-                        radius: 16,
-                        y: 10
+            Color.clear
+                .aspectRatio(4 / 3, contentMode: .fit)
+                .overlay {
+                    Self.ActivityArtwork(activity: self.activity)
+                }
+                .overlay {
+                    LinearGradient(
+                        colors: [
+                            AppColors.imageScrimTop.opacity(0.02),
+                            AppColors.imageScrimMid.opacity(0.52),
+                            AppColors.imageScrimBottom
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
                     )
-            }
-            .clipShape(.rect(cornerRadius: 24, style: .continuous))
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(self.activity.name)
-            .accessibilityHint("Opens the full activity details")
+                }
+                .overlay(alignment: .bottomLeading) {
+                    Text(self.activity.name)
+                        .font(.headline)
+                        .bold()
+                        .foregroundStyle(AppColors.onImagePrimary)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                        .padding(SpacingTokens.small)
+                }
+                .clipShape(.rect(cornerRadius: 24, style: .continuous))
+                .background {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .strokeBorder(
+                                    AppColors.glassBorder(for: self.scheme),
+                                    lineWidth: 1
+                                )
+                        }
+                        .shadow(
+                            color: AppColors.glassShadow(for: self.scheme),
+                            radius: 16,
+                            y: 10
+                        )
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(self.activity.name)
+                .accessibilityHint("Opens the full activity details")
         }
     }
 }
