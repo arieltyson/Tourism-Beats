@@ -9,13 +9,20 @@ struct MainTabView: View {
     @State private var foodPath = NavigationPath()
     @State private var tripsPath = NavigationPath()
     @State private var settingsPath = NavigationPath()
+    @State private var tabBarHeight: CGFloat = 0
 
     var body: some View {
         self.currentTabContent
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
-            .safeAreaInset(edge: .bottom, spacing: 0) {
+            .safeAreaPadding(.bottom, self.tabBarHeight)
+            .overlay(alignment: .bottom) {
                 TourismFloatingTabBar(selectedTab: self.$selectedTab)
+                    .onGeometryChange(for: CGFloat.self) { proxy in
+                        proxy.size.height
+                    } action: { height in
+                        self.tabBarHeight = height
+                    }
             }
             .onChange(of: self.selectedTab) { old, _ in
                 // Reset the tab we're *leaving*, not the one we're arriving at.
