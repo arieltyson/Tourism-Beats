@@ -321,15 +321,15 @@ enum TripStatus: String, CaseIterable, Identifiable, Sendable {
 // MARK: - ActivityType
 
 enum ActivityType: String, CaseIterable, Identifiable, Sendable {
-    case food
-    case attraction
-    case transport
     case accommodation
-    case shopping
-    case nightlife
-    case wakeUp
+    case attraction
     case flight
+    case food
+    case nightlife
     case other
+    case shopping
+    case transport
+    case wakeUp
 
     var id: String { self.rawValue }
 

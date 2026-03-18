@@ -4,6 +4,7 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
     case american
     case bakery
     case brazilian
+    case burgers
     case cafe
     case caribbean
     case chinese
@@ -27,12 +28,14 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
     case other
     case persian
     case peruvian
+    case pizza
     case portuguese
     case russian
     case seafood
     case snack
     case spanish
     case steakhouse
+    case sushi
     case thai
     case turkish
     case vegan
@@ -49,6 +52,8 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
             "Bakery"
         case .brazilian:
             "Brazilian"
+        case .burgers:
+            "Burgers"
         case .cafe:
             "Cafe"
         case .caribbean:
@@ -95,6 +100,8 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
             "Persian"
         case .peruvian:
             "Peruvian"
+        case .pizza:
+            "Pizza"
         case .portuguese:
             "Portuguese"
         case .russian:
@@ -107,6 +114,8 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
             "Spanish"
         case .steakhouse:
             "Steakhouse"
+        case .sushi:
+            "Sushi"
         case .thai:
             "Thai"
         case .turkish:
