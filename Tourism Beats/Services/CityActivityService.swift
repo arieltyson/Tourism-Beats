@@ -140,10 +140,13 @@ extension CityActivityService {
             topActivities,
             guidePageTitle: guidePage.title
         )
+        let imageResolvedActivities = await self.activitiesWithWikidataImages(
+            enrichedActivities
+        )
 
         return CachedActivityPayload(
             fetchedAt: Date.now,
-            activities: enrichedActivities
+            activities: imageResolvedActivities
         )
     }
 
@@ -493,6 +496,133 @@ extension CityActivityService {
             sourcePageTitle: base.sourcePageTitle ?? detail.sourcePageTitle,
             sourceAnchor: base.sourceAnchor ?? detail.sourceAnchor
         )
+    }
+
+    // MARK: - Wikidata Image Resolution
+
+    /// Resolves missing images by querying the Wikidata API (P18 property)
+    /// for any activity that has a `wikidataIdentifier` but no `imageURL`.
+    private func activitiesWithWikidataImages(
+        _ activities: [CityActivity]
+    ) async -> [CityActivity] {
+        let needsImage = activities.filter {
+            $0.imageURL == nil && $0.wikidataIdentifier != nil
+        }
+
+        guard !needsImage.isEmpty else { return activities }
+
+        let ids = needsImage.compactMap(\.wikidataIdentifier)
+        let imageMap = await self.wikidataImageMap(for: ids)
+
+        guard !imageMap.isEmpty else { return activities }
+
+        return activities.map { activity in
+            guard activity.imageURL == nil,
+                  let qid = activity.wikidataIdentifier,
+                  let resolvedURL = imageMap[qid]
+            else { return activity }
+
+            return CityActivity(
+                id: activity.id,
+                name: activity.name,
+                summary: activity.summary,
+                category: activity.category,
+                kind: activity.kind,
+                imageURL: resolvedURL,
+                officialURL: activity.officialURL,
+                sourceURL: activity.sourceURL,
+                sourceName: activity.sourceName,
+                hours: activity.hours,
+                price: activity.price,
+                address: activity.address,
+                directions: activity.directions,
+                timingTip: activity.timingTip,
+                latitude: activity.latitude,
+                longitude: activity.longitude,
+                wikidataIdentifier: activity.wikidataIdentifier,
+                sourcePageTitle: activity.sourcePageTitle,
+                sourceAnchor: activity.sourceAnchor
+            )
+        }
+    }
+
+    /// Batch-fetches P18 (image) claims from Wikidata for up to 50 entity IDs.
+    private func wikidataImageMap(for ids: [String]) async -> [String: URL] {
+        let batch = Array(ids.prefix(50))
+        let joined = batch.joined(separator: "|")
+
+        var components = URLComponents(string: "https://www.wikidata.org/w/api.php")
+        components?.queryItems = [
+            URLQueryItem(name: "action", value: "wbgetentities"),
+            URLQueryItem(name: "ids", value: joined),
+            URLQueryItem(name: "props", value: "claims"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "formatversion", value: "2")
+        ]
+
+        guard let url = components?.url else { return [:] }
+
+        do {
+            let data = try await self.fetchData(from: url)
+            let response = try self.decoder.decode(WikidataEntitiesResponse.self, from: data)
+
+            var map: [String: URL] = [:]
+            for (qid, entity) in response.entities {
+                guard let claims = entity.claims?["P18"],
+                      let firstClaim = claims.first,
+                      let fileName = firstClaim.mainsnak.datavalue?.value.stringValue
+                else { continue }
+
+                let encoded = fileName
+                    .replacingOccurrences(of: " ", with: "_")
+                    .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+
+                guard !encoded.isEmpty,
+                      let imageURL = URL(
+                        string: "https://commons.wikimedia.org/wiki/Special:FilePath/\(encoded)"
+                      )
+                else { continue }
+
+                map[qid] = imageURL
+            }
+            return map
+        } catch {
+            self.logger.debug(
+                "Wikidata image fetch failed: \(error.localizedDescription, privacy: .public)"
+            )
+            return [:]
+        }
+    }
+
+    // MARK: - Wikidata Response Models
+
+    private struct WikidataEntitiesResponse: Decodable {
+        let entities: [String: WikidataEntity]
+    }
+
+    private struct WikidataEntity: Decodable {
+        let claims: [String: [WikidataClaim]]?
+    }
+
+    private struct WikidataClaim: Decodable {
+        let mainsnak: WikidataMainsnak
+    }
+
+    private struct WikidataMainsnak: Decodable {
+        let datavalue: WikidataDatavalue?
+    }
+
+    private struct WikidataDatavalue: Decodable {
+        let value: WikidataValue
+    }
+
+    private struct WikidataValue: Decodable {
+        let stringValue: String?
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            self.stringValue = try? container.decode(String.self)
+        }
     }
 
     private static func uniquedTitles(_ titles: [String]) -> [String] {
