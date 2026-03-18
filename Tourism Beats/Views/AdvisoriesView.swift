@@ -8,6 +8,7 @@ struct AdvisoriesView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
     @State private var visaViewModel: VisaViewModel
+    @State private var safetyViewModel: SafetyViewModel
 
     init(city: CityModel) {
         self.city = city
@@ -16,6 +17,9 @@ struct AdvisoriesView: View {
                 passportCode: "TT",
                 destinationCode: city.country.code
             )
+        )
+        _safetyViewModel = State(
+            initialValue: SafetyViewModel(city: city)
         )
     }
 
@@ -39,7 +43,7 @@ struct AdvisoriesView: View {
                     )
                     .padding(.bottom, 2)
 
-                    SafetyView(viewModel: SafetyViewModel(city: self.city))
+                    SafetyView(viewModel: self.safetyViewModel)
                         .fixedSize(horizontal: false, vertical: true)
                         .transition(.opacity.combined(with: .scale))
                 }
@@ -52,7 +56,7 @@ struct AdvisoriesView: View {
                 AdvisoryCard {
                     SectionHeader(
                         title: "Visa Entry",
-                        subtitle: "Personalized by your selected passport"
+                        subtitle: "Verify with the passport of your choice"
                     )
                     .padding(.bottom, 2)
 

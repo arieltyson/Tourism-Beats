@@ -54,19 +54,9 @@ struct VisaView: View {
 
 private struct VisaDisclaimer: View {
     var body: some View {
-        Label {
-            Text(
-                "Visa requirements change frequently. Always verify with your destination's official embassy or consulate before traveling."
-            )
+        Label("Visa requirements change often. Always verify.", systemImage: "info.circle")
             .font(TypographyTokens.caption)
-        } icon: {
-            Image(systemName: "info.circle")
-                .font(TypographyTokens.caption)
-        }
-        .foregroundStyle(.secondary)
-        .accessibilityLabel(
-            "Disclaimer: Visa requirements change frequently. Always verify with official sources before traveling."
-        )
+            .foregroundStyle(.secondary)
     }
 }
 
@@ -78,10 +68,6 @@ private struct VisaPassportPicker: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-            Text("Your Passport")
-                .font(TypographyTokens.footnote)
-                .foregroundStyle(.secondary)
-
             Button {
                 self.showingPicker = true
             } label: {

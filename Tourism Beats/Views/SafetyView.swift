@@ -9,7 +9,7 @@ import SwiftUI
 // MARK: - SafetyView
 
 struct SafetyView: View {
-    @StateObject var viewModel: SafetyViewModel
+    var viewModel: SafetyViewModel
 
     var body: some View {
         Group {
@@ -32,6 +32,9 @@ struct SafetyView: View {
                     .font(TypographyTokens.caption)
                     .foregroundStyle(.secondary)
             }
+        }
+        .task {
+            await self.viewModel.fetchSafetyData()
         }
     }
 }

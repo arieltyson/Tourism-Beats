@@ -1,13 +1,15 @@
+import Observation
 import SwiftUI
 
 @MainActor
-class SafetyViewModel: ObservableObject {
-    @Published var safetyData: SafetyModel?
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
+@Observable
+final class SafetyViewModel {
+    private(set) var safetyData: SafetyModel?
+    private(set) var isLoading = false
+    private(set) var errorMessage: String?
 
-    let city: CityModel
-    private let safetyService: SafetyProtocol
+    @ObservationIgnored private let city: CityModel
+    @ObservationIgnored private let safetyService: SafetyProtocol
 
     init(
         city: CityModel,
@@ -15,30 +17,25 @@ class SafetyViewModel: ObservableObject {
     ) {
         self.city = city
         self.safetyService = safetyService
-        self.fetchSafetyData()
     }
 
-    func fetchSafetyData() {
+    func fetchSafetyData() async {
         self.isLoading = true
         self.errorMessage = nil
 
-        let countryCode = self.city.country.code
-
-        Task { @MainActor in
-            do {
-                self.safetyData = try await self.safetyService.fetchSafetyData(
-                    for: countryCode
-                )
-            } catch {
-                self.errorMessage = "Could not load Global Peace Index data."
-            }
-            self.isLoading = false
+        do {
+            self.safetyData = try await self.safetyService.fetchSafetyData(
+                for: self.city.country.code
+            )
+        } catch {
+            self.errorMessage = "Could not load Global Peace Index data."
         }
+
+        self.isLoading = false
     }
 
-    // Map 1.0–5.0 → LOW/MED/HIGH
     var riskLevelText: String? {
-        guard let score = safetyData?.score else { return nil }
+        guard let score = self.safetyData?.score else { return nil }
         switch score {
         case ..<1.7:
             return "LOW"
@@ -52,7 +49,7 @@ class SafetyViewModel: ObservableObject {
     }
 
     var riskLevelColor: Color? {
-        guard let score = safetyData?.score else { return nil }
+        guard let score = self.safetyData?.score else { return nil }
         switch score {
         case ..<1.7:
             return .green
