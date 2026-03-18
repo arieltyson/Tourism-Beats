@@ -1,8 +1,7 @@
 <div align="center">
 
-# Tourism Beats 🌍🎶 
+# Tourism Beats 🌍🎶
 
-## App Store  : https://apps.apple.com/app/tourism-beats/id6708221715
 
 <kbd>
     <img src="https://github.com/user-attachments/assets/2864010d-ad96-42e6-abe6-58e804e27adf" alt="tourismBeatsLogo" width="800" height="500">
@@ -10,11 +9,7 @@
 
 ## Project Description 🎨
 
-"Tourism Beats" is an innovative iOS application built using SwiftUI that offers users an immersive experience of exploring cities through their most famous landmarks while learning data about the city in the form of current times and weather. Users can select from multiple iconic cities on a map, view dynamic animated backgrounds of famous landmarks, and gain insight into what it is currently like in other parts of the world. The application also integrates with Apple Music through the Music Kit API to display trending songs in the selected city. Additionally, the app sends GET requests to a RESTful API provided by Travel-Advisory to update the view with safety risk in each city.
-
-## Demo:
-
-https://github.com/user-attachments/assets/951ccd9a-7c2d-4f23-89d5-0a6d7b74b5b0
+Tourism Beats is a native iOS application that offers an immersive experience exploring 250 cities worldwide. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management rounds out the experience.
 
 ## Screenshots:
 
@@ -44,39 +39,61 @@ https://github.com/user-attachments/assets/951ccd9a-7c2d-4f23-89d5-0a6d7b74b5b0
 
 ## Technologies Used 💻
 
-This project leverages the powerful combination of Swift and SwiftUI, along with other native iOS APIs.
+Built entirely with native Apple frameworks and free public APIs — zero third-party dependencies.
 
-- [x] AVKit
-- [x] UIKit
-- [x] Swift
-- [x] TipKit
-- [x] MapKit
-- [x] Combine
-- [x] SwiftUI
-- [x] MusicKit
-- [x] SceneKit
-- [x] WeatherKit
-- [x] SwiftUICore
-- [x] CoreLocation
-- [x] VisaDB (REST API)
-- [x] Storyboard (SplashScreen)
-- [x] Travel-Advisory (REST API)
-- [x] Foundation (DateFormatter, Calendar, TimeZone)
+### Frameworks & APIs
 
-## Skills Demonstrated 🥋
+- [x] **SwiftUI** — Declarative UI with `@Observable`, `NavigationStack`, `Tab` API, and `MeshGradient`
+- [x] **SwiftData** — Persistent storage for restaurants, meal photos, and trip itineraries
+- [x] **MusicKit** — Apple Music integration for trending city playlists and album artwork
+- [x] **MapKit** — Interactive world map with city annotations and search
+- [x] **WeatherKit** — Real-time weather conditions and forecasts per city
+- [x] **SceneKit** — 3D interactive Earth globe on the home screen
+- [x] **CoreLocation** — Coordinate-based city discovery and geospatial queries
+- [x] **OSLog** — Structured logging across all services
+- [x] **Swift Concurrency** — `async`/`await`, `actor` isolation, and structured tasks throughout
 
-This project showcases a wide array of skills necessary for developing a feature-rich mobile application. The following skills were demonstrated:
+### External APIs (Free, No Keys Required)
 
-- [x] **LAYOUT**: Efficient use of SwiftUI views to create a visually appealing and user-friendly interface.
-- [x] **TOOLS & FRAMEWORKS**: Relied on multiple Apple tools and frameworks to create a seamless, integrated and native experience.
-- [x] **USER EXPERIENCE**: Crafting an engaging experience with dynamic backgrounds and interactive elements.
-- [x] **USER INTERFACE**: Building an intuitive interface that allows easy navigation and interaction.
-- [x] **MOBILE DESIGN**: Combining creativity and functionality to deliver a unique and immersive user experience.
-- [x] **REST APIs**: Making network requests to an API to import online data into the application
+- [x] **Overpass API (OpenStreetMap)** — Primary source for tourism POI discovery (museums, landmarks, parks, etc.)
+- [x] **Wikipedia API** — Article enrichment with descriptions, images, and coordinates
+- [x] **Wikidata API** — Image resolution via P18 claims for activities missing photos
+- [x] **Travel Advisory API** — Country-level safety risk scores
+
+### Data Sources
+
+- [x] **Static visa requirements JSON** — Offline visa lookup for 6,900+ passport-destination pairs
+- [x] **Static safety advisories JSON** — Offline country safety data with advisory levels
+
+## Architecture 🏗️
+
+- **Pattern**: MVVM with Clean Architecture and SOLID principles
+- **State Management**: `@Observable` with `@MainActor` isolation (no `ObservableObject`)
+- **Navigation**: `NavigationStack` with `NavigationPath` for programmatic routing and pop-to-root
+- **Concurrency**: Swift 6.2 strict concurrency — `actor`-based services, structured `Task` hierarchies
+- **Caching**: Two-tier caching (in-memory + disk) with 14-day TTL for activity data
+- **Target**: iOS 26.0+, Swift 6.2, Xcode 26
+
+## Features 🌟
+
+- 🌐 **250 Cities** — Explore destinations across every continent
+- 🗺️ **Interactive Map** — Full world map with city pins and search
+- 🌍 **3D Globe** — Animated Earth with featured city carousel on home screen
+- 🎵 **Trending Music** — City-specific Apple Music playlists via MusicKit
+- 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content
+- 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city
+- ✈️ **Trip Planner** — Create and manage trip itineraries with activities
+- 🌤️ **Live Weather** — Real-time conditions via WeatherKit
+- 🕐 **Local Time** — Live clocks for every city
+- 🚶 **Walkability** — City walkability scores and pedestrian insights
+- 🛂 **Visa Requirements** — Passport-specific visa lookup for any destination
+- 🛡️ **Safety Advisories** — Country risk levels and travel warnings
+- ♿ **Accessibility** — WCAG AA compliant contrast ratios, Dynamic Type, VoiceOver support
+- 🎨 **Dark Mesh Gradients** — 34 unique dark-palette `MeshGradient` backgrounds
 
 ## Contributing ⚙️
 
-We welcome contributions from developers and enthusiasts who are passionate about creating immersive mobile experiences. If you have an idea for a new feature or a code improvement, feel free to fork our repository, make your changes, and submit a pull request. Let's collaborate to enhance "Tourism Beats" together.
+We welcome contributions from developers and enthusiasts who are passionate about creating immersive mobile experiences. If you have an idea for a new feature or a code improvement, feel free to fork our repository, make your changes, and submit a pull request. Let's collaborate to enhance Tourism Beats together.
 
 ## License 🪪
 
