@@ -11,7 +11,7 @@ struct CityContainerView: View {
     @State private var containerSize: CGSize = .zero
     @State private var haptic = HapticTrigger()
 
-    private let pageCount = 3
+    private let pages = PageDescriptor.defaults
 
     var body: some View {
         ZStack {
@@ -35,6 +35,10 @@ struct CityContainerView: View {
                 AdvisoriesView(city: self.city)
                     .containerRelativeFrame([.horizontal, .vertical])
                     .offset(y: self.offset(for: 2))
+
+                CityActivitiesView(city: self.city)
+                    .containerRelativeFrame([.horizontal, .vertical])
+                    .offset(y: self.offset(for: 3))
             }
             .clipped()
             .contentShape(.rect)
@@ -57,6 +61,9 @@ struct CityContainerView: View {
                     }
                 )
                 .padding(.trailing, PageIndicatorTokens.overlayTrailingPadding)
+            }
+            .navigationDestination(for: CityActivityRoute.self) { route in
+                CityActivityDetailView(city: route.city, activity: route.activity)
             }
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
@@ -127,7 +134,7 @@ struct CityContainerView: View {
                     sameDirection && abs(predicted) > threshold * 0.6
 
                 if commitByDistance || commitByVelocity {
-                    if drag < 0, self.pageIndex < self.pageCount - 1 {
+                    if drag < 0, self.pageIndex < self.pages.count - 1 {
                         self.selectPage(self.pageIndex + 1)
                     } else if drag > 0, self.pageIndex > 0 {
                         self.selectPage(self.pageIndex - 1)
@@ -141,12 +148,9 @@ struct CityContainerView: View {
     private var backgroundForCurrentPage: some View {
         let all = GradientProvider.gradients
         let base = UInt(bitPattern: self.city.id.hashValue)
-        let seed: UInt =
-            switch self.pageIndex {
-            case 0: base &* 31
-            case 1: base &* 47
-            default: base &* 59
-            }
+        let pageSeedValues: [UInt] = [31, 47, 59, 71]
+        let multiplier = pageSeedValues[min(self.pageIndex, pageSeedValues.count - 1)]
+        let seed = base &* multiplier
         let idx = Int(seed % UInt(all.count))
         return all[idx]
     }

@@ -64,7 +64,7 @@ struct TripCityLookupTests {
     ) -> CityModel {
         let imageURL = URL(string: imageURLString) ?? URL.documentsDirectory
 
-        CityModel(
+        return CityModel(
             id: "\(name)-\(country.code)",
             name: name,
             country: country,

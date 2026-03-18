@@ -12,7 +12,8 @@ struct PageDescriptor: Identifiable, Hashable, Sendable {
     static let defaults: [PageDescriptor] = [
         PageDescriptor(id: 0, icon: "map", label: "City"),
         PageDescriptor(id: 1, icon: "music.note", label: "Music"),
-        PageDescriptor(id: 2, icon: "shield", label: "Advisories")
+        PageDescriptor(id: 2, icon: "shield", label: "Advisories"),
+        PageDescriptor(id: 3, icon: "figure.walk", label: "Activities")
     ]
 }
 
@@ -52,7 +53,7 @@ struct VerticalIconPageIndicator: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel("City detail sections")
         .accessibilityValue(self.currentPageLabel)
-        .accessibilityHint("Select City, Music, or Advisories")
+        .accessibilityHint(self.accessibilityHint)
         .accessibilityAdjustableAction { direction in
             switch direction {
             case .increment:
@@ -67,6 +68,10 @@ struct VerticalIconPageIndicator: View {
 
     private var currentPageLabel: String {
         self.pages.first(where: { $0.id == self.activeIndex })?.label ?? "Unknown"
+    }
+
+    private var accessibilityHint: String {
+        "Select \(self.pages.map(\.label).joined(separator: ", "))"
     }
 
     private func selectPage(_ index: Int) {
