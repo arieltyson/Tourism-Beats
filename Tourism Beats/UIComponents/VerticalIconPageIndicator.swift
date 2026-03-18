@@ -45,8 +45,8 @@ struct VerticalIconPageIndicator: View {
             }
         }
         .motionSensitiveAnimation(
-            .snappy(duration: 0.28, extraBounce: 0.04),
-            reduced: .easeInOut(duration: 0.18),
+            AnimationTokens.snappy,
+            reduced: .easeInOut(duration: AnimationTokens.reducedMotionDuration),
             value: self.activeIndex
         )
         .accessibilityElement(children: .contain)
@@ -85,8 +85,8 @@ private struct ModernVerticalIconPageIndicator: View {
     let selectionNamespace: Namespace.ID
 
     var body: some View {
-        GlassEffectContainer(spacing: 8) {
-            VStack(spacing: 6) {
+        GlassEffectContainer(spacing: PageIndicatorTokens.containerSpacing) {
+            VStack(spacing: PageIndicatorTokens.buttonSpacing) {
                 ForEach(self.pages) { page in
                     ModernIconPageButton(
                         page: page,
@@ -109,7 +109,7 @@ private struct LegacyVerticalIconPageIndicator: View {
     let selectionNamespace: Namespace.ID
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: PageIndicatorTokens.buttonSpacing) {
             ForEach(self.pages) { page in
                 LegacyIconPageButton(
                     page: page,
@@ -140,11 +140,14 @@ private struct ModernIconPageButton: View {
                 .fontWeight(.semibold)
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary)
-                .frame(width: 28, height: 28)
+                .frame(
+                    width: PageIndicatorTokens.modernButtonSize,
+                    height: PageIndicatorTokens.modernButtonSize
+                )
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)
-        .opacity(self.isActive ? 1 : 0.5)
+        .opacity(self.isActive ? PageIndicatorTokens.activeOpacity : PageIndicatorTokens.inactiveOpacity)
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")
@@ -169,18 +172,21 @@ private struct LegacyIconPageButton: View {
                 if self.isActive {
                     Capsule(style: .continuous)
                         .fill(.ultraThinMaterial)
-                        .frame(width: 32, height: 40)
+                        .frame(
+                            width: PageIndicatorTokens.legacyCapsuleWidth,
+                            height: PageIndicatorTokens.legacyCapsuleHeight
+                        )
                         .overlay(
                             Capsule(style: .continuous)
                                 .strokeBorder(
                                     AppColors.glassBorder(for: self.scheme),
-                                    lineWidth: 0.5
+                                    lineWidth: PageIndicatorTokens.legacyBorderWidth
                                 )
                         )
                         .shadow(
                             color: AppColors.glassShadow(for: self.scheme),
-                            radius: 6,
-                            y: 2
+                            radius: PageIndicatorTokens.legacyShadowRadius,
+                            y: PageIndicatorTokens.legacyShadowY
                         )
                         .matchedGeometryEffect(
                             id: "page-indicator-selection",
@@ -196,13 +202,16 @@ private struct LegacyIconPageButton: View {
                     .foregroundStyle(
                         self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary
                     )
-                    .frame(width: 32, height: 40)
+                    .frame(
+                        width: PageIndicatorTokens.legacyCapsuleWidth,
+                        height: PageIndicatorTokens.legacyCapsuleHeight
+                    )
                     .contentShape(.rect)
             }
         }
         .buttonStyle(.plain)
-        .scaleEffect(self.isActive ? 1 : 0.88)
-        .opacity(self.isActive ? 1 : 0.5)
+        .scaleEffect(self.isActive ? 1 : PageIndicatorTokens.inactiveScale)
+        .opacity(self.isActive ? PageIndicatorTokens.activeOpacity : PageIndicatorTokens.inactiveOpacity)
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")

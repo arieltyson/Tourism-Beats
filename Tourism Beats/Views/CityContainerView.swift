@@ -45,7 +45,7 @@ struct CityContainerView: View {
                 self.containerSize = newSize
             }
             .motionSensitiveAnimation(
-                .interactiveSpring(response: 0.35, dampingFraction: 0.85),
+                AnimationTokens.standard,
                 reduced: .linear(duration: 0.01),
                 value: self.pageIndex
             )
@@ -56,7 +56,7 @@ struct CityContainerView: View {
                         self.selectPage(index)
                     }
                 )
-                .padding(.trailing, -2)
+                .padding(.trailing, PageIndicatorTokens.overlayTrailingPadding)
             }
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)

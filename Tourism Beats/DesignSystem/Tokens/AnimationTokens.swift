@@ -24,6 +24,9 @@ enum AnimationTokens {
     /// Press feedback for interactive controls.
     static let press: Animation = .spring(response: 0.25, dampingFraction: 0.7)
 
+    /// Duration used for reduced-motion fallback animations.
+    static let reducedMotionDuration: Double = 0.18
+
     /// Stagger delay for sequential list item reveals.
     ///
     /// - Parameter index: The item's position in the list.
