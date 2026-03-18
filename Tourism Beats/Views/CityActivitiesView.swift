@@ -96,12 +96,37 @@ extension CityActivitiesView {
     }
 
     private struct PlaceholderCard: View {
+        @State private var isShimmering = false
+
         var body: some View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(AppColors.surfaceSecondary.opacity(0.8))
+                .fill(AppColors.surfaceSecondary.opacity(0.6))
                 .frame(maxWidth: .infinity)
                 .aspectRatio(4 / 3, contentMode: .fit)
-                .redacted(reason: .placeholder)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    .clear,
+                                    .white.opacity(0.08),
+                                    .clear
+                                ],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .offset(x: self.isShimmering ? 300 : -300)
+                }
+                .clipShape(.rect(cornerRadius: 24, style: .continuous))
+                .onAppear {
+                    withAnimation(
+                        .easeInOut(duration: 1.5)
+                            .repeatForever(autoreverses: false)
+                    ) {
+                        self.isShimmering = true
+                    }
+                }
         }
     }
 
@@ -121,7 +146,6 @@ extension CityActivitiesView {
                 GridRow {
                     PlaceholderCard()
                     PlaceholderCard()
-                        .hidden()
                 }
             }
             .accessibilityHidden(true)
