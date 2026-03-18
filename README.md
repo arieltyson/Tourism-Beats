@@ -4,7 +4,7 @@
 
 
 <kbd>
-    <img src="https://github.com/user-attachments/assets/2864010d-ad96-42e6-abe6-58e804e27adf" alt="tourismBeatsLogo" width="800" height="500">
+    <img src="https://github.com/user-attachments/assets/349d0d9f-f863-44c3-a21b-f2ab1ac8b9d7" alt="tourismBeatsLogo" width="800" height="500">
 </kbd>
 
 ## Project Description 🎨
@@ -15,25 +15,25 @@ Tourism Beats is a native iOS application that offers an immersive experience ex
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/user-attachments/assets/49292595-ece1-494d-8a48-31d2a1cabf3a" alt="Home Page" width="200">
+        <img src="https://github.com/user-attachments/assets/01a8c7ad-bb31-4137-8929-c7709dd935f9" alt="Home" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/081068d1-b925-4764-9165-9e529026635a" alt="Map View" width="200">
+        <img src="https://github.com/user-attachments/assets/6d927da5-0ab3-467c-99b5-9bf0dd8fcd65" alt="Map" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/04bd11a3-34bd-45e5-a201-4cae6621260f" alt="City View" width="200">
+        <img src="https://github.com/user-attachments/assets/f60c3eb4-6acb-4503-a625-e20631f5a700" alt="City" width="200">
     </kbd>
 </div>
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <kbd>
-        <img src="https://github.com/user-attachments/assets/ea56356d-f12e-4d31-a88c-1c7c6e666d83" alt="Music View" width="200">
+        <img src="https://github.com/user-attachments/assets/fcbc6541-4f75-4758-8898-f1b90fe509d7" alt="Activities" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/96bdae34-208b-46d3-b74f-c66b7675698d" alt="Visa Search" width="200">
+        <img src="https://github.com/user-attachments/assets/96dc55dd-d921-4fb8-bd88-bae66f28638b" alt="Food" width="200">
     </kbd>
     <kbd>
-        <img src="https://github.com/user-attachments/assets/c43aca52-434d-4f57-9f96-ab99bd939698" alt="Map Search" width="200">
+        <img src="https://github.com/user-attachments/assets/9f941f81-ebaa-418d-8f23-286565ddc8f0" alt="Advisories" width="200">
     </kbd>
 </div>
 
@@ -65,6 +65,9 @@ Built entirely with native Apple frameworks and free public APIs — zero third-
 - [x] **Static visa requirements JSON** — Offline visa lookup for 6,900+ passport-destination pairs
 - [x] **Static safety advisories JSON** — Offline country safety data with advisory levels
 
+</div>
+
+
 ## Architecture 🏗️
 
 - **Pattern**: MVVM with Clean Architecture and SOLID principles
@@ -90,6 +93,8 @@ Built entirely with native Apple frameworks and free public APIs — zero third-
 - 🛡️ **Safety Advisories** — Country risk levels and travel warnings
 - ♿ **Accessibility** — WCAG AA compliant contrast ratios, Dynamic Type, VoiceOver support
 - 🎨 **Dark Mesh Gradients** — 34 unique dark-palette `MeshGradient` backgrounds
+
+<div align="center">
 
 ## Contributing ⚙️
 
