@@ -1,7 +1,30 @@
 import SwiftUI
 
 enum GradientProvider {
+    // MARK: - Dark Palette
+
+    /// Rich, dark-skewing colors that preserve hue identity while ensuring
+    /// >= 4.5 : 1 contrast ratio for white foreground text (WCAG AA).
+    /// Brightness values stay between 0.25–0.50 so every mesh gradient
+    /// reads as a moody, high-contrast backdrop.
+
+    private static let dkBlack = Color(hue: 0.00, saturation: 0.00, brightness: 0.06)
+    private static let dkRed = Color(hue: 0.00, saturation: 0.85, brightness: 0.40)
+    private static let dkOrange = Color(hue: 0.07, saturation: 0.85, brightness: 0.42)
+    private static let dkYellow = Color(hue: 0.12, saturation: 0.80, brightness: 0.42)
+    private static let dkGreen = Color(hue: 0.35, saturation: 0.80, brightness: 0.32)
+    private static let dkMint = Color(hue: 0.45, saturation: 0.70, brightness: 0.34)
+    private static let dkTeal = Color(hue: 0.50, saturation: 0.80, brightness: 0.32)
+    private static let dkCyan = Color(hue: 0.52, saturation: 0.80, brightness: 0.36)
+    private static let dkBlue = Color(hue: 0.60, saturation: 0.85, brightness: 0.38)
+    private static let dkIndigo = Color(hue: 0.72, saturation: 0.80, brightness: 0.34)
+    private static let dkPurple = Color(hue: 0.78, saturation: 0.75, brightness: 0.36)
+    private static let dkPink = Color(hue: 0.92, saturation: 0.70, brightness: 0.38)
+
+    // MARK: - Gradients
+
     static let gradients: [MeshGradient] = [
+        // 0 – Deep ocean
         MeshGradient(
             width: 3,
             height: 3,
@@ -11,11 +34,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .black, .black,
-                .blue, .blue, .blue,
-                .green, .green, .green
+                dkBlack, dkBlack, dkBlack,
+                dkBlue, dkBlue, dkBlue,
+                dkGreen, dkGreen, dkGreen
             ]
         ),
+        // 1 – Aurora
         MeshGradient(
             width: 3,
             height: 3,
@@ -25,11 +49,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .cyan, .pink, .indigo,
-                .yellow, .teal, .red,
-                .purple, .blue, .orange
+                dkCyan, dkPink, dkIndigo,
+                dkYellow, dkTeal, dkRed,
+                dkPurple, dkBlue, dkOrange
             ]
         ),
+        // 2 – Prismatic
         MeshGradient(
             width: 3,
             height: 3,
@@ -39,11 +64,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .blue, .cyan, .teal,
-                .pink, .purple, .indigo,
-                .yellow, .orange, .red
+                dkBlue, dkCyan, dkTeal,
+                dkPink, dkPurple, dkIndigo,
+                dkYellow, dkOrange, dkRed
             ]
         ),
+        // 3 – Spectrum
         MeshGradient(
             width: 3,
             height: 3,
@@ -53,11 +79,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .yellow, .orange, .red,
-                .purple, .blue, .green,
-                .mint, .cyan, .teal
+                dkYellow, dkOrange, dkRed,
+                dkPurple, dkBlue, dkGreen,
+                dkMint, dkCyan, dkTeal
             ]
         ),
+        // 4 – Flag
         MeshGradient(
             width: 3,
             height: 3,
@@ -67,11 +94,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .blue, .blue, .blue,
-                .black, .black, .black,
-                .red, .red, .red
+                dkBlue, dkBlue, dkBlue,
+                dkBlack, dkBlack, dkBlack,
+                dkRed, dkRed, dkRed
             ]
         ),
+        // 5 – Deep teal
         MeshGradient(
             width: 3,
             height: 3,
@@ -81,11 +109,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .teal, .teal, .teal,
-                .blue, .blue, .blue,
-                .black, .black, .black
+                dkTeal, dkTeal, dkTeal,
+                dkBlue, dkBlue, dkBlue,
+                dkBlack, dkBlack, dkBlack
             ]
         ),
+        // 6 – Rainbow dim
         MeshGradient(
             width: 3,
             height: 3,
@@ -95,11 +124,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .cyan, .blue, .purple,
-                .pink, .red, .orange,
-                .yellow, .green, .teal
+                dkCyan, dkBlue, dkPurple,
+                dkPink, dkRed, dkOrange,
+                dkYellow, dkGreen, dkTeal
             ]
         ),
+        // 7 – Cyber mint
         MeshGradient(
             width: 3,
             height: 3,
@@ -109,11 +139,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .cyan, .cyan,
-                .cyan, .black, .mint,
-                .mint, .mint, .black
+                dkBlack, dkCyan, dkCyan,
+                dkCyan, dkBlack, dkMint,
+                dkMint, dkMint, dkBlack
             ]
         ),
+        // 8 – Spectrum sweep
         MeshGradient(
             width: 3,
             height: 3,
@@ -123,11 +154,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .pink, .red, .orange,
-                .yellow, .green, .blue,
-                .indigo, .purple, .mint
+                dkPink, dkRed, dkOrange,
+                dkYellow, dkGreen, dkBlue,
+                dkIndigo, dkPurple, dkMint
             ]
         ),
+        // 9 – Cool flow
         MeshGradient(
             width: 3,
             height: 3,
@@ -137,11 +169,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.6, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .teal, .cyan, .blue,
-                .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                dkTeal, dkCyan, dkBlue,
+                dkIndigo, dkPurple, dkPink,
+                dkRed, dkOrange, dkYellow
             ]
         ),
+        // 10 – Forest glow
         MeshGradient(
             width: 3,
             height: 3,
@@ -151,11 +184,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .green, .mint, .blue,
-                .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                dkGreen, dkMint, dkBlue,
+                dkIndigo, dkPurple, dkPink,
+                dkRed, dkOrange, dkYellow
             ]
         ),
+        // 11 – Neon grid
         MeshGradient(
             width: 3,
             height: 3,
@@ -165,11 +199,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .cyan, .cyan,
-                .cyan, .black, .pink,
-                .pink, .pink, .black
+                dkBlack, dkCyan, dkCyan,
+                dkCyan, dkBlack, dkPink,
+                dkPink, dkPink, dkBlack
             ]
         ),
+        // 12 – Deep indigo
         MeshGradient(
             width: 3,
             height: 3,
@@ -179,11 +214,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .indigo, .indigo, .black,
-                .cyan, .black, .cyan,
-                .black, .cyan, .indigo
+                dkIndigo, dkIndigo, dkBlack,
+                dkCyan, dkBlack, dkCyan,
+                dkBlack, dkCyan, dkIndigo
             ]
         ),
+        // 13 – Warm dusk
         MeshGradient(
             width: 3,
             height: 3,
@@ -193,11 +229,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .red, .purple, .indigo,
-                .orange, .blue, .blue,
-                .yellow, .green, .mint
+                dkRed, dkPurple, dkIndigo,
+                dkOrange, dkBlue, dkBlue,
+                dkYellow, dkGreen, dkMint
             ]
         ),
+        // 14 – Prismatic II
         MeshGradient(
             width: 3,
             height: 3,
@@ -207,11 +244,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .blue, .cyan, .teal,
-                .pink, .purple, .indigo,
-                .yellow, .orange, .red
+                dkBlue, dkCyan, dkTeal,
+                dkPink, dkPurple, dkIndigo,
+                dkYellow, dkOrange, dkRed
             ]
         ),
+        // 15 – Spectrum II
         MeshGradient(
             width: 3,
             height: 3,
@@ -221,11 +259,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .yellow, .orange, .red,
-                .purple, .blue, .green,
-                .mint, .cyan, .teal
+                dkYellow, dkOrange, dkRed,
+                dkPurple, dkBlue, dkGreen,
+                dkMint, dkCyan, dkTeal
             ]
         ),
+        // 16 – Void indigo
         MeshGradient(
             width: 3,
             height: 3,
@@ -235,11 +274,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .indigo, .indigo, .indigo,
-                .black, .cyan, .black,
-                .indigo, .black, .cyan
+                dkIndigo, dkIndigo, dkIndigo,
+                dkBlack, dkCyan, dkBlack,
+                dkIndigo, dkBlack, dkCyan
             ]
         ),
+        // 17 – Ember night
         MeshGradient(
             width: 3,
             height: 3,
@@ -249,11 +289,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .indigo, .indigo,
-                .black, .red, .indigo,
-                .black, .black, .red
+                dkBlack, dkIndigo, dkIndigo,
+                dkBlack, dkRed, dkIndigo,
+                dkBlack, dkBlack, dkRed
             ]
         ),
+        // 18 – Rainbow dim II
         MeshGradient(
             width: 3,
             height: 3,
@@ -263,11 +304,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .cyan, .blue, .purple,
-                .pink, .red, .orange,
-                .yellow, .green, .teal
+                dkCyan, dkBlue, dkPurple,
+                dkPink, dkRed, dkOrange,
+                dkYellow, dkGreen, dkTeal
             ]
         ),
+        // 19 – Midnight flash
         MeshGradient(
             width: 3,
             height: 3,
@@ -277,11 +319,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .black, .black,
-                .cyan, .cyan, .black,
-                .red, .red, .cyan
+                dkBlack, dkBlack, dkBlack,
+                dkCyan, dkCyan, dkBlack,
+                dkRed, dkRed, dkCyan
             ]
         ),
+        // 20 – Spectrum sweep II
         MeshGradient(
             width: 3,
             height: 3,
@@ -291,11 +334,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .pink, .red, .orange,
-                .yellow, .green, .blue,
-                .indigo, .purple, .mint
+                dkPink, dkRed, dkOrange,
+                dkYellow, dkGreen, dkBlue,
+                dkIndigo, dkPurple, dkMint
             ]
         ),
+        // 21 – Cool flow II
         MeshGradient(
             width: 3,
             height: 3,
@@ -305,11 +349,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.6, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .teal, .cyan, .blue,
-                .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                dkTeal, dkCyan, dkBlue,
+                dkIndigo, dkPurple, dkPink,
+                dkRed, dkOrange, dkYellow
             ]
         ),
+        // 22 – Forest glow II
         MeshGradient(
             width: 3,
             height: 3,
@@ -319,11 +364,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .green, .mint, .blue,
-                .indigo, .purple, .pink,
-                .red, .orange, .yellow
+                dkGreen, dkMint, dkBlue,
+                dkIndigo, dkPurple, dkPink,
+                dkRed, dkOrange, dkYellow
             ]
         ),
+        // 23 – Pink void
         MeshGradient(
             width: 3,
             height: 3,
@@ -333,13 +379,15 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .pink, .pink, .pink,
-                .black, .indigo, .pink,
-                .black, .black, .indigo
+                dkPink, dkPink, dkPink,
+                dkBlack, dkIndigo, dkPink,
+                dkBlack, dkBlack, dkIndigo
             ]
         ),
 
-        // New "Sunset" Theme Gradients
+        // MARK: - Sunset
+
+        // 24 – Sunset blaze
         MeshGradient(
             width: 3,
             height: 3,
@@ -349,11 +397,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .orange, .red, .pink,
-                .yellow, .orange, .red,
-                .purple, .indigo, .blue
+                dkOrange, dkRed, dkPink,
+                dkYellow, dkOrange, dkRed,
+                dkPurple, dkIndigo, dkBlue
             ]
         ),
+        // 25 – Sunset fade
         MeshGradient(
             width: 3,
             height: 3,
@@ -363,13 +412,15 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .yellow, .orange, .red,
-                .pink, .purple, .indigo,
-                .blue, .cyan, .teal
+                dkYellow, dkOrange, dkRed,
+                dkPink, dkPurple, dkIndigo,
+                dkBlue, dkCyan, dkTeal
             ]
         ),
 
-        // New "Oceanic" Theme Gradients
+        // MARK: - Oceanic
+
+        // 26 – Oceanic deep
         MeshGradient(
             width: 3,
             height: 3,
@@ -379,12 +430,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .teal, .cyan, .blue,
-                .mint, .green, .indigo,
-                .blue, .cyan, .black
+                dkTeal, dkCyan, dkBlue,
+                dkMint, dkGreen, dkIndigo,
+                dkBlue, dkCyan, dkBlack
             ]
         ),
-
+        // 27 – Oceanic drift
         MeshGradient(
             width: 3,
             height: 3,
@@ -394,14 +445,15 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .blue, .indigo, .purple,
-                .cyan, .teal, .green,
-                .mint, .blue, .cyan
+                dkBlue, dkIndigo, dkPurple,
+                dkCyan, dkTeal, dkGreen,
+                dkMint, dkBlue, dkCyan
             ]
         ),
 
-        // New "Forest" Theme Gradients
+        // MARK: - Forest
 
+        // 28 – Forest canopy
         MeshGradient(
             width: 3,
             height: 3,
@@ -411,13 +463,15 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .orange, .yellow, .green,
-                .green, .teal, .blue,
-                .indigo, .black, .green
+                dkOrange, dkYellow, dkGreen,
+                dkGreen, dkTeal, dkBlue,
+                dkIndigo, dkBlack, dkGreen
             ]
         ),
 
-        // New "Pastel" Theme Gradients
+        // MARK: - Twilight (replaces pastel)
+
+        // 29 – Twilight mist
         MeshGradient(
             width: 3,
             height: 3,
@@ -427,13 +481,21 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                Color(red: 0.9, green: 0.8, blue: 1.0), .mint, .cyan,
-                .pink, Color(red: 1.0, green: 0.9, blue: 0.8), .yellow,
-                .teal, Color(red: 0.8, green: 0.9, blue: 1.0), .blue
+                Color(hue: 0.78, saturation: 0.50, brightness: 0.35),
+                dkMint,
+                dkCyan,
+                dkPink,
+                Color(hue: 0.07, saturation: 0.50, brightness: 0.35),
+                dkYellow,
+                dkTeal,
+                Color(hue: 0.60, saturation: 0.50, brightness: 0.35),
+                dkBlue
             ]
         ),
 
-        // More Assorted Mixes
+        // MARK: - Assorted
+
+        // 30 – Verdant dusk
         MeshGradient(
             width: 3,
             height: 3,
@@ -443,13 +505,15 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .mint, .teal, .green,
-                .yellow, .orange, .red,
-                .pink, .purple, .indigo
+                dkMint, dkTeal, dkGreen,
+                dkYellow, dkOrange, dkRed,
+                dkPink, dkPurple, dkIndigo
             ]
         ),
 
-        /// Golden Ratio
+        // MARK: - Golden Ratio
+
+        // 31 – Ember core
         MeshGradient(
             width: 3,
             height: 3,
@@ -459,11 +523,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .red, .black,
-                .red, .orange, .red,
-                .black, .red, .black
+                dkBlack, dkRed, dkBlack,
+                dkRed, dkOrange, dkRed,
+                dkBlack, dkRed, dkBlack
             ]
         ),
+        // 32 – Cyan diamond
         MeshGradient(
             width: 3,
             height: 3,
@@ -473,11 +538,12 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .black, .cyan, .black,
-                .cyan, .indigo, .cyan,
-                .black, .cyan, .black
+                dkBlack, dkCyan, dkBlack,
+                dkCyan, dkIndigo, dkCyan,
+                dkBlack, dkCyan, dkBlack
             ]
         ),
+        // 33 – Nebula
         MeshGradient(
             width: 3,
             height: 3,
@@ -487,9 +553,9 @@ enum GradientProvider {
                 [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
             ],
             colors: [
-                .purple, .pink, .red,
-                .indigo, .blue, .cyan,
-                .black, .teal, .green
+                dkPurple, dkPink, dkRed,
+                dkIndigo, dkBlue, dkCyan,
+                dkBlack, dkTeal, dkGreen
             ]
         )
     ]
