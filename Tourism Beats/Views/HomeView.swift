@@ -96,43 +96,39 @@ private struct HomeFeaturedCitiesCarousel: View {
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    private static let cardSpacing = SpacingTokens.small
-    private static let cardColumnSpan = 3
+    private static let cardSpacing: CGFloat = 10
 
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: Self.cardSpacing) {
-                ForEach(self.featuredCities) { city in
-                    DiscoveryCityCard(
-                        city: city,
-                        localTime: self.localTime(city),
-                        scheme: self.scheme
-                    ) {
-                        self.onSelectCity(city)
+        GeometryReader { geo in
+            let visibleWidth = geo.size.width - self.horizontalPadding * 2
+            let cardWidth = (visibleWidth - Self.cardSpacing * 2) / 2.5
+
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: Self.cardSpacing) {
+                    ForEach(self.featuredCities) { city in
+                        DiscoveryCityCard(
+                            city: city,
+                            localTime: self.localTime(city),
+                            scheme: self.scheme
+                        ) {
+                            self.onSelectCity(city)
+                        }
+                        .frame(width: cardWidth)
                     }
-                    .containerRelativeFrame(
-                        .horizontal,
-                        count: self.cardColumnCount,
-                        span: Self.cardColumnSpan,
-                        spacing: Self.cardSpacing
-                    )
                 }
+                .scrollTargetLayout()
+                .padding(.horizontal, self.horizontalPadding)
             }
-            .scrollTargetLayout()
+            .scrollTargetBehavior(
+                .viewAligned(limitBehavior: .alwaysByOne, anchor: .leading)
+            )
+            .scrollIndicators(.hidden)
         }
-        .contentMargins(
-            .horizontal,
-            self.horizontalPadding,
-            for: .scrollContent
-        )
-        .scrollTargetBehavior(
-            .viewAligned(limitBehavior: .alwaysByOne, anchor: .leading)
-        )
-        .scrollIndicators(.hidden)
+        .frame(height: self.carouselHeight)
     }
 
-    private var cardColumnCount: Int {
-        self.dynamicTypeSize >= .accessibility1 ? 5 : 7
+    private var carouselHeight: CGFloat {
+        self.dynamicTypeSize.isAccessibilitySize ? 168 : 140
     }
 }
 
