@@ -5,15 +5,18 @@ import SwiftUI
 struct FoodRestaurantCard: View {
     let restaurant: Restaurant
     let mealPhotos: [RestaurantMealPhoto]
+    let onEdit: () -> Void
 
     @Environment(\.colorScheme) private var colorScheme
 
     init(
         restaurant: Restaurant,
-        mealPhotos: [RestaurantMealPhoto] = []
+        mealPhotos: [RestaurantMealPhoto] = [],
+        onEdit: @escaping () -> Void
     ) {
         self.restaurant = restaurant
         self.mealPhotos = mealPhotos
+        self.onEdit = onEdit
     }
 
     var body: some View {
@@ -25,13 +28,29 @@ struct FoodRestaurantCard: View {
                 )
             }
 
-            FoodRestaurantCardHeader(restaurant: self.restaurant)
+            FoodRestaurantCardHeader(restaurant: self.restaurant, onEdit: self.onEdit)
 
             if let score = self.restaurant.clampedScore {
                 FoodRestaurantScoreView(score: score)
             }
 
             FoodRestaurantCuisineRow(cuisine: self.restaurant.displayCuisine)
+
+            if let bestDish = self.restaurant.bestDish,
+               !bestDish.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            {
+                HStack(spacing: SpacingTokens.xxSmall) {
+                    Image(systemName: "star.fill")
+                        .font(.caption2)
+                        .foregroundStyle(AppColors.gold)
+
+                    Text("Best dish: \(bestDish)")
+                        .font(TypographyTokens.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+            }
 
             if let notes = self.restaurant.notes,
                !notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -42,6 +61,8 @@ struct FoodRestaurantCard: View {
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
             }
+
+            FoodRestaurantLinksRow(restaurant: self.restaurant)
         }
         .padding(SpacingTokens.small)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -84,21 +105,35 @@ struct FoodRestaurantCard: View {
 
 private struct FoodRestaurantCardHeader: View {
     let restaurant: Restaurant
+    let onEdit: () -> Void
 
     var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .firstTextBaseline, spacing: SpacingTokens.small) {
-                FoodRestaurantTitleText(name: self.restaurant.name)
+        HStack(alignment: .top, spacing: SpacingTokens.xSmall) {
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .firstTextBaseline, spacing: SpacingTokens.small) {
+                    FoodRestaurantTitleText(name: self.restaurant.name)
 
-                Spacer(minLength: SpacingTokens.xSmall)
+                    Spacer(minLength: SpacingTokens.xSmall)
 
-                FoodRestaurantStatusBadge(status: self.restaurant.status)
+                    FoodRestaurantStatusBadge(status: self.restaurant.status)
+                }
+
+                VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
+                    FoodRestaurantTitleText(name: self.restaurant.name)
+                    FoodRestaurantStatusBadge(status: self.restaurant.status)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
-            VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-                FoodRestaurantTitleText(name: self.restaurant.name)
-                FoodRestaurantStatusBadge(status: self.restaurant.status)
+            Button {
+                self.onEdit()
+            } label: {
+                Image(systemName: "pencil.circle.fill")
+                    .font(.title3)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(.secondary)
             }
+            .accessibilityLabel("Edit restaurant")
         }
     }
 }
@@ -268,6 +303,44 @@ private struct FoodRestaurantCuisineRow: View {
                 .foregroundStyle(.secondary)
                 .italic()
                 .lineLimit(1)
+        }
+    }
+}
+
+// MARK: - FoodRestaurantLinksRow
+
+private struct FoodRestaurantLinksRow: View {
+    let restaurant: Restaurant
+
+    var body: some View {
+        let hasLocation = self.restaurant.locationURL != nil
+        let hasMenu = self.restaurant.menuURL != nil
+
+        if hasLocation || hasMenu {
+            HStack(spacing: SpacingTokens.small) {
+                if let locationURL = self.restaurant.locationURL {
+                    Link(destination: locationURL) {
+                        Label("Location", systemImage: "map.fill")
+                            .font(TypographyTokens.caption)
+                            .bold()
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(AppColors.coral)
+                }
+
+                if let menuURL = self.restaurant.menuURL {
+                    Link(destination: menuURL) {
+                        Label("Menu", systemImage: "menucard.fill")
+                            .font(TypographyTokens.caption)
+                            .bold()
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(AppColors.coral)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(.top, SpacingTokens.xxSmall)
         }
     }
 }

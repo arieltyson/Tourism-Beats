@@ -85,12 +85,12 @@ final class Restaurant {
 
     var locationURL: URL? {
         guard let locationURLString else { return nil }
-        return URL(string: locationURLString)
+        return URL(string: locationURLString, encodingInvalidCharacters: true)
     }
 
     var menuURL: URL? {
         guard let menuURLString else { return nil }
-        return URL(string: menuURLString)
+        return URL(string: menuURLString, encodingInvalidCharacters: true)
     }
 
     /// Clamped score guaranteed to be within 0…10 range.

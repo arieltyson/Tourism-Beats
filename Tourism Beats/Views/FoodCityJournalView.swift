@@ -29,15 +29,11 @@ struct FoodCityJournalView: View {
                     FoodCityJournalEmptyState(group: self.group)
                 } else {
                     ForEach(self.cityRestaurants) { restaurant in
-                        Button {
-                            self.onEdit(restaurant)
-                        } label: {
-                            FoodRestaurantCard(
-                                restaurant: restaurant,
-                                mealPhotos: restaurant.sortedMealPhotos
-                            )
-                        }
-                        .buttonStyle(.plain)
+                        FoodRestaurantCard(
+                            restaurant: restaurant,
+                            mealPhotos: restaurant.sortedMealPhotos,
+                            onEdit: { self.onEdit(restaurant) }
+                        )
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button("Delete", systemImage: "trash", role: .destructive) {
                                 self.onDelete(restaurant)
