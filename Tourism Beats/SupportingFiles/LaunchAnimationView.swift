@@ -7,6 +7,9 @@ import SwiftUI
 /// The sequence completes in under one second — long enough to feel
 /// intentional, short enough to respect the user's time.
 struct LaunchAnimationView: View {
+    @ScaledMetric(relativeTo: .largeTitle) private var brandMarkSize: CGFloat = 96
+    @ScaledMetric(relativeTo: .body) private var ringLineWidth: CGFloat = 5
+
     @State private var ringScale: CGFloat = 0.7
     @State private var ringOpacity: Double = 0
     @State private var iconOpacity: Double = 0
@@ -20,39 +23,47 @@ struct LaunchAnimationView: View {
 
     var body: some View {
         ZStack {
-            // Gradient background matching the app's warm palette.
+            // Gradient background aligned with the app's night-mode shell.
             AppGradients.launch
                 .ignoresSafeArea()
 
-            VStack(spacing: 20) {
+            VStack(spacing: SpacingTokens.large) {
                 ZStack {
                     // Animated progress ring.
                     Circle()
                         .stroke(
                             AppGradients.launchRing,
-                            style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                            style: StrokeStyle(
+                                lineWidth: self.ringLineWidth,
+                                lineCap: .round
+                            )
                         )
-                        .frame(width: 80, height: 80)
+                        .frame(
+                            width: self.brandMarkSize,
+                            height: self.brandMarkSize
+                        )
                         .scaleEffect(self.ringScale)
                         .opacity(self.ringOpacity)
 
                     // Globe icon.
                     Image(systemName: "globe.europe.africa")
-                        .font(.largeTitle)
-                        .foregroundStyle(.white)
+                        .font(.system(.title, design: .rounded).weight(.semibold))
+                        .foregroundStyle(AppColors.onImagePrimary)
                         .opacity(self.iconOpacity)
                 }
 
-                VStack(spacing: 6) {
+                VStack(spacing: SpacingTokens.xSmall) {
                     Text("Tourism Beats")
-                        .font(.system(.title3, design: .rounded))
-                        .bold()
-                        .foregroundStyle(.white)
+                        .font(TypographyTokens.heroTitle.weight(.bold))
+                        .foregroundStyle(AppColors.onImagePrimary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
                         .opacity(self.titleOpacity)
 
                     Text("an immersive tourist experience")
-                        .font(.system(.caption, design: .rounded))
-                        .foregroundStyle(.white.opacity(0.8))
+                        .font(TypographyTokens.body)
+                        .foregroundStyle(AppColors.onImageSecondary)
+                        .multilineTextAlignment(.center)
                         .opacity(self.subtitleOpacity)
                 }
             }

@@ -9,20 +9,24 @@ import SwiftUI
 enum AppGradients {
     // MARK: - Launch
 
-    /// Diagonal warm gradient used as the launch animation backdrop.
+    /// Deep-space gradient used as the launch animation backdrop.
     static let launch = LinearGradient(
-        colors: [AppColors.coral, AppColors.magenta, AppColors.violet],
+        colors: [
+            Color(red: 0.03, green: 0.05, blue: 0.12),
+            Color(red: 0.07, green: 0.12, blue: 0.23),
+            Color(red: 0.10, green: 0.19, blue: 0.31)
+        ],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
 
-    /// Angular ring gradient for the launch progress indicator.
+    /// Cool luminous ring gradient for the launch progress indicator.
     static let launchRing = AngularGradient(
         colors: [
-            .white.opacity(0.9),
-            AppColors.gold,
-            AppColors.magenta,
-            .white.opacity(0.9)
+            AppColors.onImagePrimary.opacity(0.92),
+            AppColors.info,
+            AppColors.violet.opacity(0.78),
+            AppColors.onImagePrimary.opacity(0.92)
         ],
         center: .center
     )
