@@ -5,8 +5,6 @@ import SwiftUI
 enum AppTab: Hashable {
     case home, search, food, trips, settings
 
-    static let primaryTabs: [AppTab] = [.home, .search, .food, .trips]
-
     var title: String {
         switch self {
         case .home: "Home"
