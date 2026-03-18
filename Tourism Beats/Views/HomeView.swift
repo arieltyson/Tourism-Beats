@@ -33,7 +33,18 @@ struct HomeView: View {
                    !self.viewModel.featuredCities.isEmpty
                 {
                     TimelineView(.periodic(from: .now, by: 60)) { _ in
-                        self.featuredCardsLayout
+                        HomeFeaturedCitiesCarousel(
+                            featuredCities: self.viewModel.featuredCities,
+                            scheme: self.scheme,
+                            horizontalPadding: self.horizontalPadding,
+                            localTime: { city in
+                                self.viewModel.localTime(for: city)
+                            },
+                            onSelectCity: { city in
+                                self.haptic.fire(.citySelect)
+                                self.onCitySelected(city)
+                            }
+                        )
                     }
                 }
 
@@ -67,38 +78,61 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Featured Cards Layout
-
-    private var featuredCardsLayout: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 12) {
-                ForEach(self.viewModel.featuredCities) { city in
-                    DiscoveryCityCard(
-                        city: city,
-                        localTime: self.viewModel.localTime(for: city),
-                        scheme: self.scheme
-                    ) {
-                        self.haptic.fire(.citySelect)
-                        self.onCitySelected(city)
-                    }
-                    .frame(width: self.cardWidth)
-                }
-            }
-            .scrollTargetLayout()
-            .padding(.horizontal, self.horizontalPadding)
-        }
-        .scrollTargetBehavior(.viewAligned)
-        .scrollIndicators(.hidden)
-    }
-
-    private var cardWidth: CGFloat {
-        self.typeSize >= .accessibility1 ? 240 : 160
-    }
-
     // MARK: - Layout Constants
 
     private var horizontalPadding: CGFloat {
         self.typeSize >= .accessibility1 ? 20 : 24
+    }
+}
+
+// MARK: - HomeFeaturedCitiesCarousel
+
+private struct HomeFeaturedCitiesCarousel: View {
+    let featuredCities: [CityModel]
+    let scheme: ColorScheme
+    let horizontalPadding: CGFloat
+    let localTime: (CityModel) -> String
+    let onSelectCity: (CityModel) -> Void
+
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private static let cardSpacing = SpacingTokens.small
+    private static let cardColumnSpan = 3
+
+    var body: some View {
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: Self.cardSpacing) {
+                ForEach(self.featuredCities) { city in
+                    DiscoveryCityCard(
+                        city: city,
+                        localTime: self.localTime(city),
+                        scheme: self.scheme
+                    ) {
+                        self.onSelectCity(city)
+                    }
+                    .containerRelativeFrame(
+                        .horizontal,
+                        count: self.cardColumnCount,
+                        span: Self.cardColumnSpan,
+                        spacing: Self.cardSpacing
+                    )
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .contentMargins(
+            .horizontal,
+            self.horizontalPadding,
+            for: .scrollContent
+        )
+        .scrollTargetBehavior(
+            .viewAligned(limitBehavior: .alwaysByOne, anchor: .leading)
+        )
+        .scrollIndicators(.hidden)
+    }
+
+    private var cardColumnCount: Int {
+        self.dynamicTypeSize >= .accessibility1 ? 5 : 7
     }
 }
 
