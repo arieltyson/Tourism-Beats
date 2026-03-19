@@ -1,4 +1,5 @@
 import Foundation
+import MapKit
 import OSLog
 
 // MARK: - CityRestaurantService
@@ -81,6 +82,40 @@ actor CityRestaurantService: CityRestaurantProviding {
 
 extension CityRestaurantService {
     private func fetchRestaurants(for city: CityModel) async throws -> [CityRestaurant] {
+        let mapKitResults = await Self.mapKitSearch(for: city)
+
+        var overpassCandidates: [RestaurantModels.OverpassRestaurant] = []
+        do {
+            overpassCandidates = try await self.fetchOverpassCandidates(for: city)
+        } catch {
+            self.logger.info(
+                "Overpass enrichment unavailable: \(error.localizedDescription, privacy: .public)"
+            )
+        }
+
+        let candidates: [CityRestaurantCandidate]
+
+        if !mapKitResults.isEmpty {
+            candidates = Self.mergeResults(
+                mapKit: mapKitResults,
+                overpass: overpassCandidates,
+                cityName: city.name
+            )
+        } else if !overpassCandidates.isEmpty {
+            self.logger.info(
+                "MapKit unavailable, falling back to Overpass for \(city.name, privacy: .public)"
+            )
+            candidates = overpassCandidates.map(Self.candidate(from:))
+        } else {
+            throw RestaurantModels.ServiceError.invalidResponse
+        }
+
+        return CityRestaurantRanking.topRestaurants(from: candidates, for: city, limit: 6)
+    }
+
+    private func fetchOverpassCandidates(
+        for city: CityModel
+    ) async throws -> [RestaurantModels.OverpassRestaurant] {
         let searchRadii = [8_000, 14_000]
         var candidates: [RestaurantModels.OverpassRestaurant] = []
 
@@ -97,8 +132,139 @@ extension CityRestaurantService {
             }
         }
 
-        let rankedCandidates = candidates.map(Self.candidate(from:))
-        return CityRestaurantRanking.topRestaurants(from: rankedCandidates, for: city, limit: 6)
+        return candidates
+    }
+}
+
+// MARK: - MapKit Search
+
+extension CityRestaurantService {
+    @MainActor
+    private static func mapKitSearch(
+        for city: CityModel
+    ) async -> [RestaurantModels.MapKitRestaurantResult] {
+        do {
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = "restaurants"
+            request.region = MKCoordinateRegion(
+                center: city.coordinate,
+                latitudinalMeters: 10_000,
+                longitudinalMeters: 10_000
+            )
+            request.resultTypes = .pointOfInterest
+            request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.restaurant])
+
+            let search = MKLocalSearch(request: request)
+            let response = try await search.start()
+
+            return response.mapItems.enumerated().compactMap { index, item in
+                guard let name = item.name, !name.isEmpty else { return nil }
+
+                let coordinate = item.location.coordinate
+                return RestaurantModels.MapKitRestaurantResult(
+                    name: name,
+                    phoneNumber: item.phoneNumber,
+                    websiteURL: item.url,
+                    address: item.address?.shortAddress ?? item.address?.fullAddress,
+                    latitude: coordinate.latitude,
+                    longitude: coordinate.longitude,
+                    popularityRank: index + 1
+                )
+            }
+        } catch {
+            return []
+        }
+    }
+
+    private static func mergeResults(
+        mapKit: [RestaurantModels.MapKitRestaurantResult],
+        overpass: [RestaurantModels.OverpassRestaurant],
+        cityName: String
+    ) -> [CityRestaurantCandidate] {
+        let normalizedCityName = cityName.folding(
+            options: [.caseInsensitive, .diacriticInsensitive],
+            locale: .current
+        )
+
+        return mapKit.compactMap { mapItem in
+            let normalizedName = mapItem.name.folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
+
+            guard normalizedName != normalizedCityName,
+                  !self.excludedKeywords.contains(where: {
+                    normalizedName.localizedStandardContains($0)
+                  })
+            else {
+                return nil
+            }
+
+            let overpassMatch = self.findOverpassMatch(for: mapItem, in: overpass)
+
+            let coordinateKey =
+                "\(Int((mapItem.latitude * 10_000).rounded()))_\(Int((mapItem.longitude * 10_000).rounded()))"
+
+            return CityRestaurantCandidate(
+                id: "mapkit-\(coordinateKey)",
+                name: mapItem.name,
+                cuisine: overpassMatch?.cuisine,
+                address: mapItem.address ?? overpassMatch?.address,
+                hours: overpassMatch?.openingHours,
+                phoneNumber: mapItem.phoneNumber ?? overpassMatch?.phoneNumber,
+                websiteURL: mapItem.websiteURL ?? overpassMatch?.website,
+                sourceURL: self.sourceURL(
+                    elementType: overpassMatch?.elementType,
+                    elementIdentifier: overpassMatch?.elementIdentifier
+                ),
+                sourceName: overpassMatch != nil ? "Apple Maps + OpenStreetMap" : "Apple Maps",
+                latitude: mapItem.latitude,
+                longitude: mapItem.longitude,
+                wheelchairAccessibility: overpassMatch?.wheelchairAccessibility ?? .unknown,
+                offersVegetarianOptions: overpassMatch?.offersVegetarianOptions ?? false,
+                offersVeganOptions: overpassMatch?.offersVeganOptions ?? false,
+                hasOutdoorSeating: overpassMatch?.hasOutdoorSeating ?? false,
+                acceptsReservations: overpassMatch?.acceptsReservations ?? false,
+                isNotable: overpassMatch?.isNotable ?? false,
+                brand: overpassMatch?.brand,
+                popularityRank: mapItem.popularityRank
+            )
+        }
+    }
+
+    private static func findOverpassMatch(
+        for mapKitResult: RestaurantModels.MapKitRestaurantResult,
+        in overpassResults: [RestaurantModels.OverpassRestaurant]
+    ) -> RestaurantModels.OverpassRestaurant? {
+        let normalizedMapName = mapKitResult.name.folding(
+            options: [.caseInsensitive, .diacriticInsensitive],
+            locale: .current
+        )
+
+        return overpassResults.first { overpassItem in
+            let normalizedOverpassName = overpassItem.name.folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
+
+            let nameMatches = normalizedMapName == normalizedOverpassName
+                || normalizedMapName.localizedStandardContains(normalizedOverpassName)
+                || normalizedOverpassName.localizedStandardContains(normalizedMapName)
+
+            guard nameMatches else { return false }
+
+            if let overpassLat = overpassItem.latitude,
+               let overpassLon = overpassItem.longitude
+            {
+                let distance = CLLocation(
+                    latitude: mapKitResult.latitude,
+                    longitude: mapKitResult.longitude
+                ).distance(from: CLLocation(latitude: overpassLat, longitude: overpassLon))
+                return distance < 200
+            }
+
+            return true
+        }
     }
 }
 
@@ -247,7 +413,8 @@ extension CityRestaurantService {
             hasOutdoorSeating: restaurant.hasOutdoorSeating,
             acceptsReservations: restaurant.acceptsReservations,
             isNotable: restaurant.isNotable,
-            brand: restaurant.brand
+            brand: restaurant.brand,
+            popularityRank: nil
         )
     }
 

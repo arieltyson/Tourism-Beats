@@ -75,7 +75,7 @@ extension CityRestaurantDetailView {
 
         var body: some View {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                Text("Why It Ranked Well")
+                Text("Why It's Recommended")
                     .font(TypographyTokens.sectionHeader)
                     .bold()
                     .foregroundStyle(AppColors.label)

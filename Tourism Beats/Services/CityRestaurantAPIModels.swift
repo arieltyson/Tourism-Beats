@@ -101,6 +101,16 @@ enum CityRestaurantAPIModels {
         }
     }
 
+    struct MapKitRestaurantResult: Sendable {
+        let name: String
+        let phoneNumber: String?
+        let websiteURL: URL?
+        let address: String?
+        let latitude: Double
+        let longitude: Double
+        let popularityRank: Int
+    }
+
     enum ServiceError: Error {
         case invalidResponse
         case invalidRequest

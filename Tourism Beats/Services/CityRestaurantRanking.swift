@@ -22,6 +22,7 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     let acceptsReservations: Bool
     let isNotable: Bool
     let brand: String?
+    let popularityRank: Int?
 }
 
 // MARK: - CityRestaurantRanking
@@ -30,50 +31,28 @@ enum CityRestaurantRanking {
     struct ScoredCandidate: Sendable {
         let candidate: CityRestaurantCandidate
         let baseScore: Int
-        let metadataCount: Int
         let topSignals: [Signal]
         let distanceFromCenter: CLLocationDistance?
         let primaryCuisineKey: String?
     }
 
     enum Signal: Sendable {
+        case popularChoice
         case notable
-        case website
-        case hours
+        case establishedPresence
         case cuisine
-        case address
-        case phone
         case centralLocation
-        case wheelchairAccessible
-        case vegetarianOptions
-        case veganOptions
-        case outdoorSeating
-        case reservations
 
         var points: Int {
             switch self {
+            case .popularChoice:
+                15
             case .notable:
-                8
-            case .website:
-                6
-            case .hours:
-                5
+                10
+            case .establishedPresence:
+                4
             case .cuisine:
-                4
-            case .wheelchairAccessible:
-                4
-            case .address:
                 2
-            case .phone:
-                2
-            case .vegetarianOptions:
-                2
-            case .veganOptions:
-                2
-            case .reservations:
-                2
-            case .outdoorSeating:
-                1
             case .centralLocation:
                 1
             }
@@ -81,59 +60,31 @@ enum CityRestaurantRanking {
 
         var badgeText: String {
             switch self {
+            case .popularChoice:
+                "Popular"
             case .notable:
                 "Notable"
-            case .website:
-                "Website"
-            case .hours:
-                "Hours"
+            case .establishedPresence:
+                "Established"
             case .cuisine:
                 "Cuisine"
-            case .address:
-                "Address"
-            case .phone:
-                "Phone"
             case .centralLocation:
                 "Central"
-            case .wheelchairAccessible:
-                "Accessible"
-            case .vegetarianOptions:
-                "Vegetarian"
-            case .veganOptions:
-                "Vegan"
-            case .outdoorSeating:
-                "Outdoor"
-            case .reservations:
-                "Reservations"
             }
         }
 
         var summaryFragment: String {
             switch self {
+            case .popularChoice:
+                "high popularity among visitors and locals"
             case .notable:
-                "strong local notability signals"
-            case .website:
-                "a direct website"
-            case .hours:
-                "listed opening hours"
+                "strong recognition and acclaim"
+            case .establishedPresence:
+                "an established dining presence"
             case .cuisine:
-                "clear cuisine tags"
-            case .address:
-                "a mapped address"
-            case .phone:
-                "a direct phone number"
+                "a well-defined culinary identity"
             case .centralLocation:
                 "a convenient central location"
-            case .wheelchairAccessible:
-                "wheelchair accessibility details"
-            case .vegetarianOptions:
-                "vegetarian options"
-            case .veganOptions:
-                "vegan options"
-            case .outdoorSeating:
-                "outdoor seating"
-            case .reservations:
-                "reservation details"
             }
         }
     }
@@ -150,8 +101,10 @@ enum CityRestaurantRanking {
                     return lhs.baseScore > rhs.baseScore
                 }
 
-                if lhs.metadataCount != rhs.metadataCount {
-                    return lhs.metadataCount > rhs.metadataCount
+                let lhsRank = lhs.candidate.popularityRank ?? .max
+                let rhsRank = rhs.candidate.popularityRank ?? .max
+                if lhsRank != rhsRank {
+                    return lhsRank < rhsRank
                 }
 
                 return (lhs.distanceFromCenter ?? .greatestFiniteMagnitude)
@@ -168,63 +121,34 @@ enum CityRestaurantRanking {
         var signals: [Signal] = []
         var score = 0
 
+        if let rank = candidate.popularityRank {
+            switch rank {
+            case 1 ... 5:
+                signals.append(.popularChoice)
+                score += 15
+            case 6 ... 10:
+                signals.append(.popularChoice)
+                score += 10
+            case 11 ... 20:
+                score += 6
+            default:
+                score += 3
+            }
+        }
+
         if candidate.isNotable {
             signals.append(.notable)
             score += Signal.notable.points
         }
 
         if candidate.websiteURL != nil {
-            signals.append(.website)
-            score += Signal.website.points
-        }
-
-        if candidate.hours?.isEmpty == false {
-            signals.append(.hours)
-            score += Signal.hours.points
+            signals.append(.establishedPresence)
+            score += Signal.establishedPresence.points
         }
 
         if candidate.cuisine?.isEmpty == false {
             signals.append(.cuisine)
             score += Signal.cuisine.points
-        }
-
-        if candidate.address?.isEmpty == false {
-            signals.append(.address)
-            score += Signal.address.points
-        }
-
-        if candidate.phoneNumber?.isEmpty == false {
-            signals.append(.phone)
-            score += Signal.phone.points
-        }
-
-        if candidate.wheelchairAccessibility == .yes {
-            signals.append(.wheelchairAccessible)
-            score += Signal.wheelchairAccessible.points
-        } else if candidate.wheelchairAccessibility == .limited {
-            score += 1
-        } else if candidate.wheelchairAccessibility == .no {
-            score -= 1
-        }
-
-        if candidate.offersVegetarianOptions {
-            signals.append(.vegetarianOptions)
-            score += Signal.vegetarianOptions.points
-        }
-
-        if candidate.offersVeganOptions {
-            signals.append(.veganOptions)
-            score += Signal.veganOptions.points
-        }
-
-        if candidate.hasOutdoorSeating {
-            signals.append(.outdoorSeating)
-            score += Signal.outdoorSeating.points
-        }
-
-        if candidate.acceptsReservations {
-            signals.append(.reservations)
-            score += Signal.reservations.points
         }
 
         let distanceFromCenter = self.distance(
@@ -236,25 +160,17 @@ enum CityRestaurantRanking {
         if let distanceFromCenter {
             if distanceFromCenter < 1_500 {
                 signals.append(.centralLocation)
-                score += 4
+                score += 3
             } else if distanceFromCenter < 4_000 {
                 signals.append(.centralLocation)
-                score += 3
+                score += 2
             } else if distanceFromCenter < 8_000 {
-                signals.append(.centralLocation)
                 score += 1
             }
         }
 
         if candidate.brand?.isEmpty == false {
-            score -= 2
-        }
-
-        if candidate.cuisine == nil,
-           candidate.hours == nil,
-           candidate.websiteURL == nil
-        {
-            score -= 2
+            score -= 4
         }
 
         if self.isGenericName(candidate.name) {
@@ -264,7 +180,6 @@ enum CityRestaurantRanking {
         return ScoredCandidate(
             candidate: candidate,
             baseScore: score,
-            metadataCount: self.metadataCount(for: candidate),
             topSignals: signals.sorted { lhs, rhs in
                 if lhs.points != rhs.points { return lhs.points > rhs.points }
                 return lhs.badgeText < rhs.badgeText
@@ -282,18 +197,15 @@ enum CityRestaurantRanking {
         var remaining = scored
         var selected: [ScoredCandidate] = []
         var seenCuisineKeys: Set<String> = []
-        var representedSignals: Set<String> = []
 
         while selected.count < limit, !remaining.isEmpty {
             let bestIndex = remaining.indices.max { lhs, rhs in
                 self.selectionScore(
                     for: remaining[lhs],
-                    seenCuisineKeys: seenCuisineKeys,
-                    representedSignals: representedSignals
+                    seenCuisineKeys: seenCuisineKeys
                 ) < self.selectionScore(
                     for: remaining[rhs],
-                    seenCuisineKeys: seenCuisineKeys,
-                    representedSignals: representedSignals
+                    seenCuisineKeys: seenCuisineKeys
                 )
             }
 
@@ -304,8 +216,6 @@ enum CityRestaurantRanking {
             if let cuisineKey = bestCandidate.primaryCuisineKey {
                 seenCuisineKeys.insert(cuisineKey)
             }
-
-            representedSignals.formUnion(bestCandidate.topSignals.map(\.badgeText))
         }
 
         return selected.map { self.mapToRestaurant($0, city: city) }
@@ -313,20 +223,12 @@ enum CityRestaurantRanking {
 
     private static func selectionScore(
         for candidate: ScoredCandidate,
-        seenCuisineKeys: Set<String>,
-        representedSignals: Set<String>
+        seenCuisineKeys: Set<String>
     ) -> Int {
         var adjustedScore = candidate.baseScore
 
         if let primaryCuisineKey = candidate.primaryCuisineKey {
-            adjustedScore += seenCuisineKeys.contains(primaryCuisineKey) ? -1 : 3
-        }
-
-        let diversitySignals = ["Accessible", "Vegetarian", "Vegan", "Outdoor"]
-        for signal in diversitySignals where candidate.topSignals.map(\.badgeText).contains(signal) {
-            if !representedSignals.contains(signal) {
-                adjustedScore += 1
-            }
+            adjustedScore += seenCuisineKeys.contains(primaryCuisineKey) ? -2 : 3
         }
 
         return adjustedScore
@@ -371,14 +273,14 @@ enum CityRestaurantRanking {
         signals: [Signal]
     ) -> String {
         let cuisineLine = if let cuisine = candidate.cuisine {
-            "\(candidate.name) is a mapped \(cuisine.lowercased()) restaurant in \(city.name)."
+            "\(candidate.name) is a popular \(cuisine.lowercased()) restaurant in \(city.name)."
         } else {
-            "\(candidate.name) is a mapped restaurant in \(city.name)."
+            "\(candidate.name) is a popular restaurant in \(city.name)."
         }
 
         let reasonFragments = signals.map(\.summaryFragment)
         let recommendationLine = if reasonFragments.isEmpty {
-            "It stands out for the completeness of its local listing."
+            "It stands out for its strong local presence."
         } else {
             "It stands out for \(self.joinedList(reasonFragments))."
         }
@@ -386,27 +288,11 @@ enum CityRestaurantRanking {
         return "\(cuisineLine) \(recommendationLine)"
     }
 
-    private static func metadataCount(for candidate: CityRestaurantCandidate) -> Int {
-        [
-            candidate.cuisine != nil,
-            candidate.address != nil,
-            candidate.hours != nil,
-            candidate.phoneNumber != nil,
-            candidate.websiteURL != nil,
-            candidate.wheelchairAccessibility == .yes || candidate.wheelchairAccessibility == .limited,
-            candidate.offersVegetarianOptions,
-            candidate.offersVeganOptions,
-            candidate.hasOutdoorSeating,
-            candidate.acceptsReservations
-        ]
-        .count(where: { $0 })
-    }
-
     private static func primaryCuisineKey(for cuisine: String?) -> String? {
         guard let cuisine else { return nil }
 
         let tokens = cuisine
-            .components(separatedBy: "•")
+            .components(separatedBy: "\u{2022}")
             .map { token in
                 token
                     .trimmingCharacters(in: .whitespacesAndNewlines)
