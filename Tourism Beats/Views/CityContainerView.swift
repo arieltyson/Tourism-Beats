@@ -40,6 +40,10 @@ struct CityContainerView: View {
                 CityActivitiesView(city: self.city)
                     .containerRelativeFrame([.horizontal, .vertical])
                     .offset(y: self.offset(for: 3))
+
+                CityRestaurantsView(city: self.city)
+                    .containerRelativeFrame([.horizontal, .vertical])
+                    .offset(y: self.offset(for: 4))
             }
             .clipped()
             .contentShape(.rect)
@@ -65,6 +69,9 @@ struct CityContainerView: View {
             }
             .navigationDestination(for: CityActivityRoute.self) { route in
                 CityActivityDetailView(city: route.city, activity: route.activity)
+            }
+            .navigationDestination(for: CityRestaurantRoute.self) { route in
+                CityRestaurantDetailView(city: route.city, restaurant: route.restaurant)
             }
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
@@ -164,7 +171,7 @@ struct CityContainerView: View {
     private var backgroundForCurrentPage: some View {
         let all = GradientProvider.gradients
         let base = UInt(bitPattern: self.city.id.hashValue)
-        let pageSeedValues: [UInt] = [31, 47, 59, 71]
+        let pageSeedValues: [UInt] = [31, 47, 59, 71, 83]
         let multiplier = pageSeedValues[min(self.pageIndex, pageSeedValues.count - 1)]
         let seed = base &* multiplier
         let idx = Int(seed % UInt(all.count))

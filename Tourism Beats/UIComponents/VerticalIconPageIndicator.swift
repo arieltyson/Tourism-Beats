@@ -13,7 +13,8 @@ struct PageDescriptor: Identifiable, Hashable, Sendable {
         PageDescriptor(id: 0, icon: "map", label: "City"),
         PageDescriptor(id: 1, icon: "music.note", label: "Music"),
         PageDescriptor(id: 2, icon: "shield", label: "Advisories"),
-        PageDescriptor(id: 3, icon: "figure.walk", label: "Activities")
+        PageDescriptor(id: 3, icon: "figure.walk", label: "Activities"),
+        PageDescriptor(id: 4, icon: "fork.knife", label: "Restaurants")
     ]
 }
 
