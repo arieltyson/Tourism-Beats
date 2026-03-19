@@ -236,25 +236,29 @@ extension CityRestaurantsView {
         @Environment(\.colorScheme) private var scheme
 
         var body: some View {
-            ZStack(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .fill(Self.backgroundGradient(for: self.restaurant).opacity(0.22))
-                    }
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
-                                lineWidth: 1
-                            )
-                    }
-                    .shadow(
-                        color: AppColors.glassShadow(for: self.scheme),
-                        radius: 16,
-                        y: 10
+            ZStack {
+                if let latitude = self.restaurant.latitude,
+                   let longitude = self.restaurant.longitude
+                {
+                    RestaurantMapSnapshot(
+                        latitude: latitude,
+                        longitude: longitude,
+                        snapshotSize: CGSize(width: 180, height: 135)
                     )
+                } else {
+                    Self.backgroundGradient(for: self.restaurant)
+                }
+
+                LinearGradient(
+                    stops: [
+                        .init(color: AppColors.imageScrimMid, location: 0.0),
+                        .init(color: .clear, location: 0.35),
+                        .init(color: .clear, location: 0.5),
+                        .init(color: AppColors.imageScrimBottom, location: 1.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
 
                 VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
                     HStack(alignment: .top, spacing: SpacingTokens.xSmall) {
@@ -269,32 +273,29 @@ extension CityRestaurantsView {
 
                     Spacer(minLength: 0)
 
-                    HStack(spacing: SpacingTokens.small) {
-                        Circle()
-                            .fill(AppColors.imageBadgeFill)
-                            .frame(width: 42, height: 42)
-                            .overlay {
-                                Image(systemName: "fork.knife")
-                                    .font(.headline)
-                                    .foregroundStyle(AppColors.onImagePrimary)
-                            }
-
-                        Spacer(minLength: 0)
-                    }
-
-                    Spacer(minLength: 0)
-
-                    VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                        Text(self.restaurant.name)
-                            .font(TypographyTokens.cardLabel)
-                            .bold()
-                            .foregroundStyle(AppColors.label)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(2)
-                    }
+                    Text(self.restaurant.name)
+                        .font(TypographyTokens.cardLabel)
+                        .bold()
+                        .foregroundStyle(AppColors.onImagePrimary)
+                        .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
                 }
                 .padding(SpacingTokens.medium)
             }
+            .clipShape(.rect(cornerRadius: 24, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .strokeBorder(
+                        AppColors.glassBorder(for: self.scheme),
+                        lineWidth: 1
+                    )
+            }
+            .shadow(
+                color: AppColors.glassShadow(for: self.scheme),
+                radius: 16,
+                y: 10
+            )
             .aspectRatio(4 / 3, contentMode: .fit)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
@@ -346,14 +347,11 @@ extension CityRestaurantsView.RestaurantCard {
         var body: some View {
             Text(self.cuisine)
                 .font(TypographyTokens.footnote)
-                .foregroundStyle(AppColors.label)
+                .foregroundStyle(AppColors.onImagePrimary)
                 .lineLimit(1)
                 .padding(.horizontal, SpacingTokens.xSmall)
                 .padding(.vertical, SpacingTokens.xxSmall)
-                .background(
-                    AppColors.surfaceSecondary.opacity(0.92),
-                    in: Capsule()
-                )
+                .background(AppColors.imageBadgeFill, in: Capsule())
         }
     }
 }

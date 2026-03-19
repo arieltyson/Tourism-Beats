@@ -79,7 +79,7 @@ struct CityRestaurantRankingTests {
         #expect(!rankedRestaurants.map(\.name).contains("Canal Pasta"))
     }
 
-    @Test func mapsURLUsesCoordinatesWhenAvailable() throws {
+    @Test func mapsURLUsesGoogleMapsWithCoordinates() throws {
         let restaurant = CityRestaurant(
             id: "maps",
             name: "Signal Kitchen",
@@ -112,9 +112,9 @@ struct CityRestaurantRankingTests {
             }
         )
 
-        #expect(components.host == "maps.apple.com")
-        #expect(queryItems["q"] == "Signal Kitchen")
-        #expect(queryItems["ll"] == "49.2827,-123.1207")
+        #expect(components.host == "www.google.com")
+        #expect(queryItems["api"] == "1")
+        #expect(queryItems["query"] == "Signal Kitchen, 4 Main Street, Vancouver")
     }
 
     private var city: CityModel {

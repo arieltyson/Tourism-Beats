@@ -243,7 +243,7 @@ extension CityRestaurantDetailView {
                     if let mapsURL = self.restaurant.mapsURL {
                         Link(destination: mapsURL) {
                             Self.LinkLabel(
-                                title: "Open in Maps",
+                                title: "Open in Google Maps",
                                 subtitle: self.restaurant.address ?? self.restaurant.name,
                                 systemImage: "map.fill"
                             )
@@ -289,8 +289,16 @@ extension CityRestaurantDetailView.Hero {
         let restaurant: CityRestaurant
 
         var body: some View {
-            Rectangle()
-                .fill(
+            ZStack {
+                if let latitude = self.restaurant.latitude,
+                   let longitude = self.restaurant.longitude
+                {
+                    RestaurantMapSnapshot(
+                        latitude: latitude,
+                        longitude: longitude,
+                        snapshotSize: CGSize(width: 360, height: 270)
+                    )
+                } else {
                     LinearGradient(
                         colors: [
                             AppColors.coral.opacity(0.78),
@@ -300,24 +308,20 @@ extension CityRestaurantDetailView.Hero {
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
-                )
-                .overlay(alignment: .topLeading) {
-                    Text(self.restaurant.rankingHighlights.first ?? "Top Pick")
-                        .font(TypographyTokens.footnote)
-                        .bold()
-                        .foregroundStyle(AppColors.onImagePrimary)
-                        .padding(.horizontal, SpacingTokens.small)
-                        .padding(.vertical, SpacingTokens.xxSmall)
-                        .background(AppColors.imageBadgeFill, in: Capsule())
-                        .padding(SpacingTokens.medium)
                 }
-                .overlay {
-                    Image(systemName: "fork.knife.circle.fill")
-                        .font(.system(size: 72, weight: .semibold, design: .rounded))
-                        .foregroundStyle(AppColors.onImagePrimary.opacity(0.92))
-                }
-                .clipShape(.rect(cornerRadius: 20, style: .continuous))
-                .aspectRatio(4 / 3, contentMode: .fit)
+            }
+            .overlay(alignment: .topLeading) {
+                Text(self.restaurant.rankingHighlights.first ?? "Top Pick")
+                    .font(TypographyTokens.footnote)
+                    .bold()
+                    .foregroundStyle(AppColors.onImagePrimary)
+                    .padding(.horizontal, SpacingTokens.small)
+                    .padding(.vertical, SpacingTokens.xxSmall)
+                    .background(AppColors.imageBadgeFill, in: Capsule())
+                    .padding(SpacingTokens.medium)
+            }
+            .clipShape(.rect(cornerRadius: 20, style: .continuous))
+            .aspectRatio(4 / 3, contentMode: .fit)
         }
     }
 }

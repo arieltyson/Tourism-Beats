@@ -72,16 +72,6 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
     }
 
     var mapsURL: URL? {
-        var components = URLComponents(string: "https://maps.apple.com")
-
-        if let latitude = self.latitude, let longitude = self.longitude {
-            components?.queryItems = [
-                URLQueryItem(name: "ll", value: "\(latitude),\(longitude)"),
-                URLQueryItem(name: "q", value: self.name)
-            ]
-            return components?.url
-        }
-
         let query = [self.name, self.address]
             .compactMap { value in
                 guard let value else { return nil }
@@ -92,8 +82,10 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
 
         guard !query.isEmpty else { return nil }
 
+        var components = URLComponents(string: "https://www.google.com/maps/search/")
         components?.queryItems = [
-            URLQueryItem(name: "q", value: query)
+            URLQueryItem(name: "api", value: "1"),
+            URLQueryItem(name: "query", value: query)
         ]
         return components?.url
     }
