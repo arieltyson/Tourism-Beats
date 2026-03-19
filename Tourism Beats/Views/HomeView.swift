@@ -36,7 +36,6 @@ struct HomeView: View {
                         HomeFeaturedCitiesCarousel(
                             featuredCities: self.viewModel.featuredCities,
                             scheme: self.scheme,
-                            horizontalPadding: self.horizontalPadding,
                             localTime: { city in
                                 self.viewModel.localTime(for: city)
                             },
@@ -90,44 +89,128 @@ struct HomeView: View {
 private struct HomeFeaturedCitiesCarousel: View {
     let featuredCities: [CityModel]
     let scheme: ColorScheme
-    let horizontalPadding: CGFloat
     let localTime: (CityModel) -> String
     let onSelectCity: (CityModel) -> Void
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private static let cardSpacing: CGFloat = 10
+    @State private var ringPosition: CGFloat = 0
+    @State private var dragBasePosition: CGFloat = 0
+    @State private var isDragging = false
+
+    private static let cardWidth: CGFloat = 220
+    private static let peekSpacing: CGFloat = 130
+
+    private var cardHeight: CGFloat {
+        self.dynamicTypeSize.isAccessibilitySize ? 168 : 140
+    }
 
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: Self.cardSpacing) {
-                ForEach(self.featuredCities) { city in
-                    DiscoveryCityCard(
-                        city: city,
-                        localTime: self.localTime(city),
-                        scheme: self.scheme
-                    ) {
-                        self.onSelectCity(city)
-                    }
-                    .containerRelativeFrame(
-                        .horizontal,
-                        count: self.columnCount,
-                        span: Self.columnSpan,
-                        spacing: Self.cardSpacing
+        let count = self.featuredCities.count
+        let countF = CGFloat(count)
+
+        ZStack {
+            ForEach(
+                Array(self.featuredCities.enumerated()),
+                id: \.element.id
+            ) { index, city in
+                let fractional = Self.wrappedOffset(
+                    CGFloat(index) - self.ringPosition,
+                    count: countF
+                )
+
+                if abs(fractional) < 3.5 {
+                    self.positionedCard(
+                        city: city, fractionalOffset: fractional
                     )
                 }
             }
-            .scrollTargetLayout()
         }
-        .contentMargins(.horizontal, self.horizontalPadding, for: .scrollContent)
-        .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
-        .scrollIndicators(.hidden)
+        .frame(maxWidth: .infinity)
+        .frame(height: self.cardHeight + 16)
+        .contentShape(.rect)
+        .highPriorityGesture(self.ringDragGesture(count: countF))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Featured cities carousel")
     }
 
-    private static let columnSpan = 2
+    // MARK: - Card Positioning
 
-    private var columnCount: Int {
-        self.dynamicTypeSize >= .accessibility1 ? 3 : 5
+    @ViewBuilder
+    private func positionedCard(
+        city: CityModel,
+        fractionalOffset: CGFloat
+    ) -> some View {
+        let absOffset = abs(fractionalOffset)
+        let scale = max(0.65, 1.0 - absOffset * 0.12)
+        let xPosition = fractionalOffset * Self.peekSpacing
+        let yRotation = self.reduceMotion ? 0 : -fractionalOffset * 22
+        let cardOpacity = max(0.0, 1.0 - absOffset * 0.35)
+        let depth = 100.0 - absOffset
+
+        DiscoveryCityCard(
+            city: city,
+            localTime: self.localTime(city),
+            scheme: self.scheme
+        ) {
+            self.onSelectCity(city)
+        }
+        .frame(width: Self.cardWidth, height: self.cardHeight)
+        .scaleEffect(scale)
+        .offset(x: xPosition)
+        .rotation3DEffect(
+            .degrees(yRotation),
+            axis: (x: 0, y: 1, z: 0),
+            perspective: 0.4
+        )
+        .opacity(cardOpacity)
+        .zIndex(depth)
+        .allowsHitTesting(!self.isDragging && absOffset < 0.5)
+    }
+
+    // MARK: - Ring Math
+
+    private static func wrappedOffset(
+        _ offset: CGFloat,
+        count: CGFloat
+    ) -> CGFloat {
+        guard count > 0 else { return offset }
+        var wrapped = offset.truncatingRemainder(dividingBy: count)
+        if wrapped > count / 2 { wrapped -= count }
+        if wrapped < -count / 2 { wrapped += count }
+        return wrapped
+    }
+
+    // MARK: - Gesture
+
+    private func ringDragGesture(count _: CGFloat) -> some Gesture {
+        DragGesture(minimumDistance: 16)
+            .onChanged { value in
+                if !self.isDragging {
+                    self.isDragging = true
+                    self.dragBasePosition = self.ringPosition
+                }
+                self.ringPosition = self.dragBasePosition
+                    - value.translation.width / Self.cardWidth
+            }
+            .onEnded { value in
+                self.isDragging = false
+
+                let velocity = -(
+                    value.predictedEndTranslation.width
+                        - value.translation.width
+                ) / Self.cardWidth
+                let projected = self.ringPosition + velocity * 0.3
+                let snapped = projected.rounded()
+
+                withAnimation(
+                    .spring(response: 0.45, dampingFraction: 0.82)
+                ) {
+                    self.ringPosition = snapped
+                }
+                self.dragBasePosition = snapped
+            }
     }
 }
 
