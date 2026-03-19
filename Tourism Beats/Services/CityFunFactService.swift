@@ -32,7 +32,8 @@ actor CityFunFactService: CityFunFactProviding {
         let cacheURL = self.cacheURL(for: city)
 
         if let cached = self.cachedPayload(at: cacheURL),
-           cached.fetchedAt.addingTimeInterval(self.cacheLifetime) > Date.now
+           cached.fetchedAt.addingTimeInterval(self.cacheLifetime) > Date.now,
+           !cached.containsDisambiguation
         {
             return cached.cityFunFacts
         }
@@ -230,7 +231,9 @@ actor CityFunFactService: CityFunFactProviding {
             .joined(separator: " ")
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        guard !normalizedText.isEmpty else { return [] }
+        guard !normalizedText.isEmpty,
+              !Self.isDisambiguationPage(normalizedText)
+        else { return [] }
 
         let tokenizer = NLTokenizer(unit: .sentence)
         tokenizer.string = normalizedText
@@ -249,11 +252,15 @@ actor CityFunFactService: CityFunFactProviding {
             return results.count < 4
         }
 
-        if results.isEmpty {
-            results.append(Self.clampedSentence(normalizedText))
-        }
-
         return Self.uniquedFacts(results)
+    }
+
+    private static func isDisambiguationPage(_ text: String) -> Bool {
+        let lowered = text.lowercased()
+        return lowered.localizedStandardContains("may refer to")
+            || lowered.localizedStandardContains("can refer to")
+            || lowered.localizedStandardContains("most commonly refers to")
+            || lowered.localizedStandardContains("usually refers to")
     }
 
     private static func isFactCandidate(_ sentence: String) -> Bool {
@@ -261,6 +268,7 @@ actor CityFunFactService: CityFunFactProviding {
         let lowered = sentence.lowercased()
 
         if lowered.contains("may refer to") { return false }
+        if lowered.contains("can refer to") { return false }
         if lowered.contains("coordinates") { return false }
         if lowered.contains("listen") { return false }
 
@@ -341,6 +349,14 @@ private extension CityFunFactService {
                     sourceURL: self.sourceURL,
                     isFallback: false
                 )
+            }
+        }
+
+        var containsDisambiguation: Bool {
+            self.facts.contains { fact in
+                let lowered = fact.lowercased()
+                return lowered.localizedStandardContains("may refer to")
+                    || lowered.localizedStandardContains("can refer to")
             }
         }
     }
