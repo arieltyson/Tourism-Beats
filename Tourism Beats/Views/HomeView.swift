@@ -120,10 +120,7 @@ private struct HomeFeaturedCitiesCarousel: View {
             .scrollTargetLayout()
         }
         .contentMargins(.horizontal, self.horizontalPadding, for: .scrollContent)
-        .scrollClipDisabled()
-        .scrollTargetBehavior(
-            .viewAligned(limitBehavior: .alwaysByOne, anchor: .leading)
-        )
+        .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
         .scrollIndicators(.hidden)
     }
 
