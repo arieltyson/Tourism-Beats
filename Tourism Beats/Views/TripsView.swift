@@ -400,7 +400,7 @@ private struct TripOverviewCardBackground: View {
             .fill(.ultraThinMaterial)
             .overlay {
                 if let cityModel {
-                    CachedCityImage(url: cityModel.imageURL)
+                    CachedCityImage(url: cityModel.imageURL, fallbackCoordinate: cityModel.coordinate)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .clipped()
                 } else {

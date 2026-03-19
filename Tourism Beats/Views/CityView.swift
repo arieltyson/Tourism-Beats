@@ -15,7 +15,7 @@ struct CityView: View {
             Color.clear
                 .aspectRatio(3 / 2, contentMode: .fit)
                 .overlay {
-                    CachedCityImage(url: self.city.imageURL)
+                    CachedCityImage(url: self.city.imageURL, fallbackCoordinate: self.city.coordinate)
                 }
                 .clipShape(.rect(cornerRadius: 20, style: .continuous))
                 .overlay(

@@ -173,7 +173,7 @@ private struct DiscoveryCityCard: View {
     var body: some View {
         Button(action: self.action) {
             ZStack(alignment: .bottomLeading) {
-                CachedCityImage(url: self.city.imageURL)
+                CachedCityImage(url: self.city.imageURL, fallbackCoordinate: self.city.coordinate)
                     .frame(height: self.cardHeight)
                     .clipped()
 

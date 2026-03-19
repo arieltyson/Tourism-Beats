@@ -1,3 +1,4 @@
+import CoreLocation
 import SwiftUI
 
 /// Loads a remote city image with a smooth loading transition, placeholder, and failure state.
@@ -5,13 +6,22 @@ import SwiftUI
 /// Uses `AsyncImage` backed by the shared `URLCache` for automatic disk and memory caching.
 /// The view fills whatever bounds its parent establishes, which keeps framing
 /// and cropping consistent across cards and hero images.
+///
+/// When a `fallbackCoordinate` is provided and the remote image fails to load,
+/// a satellite map snapshot of the city is shown instead of a blank placeholder.
 struct CachedCityImage: View {
     let url: URL
     let contentMode: ContentMode
+    let fallbackCoordinate: CLLocationCoordinate2D?
 
-    init(url: URL, contentMode: ContentMode = .fill) {
+    init(
+        url: URL,
+        contentMode: ContentMode = .fill,
+        fallbackCoordinate: CLLocationCoordinate2D? = nil
+    ) {
         self.url = url
         self.contentMode = contentMode
+        self.fallbackCoordinate = fallbackCoordinate
     }
 
     var body: some View {
@@ -26,12 +36,20 @@ struct CachedCityImage: View {
             case let .success(image):
                 self.scaledImage(image)
             case .failure:
-                self.placeholder
-                    .overlay {
-                        Image(systemName: "photo")
-                            .font(.title3)
-                            .foregroundStyle(.white.opacity(0.55))
-                    }
+                if let coordinate = self.fallbackCoordinate {
+                    RestaurantMapSnapshot(
+                        latitude: coordinate.latitude,
+                        longitude: coordinate.longitude,
+                        snapshotSize: CGSize(width: 400, height: 300)
+                    )
+                } else {
+                    self.placeholder
+                        .overlay {
+                            Image(systemName: "photo")
+                                .font(.title3)
+                                .foregroundStyle(.white.opacity(0.55))
+                        }
+                }
             @unknown default:
                 self.placeholder
             }

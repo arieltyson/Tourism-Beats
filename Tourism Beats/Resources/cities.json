@@ -762,7 +762,7 @@
   {
     "name": "Singapore",
     "countryCode": "SG",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Marina_Bay_Sands_in_the_evening_-_20101120.jpg/1280px-Marina_Bay_Sands_in_the_evening_-_20101120.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Singapore_Marina_Bay_Dusk_2018-02-27.jpg/1280px-Singapore_Marina_Bay_Dusk_2018-02-27.jpg",
     "latitude": 1.3521,
     "longitude": 103.8198,
     "timeZoneIdentifier": "Asia/Singapore"
@@ -1802,7 +1802,7 @@
   {
     "name": "Prague",
     "countryCode": "CZ",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Prague_%286365119737%29.jpg/1280px-Prague_%286365119737%29.jpg",
     "latitude": 50.0755,
     "longitude": 14.4378,
     "timeZoneIdentifier": "Europe/Prague"
@@ -1890,7 +1890,7 @@
   {
     "name": "Bratislava",
     "countryCode": "SK",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Slovakia_bratislava.jpg/1280px-Slovakia_bratislava.jpg",
     "latitude": 48.1486,
     "longitude": 17.1077,
     "timeZoneIdentifier": "Europe/Bratislava"
@@ -1914,7 +1914,7 @@
   {
     "name": "Skopje",
     "countryCode": "MK",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Skopje_view_from_Kale_3.jpg/1280px-Skopje_view_from_Kale_3.jpg",
     "latitude": 41.9981,
     "longitude": 21.4254,
     "timeZoneIdentifier": "Europe/Skopje"
@@ -1922,7 +1922,7 @@
   {
     "name": "Podgorica",
     "countryCode": "ME",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/P064720-426794_-_Panoramic_view_of_Podgorica.jpg/1280px-P064720-426794_-_Panoramic_view_of_Podgorica.jpg",
     "latitude": 42.4304,
     "longitude": 19.2594,
     "timeZoneIdentifier": "Europe/Podgorica"
@@ -1930,7 +1930,7 @@
   {
     "name": "Pristina",
     "countryCode": "XK",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Prishtina_seen_from_Mother_Theresa_Cathedral.jpg/1280px-Prishtina_seen_from_Mother_Theresa_Cathedral.jpg",
     "latitude": 42.6629,
     "longitude": 21.1655,
     "timeZoneIdentifier": "Europe/Belgrade"
@@ -1938,7 +1938,7 @@
   {
     "name": "Ljubljana",
     "countryCode": "SI",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Ljubljana_made_by_Janez_Kotar.jpg",
     "latitude": 46.0569,
     "longitude": 14.5058,
     "timeZoneIdentifier": "Europe/Ljubljana"
@@ -1946,7 +1946,7 @@
   {
     "name": "Sarajevo",
     "countryCode": "BA",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Sarajevo_City_Panorama.JPG/1280px-Sarajevo_City_Panorama.JPG",
     "latitude": 43.8563,
     "longitude": 18.4131,
     "timeZoneIdentifier": "Europe/Sarajevo"
@@ -1954,7 +1954,7 @@
   {
     "name": "Chisinau",
     "countryCode": "MD",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Good_Morning_Chisinau_%28237826603%29.jpeg/1280px-Good_Morning_Chisinau_%28237826603%29.jpeg",
     "latitude": 47.0105,
     "longitude": 28.8638,
     "timeZoneIdentifier": "Europe/Chisinau"
@@ -1962,7 +1962,7 @@
   {
     "name": "Tbilisi",
     "countryCode": "GE",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/View_of_Tbilisi_from_Tabori_Church_2023-10-08-2.jpg/1280px-View_of_Tbilisi_from_Tabori_Church_2023-10-08-2.jpg",
     "latitude": 41.7151,
     "longitude": 44.8271,
     "timeZoneIdentifier": "Asia/Tbilisi"
@@ -1970,7 +1970,7 @@
   {
     "name": "Yerevan",
     "countryCode": "AM",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg/1280px-Budapest_Panorama_-_View_from_Gell%C3%A9rt_Hill.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Mount_Ararat_and_the_Yerevan_skyline_%28June_2018%29.jpg/1280px-Mount_Ararat_and_the_Yerevan_skyline_%28June_2018%29.jpg",
     "latitude": 40.1792,
     "longitude": 44.4991,
     "timeZoneIdentifier": "Asia/Yerevan"
