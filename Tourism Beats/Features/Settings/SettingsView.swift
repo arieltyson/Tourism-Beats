@@ -1,4 +1,3 @@
-import StoreKit
 import SwiftUI
 
 // MARK: - SettingsView
@@ -6,8 +5,7 @@ import SwiftUI
 struct SettingsView: View {
     let onSelectFeedback: (FeedbackCategory) -> Void
 
-    @Environment(\.requestReview) private var requestReview
-
+    private let appStoreReviewURL = TourismBeatsAppStore.reviewURL
     private let accessibilityURL = URL(
         string: "https://arieltyson.github.io/tourism-beats-accessibility/"
     )
@@ -19,9 +17,7 @@ struct SettingsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: SpacingTokens.large) {
                 SettingsFeedbackSection(
-                    onRateApp: {
-                        self.requestReview()
-                    },
+                    reviewURL: self.appStoreReviewURL,
                     onReportBug: {
                         self.onSelectFeedback(.bug)
                     },
@@ -49,20 +45,21 @@ struct SettingsView: View {
 // MARK: - SettingsFeedbackSection
 
 private struct SettingsFeedbackSection: View {
-    let onRateApp: () -> Void
+    let reviewURL: URL
     let onReportBug: () -> Void
     let onSuggestFeature: () -> Void
 
     var body: some View {
         GlassCard(cornerRadius: 28) {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                SettingsActionRow(
+                SettingsLinkActionRow(
                     title: "Rate Tourism Beats",
-                    subtitle: "Open the in-app rating prompt without leaving the app.",
+                    subtitle: "Open the App Store review page for Tourism Beats.",
                     systemImage: "star.fill",
                     tint: AppColors.gold,
-                    accessibilityHint: "Shows Apple's in-app rating prompt for Tourism Beats.",
-                    action: self.onRateApp
+                    destination: self.reviewURL,
+                    accessorySystemImage: "arrow.up.right",
+                    accessibilityHint: "Opens the App Store review page for Tourism Beats."
                 )
 
                 SettingsActionRow(
@@ -194,42 +191,90 @@ private struct SettingsActionRow: View {
 
     var body: some View {
         Button(action: self.action) {
-            HStack(alignment: .center, spacing: SpacingTokens.small) {
-                Image(systemName: self.systemImage)
-                    .font(.title3)
-                    .foregroundStyle(self.tint)
-                    .frame(width: 28)
-
-                VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                    Text(self.title)
-                        .font(TypographyTokens.cardLabel)
-                        .bold()
-                        .foregroundStyle(AppColors.label)
-
-                    Text(self.subtitle)
-                        .font(TypographyTokens.caption)
-                        .foregroundStyle(AppColors.secondaryLabel)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-
-                Spacer(minLength: SpacingTokens.small)
-
-                if let accessorySystemImage {
-                    Image(systemName: accessorySystemImage)
-                        .font(.footnote)
-                        .foregroundStyle(AppColors.secondaryLabel)
-                }
-            }
-            .padding(SpacingTokens.medium)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                AppColors.surfaceSecondary,
-                in: .rect(cornerRadius: 22, style: .continuous)
+            SettingsActionRowContent(
+                title: self.title,
+                subtitle: self.subtitle,
+                systemImage: self.systemImage,
+                tint: self.tint,
+                accessorySystemImage: self.accessorySystemImage
             )
         }
         .buttonStyle(.plain)
         .accessibilityHint(self.accessibilityHint ?? "")
         .accessibilityInputLabels(self.accessibilityInputLabels)
+    }
+}
+
+// MARK: - SettingsLinkActionRow
+
+private struct SettingsLinkActionRow: View {
+    let title: String
+    let subtitle: String
+    let systemImage: String
+    let tint: Color
+    let destination: URL
+    var accessorySystemImage: String?
+    var accessibilityHint: String?
+    var accessibilityInputLabels: [String] = []
+
+    var body: some View {
+        Link(destination: self.destination) {
+            SettingsActionRowContent(
+                title: self.title,
+                subtitle: self.subtitle,
+                systemImage: self.systemImage,
+                tint: self.tint,
+                accessorySystemImage: self.accessorySystemImage
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(self.accessibilityHint ?? "")
+        .accessibilityInputLabels(self.accessibilityInputLabels)
+    }
+}
+
+// MARK: - SettingsActionRowContent
+
+private struct SettingsActionRowContent: View {
+    let title: String
+    let subtitle: String
+    let systemImage: String
+    let tint: Color
+    var accessorySystemImage: String?
+
+    var body: some View {
+        HStack(alignment: .center, spacing: SpacingTokens.small) {
+            Image(systemName: self.systemImage)
+                .font(.title3)
+                .foregroundStyle(self.tint)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                Text(self.title)
+                    .font(TypographyTokens.cardLabel)
+                    .bold()
+                    .foregroundStyle(AppColors.label)
+
+                Text(self.subtitle)
+                    .font(TypographyTokens.caption)
+                    .foregroundStyle(AppColors.secondaryLabel)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: SpacingTokens.small)
+
+            if let accessorySystemImage {
+                Image(systemName: accessorySystemImage)
+                    .font(.footnote)
+                    .foregroundStyle(AppColors.secondaryLabel)
+            }
+        }
+        .padding(SpacingTokens.medium)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            AppColors.surfaceSecondary,
+            in: .rect(cornerRadius: 22, style: .continuous)
+        )
     }
 }
 
