@@ -52,21 +52,22 @@ struct CityContainerView: View {
             .scrollTargetBehavior(.viewAligned)
             .scrollPosition(id: self.$pageIndex)
             .scrollIndicators(.hidden)
-            .overlay(alignment: .trailing) {
-                VerticalIconPageIndicator(
-                    activeIndex: self.currentPageIndex,
-                    onSelect: { index in
-                        self.selectPage(index)
-                    }
-                )
-                .padding(.trailing, PageIndicatorTokens.overlayTrailingPadding)
-            }
+            .padding(.horizontal, PageIndicatorTokens.contentInset)
             .navigationDestination(for: CityActivityRoute.self) { route in
                 CityActivityDetailView(city: route.city, activity: route.activity)
             }
             .navigationDestination(for: CityRestaurantRoute.self) { route in
                 CityRestaurantDetailView(city: route.city, restaurant: route.restaurant)
             }
+        }
+        .overlay(alignment: .trailing) {
+            VerticalIconPageIndicator(
+                activeIndex: self.currentPageIndex,
+                onSelect: { index in
+                    self.selectPage(index)
+                }
+            )
+            .padding(.trailing, PageIndicatorTokens.overlayTrailingPadding)
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .onChange(of: self.currentPageIndex) { oldValue, newValue in

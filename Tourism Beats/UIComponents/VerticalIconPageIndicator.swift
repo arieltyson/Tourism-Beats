@@ -21,6 +21,10 @@ struct PageDescriptor: Identifiable, Hashable, Sendable {
 // MARK: - VerticalIconPageIndicator
 
 /// Control Center–style vertical icon strip for page navigation.
+///
+/// Each icon meets the 44pt minimum tap target per Apple HIG.
+/// The active page is highlighted with an animated circle indicator
+/// using `matchedGeometryEffect` for smooth transitions.
 struct VerticalIconPageIndicator: View {
     let activeIndex: Int
     var pages: [PageDescriptor] = PageDescriptor.defaults
@@ -114,6 +118,8 @@ private struct LegacyVerticalIconPageIndicator: View {
     let onSelect: (Int) -> Void
     let selectionNamespace: Namespace.ID
 
+    @Environment(\.colorScheme) private var scheme
+
     var body: some View {
         VStack(spacing: PageIndicatorTokens.buttonSpacing) {
             ForEach(self.pages) { page in
@@ -125,12 +131,32 @@ private struct LegacyVerticalIconPageIndicator: View {
                 )
             }
         }
+        .padding(.vertical, PageIndicatorTokens.containerSpacing)
+        .background {
+            Capsule(style: .continuous)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    Capsule(style: .continuous)
+                        .strokeBorder(
+                            AppColors.glassBorder(for: self.scheme),
+                            lineWidth: PageIndicatorTokens.legacyBorderWidth
+                        )
+                )
+                .shadow(
+                    color: AppColors.glassShadow(for: self.scheme),
+                    radius: PageIndicatorTokens.legacyShadowRadius,
+                    y: PageIndicatorTokens.legacyShadowY
+                )
+        }
     }
 }
 
 // MARK: - ModernIconPageButton
 
 /// A single icon button within the page indicator strip.
+///
+/// Uses a `matchedGeometryEffect` circle highlight to smoothly
+/// animate between active pages, inspired by Control Center.
 @available(iOS 26.0, *)
 private struct ModernIconPageButton: View {
     let page: PageDescriptor
@@ -142,18 +168,37 @@ private struct ModernIconPageButton: View {
         Button(action: self.action) {
             Label(self.page.label, systemImage: self.page.icon)
                 .labelStyle(.iconOnly)
-                .font(.footnote.bold())
-                .fontWeight(.semibold)
+                .font(.system(size: 13, weight: .semibold))
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary)
+                .foregroundStyle(
+                    self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary
+                )
                 .frame(
-                    width: PageIndicatorTokens.modernButtonSize,
-                    height: PageIndicatorTokens.modernButtonSize
+                    width: PageIndicatorTokens.modernButtonWidth,
+                    height: PageIndicatorTokens.modernButtonHeight
                 )
                 .contentShape(.rect)
+                .background {
+                    if self.isActive {
+                        Circle()
+                            .fill(.white.opacity(0.2))
+                            .frame(
+                                width: PageIndicatorTokens.modernHighlightSize,
+                                height: PageIndicatorTokens.modernHighlightSize
+                            )
+                            .matchedGeometryEffect(
+                                id: "page-indicator-highlight",
+                                in: self.selectionNamespace
+                            )
+                    }
+                }
         }
         .buttonStyle(.plain)
-        .opacity(self.isActive ? PageIndicatorTokens.activeOpacity : PageIndicatorTokens.inactiveOpacity)
+        .opacity(
+            self.isActive
+                ? PageIndicatorTokens.activeOpacity
+                : PageIndicatorTokens.inactiveOpacity
+        )
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")
@@ -170,54 +215,44 @@ private struct LegacyIconPageButton: View {
     let action: () -> Void
     let selectionNamespace: Namespace.ID
 
-    @Environment(\.colorScheme) private var scheme
-
     var body: some View {
         Button(action: self.action) {
-            ZStack {
-                if self.isActive {
-                    Capsule(style: .continuous)
-                        .fill(.ultraThinMaterial)
-                        .frame(
-                            width: PageIndicatorTokens.legacyCapsuleWidth,
-                            height: PageIndicatorTokens.legacyCapsuleHeight
-                        )
-                        .overlay(
-                            Capsule(style: .continuous)
-                                .strokeBorder(
-                                    AppColors.glassBorder(for: self.scheme),
-                                    lineWidth: PageIndicatorTokens.legacyBorderWidth
-                                )
-                        )
-                        .shadow(
-                            color: AppColors.glassShadow(for: self.scheme),
-                            radius: PageIndicatorTokens.legacyShadowRadius,
-                            y: PageIndicatorTokens.legacyShadowY
-                        )
-                        .matchedGeometryEffect(
-                            id: "page-indicator-selection",
-                            in: self.selectionNamespace
-                        )
+            Label(self.page.label, systemImage: self.page.icon)
+                .labelStyle(.iconOnly)
+                .font(.system(size: 13, weight: .semibold))
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(
+                    self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary
+                )
+                .frame(
+                    width: PageIndicatorTokens.legacyCapsuleWidth,
+                    height: PageIndicatorTokens.legacyCapsuleHeight
+                )
+                .contentShape(.rect)
+                .background {
+                    if self.isActive {
+                        Circle()
+                            .fill(.ultraThinMaterial)
+                            .frame(
+                                width: PageIndicatorTokens.modernHighlightSize,
+                                height: PageIndicatorTokens.modernHighlightSize
+                            )
+                            .matchedGeometryEffect(
+                                id: "page-indicator-highlight",
+                                in: self.selectionNamespace
+                            )
+                    }
                 }
-
-                Label(self.page.label, systemImage: self.page.icon)
-                    .labelStyle(.iconOnly)
-                    .font(.footnote.bold())
-                    .fontWeight(.semibold)
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(
-                        self.isActive ? AppColors.onImagePrimary : AppColors.onImageSecondary
-                    )
-                    .frame(
-                        width: PageIndicatorTokens.legacyCapsuleWidth,
-                        height: PageIndicatorTokens.legacyCapsuleHeight
-                    )
-                    .contentShape(.rect)
-            }
         }
         .buttonStyle(.plain)
-        .scaleEffect(self.isActive ? 1 : PageIndicatorTokens.inactiveScale)
-        .opacity(self.isActive ? PageIndicatorTokens.activeOpacity : PageIndicatorTokens.inactiveOpacity)
+        .scaleEffect(
+            self.isActive ? 1 : PageIndicatorTokens.inactiveScale
+        )
+        .opacity(
+            self.isActive
+                ? PageIndicatorTokens.activeOpacity
+                : PageIndicatorTokens.inactiveOpacity
+        )
         .accessibilityLabel(self.page.label)
         .accessibilityValue(self.isActive ? "Selected" : "Not selected")
         .accessibilityHint("Shows \(self.page.label)")
