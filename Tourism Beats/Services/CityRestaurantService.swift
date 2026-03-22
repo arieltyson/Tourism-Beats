@@ -126,6 +126,11 @@ extension CityRestaurantService {
 
         candidates = Self.tagDuplicateLocationCounts(candidates)
 
+        let chainSignatures = await self.detectChainsFromWiderScan(for: city)
+        if !chainSignatures.isEmpty {
+            candidates = Self.applyChainSignatures(chainSignatures, to: candidates)
+        }
+
         return CityRestaurantRanking.topRestaurants(from: candidates, for: city, limit: 6)
     }
 
@@ -580,6 +585,65 @@ extension CityRestaurantService {
             guard count > 1 else { return candidate }
             var updated = candidate
             updated.duplicateLocationCount = count
+            return updated
+        }
+    }
+
+    // MARK: - Wider-Radius Chain Scan
+
+    private func detectChainsFromWiderScan(
+        for city: CityModel
+    ) async -> Set<String> {
+        let query = """
+        [out:json][timeout:15];
+        nwr["amenity"="restaurant"]["name"](around:25000,\(city.coordinate.latitude),\(city.coordinate.longitude));
+        out center 500;
+        """
+
+        var components = URLComponents(string: "https://overpass-api.de/api/interpreter")
+        components?.queryItems = [URLQueryItem(name: "data", value: query)]
+
+        guard let url = components?.url else { return [] }
+
+        do {
+            let data = try await self.fetchData(from: url, timeout: 20)
+            let response = try self.decoder.decode(RestaurantModels.OverpassResponse.self, from: data)
+
+            let entries = response.elements.compactMap { element
+                -> CityRestaurantChainDetector.RestaurantNameEntry? in
+                guard let name = element.tags?.name?.trimmingCharacters(in: .whitespacesAndNewlines),
+                      !name.isEmpty
+                else { return nil }
+                let lat = element.lat ?? element.center?.lat
+                let lon = element.lon ?? element.center?.lon
+                return .init(name: name, latitude: lat, longitude: lon)
+            }
+
+            return CityRestaurantChainDetector.detectChainSignatures(from: entries)
+        } catch {
+            self.logger.info(
+                "Chain scan unavailable: \(error.localizedDescription, privacy: .public)"
+            )
+            return []
+        }
+    }
+
+    private static func applyChainSignatures(
+        _ signatures: Set<String>,
+        to candidates: [CityRestaurantCandidate]
+    ) -> [CityRestaurantCandidate] {
+        candidates.map { candidate in
+            let normalized = candidate.name
+                .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .lowercased()
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            guard CityRestaurantChainDetector.matchesChainSignature(
+                normalized, in: signatures
+            ) else { return candidate }
+
+            var updated = candidate
+            updated.duplicateLocationCount = max(updated.duplicateLocationCount, 3)
             return updated
         }
     }

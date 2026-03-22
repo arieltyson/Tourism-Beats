@@ -35,9 +35,9 @@ enum CityRestaurantChainDetector {
         brand: String?,
         hasBrandWikidata: Bool,
         hasOperator: Bool,
-        duplicateLocationCount: Int
+        duplicateLocationCount: Int,
+        detectedChainSignatures: Set<String> = []
     ) -> ChainConfidence {
-        // Layer 1: OSM brand:wikidata confirms chain identity
         if hasBrandWikidata {
             return .high
         }
@@ -47,12 +47,10 @@ enum CityRestaurantChainDetector {
             .lowercased()
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Layer 2: Known chain exact match
         if self.knownChains.contains(normalizedName) {
             return .high
         }
 
-        // Layer 3: Brand tag present with a known chain name
         if let brand {
             let normalizedBrand = brand
                 .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
@@ -61,33 +59,136 @@ enum CityRestaurantChainDetector {
             if self.knownChains.contains(normalizedBrand) {
                 return .high
             }
-            // Any brand tag at all indicates franchise/chain
             if !normalizedBrand.isEmpty {
                 return .medium
             }
         }
 
-        // Layer 4: Multi-location detection (same name at 2+ coordinates)
-        if duplicateLocationCount >= 2 {
+        if duplicateLocationCount >= 3 {
             return .high
         }
 
-        // Layer 5: Chain keyword containment (partial match)
+        if !detectedChainSignatures.isEmpty,
+           self.matchesChainSignature(normalizedName, in: detectedChainSignatures)
+        {
+            return .high
+        }
+
         if self.chainKeywords.contains(where: { normalizedName.localizedStandardContains($0) }) {
             return .medium
         }
 
-        // Layer 6: Operator tag indicates franchise management
+        if duplicateLocationCount >= 2 {
+            return .medium
+        }
+
         if hasOperator {
             return .low
         }
 
-        // Layer 7: Generic name pattern detection
         if self.isGenericPattern(normalizedName) {
             return .low
         }
 
         return .none
+    }
+
+    // MARK: - Wider-Radius Chain Detection
+
+    struct RestaurantNameEntry: Sendable {
+        let name: String
+        let latitude: Double?
+        let longitude: Double?
+    }
+
+    /// Analyzes a large set of restaurant names from a wider area scan.
+    /// Returns the set of "core signatures" that appear at 3+ distinct locations,
+    /// indicating chain/franchise restaurants.
+    ///
+    /// Uses a two-pass approach:
+    /// 1. Group by exact normalized name (catches "Big Way Hot Pot" × 4)
+    /// 2. Group by shared token prefix (catches "Big Way Hot Pot Richmond"
+    ///    vs "Big Way Hot Pot Burnaby" by finding that "Big Way Hot Pot"
+    ///    is a common prefix appearing at 3+ locations)
+    static func detectChainSignatures(
+        from entries: [RestaurantNameEntry]
+    ) -> Set<String> {
+        struct LocationEntry {
+            let normalized: String
+            let tokens: [String]
+            let coordKey: String
+        }
+
+        let processed: [LocationEntry] = entries.compactMap { entry in
+            let normalized = entry.name
+                .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .lowercased()
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            guard normalized.count >= 3 else { return nil }
+
+            let tokens = normalized
+                .components(separatedBy: .whitespacesAndNewlines)
+                .filter { !$0.isEmpty }
+            guard !tokens.isEmpty else { return nil }
+
+            let coordKey = if let lat = entry.latitude, let lon = entry.longitude {
+                "\(Int((lat * 1_000).rounded()))|\(Int((lon * 1_000).rounded()))"
+            } else {
+                "unknown-\(entry.name.hashValue)"
+            }
+
+            return LocationEntry(normalized: normalized, tokens: tokens, coordKey: coordKey)
+        }
+
+        var chainSignatures = Set<String>()
+
+        // Pass 1: Exact name grouping
+        var exactLocations: [String: Set<String>] = [:]
+        for entry in processed {
+            exactLocations[entry.normalized, default: []].insert(entry.coordKey)
+        }
+        for (name, locations) in exactLocations where locations.count >= 3 {
+            chainSignatures.insert(name)
+        }
+
+        // Pass 2: Shared-prefix grouping
+        // For each prefix length (2+ tokens), group by that prefix
+        // and check if 3+ distinct coordinates share it.
+        let maxPrefixLength = 6
+        for prefixLen in stride(from: 2, through: maxPrefixLength, by: 1) {
+            var prefixLocations: [String: Set<String>] = [:]
+            for entry in processed where entry.tokens.count >= prefixLen {
+                let prefix = entry.tokens.prefix(prefixLen).joined(separator: " ")
+                prefixLocations[prefix, default: []].insert(entry.coordKey)
+            }
+            for (prefix, locations) in prefixLocations where locations.count >= 3 {
+                chainSignatures.insert(prefix)
+            }
+        }
+
+        return chainSignatures
+    }
+
+    /// Checks if a restaurant name matches any detected chain signature.
+    /// Handles both exact matches and prefix matches (e.g., "Big Way Hot Pot Burnaby"
+    /// matches signature "big way hot pot").
+    static func matchesChainSignature(
+        _ normalizedName: String,
+        in signatures: Set<String>
+    ) -> Bool {
+        if signatures.contains(normalizedName) { return true }
+
+        let tokens = normalizedName
+            .components(separatedBy: .whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+
+        // Check if any prefix of the name matches a chain signature
+        for length in stride(from: min(tokens.count, 6), through: 2, by: -1) {
+            let prefix = tokens.prefix(length).joined(separator: " ")
+            if signatures.contains(prefix) { return true }
+        }
+
+        return false
     }
 }
 
@@ -193,7 +294,18 @@ extension CityRestaurantChainDetector {
         "nando",
         "wagamama",
         "pizza express",
-        "pret a manger"
+        "pret a manger",
+        "big way hot pot",
+        "haidilao",
+        "happy lamb",
+        "little sheep",
+        "din tai fung",
+        "jollibee",
+        "panda express",
+        "bonchon",
+        "gyu-kaku",
+        "gong cha",
+        "chatime"
     ]
 
     // Comprehensive set of known chain/franchise restaurant names worldwide.
@@ -268,7 +380,18 @@ extension CityRestaurantChainDetector {
             "chowking", "mang inasal", "greenwich",
             "din tai fung", "haidilao", "xiabu xiabu",
             "luckin coffee", "mixue", "coco tea",
-            "gong cha", "tiger sugar", "the alley"
+            "gong cha", "tiger sugar", "the alley",
+            "big way hot pot", "happy lamb hot pot", "liuyishou",
+            "little sheep", "morals village", "dolar shop",
+            "boiling point", "kichi kichi", "mala tang",
+            "hai di lao", "coco curu", "kung fu tea",
+            "chatime", "sharetea", "presotea", "yi fang",
+            "meet fresh", "panda express", "pei wei",
+            "pick up stix", "sarku japan", "teriyaki madness",
+            "bonchon", "bb.q chicken", "kyochon",
+            "gen korean bbq", "kbbq", "gyu-kaku",
+            "kintan buffet", "sushi zanmai", "genki sushi",
+            "kura sushi", "sushiro", "hamazushi"
         ]
 
         // Middle East/Africa chains
@@ -278,6 +401,20 @@ extension CityRestaurantChainDetector {
             "the butcher shop & grill", "ocean basket",
             "steers", "spur", "wimpy", "debonairs",
             "nando's south africa", "mugg & bean"
+        ]
+
+        // Canadian/Australian chains
+        let canadianAustralianChains = [
+            "boston pizza", "montana's", "swiss chalet",
+            "harvey's", "mary brown's", "mary browns",
+            "a&w", "the keg", "earls", "cactus club",
+            "white spot", "milestone's", "milestones",
+            "joey", "moxie's", "moxies", "original joe's",
+            "red lobster canada", "kelsey's", "kelseys",
+            "st-hubert", "scores", "baton rouge",
+            "hungry jack's", "hungry jacks", "oporto",
+            "grill'd", "nando's australia", "mad mex",
+            "guzman y gomez", "zambrero"
         ]
 
         // Latin America chains
@@ -298,7 +435,8 @@ extension CityRestaurantChainDetector {
 
         for group in [
             globalFastFood, globalCasualDining, coffeeChains,
-            europeanChains, asianChains, menaChains, latamChains, pizzaChains
+            europeanChains, asianChains, menaChains,
+            canadianAustralianChains, latamChains, pizzaChains
         ] {
             for name in group {
                 chains.insert(name)
