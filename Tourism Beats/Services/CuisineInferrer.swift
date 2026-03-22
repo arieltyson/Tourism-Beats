@@ -2,21 +2,24 @@ import Foundation
 
 // MARK: - CuisineInferrer
 
-/// Infers cuisine type from a restaurant name using keyword matching.
+/// Infers cuisine type from a restaurant name and optional country context.
 /// Used as a fallback when OSM cuisine data is unavailable.
 enum CuisineInferrer {
-    /// Attempts to infer a cuisine label from the restaurant name.
-    /// Returns `nil` if no confident match is found — avoids guessing.
-    static func infer(from name: String) -> String? {
+    /// Attempts to infer a cuisine label from the restaurant name,
+    /// falling back to the country's predominant cuisine when no name match is found.
+    static func infer(from name: String, countryCode: String? = nil) -> String? {
         let normalized = name
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
             .lowercased()
 
-        // Check exact word boundaries first (higher confidence)
         for rule in self.rules {
             for keyword in rule.keywords where self.containsWord(keyword, in: normalized) {
                 return rule.cuisine
             }
+        }
+
+        if let code = countryCode?.uppercased() {
+            return self.countryCuisineMap[code]
         }
 
         return nil
@@ -110,27 +113,45 @@ extension CuisineInferrer {
         // French
         Rule(cuisine: "French", keywords: [
             "bistro", "brasserie", "creperie", "patisserie",
-            "boulangerie", "bouchon", "brasserie",
-            "beurre", "croissant", "macaron"
+            "boulangerie", "bouchon", "beurre", "croissant",
+            "macaron", "auberge", "comptoir", "maison"
         ]),
 
         // Mediterranean / Greek
         Rule(cuisine: "Mediterranean", keywords: [
             "mediterranean", "falafel", "hummus", "shawarma",
             "kebab", "gyro", "souvlaki", "taverna",
-            "meze", "mezze", "pita"
+            "meze", "mezze", "pita", "psistaria"
         ]),
 
         // Spanish
         Rule(cuisine: "Spanish", keywords: [
             "tapas", "paella", "churros", "bodega",
-            "sangria", "pintxos", "taberna"
+            "sangria", "pintxos", "taberna", "asador",
+            "mesón", "meson", "chiringuito"
         ]),
 
         // Turkish / Middle Eastern
         Rule(cuisine: "Turkish", keywords: [
             "kebap", "kofte", "lahmacun", "pide",
-            "baklava", "doner"
+            "baklava", "doner", "ocakbasi", "lokanta"
+        ]),
+
+        // German / Austrian
+        Rule(cuisine: "German", keywords: [
+            "gasthaus", "gasthof", "brauhaus", "biergarten",
+            "stube", "weinstube", "schnitzel", "bratwurst"
+        ]),
+
+        // Croatian / Balkan
+        Rule(cuisine: "Croatian", keywords: [
+            "konoba", "cevapi", "burek"
+        ]),
+
+        // Portuguese
+        Rule(cuisine: "Portuguese", keywords: [
+            "churrasqueira", "pastelaria", "tasca",
+            "bacalhau", "pastel de nata"
         ]),
 
         // Seafood
@@ -195,5 +216,35 @@ extension CuisineInferrer {
         Rule(cuisine: "Cafe", keywords: [
             "cafe", "coffee", "espresso"
         ])
+    ]
+
+    // MARK: - Country Fallback
+
+    private static let countryCuisineMap: [String: String] = [
+        "JP": "Japanese", "CN": "Chinese", "KR": "Korean",
+        "TW": "Taiwanese", "TH": "Thai", "VN": "Vietnamese",
+        "IN": "Indian", "PK": "Indian", "BD": "Indian",
+        "LK": "Sri Lankan", "NP": "Nepali",
+        "ID": "Indonesian", "MY": "Malaysian", "PH": "Filipino",
+        "KH": "Cambodian", "MM": "Burmese", "LA": "Laotian",
+        "FR": "French", "IT": "Italian", "ES": "Spanish",
+        "PT": "Portuguese", "DE": "German", "AT": "Austrian",
+        "CH": "Swiss", "BE": "Belgian", "NL": "Dutch",
+        "GB": "British", "IE": "Irish",
+        "GR": "Greek", "TR": "Turkish",
+        "LB": "Lebanese", "IL": "Israeli", "IR": "Persian",
+        "MA": "Moroccan", "EG": "Egyptian", "SY": "Syrian",
+        "GE": "Georgian",
+        "MX": "Mexican", "BR": "Brazilian", "PE": "Peruvian",
+        "AR": "Argentinian", "CO": "Colombian", "CU": "Cuban",
+        "CL": "Chilean", "VE": "Venezuelan",
+        "ET": "Ethiopian", "NG": "Nigerian", "ZA": "South African",
+        "SE": "Scandinavian", "NO": "Scandinavian",
+        "DK": "Scandinavian", "FI": "Scandinavian",
+        "PL": "Polish", "HU": "Hungarian", "CZ": "Czech",
+        "HR": "Croatian", "RS": "Serbian", "RO": "Romanian",
+        "RU": "Russian", "UA": "Ukrainian",
+        "US": "American", "CA": "Canadian", "AU": "Australian",
+        "NZ": "New Zealand", "JM": "Caribbean"
     ]
 }

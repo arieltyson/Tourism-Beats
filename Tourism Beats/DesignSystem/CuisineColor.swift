@@ -87,6 +87,8 @@ enum CuisineColor {
         "bangladeshi": southAsian,
         "cambodian": southAsian,
         "laotian": southAsian,
+        "nigerian": southAsian,
+        "south african": southAsian,
 
         // Western European
         "french": european,
@@ -107,6 +109,14 @@ enum CuisineColor {
         "polish": european,
         "hungarian": european,
         "czech": european,
+        "croatian": european,
+        "serbian": european,
+        "romanian": european,
+        "ukrainian": european,
+        "british": european,
+        "canadian": european,
+        "australian": european,
+        "new zealand": european,
         "european": european,
 
         // Mediterranean & Middle Eastern

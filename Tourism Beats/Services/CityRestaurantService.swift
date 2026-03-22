@@ -100,13 +100,15 @@ extension CityRestaurantService {
             candidates = Self.mergeResults(
                 mapKit: mapKitResults,
                 overpass: overpassCandidates,
-                cityName: city.name
+                cityName: city.name,
+                countryCode: city.country.code
             )
         } else if !overpassCandidates.isEmpty {
             self.logger.info(
                 "MapKit unavailable, falling back to Overpass for \(city.name, privacy: .public)"
             )
-            candidates = overpassCandidates.map(Self.candidate(from:))
+            let code = city.country.code
+            candidates = overpassCandidates.map { Self.candidate(from: $0, countryCode: code) }
         } else {
             throw RestaurantModels.ServiceError.invalidResponse
         }
@@ -201,7 +203,6 @@ extension CityRestaurantService {
             }
         }
 
-        // Attach cross-query and food-query counts to each result
         return bestResultByKey.values.map { result in
             let key = self.coordinateKey(
                 latitude: result.latitude,
@@ -291,7 +292,8 @@ extension CityRestaurantService {
     private static func mergeResults(
         mapKit: [RestaurantModels.MapKitRestaurantResult],
         overpass: [RestaurantModels.OverpassRestaurant],
-        cityName: String
+        cityName: String,
+        countryCode: String
     ) -> [CityRestaurantCandidate] {
         let normalizedCityName = cityName.folding(
             options: [.caseInsensitive, .diacriticInsensitive],
@@ -319,11 +321,10 @@ extension CityRestaurantService {
                 longitude: mapItem.longitude
             )
 
-            // Pillar 3: Compute OSM metadata richness if we have an Overpass match
             let metadataScore = overpassMatch.map { self.metadataScore(for: $0) } ?? 0
 
-            // Use OSM cuisine when available, otherwise infer from restaurant name
-            let cuisine = overpassMatch?.cuisine ?? CuisineInferrer.infer(from: mapItem.name)
+            let cuisine = overpassMatch?.cuisine
+                ?? CuisineInferrer.infer(from: mapItem.name, countryCode: countryCode)
 
             return CityRestaurantCandidate(
                 id: "mapkit-\(coordinateKey)",
@@ -524,12 +525,14 @@ extension CityRestaurantService {
     }
 
     private static func candidate(
-        from restaurant: RestaurantModels.OverpassRestaurant
+        from restaurant: RestaurantModels.OverpassRestaurant,
+        countryCode: String
     ) -> CityRestaurantCandidate {
         CityRestaurantCandidate(
             id: "restaurant-\(restaurant.elementType ?? "osm")-\(restaurant.elementIdentifier ?? restaurant.name.hashValue)",
             name: restaurant.name,
-            cuisine: restaurant.cuisine ?? CuisineInferrer.infer(from: restaurant.name),
+            cuisine: restaurant.cuisine
+                ?? CuisineInferrer.infer(from: restaurant.name, countryCode: countryCode),
             address: restaurant.address,
             hours: restaurant.openingHours,
             phoneNumber: restaurant.phoneNumber,
@@ -558,12 +561,9 @@ extension CityRestaurantService {
         )
     }
 
-    /// Detects chains by counting how many candidates share the same
-    /// normalized name but appear at different coordinates.
     private static func tagDuplicateLocationCounts(
         _ candidates: [CityRestaurantCandidate]
     ) -> [CityRestaurantCandidate] {
-        // Count occurrences of each normalized name
         var nameCounts: [String: Int] = [:]
         for candidate in candidates {
             let key = candidate.name
