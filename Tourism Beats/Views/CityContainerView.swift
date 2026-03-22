@@ -49,7 +49,7 @@ struct CityContainerView: View {
                 }
                 .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.viewAligned)
+            .scrollTargetBehavior(.paging)
             .scrollPosition(id: self.$pageIndex)
             .scrollIndicators(.hidden)
             .padding(.horizontal, PageIndicatorTokens.contentInset)
