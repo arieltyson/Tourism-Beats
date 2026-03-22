@@ -306,6 +306,9 @@ private struct FoodRestaurantLinksRow: View {
                     Label("Location", systemImage: "map.fill")
                         .font(TypographyTokens.caption)
                         .bold()
+                        .padding(.vertical, SpacingTokens.xSmall)
+                        .padding(.horizontal, SpacingTokens.small)
+                        .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(AppColors.coral)
@@ -316,6 +319,9 @@ private struct FoodRestaurantLinksRow: View {
                     Label("Menu", systemImage: "menucard.fill")
                         .font(TypographyTokens.caption)
                         .bold()
+                        .padding(.vertical, SpacingTokens.xSmall)
+                        .padding(.horizontal, SpacingTokens.small)
+                        .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(AppColors.coral)

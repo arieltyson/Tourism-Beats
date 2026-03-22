@@ -34,11 +34,6 @@ struct FoodCityJournalView: View {
                             mealPhotos: restaurant.sortedMealPhotos,
                             onEdit: { self.onEdit(restaurant) }
                         )
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button("Delete", systemImage: "trash", role: .destructive) {
-                                self.onDelete(restaurant)
-                            }
-                        }
                         .contextMenu {
                             Button("Edit", systemImage: "pencil") {
                                 self.onEdit(restaurant)
