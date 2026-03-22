@@ -6,13 +6,14 @@ struct CityContainerView: View {
 
     let city: CityModel
 
-    @State private var pageIndex: Int = 0
-    @State private var dragOffset: CGFloat = 0
-    @State private var isPaging: Bool = false
-    @State private var containerSize: CGSize = .zero
+    @State private var pageIndex: Int? = 0
     @State private var haptic = HapticTrigger()
 
     private let pages = PageDescriptor.defaults
+
+    private var currentPageIndex: Int {
+        self.pageIndex ?? 0
+    }
 
     var body: some View {
         ZStack {
@@ -21,46 +22,39 @@ struct CityContainerView: View {
                 .motionSensitiveAnimation(
                     .easeInOut(duration: 0.4),
                     reduced: .linear(duration: 0.01),
-                    value: self.pageIndex
+                    value: self.currentPageIndex
                 )
 
-            ZStack {
-                CityView(city: self.city)
-                    .containerRelativeFrame([.horizontal, .vertical])
-                    .offset(y: self.offset(for: 0))
+            ScrollView(.vertical) {
+                LazyVStack(spacing: 0) {
+                    CityView(city: self.city)
+                        .containerRelativeFrame([.horizontal, .vertical])
+                        .id(0)
 
-                MusicView(city: self.city, fallbackView: FallbackMusicView())
-                    .containerRelativeFrame([.horizontal, .vertical])
-                    .offset(y: self.offset(for: 1))
+                    MusicView(city: self.city, fallbackView: FallbackMusicView())
+                        .containerRelativeFrame([.horizontal, .vertical])
+                        .id(1)
 
-                AdvisoriesView(city: self.city)
-                    .containerRelativeFrame([.horizontal, .vertical])
-                    .offset(y: self.offset(for: 2))
+                    AdvisoriesView(city: self.city)
+                        .containerRelativeFrame([.horizontal, .vertical])
+                        .id(2)
 
-                CityActivitiesView(city: self.city)
-                    .containerRelativeFrame([.horizontal, .vertical])
-                    .offset(y: self.offset(for: 3))
+                    CityActivitiesView(city: self.city)
+                        .containerRelativeFrame([.horizontal, .vertical])
+                        .id(3)
 
-                CityRestaurantsView(city: self.city)
-                    .containerRelativeFrame([.horizontal, .vertical])
-                    .offset(y: self.offset(for: 4))
+                    CityRestaurantsView(city: self.city)
+                        .containerRelativeFrame([.horizontal, .vertical])
+                        .id(4)
+                }
+                .scrollTargetLayout()
             }
-            .clipped()
-            .contentShape(.rect)
-            .highPriorityGesture(self.pagingGesture)
-            .onGeometryChange(for: CGSize.self) { proxy in
-                proxy.size
-            } action: { newSize in
-                self.containerSize = newSize
-            }
-            .motionSensitiveAnimation(
-                AnimationTokens.standard,
-                reduced: .linear(duration: 0.01),
-                value: self.pageIndex
-            )
+            .scrollTargetBehavior(.viewAligned)
+            .scrollPosition(id: self.$pageIndex)
+            .scrollIndicators(.hidden)
             .overlay(alignment: .trailing) {
                 VerticalIconPageIndicator(
-                    activeIndex: self.pageIndex,
+                    activeIndex: self.currentPageIndex,
                     onSelect: { index in
                         self.selectPage(index)
                     }
@@ -75,6 +69,10 @@ struct CityContainerView: View {
             }
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
+        .onChange(of: self.currentPageIndex) { oldValue, newValue in
+            guard oldValue != newValue else { return }
+            self.haptic.fire(.pageChange)
+        }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -97,73 +95,23 @@ struct CityContainerView: View {
             ToolbarItem(placement: .principal) {
                 Text(self.city.country.flag)
                     .font(.largeTitle)
-                    .opacity(self.pageIndex != 0 ? 1 : 0)
+                    .opacity(self.currentPageIndex != 0 ? 1 : 0)
                     .motionSensitiveAnimation(
                         .easeInOut,
                         reduced: .linear(duration: 0.01),
-                        value: self.pageIndex
+                        value: self.currentPageIndex
                     )
             }
         }
     }
 
-    // MARK: - Offset Calculation
-
-    private func offset(for index: Int) -> CGFloat {
-        CGFloat(index - self.pageIndex) * self.containerSize.height + self.dragOffset
-    }
+    // MARK: - Page Selection
 
     private func selectPage(_ index: Int) {
-        guard index != self.pageIndex else { return }
-
-        self.pageIndex = index
-        self.haptic.fire(.pageChange)
-    }
-
-    // MARK: - Paging Gesture
-
-    private var pagingGesture: some Gesture {
-        DragGesture(minimumDistance: 12)
-            .onChanged { value in
-                if !self.isPaging {
-                    let vertical = abs(value.translation.height)
-                    let horizontal = abs(value.translation.width)
-                    guard vertical > horizontal * 0.7 else { return }
-                    self.isPaging = true
-                }
-                self.dragOffset = value.translation.height
-            }
-            .onEnded { value in
-                defer {
-                    self.dragOffset = 0
-                    self.isPaging = false
-                }
-
-                let vertical = abs(value.translation.height)
-                let horizontal = abs(value.translation.width)
-                guard vertical > horizontal * 0.7 else { return }
-
-                let height = self.containerSize.height
-                let base = height * 0.14
-                let threshold = min(140, max(80, base))
-
-                let drag = value.translation.height
-                let predicted = value.predictedEndTranslation.height
-                let sameDirection =
-                    (drag >= 0 && predicted >= 0)
-                    || (drag <= 0 && predicted <= 0)
-                let commitByDistance = abs(drag) > threshold
-                let commitByVelocity =
-                    sameDirection && abs(predicted) > threshold * 0.6
-
-                if commitByDistance || commitByVelocity {
-                    if drag < 0, self.pageIndex < self.pages.count - 1 {
-                        self.selectPage(self.pageIndex + 1)
-                    } else if drag > 0, self.pageIndex > 0 {
-                        self.selectPage(self.pageIndex - 1)
-                    }
-                }
-            }
+        guard index != self.currentPageIndex else { return }
+        withAnimation(AnimationTokens.standard) {
+            self.pageIndex = index
+        }
     }
 
     // MARK: - Background
@@ -172,7 +120,7 @@ struct CityContainerView: View {
         let all = GradientProvider.gradients
         let base = UInt(bitPattern: self.city.id.hashValue)
         let pageSeedValues: [UInt] = [31, 47, 59, 71, 83]
-        let multiplier = pageSeedValues[min(self.pageIndex, pageSeedValues.count - 1)]
+        let multiplier = pageSeedValues[min(self.currentPageIndex, pageSeedValues.count - 1)]
         let seed = base &* multiplier
         let idx = Int(seed % UInt(all.count))
         return all[idx]

@@ -242,7 +242,10 @@ enum AppColors {
     /// Thin highlight stroke layered on top of image badges.
     static let imageBadgeBorder = Color(
         uiColor: UIColor { traits in
-            UIColor(white: 1, alpha: traits.accessibilityContrast == .high ? 0.28 : 0.14)
+            UIColor(
+                white: 1,
+                alpha: traits.accessibilityContrast == .high ? 0.28 : 0.14
+            )
         }
     )
 

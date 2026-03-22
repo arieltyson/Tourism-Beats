@@ -100,7 +100,7 @@ struct AdvisoriesView: View {
             .onAppear { self.appeared = true }
         }
         .background(Color.clear.ignoresSafeArea())
-        .safeAreaPadding(.bottom, 8)
+        .safeAreaPadding(.bottom, 32)
     }
 }
 
