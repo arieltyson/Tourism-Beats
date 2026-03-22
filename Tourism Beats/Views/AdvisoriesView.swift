@@ -115,13 +115,13 @@ private struct HeroCard: View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(self.city.name)
-                    .font(.system(.largeTitle, design: .rounded).weight(.bold))
+                    .font(.system(.title, design: .rounded).weight(.bold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
 
                 Text(self.city.country.name)
-                    .font(.title3.weight(.semibold))
+                    .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)

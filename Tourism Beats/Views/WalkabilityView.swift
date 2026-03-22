@@ -112,7 +112,7 @@ private struct ScoreTile: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(SpacingTokens.small)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(
             self.tileBackground,
             in: RoundedRectangle(cornerRadius: 14, style: .continuous)
