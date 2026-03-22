@@ -148,6 +148,7 @@ enum CuisineColor {
 
         // American
         "american": american,
+        "californian": american,
         "burgers": american,
         "steakhouse": american,
         "bbq": american,
@@ -157,6 +158,8 @@ enum CuisineColor {
         "tex-mex": american,
         "hawaiian": american,
         "diner": american,
+        "breakfast": american,
+        "brunch": american,
 
         // Seafood
         "seafood": seafood,
@@ -177,6 +180,8 @@ enum CuisineColor {
         "pizza": european,
         "pasta": european,
         "tapas": european,
+        "bistro": european,
+        "bar": defaultColor,
         "fusion": defaultColor,
         "international": defaultColor,
         "other": defaultColor,

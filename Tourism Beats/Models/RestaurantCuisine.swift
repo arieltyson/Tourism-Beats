@@ -3,9 +3,14 @@ import Foundation
 enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
     case american
     case bakery
+    case bar
+    case bistro
     case brazilian
+    case breakfast
+    case brunch
     case burgers
     case cafe
+    case californian
     case caribbean
     case chinese
     case dessert
@@ -50,12 +55,22 @@ enum RestaurantCuisine: String, CaseIterable, Identifiable, Sendable {
             "American"
         case .bakery:
             "Bakery"
+        case .bar:
+            "Bar"
+        case .bistro:
+            "Bistro"
         case .brazilian:
             "Brazilian"
+        case .breakfast:
+            "Breakfast"
+        case .brunch:
+            "Brunch"
         case .burgers:
             "Burgers"
         case .cafe:
             "Cafe"
+        case .californian:
+            "Californian"
         case .caribbean:
             "Caribbean"
         case .chinese:
