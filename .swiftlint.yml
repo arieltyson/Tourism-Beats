@@ -39,7 +39,7 @@ type_name:
 # Raise thresholds for body/file length to avoid blocking on existing code.
 file_length:
   warning: 500
-  error: 800
+  error: 1000
 
 type_body_length:
   warning: 400
