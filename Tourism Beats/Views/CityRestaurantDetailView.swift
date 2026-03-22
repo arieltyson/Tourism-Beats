@@ -290,17 +290,19 @@ extension CityRestaurantDetailView.Hero {
                 }
             }
             .overlay(alignment: .topLeading) {
-                Text(self.restaurant.displayCuisine)
-                    .font(TypographyTokens.footnote)
-                    .bold()
-                    .foregroundStyle(AppColors.onImagePrimary)
-                    .padding(.horizontal, SpacingTokens.small)
-                    .padding(.vertical, SpacingTokens.xxSmall)
-                    .background(
-                        CuisineColor.color(for: self.restaurant.cuisine).opacity(0.85),
-                        in: Capsule()
-                    )
-                    .padding(SpacingTokens.medium)
+                if let cuisine = self.restaurant.cuisine {
+                    Text(cuisine)
+                        .font(TypographyTokens.footnote)
+                        .bold()
+                        .foregroundStyle(AppColors.onImagePrimary)
+                        .padding(.horizontal, SpacingTokens.small)
+                        .padding(.vertical, SpacingTokens.xxSmall)
+                        .background(
+                            CuisineColor.color(for: cuisine).opacity(0.85),
+                            in: Capsule()
+                        )
+                        .padding(SpacingTokens.medium)
+                }
             }
             .clipShape(.rect(cornerRadius: 20, style: .continuous))
             .aspectRatio(4 / 3, contentMode: .fit)

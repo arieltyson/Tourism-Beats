@@ -83,7 +83,6 @@ actor CityRestaurantService: CityRestaurantProviding {
 
 extension CityRestaurantService {
     private func fetchRestaurants(for city: CityModel) async throws -> [CityRestaurant] {
-        // Pillar 1: Run multiple MapKit queries concurrently for cross-referencing
         let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
 
         var overpassCandidates: [RestaurantModels.OverpassRestaurant] = []
@@ -112,7 +111,6 @@ extension CityRestaurantService {
             throw RestaurantModels.ServiceError.invalidResponse
         }
 
-        // Pillar 2: Enrich with Wikidata award data (non-blocking)
         let wikidataMatches = await CityRestaurantWikidataService.fetchAwards(
             for: city,
             session: self.session
@@ -124,7 +122,6 @@ extension CityRestaurantService {
             )
         }
 
-        // Multi-location chain detection: count same-name restaurants at different coords
         candidates = Self.tagDuplicateLocationCounts(candidates)
 
         return CityRestaurantRanking.topRestaurants(from: candidates, for: city, limit: 6)
@@ -176,7 +173,6 @@ extension CityRestaurantService {
             "authentic local cuisine"
         ]
 
-        // Track how many queries each restaurant appears in by coordinate key
         var appearanceCounts: [String: Int] = [:]
         var foodQueryCounts: [String: Int] = [:]
         var bestResultByKey: [String: RestaurantModels.MapKitRestaurantResult] = [:]
@@ -326,10 +322,13 @@ extension CityRestaurantService {
             // Pillar 3: Compute OSM metadata richness if we have an Overpass match
             let metadataScore = overpassMatch.map { self.metadataScore(for: $0) } ?? 0
 
+            // Use OSM cuisine when available, otherwise infer from restaurant name
+            let cuisine = overpassMatch?.cuisine ?? CuisineInferrer.infer(from: mapItem.name)
+
             return CityRestaurantCandidate(
                 id: "mapkit-\(coordinateKey)",
                 name: mapItem.name,
-                cuisine: overpassMatch?.cuisine,
+                cuisine: cuisine,
                 address: mapItem.address ?? overpassMatch?.address,
                 hours: overpassMatch?.openingHours,
                 phoneNumber: mapItem.phoneNumber ?? overpassMatch?.phoneNumber,
@@ -530,7 +529,7 @@ extension CityRestaurantService {
         CityRestaurantCandidate(
             id: "restaurant-\(restaurant.elementType ?? "osm")-\(restaurant.elementIdentifier ?? restaurant.name.hashValue)",
             name: restaurant.name,
-            cuisine: restaurant.cuisine,
+            cuisine: restaurant.cuisine ?? CuisineInferrer.infer(from: restaurant.name),
             address: restaurant.address,
             hours: restaurant.openingHours,
             phoneNumber: restaurant.phoneNumber,

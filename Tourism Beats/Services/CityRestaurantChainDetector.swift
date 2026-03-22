@@ -196,8 +196,8 @@ extension CityRestaurantChainDetector {
         "pret a manger"
     ]
 
-    /// Comprehensive set of known chain/franchise restaurant names worldwide.
-    /// Covers fast food, fast casual, casual dining, and coffee chains.
+    // Comprehensive set of known chain/franchise restaurant names worldwide.
+    // Covers fast food, fast casual, casual dining, and coffee chains.
     // swiftlint:disable:next closure_body_length
     private static let knownChains: Set<String> = {
         var chains: Set<String> = []

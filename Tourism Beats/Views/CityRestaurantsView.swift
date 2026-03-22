@@ -344,8 +344,17 @@ extension CityRestaurantsView.RestaurantCard {
     private struct CuisineBadge: View {
         let cuisine: String
 
+        /// Shows only the primary cuisine (before any "•" separator) to prevent truncation.
+        private var primaryCuisine: String {
+            self.cuisine
+                .components(separatedBy: "\u{2022}")
+                .first?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                ?? self.cuisine
+        }
+
         var body: some View {
-            Text(self.cuisine)
+            Text(self.primaryCuisine)
                 .font(TypographyTokens.footnote)
                 .bold()
                 .foregroundStyle(AppColors.onImagePrimary)
