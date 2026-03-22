@@ -177,7 +177,7 @@ private struct ModernIconPageButton: View {
                     width: PageIndicatorTokens.modernButtonWidth,
                     height: PageIndicatorTokens.modernButtonHeight
                 )
-                .contentShape(.rect)
+                .contentShape(.interaction, .rect.inset(by: -8))
                 .background {
                     if self.isActive {
                         Circle()
@@ -228,7 +228,7 @@ private struct LegacyIconPageButton: View {
                     width: PageIndicatorTokens.legacyCapsuleWidth,
                     height: PageIndicatorTokens.legacyCapsuleHeight
                 )
-                .contentShape(.rect)
+                .contentShape(.interaction, .rect.inset(by: -8))
                 .background {
                     if self.isActive {
                         Circle()

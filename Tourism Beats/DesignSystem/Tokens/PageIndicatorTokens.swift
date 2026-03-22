@@ -7,8 +7,8 @@ import SwiftUI
 enum PageIndicatorTokens {
     // MARK: - Modern Sizing (iOS 26+)
 
-    /// Width of each icon button's tap target.
-    static let modernButtonWidth: CGFloat = 36
+    /// Width of each icon button's tap target — meets the 44pt HIG minimum.
+    static let modernButtonWidth: CGFloat = 44
 
     /// Height of each icon button's tap target — meets the 44pt HIG minimum.
     static let modernButtonHeight: CGFloat = 44
@@ -19,7 +19,7 @@ enum PageIndicatorTokens {
     // MARK: - Legacy Sizing
 
     /// Capsule width for the legacy selection highlight.
-    static let legacyCapsuleWidth: CGFloat = 36
+    static let legacyCapsuleWidth: CGFloat = 44
 
     /// Capsule height for the legacy selection highlight.
     static let legacyCapsuleHeight: CGFloat = 44
@@ -59,7 +59,7 @@ enum PageIndicatorTokens {
     // MARK: - Overlay Position
 
     /// Trailing padding for the indicator overlay from the screen edge.
-    static let overlayTrailingPadding: CGFloat = 4
+    static let overlayTrailingPadding: CGFloat = 0
 
     // MARK: - Content Layout
 
