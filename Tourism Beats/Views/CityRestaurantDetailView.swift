@@ -83,27 +83,6 @@ extension CityRestaurantDetailView {
                 Text(self.restaurant.summary)
                     .font(TypographyTokens.body)
                     .foregroundStyle(AppColors.label)
-
-                if !self.restaurant.rankingHighlights.isEmpty {
-                    LazyVGrid(
-                        columns: [GridItem(.adaptive(minimum: 110), spacing: SpacingTokens.xSmall)],
-                        alignment: .leading,
-                        spacing: SpacingTokens.xSmall
-                    ) {
-                        ForEach(self.restaurant.rankingHighlights, id: \.self) { highlight in
-                            Text(highlight)
-                                .font(TypographyTokens.footnote)
-                                .foregroundStyle(AppColors.label)
-                                .lineLimit(1)
-                                .padding(.horizontal, SpacingTokens.small)
-                                .padding(.vertical, SpacingTokens.xxSmall)
-                                .background(
-                                    AppColors.surfaceSecondary.opacity(0.92),
-                                    in: Capsule()
-                                )
-                        }
-                    }
-                }
             }
             .padding(SpacingTokens.medium)
             .background {
@@ -311,13 +290,16 @@ extension CityRestaurantDetailView.Hero {
                 }
             }
             .overlay(alignment: .topLeading) {
-                Text(self.restaurant.rankingHighlights.first ?? "Top Pick")
+                Text(self.restaurant.displayCuisine)
                     .font(TypographyTokens.footnote)
                     .bold()
                     .foregroundStyle(AppColors.onImagePrimary)
                     .padding(.horizontal, SpacingTokens.small)
                     .padding(.vertical, SpacingTokens.xxSmall)
-                    .background(AppColors.imageBadgeFill, in: Capsule())
+                    .background(
+                        CuisineColor.color(for: self.restaurant.cuisine).opacity(0.85),
+                        in: Capsule()
+                    )
                     .padding(SpacingTokens.medium)
             }
             .clipShape(.rect(cornerRadius: 20, style: .continuous))

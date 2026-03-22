@@ -347,11 +347,15 @@ extension CityRestaurantsView.RestaurantCard {
         var body: some View {
             Text(self.cuisine)
                 .font(TypographyTokens.footnote)
+                .bold()
                 .foregroundStyle(AppColors.onImagePrimary)
                 .lineLimit(1)
                 .padding(.horizontal, SpacingTokens.xSmall)
                 .padding(.vertical, SpacingTokens.xxSmall)
-                .background(AppColors.imageBadgeFill, in: Capsule())
+                .background(
+                    CuisineColor.color(for: self.cuisine).opacity(0.85),
+                    in: Capsule()
+                )
         }
     }
 }
