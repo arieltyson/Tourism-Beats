@@ -119,7 +119,7 @@ private struct FoodCityJournalHeaderArtwork: View {
     var body: some View {
         Group {
             if let imageURL = self.group.imageURL {
-                CachedCityImage(url: imageURL)
+                CachedCityImage(url: imageURL, fallbackCoordinate: self.group.city?.coordinate)
             } else {
                 LinearGradient(
                     colors: [AppColors.info, AppColors.violet, AppColors.coral],
