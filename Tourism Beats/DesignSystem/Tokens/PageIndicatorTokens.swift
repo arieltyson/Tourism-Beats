@@ -66,5 +66,5 @@ enum PageIndicatorTokens {
     /// Symmetric horizontal padding applied to the content scroll view,
     /// creating equal space on both sides so page content is centered
     /// with the indicator occupying the trailing margin.
-    static let contentInset: CGFloat = 40
+    static let contentInset: CGFloat = 20
 }
