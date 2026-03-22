@@ -23,6 +23,16 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     let isNotable: Bool
     let brand: String?
     let popularityRank: Int?
+
+    // Pillar 1: How many independent MapKit queries returned this restaurant
+    var crossQueryAppearanceCount: Int = 1
+
+    // Pillar 2: Wikidata award/recognition data
+    var wikidataAwardCount: Int = 0
+    var isMichelinRecognized: Bool = false
+
+    // Pillar 3: OSM metadata richness (higher = more community-curated data)
+    var metadataRichnessScore: Int = 0
 }
 
 // MARK: - CityRestaurantRanking
@@ -38,7 +48,10 @@ enum CityRestaurantRanking {
 
     enum Signal: Sendable {
         case popularChoice
+        case crossQueryPopular
+        case awardWinning
         case notable
+        case metadataRich
         case establishedPresence
         case cuisine
         case centralLocation
@@ -47,8 +60,14 @@ enum CityRestaurantRanking {
             switch self {
             case .popularChoice:
                 15
+            case .crossQueryPopular:
+                12
+            case .awardWinning:
+                14
             case .notable:
                 10
+            case .metadataRich:
+                5
             case .establishedPresence:
                 4
             case .cuisine:
@@ -62,8 +81,14 @@ enum CityRestaurantRanking {
             switch self {
             case .popularChoice:
                 "Popular"
+            case .crossQueryPopular:
+                "Highly Rated"
+            case .awardWinning:
+                "Award-Winning"
             case .notable:
                 "Notable"
+            case .metadataRich:
+                "Well-Known"
             case .establishedPresence:
                 "Established"
             case .cuisine:
@@ -77,8 +102,14 @@ enum CityRestaurantRanking {
             switch self {
             case .popularChoice:
                 "high popularity among visitors and locals"
+            case .crossQueryPopular:
+                "consistently appearing across multiple recommendation categories"
+            case .awardWinning:
+                "recognized culinary awards and distinctions"
             case .notable:
                 "strong recognition and acclaim"
+            case .metadataRich:
+                "extensive community-contributed information"
             case .establishedPresence:
                 "an established dining presence"
             case .cuisine:
@@ -121,61 +152,19 @@ enum CityRestaurantRanking {
         var signals: [Signal] = []
         var score = 0
 
-        if let rank = candidate.popularityRank {
-            switch rank {
-            case 1 ... 5:
-                signals.append(.popularChoice)
-                score += 15
-            case 6 ... 10:
-                signals.append(.popularChoice)
-                score += 10
-            case 11 ... 20:
-                score += 6
-            default:
-                score += 3
-            }
-        }
-
-        if candidate.isNotable {
-            signals.append(.notable)
-            score += Signal.notable.points
-        }
-
-        if candidate.websiteURL != nil {
-            signals.append(.establishedPresence)
-            score += Signal.establishedPresence.points
-        }
-
-        if candidate.cuisine?.isEmpty == false {
-            signals.append(.cuisine)
-            score += Signal.cuisine.points
-        }
+        score += self.scorePopularity(candidate, signals: &signals)
+        score += self.scoreCrossQuery(candidate, signals: &signals)
+        score += self.scoreAwards(candidate, signals: &signals)
+        score += self.scoreMetadata(candidate, signals: &signals)
+        score += self.scorePresence(candidate, signals: &signals)
 
         let distanceFromCenter = self.distance(
             from: cityCoordinate,
             latitude: candidate.latitude,
             longitude: candidate.longitude
         )
-
-        if let distanceFromCenter {
-            if distanceFromCenter < 1_500 {
-                signals.append(.centralLocation)
-                score += 3
-            } else if distanceFromCenter < 4_000 {
-                signals.append(.centralLocation)
-                score += 2
-            } else if distanceFromCenter < 8_000 {
-                score += 1
-            }
-        }
-
-        if candidate.brand?.isEmpty == false {
-            score -= 4
-        }
-
-        if self.isGenericName(candidate.name) {
-            score -= 3
-        }
+        score += self.scoreLocation(distanceFromCenter, signals: &signals)
+        score += self.scorePenalties(candidate)
 
         return ScoredCandidate(
             candidate: candidate,
@@ -187,6 +176,119 @@ enum CityRestaurantRanking {
             distanceFromCenter: distanceFromCenter,
             primaryCuisineKey: self.primaryCuisineKey(for: candidate.cuisine)
         )
+    }
+
+    // MARK: - Scoring Helpers
+
+    private static func scorePopularity(
+        _ candidate: CityRestaurantCandidate,
+        signals: inout [Signal]
+    ) -> Int {
+        guard let rank = candidate.popularityRank else { return 0 }
+        switch rank {
+        case 1 ... 5:
+            signals.append(.popularChoice)
+            return 15
+        case 6 ... 10:
+            signals.append(.popularChoice)
+            return 10
+        case 11 ... 20:
+            return 6
+        default:
+            return 3
+        }
+    }
+
+    private static func scoreCrossQuery(
+        _ candidate: CityRestaurantCandidate,
+        signals: inout [Signal]
+    ) -> Int {
+        if candidate.crossQueryAppearanceCount >= 3 {
+            signals.append(.crossQueryPopular)
+            return Signal.crossQueryPopular.points
+        } else if candidate.crossQueryAppearanceCount == 2 {
+            return 6
+        }
+        return 0
+    }
+
+    private static func scoreAwards(
+        _ candidate: CityRestaurantCandidate,
+        signals: inout [Signal]
+    ) -> Int {
+        if candidate.isMichelinRecognized {
+            signals.append(.awardWinning)
+            return Signal.awardWinning.points
+        } else if candidate.wikidataAwardCount > 0 {
+            signals.append(.awardWinning)
+            return 8
+        }
+
+        if candidate.isNotable {
+            signals.append(.notable)
+            return Signal.notable.points
+        }
+
+        return 0
+    }
+
+    private static func scoreMetadata(
+        _ candidate: CityRestaurantCandidate,
+        signals: inout [Signal]
+    ) -> Int {
+        if candidate.metadataRichnessScore >= 20 {
+            signals.append(.metadataRich)
+            return Signal.metadataRich.points
+        } else if candidate.metadataRichnessScore >= 12 {
+            return 3
+        } else if candidate.metadataRichnessScore >= 6 {
+            return 1
+        }
+        return 0
+    }
+
+    private static func scorePresence(
+        _ candidate: CityRestaurantCandidate,
+        signals: inout [Signal]
+    ) -> Int {
+        var score = 0
+
+        if candidate.websiteURL != nil {
+            signals.append(.establishedPresence)
+            score += Signal.establishedPresence.points
+        }
+
+        if candidate.cuisine?.isEmpty == false {
+            signals.append(.cuisine)
+            score += Signal.cuisine.points
+        }
+
+        return score
+    }
+
+    private static func scoreLocation(
+        _ distanceFromCenter: CLLocationDistance?,
+        signals: inout [Signal]
+    ) -> Int {
+        guard let distanceFromCenter else { return 0 }
+
+        if distanceFromCenter < 1_500 {
+            signals.append(.centralLocation)
+            return 3
+        } else if distanceFromCenter < 4_000 {
+            signals.append(.centralLocation)
+            return 2
+        } else if distanceFromCenter < 8_000 {
+            return 1
+        }
+        return 0
+    }
+
+    private static func scorePenalties(_ candidate: CityRestaurantCandidate) -> Int {
+        var penalty = 0
+        if candidate.brand?.isEmpty == false { penalty -= 4 }
+        if self.isGenericName(candidate.name) { penalty -= 3 }
+        return penalty
     }
 
     private static func selectDiverseRestaurants(

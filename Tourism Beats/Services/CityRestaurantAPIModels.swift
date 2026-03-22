@@ -109,6 +109,37 @@ enum CityRestaurantAPIModels {
         let latitude: Double
         let longitude: Double
         let popularityRank: Int
+        var crossQueryAppearanceCount: Int = 1
+    }
+
+    // MARK: - Wikidata SPARQL Models
+
+    struct WikidataSPARQLResponse: Decodable {
+        let results: WikidataResults
+    }
+
+    struct WikidataResults: Decodable {
+        let bindings: [WikidataBinding]
+    }
+
+    struct WikidataBinding: Decodable {
+        let restaurantLabel: WikidataValue?
+        let lat: WikidataValue?
+        let lon: WikidataValue?
+        let awardLabel: WikidataValue?
+        let michelinStars: WikidataValue?
+    }
+
+    struct WikidataValue: Decodable {
+        let value: String
+    }
+
+    struct WikidataRestaurantMatch: Sendable {
+        let name: String
+        let latitude: Double
+        let longitude: Double
+        let awardCount: Int
+        let isMichelinRecognized: Bool
     }
 
     enum ServiceError: Error {

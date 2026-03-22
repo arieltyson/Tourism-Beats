@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import MapKit
 import OSLog
@@ -82,7 +83,8 @@ actor CityRestaurantService: CityRestaurantProviding {
 
 extension CityRestaurantService {
     private func fetchRestaurants(for city: CityModel) async throws -> [CityRestaurant] {
-        let mapKitResults = await Self.mapKitSearch(for: city)
+        // Pillar 1: Run multiple MapKit queries concurrently for cross-referencing
+        let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
 
         var overpassCandidates: [RestaurantModels.OverpassRestaurant] = []
         do {
@@ -93,7 +95,7 @@ extension CityRestaurantService {
             )
         }
 
-        let candidates: [CityRestaurantCandidate]
+        var candidates: [CityRestaurantCandidate]
 
         if !mapKitResults.isEmpty {
             candidates = Self.mergeResults(
@@ -108,6 +110,18 @@ extension CityRestaurantService {
             candidates = overpassCandidates.map(Self.candidate(from:))
         } else {
             throw RestaurantModels.ServiceError.invalidResponse
+        }
+
+        // Pillar 2: Enrich with Wikidata award data (non-blocking)
+        let wikidataMatches = await CityRestaurantWikidataService.fetchAwards(
+            for: city,
+            session: self.session
+        )
+        if !wikidataMatches.isEmpty {
+            candidates = CityRestaurantWikidataService.enrichCandidates(
+                candidates,
+                with: wikidataMatches
+            )
         }
 
         return CityRestaurantRanking.topRestaurants(from: candidates, for: city, limit: 6)
@@ -136,16 +150,77 @@ extension CityRestaurantService {
     }
 }
 
-// MARK: - MapKit Search
+// MARK: - MapKit Search (Multi-Query Cross-Referencing)
 
 extension CityRestaurantService {
+    /// Pillar 1: Run multiple natural language queries against MapKit and
+    /// track how many independent queries return each restaurant.
+    /// Restaurants appearing across multiple queries are demonstrably popular.
     @MainActor
-    private static func mapKitSearch(
+    private static func multiQueryMapKitSearch(
         for city: CityModel
+    ) async -> [RestaurantModels.MapKitRestaurantResult] {
+        let queries = [
+            "restaurants",
+            "best restaurants",
+            "popular restaurants",
+            "top rated restaurants"
+        ]
+
+        // Track how many queries each restaurant appears in by coordinate key
+        var appearanceCounts: [String: Int] = [:]
+        var bestResultByKey: [String: RestaurantModels.MapKitRestaurantResult] = [:]
+
+        for query in queries {
+            let results = await self.singleMapKitSearch(for: city, query: query)
+
+            for result in results {
+                let key = self.coordinateKey(
+                    latitude: result.latitude,
+                    longitude: result.longitude
+                )
+
+                appearanceCounts[key, default: 0] += 1
+
+                // Keep the result with the best (lowest) popularity rank
+                if let existing = bestResultByKey[key] {
+                    if result.popularityRank < existing.popularityRank {
+                        bestResultByKey[key] = result
+                    }
+                } else {
+                    bestResultByKey[key] = result
+                }
+            }
+        }
+
+        // Attach cross-query count to each result
+        return bestResultByKey.values.map { result in
+            let key = self.coordinateKey(
+                latitude: result.latitude,
+                longitude: result.longitude
+            )
+            return RestaurantModels.MapKitRestaurantResult(
+                name: result.name,
+                phoneNumber: result.phoneNumber,
+                websiteURL: result.websiteURL,
+                address: result.address,
+                latitude: result.latitude,
+                longitude: result.longitude,
+                popularityRank: result.popularityRank,
+                crossQueryAppearanceCount: appearanceCounts[key, default: 1]
+            )
+        }
+        .sorted { $0.popularityRank < $1.popularityRank }
+    }
+
+    @MainActor
+    private static func singleMapKitSearch(
+        for city: CityModel,
+        query: String
     ) async -> [RestaurantModels.MapKitRestaurantResult] {
         do {
             let request = MKLocalSearch.Request()
-            request.naturalLanguageQuery = "restaurants"
+            request.naturalLanguageQuery = query
             request.region = MKCoordinateRegion(
                 center: city.coordinate,
                 latitudinalMeters: 10_000,
@@ -176,6 +251,10 @@ extension CityRestaurantService {
         }
     }
 
+    private static func coordinateKey(latitude: Double, longitude: Double) -> String {
+        "\(Int((latitude * 10_000).rounded()))_\(Int((longitude * 10_000).rounded()))"
+    }
+
     private static func mergeResults(
         mapKit: [RestaurantModels.MapKitRestaurantResult],
         overpass: [RestaurantModels.OverpassRestaurant],
@@ -202,8 +281,13 @@ extension CityRestaurantService {
 
             let overpassMatch = self.findOverpassMatch(for: mapItem, in: overpass)
 
-            let coordinateKey =
-                "\(Int((mapItem.latitude * 10_000).rounded()))_\(Int((mapItem.longitude * 10_000).rounded()))"
+            let coordinateKey = self.coordinateKey(
+                latitude: mapItem.latitude,
+                longitude: mapItem.longitude
+            )
+
+            // Pillar 3: Compute OSM metadata richness if we have an Overpass match
+            let metadataScore = overpassMatch.map { self.metadataScore(for: $0) } ?? 0
 
             return CityRestaurantCandidate(
                 id: "mapkit-\(coordinateKey)",
@@ -227,7 +311,9 @@ extension CityRestaurantService {
                 acceptsReservations: overpassMatch?.acceptsReservations ?? false,
                 isNotable: overpassMatch?.isNotable ?? false,
                 brand: overpassMatch?.brand,
-                popularityRank: mapItem.popularityRank
+                popularityRank: mapItem.popularityRank,
+                crossQueryAppearanceCount: mapItem.crossQueryAppearanceCount,
+                metadataRichnessScore: metadataScore
             )
         }
     }
@@ -414,7 +500,8 @@ extension CityRestaurantService {
             acceptsReservations: restaurant.acceptsReservations,
             isNotable: restaurant.isNotable,
             brand: restaurant.brand,
-            popularityRank: nil
+            popularityRank: nil,
+            metadataRichnessScore: self.metadataScore(for: restaurant)
         )
     }
 
