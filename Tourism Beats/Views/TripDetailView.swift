@@ -16,33 +16,46 @@ struct TripDetailView: View {
     @State private var isEditTripPresented: Bool = false
     @State private var isTripDeleteConfirmationPresented: Bool = false
     @State private var errorMessage: String?
+    @State private var scrollTargetDayID: PersistentIdentifier?
 
     var body: some View {
-        ScrollView {
-            TripDetailContent(
-                trip: self.trip,
-                cityModel: self.viewModel.cityModel(for: self.trip),
-                countryFlag: self.viewModel.countryFlag(for: self.trip),
-                onAddDay: self.addDay,
-                onAddActivity: { day in
-                    self.dayForNewActivity = day
-                },
-                onEditActivity: { activity in
-                    self.activityToEdit = activity
-                },
-                onCycleActivityStatus: self.cycleActivityStatus,
-                onDeleteActivity: self.deleteActivity,
-                onDeleteDay: { day in
-                    self.dayPendingDeletion = day
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                TripDetailContent(
+                    trip: self.trip,
+                    cityModel: self.viewModel.cityModel(for: self.trip),
+                    countryFlag: self.viewModel.countryFlag(for: self.trip),
+                    onAddDay: self.addDay,
+                    onAddActivity: { day in
+                        self.dayForNewActivity = day
+                    },
+                    onEditActivity: { activity in
+                        self.activityToEdit = activity
+                    },
+                    onCycleActivityStatus: self.cycleActivityStatus,
+                    onDeleteActivity: self.deleteActivity,
+                    onDeleteDay: { day in
+                        self.dayPendingDeletion = day
+                    }
+                )
+                .padding(.vertical, SpacingTokens.small)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .scrollIndicators(.hidden)
+            .contentMargins(.horizontal, SpacingTokens.medium, for: .scrollContent)
+            .contentMargins(.bottom, SpacingTokens.xxLarge, for: .scrollContent)
+            .background(Color.clear.ignoresSafeArea())
+            .onChange(of: self.scrollTargetDayID) { _, targetID in
+                guard let targetID else { return }
+                Task {
+                    try? await Task.sleep(for: .milliseconds(300))
+                    withAnimation(AnimationTokens.standard) {
+                        scrollProxy.scrollTo(targetID, anchor: .bottom)
+                    }
                 }
-            )
-            .padding(.vertical, SpacingTokens.small)
-            .frame(maxWidth: .infinity, alignment: .leading)
+                self.scrollTargetDayID = nil
+            }
         }
-        .scrollIndicators(.hidden)
-        .contentMargins(.horizontal, SpacingTokens.medium, for: .scrollContent)
-        .contentMargins(.bottom, SpacingTokens.xxLarge, for: .scrollContent)
-        .background(Color.clear.ignoresSafeArea())
         .navigationTitle(self.trip.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -95,10 +108,9 @@ struct TripDetailView: View {
         } message: {
             Text("Deleting this trip also removes its days and activities.")
         }
-        .confirmationDialog(
+        .alert(
             "Delete Day",
-            isPresented: self.dayDeleteDialogPresented,
-            titleVisibility: .visible
+            isPresented: self.dayDeleteDialogPresented
         ) {
             Button("Delete Day", role: .destructive) {
                 self.confirmDeleteDay()
@@ -143,14 +155,14 @@ struct TripDetailView: View {
     }
 
     private func addDay() {
-        self.modelContext.insert(
-            TripDay(
-                dayNumber: self.trip.nextDayNumber,
-                date: self.trip.nextDayDate,
-                trip: self.trip
-            )
+        let newDay = TripDay(
+            dayNumber: self.trip.nextDayNumber,
+            date: self.trip.nextDayDate,
+            trip: self.trip
         )
+        self.modelContext.insert(newDay)
         self.persistChanges()
+        self.scrollTargetDayID = newDay.persistentModelID
     }
 
     private func confirmDeleteDay() {

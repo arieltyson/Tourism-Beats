@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 // MARK: - TripSummaryCard
@@ -161,6 +162,7 @@ struct TripItinerarySection: View {
                         self.onDeleteDay(day)
                     }
                 )
+                .id(day.persistentModelID)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
