@@ -46,6 +46,10 @@ enum CityRestaurantAPIModels {
         let reservation: String?
         let dietVegetarian: String?
         let dietVegan: String?
+        let dietHalal: String?
+        let dietKosher: String?
+        let organic: String?
+        let stars: String?
         let addrStreet: String?
         let addrHousenumber: String?
         let addrCity: String?
@@ -66,6 +70,10 @@ enum CityRestaurantAPIModels {
             case reservation
             case dietVegetarian = "diet:vegetarian"
             case dietVegan = "diet:vegan"
+            case dietHalal = "diet:halal"
+            case dietKosher = "diet:kosher"
+            case organic
+            case stars
             case addrStreet = "addr:street"
             case addrHousenumber = "addr:housenumber"
             case addrCity = "addr:city"
@@ -87,9 +95,13 @@ enum CityRestaurantAPIModels {
         let wheelchairAccessibility: CityRestaurant.AccessibilityLevel
         let offersVegetarianOptions: Bool
         let offersVeganOptions: Bool
+        let offersHalalOptions: Bool
+        let offersKosherOptions: Bool
         let hasOutdoorSeating: Bool
         let acceptsReservations: Bool
         let isNotable: Bool
+        let isOrganic: Bool
+        let hasStarRating: Bool
     }
 
     struct CachedPayload: Codable, Sendable {
@@ -110,6 +122,7 @@ enum CityRestaurantAPIModels {
         let longitude: Double
         let popularityRank: Int
         var crossQueryAppearanceCount: Int = 1
+        var foodQueryAppearanceCount: Int = 0
     }
 
     // MARK: - Wikidata SPARQL Models

@@ -160,40 +160,49 @@ extension CityRestaurantService {
     private static func multiQueryMapKitSearch(
         for city: CityModel
     ) async -> [RestaurantModels.MapKitRestaurantResult] {
-        let queries = [
+        let popularityQueries = [
             "restaurants",
             "best restaurants",
             "popular restaurants",
             "top rated restaurants"
         ]
 
+        let foodQualityQueries = [
+            "best food \(city.name)",
+            "fine dining",
+            "authentic local cuisine"
+        ]
+
         // Track how many queries each restaurant appears in by coordinate key
         var appearanceCounts: [String: Int] = [:]
+        var foodQueryCounts: [String: Int] = [:]
         var bestResultByKey: [String: RestaurantModels.MapKitRestaurantResult] = [:]
 
-        for query in queries {
-            let results = await self.singleMapKitSearch(for: city, query: query)
+        for query in popularityQueries {
+            await self.accumulateResults(
+                from: self.singleMapKitSearch(for: city, query: query),
+                into: &bestResultByKey,
+                appearanceCounts: &appearanceCounts
+            )
+        }
 
+        for query in foodQualityQueries {
+            let results = await self.singleMapKitSearch(for: city, query: query)
+            self.accumulateResults(
+                from: results,
+                into: &bestResultByKey,
+                appearanceCounts: &appearanceCounts
+            )
             for result in results {
                 let key = self.coordinateKey(
                     latitude: result.latitude,
                     longitude: result.longitude
                 )
-
-                appearanceCounts[key, default: 0] += 1
-
-                // Keep the result with the best (lowest) popularity rank
-                if let existing = bestResultByKey[key] {
-                    if result.popularityRank < existing.popularityRank {
-                        bestResultByKey[key] = result
-                    }
-                } else {
-                    bestResultByKey[key] = result
-                }
+                foodQueryCounts[key, default: 0] += 1
             }
         }
 
-        // Attach cross-query count to each result
+        // Attach cross-query and food-query counts to each result
         return bestResultByKey.values.map { result in
             let key = self.coordinateKey(
                 latitude: result.latitude,
@@ -207,10 +216,35 @@ extension CityRestaurantService {
                 latitude: result.latitude,
                 longitude: result.longitude,
                 popularityRank: result.popularityRank,
-                crossQueryAppearanceCount: appearanceCounts[key, default: 1]
+                crossQueryAppearanceCount: appearanceCounts[key, default: 1],
+                foodQueryAppearanceCount: foodQueryCounts[key, default: 0]
             )
         }
         .sorted { $0.popularityRank < $1.popularityRank }
+    }
+
+    @MainActor
+    private static func accumulateResults(
+        from results: [RestaurantModels.MapKitRestaurantResult],
+        into bestResultByKey: inout [String: RestaurantModels.MapKitRestaurantResult],
+        appearanceCounts: inout [String: Int]
+    ) {
+        for result in results {
+            let key = self.coordinateKey(
+                latitude: result.latitude,
+                longitude: result.longitude
+            )
+
+            appearanceCounts[key, default: 0] += 1
+
+            if let existing = bestResultByKey[key] {
+                if result.popularityRank < existing.popularityRank {
+                    bestResultByKey[key] = result
+                }
+            } else {
+                bestResultByKey[key] = result
+            }
+        }
     }
 
     @MainActor
@@ -313,7 +347,11 @@ extension CityRestaurantService {
                 brand: overpassMatch?.brand,
                 popularityRank: mapItem.popularityRank,
                 crossQueryAppearanceCount: mapItem.crossQueryAppearanceCount,
-                metadataRichnessScore: metadataScore
+                foodQueryAppearanceCount: mapItem.foodQueryAppearanceCount,
+                metadataRichnessScore: metadataScore,
+                hasOSMStarRating: overpassMatch?.hasStarRating ?? false,
+                isOrganic: overpassMatch?.isOrganic ?? false,
+                dietaryVarietyCount: Self.dietaryVarietyCount(for: overpassMatch)
             )
         }
     }
@@ -463,9 +501,13 @@ extension CityRestaurantService {
                     wheelchairAccessibility: self.wheelchairAccessibility(from: element.tags?.wheelchair),
                     offersVegetarianOptions: self.booleanTag(element.tags?.dietVegetarian),
                     offersVeganOptions: self.booleanTag(element.tags?.dietVegan),
+                    offersHalalOptions: self.booleanTag(element.tags?.dietHalal),
+                    offersKosherOptions: self.booleanTag(element.tags?.dietKosher),
                     hasOutdoorSeating: self.booleanTag(element.tags?.outdoorSeating),
                     acceptsReservations: self.reservationsTag(element.tags?.reservation),
-                    isNotable: self.normalizedText(element.tags?.wikidata) != nil
+                    isNotable: self.normalizedText(element.tags?.wikidata) != nil,
+                    isOrganic: self.booleanTag(element.tags?.organic),
+                    hasStarRating: self.normalizedText(element.tags?.stars) != nil
                 )
             )
         }
@@ -501,8 +543,23 @@ extension CityRestaurantService {
             isNotable: restaurant.isNotable,
             brand: restaurant.brand,
             popularityRank: nil,
-            metadataRichnessScore: self.metadataScore(for: restaurant)
+            metadataRichnessScore: self.metadataScore(for: restaurant),
+            hasOSMStarRating: restaurant.hasStarRating,
+            isOrganic: restaurant.isOrganic,
+            dietaryVarietyCount: self.dietaryVarietyCount(for: restaurant)
         )
+    }
+
+    private static func dietaryVarietyCount(
+        for restaurant: RestaurantModels.OverpassRestaurant?
+    ) -> Int {
+        guard let restaurant else { return 0 }
+        return [
+            restaurant.offersVegetarianOptions,
+            restaurant.offersVeganOptions,
+            restaurant.offersHalalOptions,
+            restaurant.offersKosherOptions
+        ].filter(\.self).count
     }
 
     private static func metadataScore(for restaurant: RestaurantModels.OverpassRestaurant) -> Int {
@@ -515,8 +572,12 @@ extension CityRestaurantService {
         if restaurant.phoneNumber != nil { score += 2 }
         if restaurant.offersVegetarianOptions { score += 2 }
         if restaurant.offersVeganOptions { score += 2 }
+        if restaurant.offersHalalOptions { score += 2 }
+        if restaurant.offersKosherOptions { score += 2 }
         if restaurant.acceptsReservations { score += 2 }
         if restaurant.hasOutdoorSeating { score += 1 }
+        if restaurant.isOrganic { score += 3 }
+        if restaurant.hasStarRating { score += 8 }
         if restaurant.isNotable { score += 8 }
         return score
     }

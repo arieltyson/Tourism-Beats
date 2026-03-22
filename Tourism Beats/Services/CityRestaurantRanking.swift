@@ -27,12 +27,20 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     // Pillar 1: How many independent MapKit queries returned this restaurant
     var crossQueryAppearanceCount: Int = 1
 
+    // Food quality: How many food-quality-specific MapKit queries returned this
+    var foodQueryAppearanceCount: Int = 0
+
     // Pillar 2: Wikidata award/recognition data
     var wikidataAwardCount: Int = 0
     var isMichelinRecognized: Bool = false
 
     // Pillar 3: OSM metadata richness (higher = more community-curated data)
     var metadataRichnessScore: Int = 0
+
+    // OSM food quality indicators
+    var hasOSMStarRating: Bool = false
+    var isOrganic: Bool = false
+    var dietaryVarietyCount: Int = 0
 }
 
 // MARK: - CityRestaurantRanking
@@ -49,6 +57,7 @@ enum CityRestaurantRanking {
     enum Signal: Sendable {
         case popularChoice
         case crossQueryPopular
+        case foodQualityEndorsed
         case awardWinning
         case notable
         case metadataRich
@@ -60,6 +69,8 @@ enum CityRestaurantRanking {
             switch self {
             case .popularChoice:
                 15
+            case .foodQualityEndorsed:
+                13
             case .crossQueryPopular:
                 12
             case .awardWinning:
@@ -83,6 +94,8 @@ enum CityRestaurantRanking {
                 "Popular"
             case .crossQueryPopular:
                 "Highly Rated"
+            case .foodQualityEndorsed:
+                "Great Food"
             case .awardWinning:
                 "Award-Winning"
             case .notable:
@@ -104,6 +117,8 @@ enum CityRestaurantRanking {
                 "high popularity among visitors and locals"
             case .crossQueryPopular:
                 "consistently appearing across multiple recommendation categories"
+            case .foodQualityEndorsed:
+                "strong food quality reputation across review categories"
             case .awardWinning:
                 "recognized culinary awards and distinctions"
             case .notable:
@@ -154,6 +169,7 @@ enum CityRestaurantRanking {
 
         score += self.scorePopularity(candidate, signals: &signals)
         score += self.scoreCrossQuery(candidate, signals: &signals)
+        score += self.scoreFoodQuality(candidate, signals: &signals)
         score += self.scoreAwards(candidate, signals: &signals)
         score += self.scoreMetadata(candidate, signals: &signals)
         score += self.scorePresence(candidate, signals: &signals)
@@ -210,6 +226,28 @@ enum CityRestaurantRanking {
             return 6
         }
         return 0
+    }
+
+    private static func scoreFoodQuality(
+        _ candidate: CityRestaurantCandidate,
+        signals: inout [Signal]
+    ) -> Int {
+        var score = 0
+
+        // Appeared in food-quality-specific MapKit queries
+        if candidate.foodQueryAppearanceCount >= 2 {
+            signals.append(.foodQualityEndorsed)
+            score += Signal.foodQualityEndorsed.points
+        } else if candidate.foodQueryAppearanceCount == 1 {
+            score += 5
+        }
+
+        // OSM food quality indicators
+        if candidate.hasOSMStarRating { score += 6 }
+        if candidate.isOrganic { score += 2 }
+        if candidate.dietaryVarietyCount >= 3 { score += 3 } else if candidate.dietaryVarietyCount >= 2 { score += 1 }
+
+        return score
     }
 
     private static func scoreAwards(
