@@ -50,6 +50,8 @@ enum CityRestaurantAPIModels {
         let dietKosher: String?
         let organic: String?
         let stars: String?
+        let brandWikidata: String?
+        let osmOperator: String?
         let addrStreet: String?
         let addrHousenumber: String?
         let addrCity: String?
@@ -74,6 +76,8 @@ enum CityRestaurantAPIModels {
             case dietKosher = "diet:kosher"
             case organic
             case stars
+            case brandWikidata = "brand:wikidata"
+            case osmOperator = "operator"
             case addrStreet = "addr:street"
             case addrHousenumber = "addr:housenumber"
             case addrCity = "addr:city"
@@ -102,6 +106,8 @@ enum CityRestaurantAPIModels {
         let isNotable: Bool
         let isOrganic: Bool
         let hasStarRating: Bool
+        let hasBrandWikidata: Bool
+        let hasOperator: Bool
     }
 
     struct CachedPayload: Codable, Sendable {

@@ -41,6 +41,11 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     var hasOSMStarRating: Bool = false
     var isOrganic: Bool = false
     var dietaryVarietyCount: Int = 0
+
+    // Chain/generic detection signals
+    var hasBrandWikidata: Bool = false
+    var hasOperator: Bool = false
+    var duplicateLocationCount: Int = 0
 }
 
 // MARK: - CityRestaurantRanking
@@ -323,10 +328,14 @@ enum CityRestaurantRanking {
     }
 
     private static func scorePenalties(_ candidate: CityRestaurantCandidate) -> Int {
-        var penalty = 0
-        if candidate.brand?.isEmpty == false { penalty -= 4 }
-        if self.isGenericName(candidate.name) { penalty -= 3 }
-        return penalty
+        let chainConfidence = CityRestaurantChainDetector.confidence(
+            name: candidate.name,
+            brand: candidate.brand,
+            hasBrandWikidata: candidate.hasBrandWikidata,
+            hasOperator: candidate.hasOperator,
+            duplicateLocationCount: candidate.duplicateLocationCount
+        )
+        return chainConfidence.penalty
     }
 
     private static func selectDiverseRestaurants(
@@ -459,24 +468,7 @@ enum CityRestaurantRanking {
         return cityLocation.distance(from: restaurantLocation)
     }
 
-    private static func isGenericName(_ name: String) -> Bool {
-        let normalizedName = name
-            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
-            .lowercased()
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        return self.genericNames.contains(normalizedName)
-    }
-
     private static func joinedList(_ values: [String]) -> String {
         ListFormatter.localizedString(byJoining: values)
     }
-
-    private static let genericNames: Set<String> = [
-        "restaurant",
-        "restaurante",
-        "restaurant & bar",
-        "dining room",
-        "hotel restaurant"
-    ]
 }

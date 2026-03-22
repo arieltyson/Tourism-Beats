@@ -124,6 +124,9 @@ extension CityRestaurantService {
             )
         }
 
+        // Multi-location chain detection: count same-name restaurants at different coords
+        candidates = Self.tagDuplicateLocationCounts(candidates)
+
         return CityRestaurantRanking.topRestaurants(from: candidates, for: city, limit: 6)
     }
 
@@ -351,7 +354,9 @@ extension CityRestaurantService {
                 metadataRichnessScore: metadataScore,
                 hasOSMStarRating: overpassMatch?.hasStarRating ?? false,
                 isOrganic: overpassMatch?.isOrganic ?? false,
-                dietaryVarietyCount: Self.dietaryVarietyCount(for: overpassMatch)
+                dietaryVarietyCount: Self.dietaryVarietyCount(for: overpassMatch),
+                hasBrandWikidata: overpassMatch?.hasBrandWikidata ?? false,
+                hasOperator: overpassMatch?.hasOperator ?? false
             )
         }
     }
@@ -507,7 +512,9 @@ extension CityRestaurantService {
                     acceptsReservations: self.reservationsTag(element.tags?.reservation),
                     isNotable: self.normalizedText(element.tags?.wikidata) != nil,
                     isOrganic: self.booleanTag(element.tags?.organic),
-                    hasStarRating: self.normalizedText(element.tags?.stars) != nil
+                    hasStarRating: self.normalizedText(element.tags?.stars) != nil,
+                    hasBrandWikidata: self.normalizedText(element.tags?.brandWikidata) != nil,
+                    hasOperator: self.normalizedText(element.tags?.osmOperator) != nil
                 )
             )
         }
@@ -546,8 +553,36 @@ extension CityRestaurantService {
             metadataRichnessScore: self.metadataScore(for: restaurant),
             hasOSMStarRating: restaurant.hasStarRating,
             isOrganic: restaurant.isOrganic,
-            dietaryVarietyCount: self.dietaryVarietyCount(for: restaurant)
+            dietaryVarietyCount: self.dietaryVarietyCount(for: restaurant),
+            hasBrandWikidata: restaurant.hasBrandWikidata,
+            hasOperator: restaurant.hasOperator
         )
+    }
+
+    /// Detects chains by counting how many candidates share the same
+    /// normalized name but appear at different coordinates.
+    private static func tagDuplicateLocationCounts(
+        _ candidates: [CityRestaurantCandidate]
+    ) -> [CityRestaurantCandidate] {
+        // Count occurrences of each normalized name
+        var nameCounts: [String: Int] = [:]
+        for candidate in candidates {
+            let key = candidate.name
+                .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .lowercased()
+            nameCounts[key, default: 0] += 1
+        }
+
+        return candidates.map { candidate in
+            let key = candidate.name
+                .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .lowercased()
+            let count = nameCounts[key, default: 1]
+            guard count > 1 else { return candidate }
+            var updated = candidate
+            updated.duplicateLocationCount = count
+            return updated
+        }
     }
 
     private static func dietaryVarietyCount(
