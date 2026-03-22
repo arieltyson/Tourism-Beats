@@ -49,8 +49,6 @@ private struct SafetyLoadedContent: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.small) {
-            SafetyCountryLabel(countryName: self.safety.countryName)
-
             if let scoreText = self.riskScoreText,
                let levelText = self.riskLevelText,
                let color = self.riskLevelColor
