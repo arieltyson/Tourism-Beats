@@ -5,6 +5,7 @@ import SwiftUI
 struct WeatherView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.locale) private var locale
     @StateObject private var viewModel: WeatherViewModel
 
@@ -99,9 +100,39 @@ struct WeatherView: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            .ultraThinMaterial,
-            in: .rect(cornerRadius: 16, style: .continuous)
+        .background {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(
+                    self.reduceTransparency
+                        ? AnyShapeStyle(AppColors.surfaceSecondary)
+                        : AnyShapeStyle(.ultraThinMaterial)
+                )
+                .overlay {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    .white.opacity(self.reduceTransparency ? 0.06 : 0.10),
+                                    AppColors.info.opacity(self.reduceTransparency ? 0.06 : 0.10)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                }
+        }
+        .clipShape(.rect(cornerRadius: 20, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .strokeBorder(
+                    AppColors.glassBorder(for: self.colorScheme),
+                    lineWidth: 0.8
+                )
+        }
+        .shadow(
+            color: AppColors.glassShadow(for: self.colorScheme),
+            radius: 12,
+            y: 6
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Weather")

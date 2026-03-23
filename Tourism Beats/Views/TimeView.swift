@@ -37,6 +37,9 @@ struct TimeView: View {
 // MARK: - StandardTimeCard
 
 private struct StandardTimeCard: View {
+    @Environment(\.colorScheme) private var scheme
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
     let formattedTime: String
     let date: Date
     let timeZone: TimeZone
@@ -61,9 +64,39 @@ private struct StandardTimeCard: View {
                 .padding(.bottom, 12)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            .ultraThinMaterial,
-            in: .rect(cornerRadius: 16, style: .continuous)
+        .background {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(
+                    self.reduceTransparency
+                        ? AnyShapeStyle(AppColors.surfaceSecondary)
+                        : AnyShapeStyle(.ultraThinMaterial)
+                )
+                .overlay {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    .white.opacity(self.reduceTransparency ? 0.06 : 0.10),
+                                    AppColors.info.opacity(self.reduceTransparency ? 0.06 : 0.10)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                }
+        }
+        .clipShape(.rect(cornerRadius: 20, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .strokeBorder(
+                    AppColors.glassBorder(for: self.scheme),
+                    lineWidth: 0.8
+                )
+        }
+        .shadow(
+            color: AppColors.glassShadow(for: self.scheme),
+            radius: 12,
+            y: 6
         )
     }
 }
@@ -71,6 +104,9 @@ private struct StandardTimeCard: View {
 // MARK: - AccessibilityTimeCard
 
 private struct AccessibilityTimeCard: View {
+    @Environment(\.colorScheme) private var scheme
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
     let formattedTime: String
 
     var body: some View {
@@ -88,9 +124,26 @@ private struct AccessibilityTimeCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(SpacingTokens.small)
-        .background(
-            .ultraThinMaterial,
-            in: .rect(cornerRadius: 16, style: .continuous)
+        .background {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(
+                    self.reduceTransparency
+                        ? AnyShapeStyle(AppColors.surfaceSecondary)
+                        : AnyShapeStyle(.ultraThinMaterial)
+                )
+        }
+        .clipShape(.rect(cornerRadius: 20, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .strokeBorder(
+                    AppColors.glassBorder(for: self.scheme),
+                    lineWidth: 0.8
+                )
+        }
+        .shadow(
+            color: AppColors.glassShadow(for: self.scheme),
+            radius: 12,
+            y: 6
         )
     }
 }
