@@ -100,15 +100,13 @@ extension CityRestaurantService {
             candidates = Self.mergeResults(
                 mapKit: mapKitResults,
                 overpass: overpassCandidates,
-                cityName: city.name,
-                countryCode: city.country.code
+                cityName: city.name
             )
         } else if !overpassCandidates.isEmpty {
             self.logger.info(
                 "MapKit unavailable, falling back to Overpass for \(city.name, privacy: .public)"
             )
-            let code = city.country.code
-            candidates = overpassCandidates.map { Self.candidate(from: $0, countryCode: code) }
+            candidates = overpassCandidates.map { Self.candidate(from: $0) }
         } else {
             throw RestaurantModels.ServiceError.invalidResponse
         }
@@ -297,8 +295,7 @@ extension CityRestaurantService {
     private static func mergeResults(
         mapKit: [RestaurantModels.MapKitRestaurantResult],
         overpass: [RestaurantModels.OverpassRestaurant],
-        cityName: String,
-        countryCode: String
+        cityName: String
     ) -> [CityRestaurantCandidate] {
         let normalizedCityName = cityName.folding(
             options: [.caseInsensitive, .diacriticInsensitive],
@@ -329,7 +326,7 @@ extension CityRestaurantService {
             let metadataScore = overpassMatch.map { self.metadataScore(for: $0) } ?? 0
 
             let cuisine = overpassMatch?.cuisine
-                ?? CuisineInferrer.infer(from: mapItem.name, countryCode: countryCode)
+                ?? CuisineInferrer.infer(from: mapItem.name)
 
             return CityRestaurantCandidate(
                 id: "mapkit-\(coordinateKey)",
@@ -530,14 +527,13 @@ extension CityRestaurantService {
     }
 
     private static func candidate(
-        from restaurant: RestaurantModels.OverpassRestaurant,
-        countryCode: String
+        from restaurant: RestaurantModels.OverpassRestaurant
     ) -> CityRestaurantCandidate {
         CityRestaurantCandidate(
             id: "restaurant-\(restaurant.elementType ?? "osm")-\(restaurant.elementIdentifier ?? restaurant.name.hashValue)",
             name: restaurant.name,
             cuisine: restaurant.cuisine
-                ?? CuisineInferrer.infer(from: restaurant.name, countryCode: countryCode),
+                ?? CuisineInferrer.infer(from: restaurant.name),
             address: restaurant.address,
             hours: restaurant.openingHours,
             phoneNumber: restaurant.phoneNumber,

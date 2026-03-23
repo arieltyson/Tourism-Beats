@@ -2,12 +2,14 @@ import Foundation
 
 // MARK: - CuisineInferrer
 
-/// Infers cuisine type from a restaurant name and optional country context.
+/// Infers cuisine type from a restaurant name using keyword matching.
 /// Used as a fallback when OSM cuisine data is unavailable.
+/// Returns `nil` when no confident match is found — avoids inaccurate guesses.
 enum CuisineInferrer {
-    /// Attempts to infer a cuisine label from the restaurant name,
-    /// falling back to the country's predominant cuisine when no name match is found.
-    static func infer(from name: String, countryCode: String? = nil) -> String? {
+    /// Attempts to infer a cuisine label from the restaurant name only.
+    /// Does not fall back to regional cuisine — a restaurant in Zurich
+    /// is not necessarily Swiss, so unknown cuisine stays `nil`.
+    static func infer(from name: String) -> String? {
         let normalized = name
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
             .lowercased()
@@ -16,10 +18,6 @@ enum CuisineInferrer {
             for keyword in rule.keywords where self.containsWord(keyword, in: normalized) {
                 return rule.cuisine
             }
-        }
-
-        if let code = countryCode?.uppercased() {
-            return self.countryCuisineMap[code]
         }
 
         return nil
@@ -212,39 +210,38 @@ extension CuisineInferrer {
             "burger", "smash burger"
         ]),
 
+        // Brunch / Breakfast
+        Rule(cuisine: "Brunch", keywords: [
+            "brunch"
+        ]),
+
+        Rule(cuisine: "Breakfast", keywords: [
+            "breakfast", "pancake house", "waffle house"
+        ]),
+
+        // Bar / Gastropub
+        Rule(cuisine: "Bar", keywords: [
+            "gastropub", "pub grub", "wine bar", "cocktail bar",
+            "taproom"
+        ]),
+
+        // Fusion
+        Rule(cuisine: "Fusion", keywords: [
+            "fusion"
+        ]),
+
+        // Vegan / Vegetarian
+        Rule(cuisine: "Vegan", keywords: [
+            "vegan"
+        ]),
+
+        Rule(cuisine: "Vegetarian", keywords: [
+            "vegetarian", "veggie"
+        ]),
+
         // Cafe
         Rule(cuisine: "Cafe", keywords: [
             "cafe", "coffee", "espresso"
         ])
-    ]
-
-    // MARK: - Country Fallback
-
-    private static let countryCuisineMap: [String: String] = [
-        "JP": "Japanese", "CN": "Chinese", "KR": "Korean",
-        "TW": "Taiwanese", "TH": "Thai", "VN": "Vietnamese",
-        "IN": "Indian", "PK": "Indian", "BD": "Indian",
-        "LK": "Sri Lankan", "NP": "Nepali",
-        "ID": "Indonesian", "MY": "Malaysian", "PH": "Filipino",
-        "KH": "Cambodian", "MM": "Burmese", "LA": "Laotian",
-        "FR": "French", "IT": "Italian", "ES": "Spanish",
-        "PT": "Portuguese", "DE": "German", "AT": "Austrian",
-        "CH": "Swiss", "BE": "Belgian", "NL": "Dutch",
-        "GB": "British", "IE": "Irish",
-        "GR": "Greek", "TR": "Turkish",
-        "LB": "Lebanese", "IL": "Israeli", "IR": "Persian",
-        "MA": "Moroccan", "EG": "Egyptian", "SY": "Syrian",
-        "GE": "Georgian",
-        "MX": "Mexican", "BR": "Brazilian", "PE": "Peruvian",
-        "AR": "Argentinian", "CO": "Colombian", "CU": "Cuban",
-        "CL": "Chilean", "VE": "Venezuelan",
-        "ET": "Ethiopian", "NG": "Nigerian", "ZA": "South African",
-        "SE": "Scandinavian", "NO": "Scandinavian",
-        "DK": "Scandinavian", "FI": "Scandinavian",
-        "PL": "Polish", "HU": "Hungarian", "CZ": "Czech",
-        "HR": "Croatian", "RS": "Serbian", "RO": "Romanian",
-        "RU": "Russian", "UA": "Ukrainian",
-        "US": "American", "CA": "Canadian", "AU": "Australian",
-        "NZ": "New Zealand", "JM": "Caribbean"
     ]
 }
