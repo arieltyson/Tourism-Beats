@@ -6,17 +6,20 @@ struct FoodRestaurantCard: View {
     let restaurant: Restaurant
     let mealPhotos: [RestaurantMealPhoto]
     let onEdit: () -> Void
+    let onDelete: (() -> Void)?
 
     @Environment(\.colorScheme) private var colorScheme
 
     init(
         restaurant: Restaurant,
         mealPhotos: [RestaurantMealPhoto] = [],
-        onEdit: @escaping () -> Void
+        onEdit: @escaping () -> Void,
+        onDelete: (() -> Void)? = nil
     ) {
         self.restaurant = restaurant
         self.mealPhotos = mealPhotos
         self.onEdit = onEdit
+        self.onDelete = onDelete
     }
 
     var body: some View {
@@ -62,7 +65,11 @@ struct FoodRestaurantCard: View {
                     .multilineTextAlignment(.leading)
             }
 
-            FoodRestaurantLinksRow(restaurant: self.restaurant, onEdit: self.onEdit)
+            FoodRestaurantLinksRow(
+                restaurant: self.restaurant,
+                onEdit: self.onEdit,
+                onDelete: self.onDelete
+            )
         }
         .padding(SpacingTokens.small)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -76,13 +83,14 @@ struct FoodRestaurantCard: View {
                     AppColors.glassBorder(for: self.colorScheme),
                     lineWidth: 0.5
                 )
+                .allowsHitTesting(false)
         }
         .shadow(
             color: AppColors.glassShadow(for: self.colorScheme),
             radius: 8,
             y: 4
         )
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
         .accessibilityLabel(self.accessibilityDescription)
     }
 
@@ -298,11 +306,16 @@ private struct FoodRestaurantCuisineRow: View {
 private struct FoodRestaurantLinksRow: View {
     let restaurant: Restaurant
     let onEdit: () -> Void
+    let onDelete: (() -> Void)?
+
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         HStack(spacing: SpacingTokens.small) {
             if let locationURL = self.restaurant.locationURL {
-                Link(destination: locationURL) {
+                Button {
+                    self.openURL(locationURL)
+                } label: {
                     Label("Location", systemImage: "map.fill")
                         .font(TypographyTokens.caption)
                         .bold()
@@ -315,7 +328,9 @@ private struct FoodRestaurantLinksRow: View {
             }
 
             if let menuURL = self.restaurant.menuURL {
-                Link(destination: menuURL) {
+                Button {
+                    self.openURL(menuURL)
+                } label: {
                     Label("Menu", systemImage: "menucard.fill")
                         .font(TypographyTokens.caption)
                         .bold()
@@ -329,17 +344,24 @@ private struct FoodRestaurantLinksRow: View {
 
             Spacer(minLength: 0)
 
-            Button {
-                self.onEdit()
+            Menu {
+                Button("Edit", systemImage: "pencil") {
+                    self.onEdit()
+                }
+
+                if let onDelete {
+                    Button("Delete", systemImage: "trash", role: .destructive) {
+                        onDelete()
+                    }
+                }
             } label: {
-                Label("Edit", systemImage: "pencil")
-                    .font(TypographyTokens.caption)
-                    .bold()
+                Image(systemName: "ellipsis.circle.fill")
+                    .font(.title3)
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundStyle(AppColors.info)
+                    .contentShape(.rect)
             }
-            .buttonStyle(.bordered)
-            .tint(AppColors.info)
-            .accessibilityLabel("Edit restaurant")
-            .accessibilityInputLabels(["Edit Restaurant", "Edit"])
+            .accessibilityLabel("More options")
         }
         .padding(.top, SpacingTokens.xxSmall)
     }

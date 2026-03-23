@@ -32,21 +32,9 @@ struct FoodCityJournalView: View {
                         FoodRestaurantCard(
                             restaurant: restaurant,
                             mealPhotos: restaurant.sortedMealPhotos,
-                            onEdit: { self.onEdit(restaurant) }
+                            onEdit: { self.onEdit(restaurant) },
+                            onDelete: { self.onDelete(restaurant) }
                         )
-                        .contextMenu {
-                            Button("Edit", systemImage: "pencil") {
-                                self.onEdit(restaurant)
-                            }
-
-                            Button(
-                                "Delete",
-                                systemImage: "trash",
-                                role: .destructive
-                            ) {
-                                self.onDelete(restaurant)
-                            }
-                        }
                     }
                 }
             }
