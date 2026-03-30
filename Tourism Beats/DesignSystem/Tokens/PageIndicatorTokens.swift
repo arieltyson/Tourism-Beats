@@ -14,7 +14,7 @@ enum PageIndicatorTokens {
     static let modernButtonHeight: CGFloat = 46
 
     /// Diameter of the circle highlight behind the active icon.
-    static let modernHighlightSize: CGFloat = 26
+    static let modernHighlightSize: CGFloat = 24
 
     // MARK: - Legacy Sizing
 

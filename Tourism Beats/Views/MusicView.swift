@@ -10,10 +10,12 @@ import SwiftUI
 // MARK: - MusicView
 
 struct MusicView: View {
+    let city: CityModel
     @StateObject private var viewModel: MusicViewModel
     let fallbackView: FallbackMusicView
 
     init(city: CityModel, fallbackView: FallbackMusicView) {
+        self.city = city
         _viewModel = StateObject(wrappedValue: MusicViewModel(city: city))
         self.fallbackView = fallbackView
     }
@@ -21,10 +23,13 @@ struct MusicView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(spacing: SpacingTokens.medium) {
+                Self.HeroCard(city: self.city)
+                    .padding(.horizontal, SpacingTokens.medium)
+                    .padding(.top, SpacingTokens.small)
+
                 MusicArtworkCard(artworkURL: self.viewModel.songImage)
                     .frame(maxWidth: 320)
                     .padding(.horizontal, SpacingTokens.xLarge)
-                    .padding(.top, SpacingTokens.large)
 
                 MusicSongHeader(
                     title: self.viewModel.songTitle,
@@ -65,6 +70,61 @@ struct MusicView: View {
         .scrollIndicators(.hidden)
         .safeAreaPadding(.bottom, SpacingTokens.medium)
         .task { await self.viewModel.requestAccessAndLoadTopSong() }
+    }
+}
+
+// MARK: MusicView.HeroCard
+
+extension MusicView {
+    private struct HeroCard: View {
+        let city: CityModel
+
+        @Environment(\.colorScheme) private var scheme
+
+        var body: some View {
+            HStack(alignment: .center, spacing: SpacingTokens.small) {
+                ZStack {
+                    Circle()
+                        .fill(AppColors.magenta.opacity(0.24))
+
+                    Image(systemName: "music.note")
+                        .font(.headline)
+                        .foregroundStyle(AppColors.magenta)
+                }
+                .frame(width: 40, height: 40)
+
+                VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                    Text("Top Songs")
+                        .font(TypographyTokens.sectionHeader)
+                        .bold()
+                        .foregroundStyle(AppColors.label)
+
+                    Text("\(self.city.name), \(self.city.country.name)")
+                        .font(TypographyTokens.cardLabel)
+                        .foregroundStyle(AppColors.secondaryLabel)
+                        .lineLimit(2)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(SpacingTokens.medium)
+            .background {
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .strokeBorder(
+                                AppColors.glassBorder(for: self.scheme),
+                                lineWidth: 1
+                            )
+                    }
+                    .shadow(
+                        color: AppColors.glassShadow(for: self.scheme),
+                        radius: 16,
+                        y: 10
+                    )
+            }
+        }
     }
 }
 
