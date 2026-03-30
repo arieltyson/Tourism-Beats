@@ -49,7 +49,7 @@ struct CityContainerView: View {
                 }
                 .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.paging)
+            .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
             .scrollPosition(id: self.$pageIndex)
             .scrollIndicators(.hidden)
             .padding(.horizontal, PageIndicatorTokens.contentInset)
@@ -110,9 +110,7 @@ struct CityContainerView: View {
 
     private func selectPage(_ index: Int) {
         guard index != self.currentPageIndex else { return }
-        withAnimation(AnimationTokens.standard) {
-            self.pageIndex = index
-        }
+        self.pageIndex = index
     }
 
     // MARK: - Background
