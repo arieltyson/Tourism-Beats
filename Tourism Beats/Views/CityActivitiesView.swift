@@ -28,6 +28,7 @@ struct CityActivitiesView: View {
                     )
                 }
             }
+            .padding(.horizontal, SpacingTokens.xSmall)
 
             Spacer(minLength: 0)
         }

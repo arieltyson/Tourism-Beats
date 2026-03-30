@@ -31,6 +31,7 @@ struct CityRestaurantsView: View {
                     )
                 }
             }
+            .padding(.horizontal, SpacingTokens.xSmall)
 
             Spacer(minLength: 0)
         }
