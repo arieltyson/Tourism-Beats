@@ -83,8 +83,19 @@ extension CityRestaurantDetailView {
                 Text(self.restaurant.summary)
                     .font(TypographyTokens.body)
                     .foregroundStyle(AppColors.label)
+
+                if !self.restaurant.rankingHighlights.isEmpty {
+                    VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                        ForEach(self.restaurant.rankingHighlights, id: \.self) { highlight in
+                            Label(highlight, systemImage: "checkmark.circle.fill")
+                                .font(TypographyTokens.cardLabel)
+                                .foregroundStyle(AppColors.secondaryLabel)
+                        }
+                    }
+                }
             }
             .padding(SpacingTokens.medium)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .fill(.ultraThinMaterial)
@@ -109,85 +120,58 @@ extension CityRestaurantDetailView {
 
         @Environment(\.colorScheme) private var scheme
 
-        var body: some View {
-            VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                Text("Plan Your Visit")
-                    .font(TypographyTokens.sectionHeader)
-                    .bold()
-                    .foregroundStyle(AppColors.label)
-
-                LabeledContent("Cuisine") {
-                    Text(self.restaurant.displayCuisine)
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Hours") {
-                    Text(self.restaurant.hours ?? "Check venue directly")
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Location") {
-                    Text(self.restaurant.address ?? "Open in Maps for details")
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Phone") {
-                    Text(self.restaurant.phoneNumber ?? "Check venue directly")
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Accessibility") {
-                    Text(self.restaurant.wheelchairAccessibility.detailLabel)
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Dietary") {
-                    Text(self.restaurant.dietarySummary ?? "Dietary options not listed")
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Outdoor Seating") {
-                    Text(self.restaurant.hasOutdoorSeating ? "Listed" : "Not listed")
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Reservations") {
-                    Text(self.restaurant.acceptsReservations ? "Listed" : "Not listed")
-                        .multilineTextAlignment(.trailing)
-                }
+        private var rows: [(label: String, value: String)] {
+            var result: [(String, String)] = []
+            if let cuisine = self.restaurant.cuisine { result.append(("Cuisine", cuisine)) }
+            if let hours = self.restaurant.hours { result.append(("Hours", hours)) }
+            if let address = self.restaurant.address { result.append(("Location", address)) }
+            if let phone = self.restaurant.phoneNumber { result.append(("Phone", phone)) }
+            if self.restaurant.wheelchairAccessibility != .unknown {
+                result.append(("Accessibility", self.restaurant.wheelchairAccessibility.detailLabel))
             }
-            .font(TypographyTokens.body)
-            .foregroundStyle(AppColors.label)
-            .padding(SpacingTokens.medium)
-            .background {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
-                                lineWidth: 1
-                            )
+            if let dietary = self.restaurant.dietarySummary { result.append(("Dietary", dietary)) }
+            if self.restaurant.hasOutdoorSeating { result.append(("Outdoor Seating", "Available")) }
+            if self.restaurant.acceptsReservations { result.append(("Reservations", "Accepted")) }
+            return result
+        }
+
+        var body: some View {
+            if !self.rows.isEmpty {
+                VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                    Text("Plan Your Visit")
+                        .font(TypographyTokens.sectionHeader)
+                        .bold()
+                        .foregroundStyle(AppColors.label)
+
+                    ForEach(Array(self.rows.enumerated()), id: \.offset) { index, row in
+                        if index > 0 { Divider() }
+
+                        LabeledContent(row.label) {
+                            Text(row.value)
+                                .multilineTextAlignment(.trailing)
+                        }
                     }
-                    .shadow(
-                        color: AppColors.glassShadow(for: self.scheme),
-                        radius: 16,
-                        y: 10
-                    )
+                }
+                .font(TypographyTokens.body)
+                .foregroundStyle(AppColors.label)
+                .padding(SpacingTokens.medium)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .strokeBorder(
+                                    AppColors.glassBorder(for: self.scheme),
+                                    lineWidth: 1
+                                )
+                        }
+                        .shadow(
+                            color: AppColors.glassShadow(for: self.scheme),
+                            radius: 16,
+                            y: 10
+                        )
+                }
             }
         }
     }
@@ -242,6 +226,7 @@ extension CityRestaurantDetailView {
                     }
                 }
                 .padding(SpacingTokens.medium)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .background {
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
                         .fill(.ultraThinMaterial)

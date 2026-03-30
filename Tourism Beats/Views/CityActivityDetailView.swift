@@ -73,62 +73,52 @@ extension CityActivityDetailView {
 
         @Environment(\.colorScheme) private var scheme
 
+        private var rows: [(label: String, value: String)] {
+            var result: [(String, String)] = []
+            if let price = self.activity.price { result.append(("Cost", price)) }
+            if let hours = self.activity.hours { result.append(("Hours", hours)) }
+            if let tip = self.activity.timingTip { result.append(("Timing", tip)) }
+            if let location = self.activity.locationSummary { result.append(("Location", location)) }
+            return result
+        }
+
         var body: some View {
-            VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                Text("Plan Your Visit")
-                    .font(TypographyTokens.sectionHeader)
-                    .bold()
-                    .foregroundStyle(AppColors.label)
+            if !self.rows.isEmpty {
+                VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                    Text("Plan Your Visit")
+                        .font(TypographyTokens.sectionHeader)
+                        .bold()
+                        .foregroundStyle(AppColors.label)
 
-                LabeledContent("Cost") {
-                    Text(self.activity.price ?? "Check venue directly")
-                        .multilineTextAlignment(.trailing)
-                }
+                    ForEach(Array(self.rows.enumerated()), id: \.offset) { index, row in
+                        if index > 0 { Divider() }
 
-                Divider()
-
-                LabeledContent("Hours") {
-                    Text(self.activity.hours ?? "Check current hours")
-                        .multilineTextAlignment(.trailing)
-                }
-
-                Divider()
-
-                LabeledContent("Timing") {
-                    Text(
-                        self.activity.timingTip
-                            ?? "Check current conditions before planning your visit."
-                    )
-                    .multilineTextAlignment(.trailing)
-                }
-
-                if let locationSummary = self.activity.locationSummary {
-                    Divider()
-
-                    LabeledContent("Location") {
-                        Text(locationSummary)
-                            .multilineTextAlignment(.trailing)
+                        LabeledContent(row.label) {
+                            Text(row.value)
+                                .multilineTextAlignment(.trailing)
+                        }
                     }
                 }
-            }
-            .font(TypographyTokens.body)
-            .foregroundStyle(AppColors.label)
-            .padding(SpacingTokens.medium)
-            .background {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
-                                lineWidth: 1
-                            )
-                    }
-                    .shadow(
-                        color: AppColors.glassShadow(for: self.scheme),
-                        radius: 16,
-                        y: 10
-                    )
+                .font(TypographyTokens.body)
+                .foregroundStyle(AppColors.label)
+                .padding(SpacingTokens.medium)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .strokeBorder(
+                                    AppColors.glassBorder(for: self.scheme),
+                                    lineWidth: 1
+                                )
+                        }
+                        .shadow(
+                            color: AppColors.glassShadow(for: self.scheme),
+                            radius: 16,
+                            y: 10
+                        )
+                }
             }
         }
     }
@@ -156,6 +146,7 @@ extension CityActivityDetailView {
                 }
             }
             .padding(SpacingTokens.medium)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background {
                 RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .fill(.ultraThinMaterial)
@@ -180,51 +171,58 @@ extension CityActivityDetailView {
 
         @Environment(\.colorScheme) private var scheme
 
+        private var hasLinks: Bool {
+            self.activity.officialURL != nil || self.activity.sourceURL != nil
+        }
+
         var body: some View {
-            VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                Text("Links")
-                    .font(TypographyTokens.sectionHeader)
-                    .bold()
-                    .foregroundStyle(AppColors.label)
+            if self.hasLinks {
+                VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                    Text("Links")
+                        .font(TypographyTokens.sectionHeader)
+                        .bold()
+                        .foregroundStyle(AppColors.label)
 
-                if let officialURL = self.activity.officialURL {
-                    Link(destination: officialURL) {
-                        Self.LinkLabel(
-                            title: "Official Site",
-                            subtitle: officialURL.host ?? officialURL.absoluteString,
-                            systemImage: "safari"
-                        )
-                    }
-                    .buttonStyle(.plain)
-                }
-
-                if let sourceURL = self.activity.sourceURL {
-                    Link(destination: sourceURL) {
-                        Self.LinkLabel(
-                            title: "Guide Source",
-                            subtitle: self.activity.sourceName,
-                            systemImage: "book.pages.fill"
-                        )
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(SpacingTokens.medium)
-            .background {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(
-                                AppColors.glassBorder(for: self.scheme),
-                                lineWidth: 1
+                    if let officialURL = self.activity.officialURL {
+                        Link(destination: officialURL) {
+                            Self.LinkLabel(
+                                title: "Official Site",
+                                subtitle: officialURL.host ?? officialURL.absoluteString,
+                                systemImage: "safari"
                             )
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .shadow(
-                        color: AppColors.glassShadow(for: self.scheme),
-                        radius: 16,
-                        y: 10
-                    )
+
+                    if let sourceURL = self.activity.sourceURL {
+                        Link(destination: sourceURL) {
+                            Self.LinkLabel(
+                                title: "Guide Source",
+                                subtitle: self.activity.sourceName,
+                                systemImage: "book.pages.fill"
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(SpacingTokens.medium)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                .strokeBorder(
+                                    AppColors.glassBorder(for: self.scheme),
+                                    lineWidth: 1
+                                )
+                        }
+                        .shadow(
+                            color: AppColors.glassShadow(for: self.scheme),
+                            radius: 16,
+                            y: 10
+                        )
+                }
             }
         }
     }
