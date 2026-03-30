@@ -6,13 +6,35 @@ struct CityActivityDetailView: View {
     let city: CityModel
     let activity: CityActivity
 
+    @State private var viewModel: CityActivityDetailViewModel
+
+    init(city: CityModel, activity: CityActivity) {
+        self.city = city
+        self.activity = activity
+        _viewModel = State(
+            initialValue: CityActivityDetailViewModel(activity: activity, cityName: city.name)
+        )
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: SpacingTokens.large) {
-                Self.Hero(activity: self.activity, city: self.city)
+                Self.Hero(
+                    activity: self.activity,
+                    city: self.city,
+                    enrichedImageURL: self.viewModel.displayImageURL
+                )
                 Self.PracticalInfoCard(activity: self.activity)
-                Self.DescriptionCard(activity: self.activity)
-                Self.LinkCard(activity: self.activity)
+                Self.DescriptionCard(
+                    activity: self.activity,
+                    enrichedSummary: self.viewModel.enrichedSummary,
+                    enrichedDescription: self.viewModel.enrichedDescription,
+                    isLoading: self.viewModel.isLoading
+                )
+                Self.LinkCard(
+                    activity: self.activity,
+                    articleURL: self.viewModel.articleURL
+                )
             }
             .padding(.horizontal, SpacingTokens.medium)
             .padding(.vertical, SpacingTokens.medium)
@@ -22,19 +44,25 @@ struct CityActivityDetailView: View {
         .background(Color.clear.ignoresSafeArea())
         .navigationTitle(self.activity.name)
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await self.viewModel.loadIfNeeded()
+        }
     }
 }
+
+// MARK: - Hero
 
 extension CityActivityDetailView {
     struct Hero: View {
         let activity: CityActivity
         let city: CityModel
+        let enrichedImageURL: URL?
 
         @Environment(\.colorScheme) private var scheme
 
         var body: some View {
             VStack(alignment: .leading, spacing: SpacingTokens.medium) {
-                Self.HeroArtwork(activity: self.activity)
+                Self.HeroArtwork(imageURL: self.enrichedImageURL)
 
                 VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
                     Text(self.activity.name)
@@ -67,6 +95,8 @@ extension CityActivityDetailView {
             }
         }
     }
+
+    // MARK: - PracticalInfoCard
 
     private struct PracticalInfoCard: View {
         let activity: CityActivity
@@ -123,25 +153,56 @@ extension CityActivityDetailView {
         }
     }
 
+    // MARK: - DescriptionCard
+
     private struct DescriptionCard: View {
         let activity: CityActivity
+        let enrichedSummary: String?
+        let enrichedDescription: String?
+        let isLoading: Bool
 
         @Environment(\.colorScheme) private var scheme
 
+        private var displaySummary: String {
+            self.enrichedSummary ?? self.activity.summary
+        }
+
         var body: some View {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                Text("Why Go")
+                Text("About")
                     .font(TypographyTokens.sectionHeader)
                     .bold()
                     .foregroundStyle(AppColors.label)
 
-                Text(self.activity.summary)
-                    .font(TypographyTokens.body)
-                    .foregroundStyle(AppColors.label)
+                if let description = self.enrichedDescription {
+                    Text(description)
+                        .font(TypographyTokens.cardLabel)
+                        .foregroundStyle(AppColors.secondaryLabel)
+                        .italic()
+                }
+
+                if self.isLoading {
+                    HStack(spacing: SpacingTokens.xSmall) {
+                        ProgressView()
+                        Text("Loading details…")
+                            .font(TypographyTokens.cardLabel)
+                            .foregroundStyle(AppColors.secondaryLabel)
+                    }
+                } else {
+                    Text(self.displaySummary)
+                        .font(TypographyTokens.body)
+                        .foregroundStyle(AppColors.label)
+                }
 
                 if let directions = self.activity.directions {
-                    Text(directions)
+                    Label(directions, systemImage: "location.fill")
                         .font(TypographyTokens.cardLabel)
+                        .foregroundStyle(AppColors.secondaryLabel)
+                }
+
+                if self.enrichedSummary != nil {
+                    Text("Source: Wikipedia")
+                        .font(TypographyTokens.footnote)
                         .foregroundStyle(AppColors.secondaryLabel)
                 }
             }
@@ -166,13 +227,18 @@ extension CityActivityDetailView {
         }
     }
 
+    // MARK: - LinkCard
+
     struct LinkCard: View {
         let activity: CityActivity
+        var articleURL: URL?
 
         @Environment(\.colorScheme) private var scheme
 
         private var hasLinks: Bool {
-            self.activity.officialURL != nil || self.activity.sourceURL != nil
+            self.activity.officialURL != nil
+                || self.activity.sourceURL != nil
+                || self.articleURL != nil
         }
 
         var body: some View {
@@ -194,12 +260,23 @@ extension CityActivityDetailView {
                         .buttonStyle(.plain)
                     }
 
+                    if let articleURL {
+                        Link(destination: articleURL) {
+                            Self.LinkLabel(
+                                title: "Wikipedia",
+                                subtitle: self.activity.name,
+                                systemImage: "book.pages.fill"
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+
                     if let sourceURL = self.activity.sourceURL {
                         Link(destination: sourceURL) {
                             Self.LinkLabel(
                                 title: "Guide Source",
                                 subtitle: self.activity.sourceName,
-                                systemImage: "book.pages.fill"
+                                systemImage: "globe.europe.africa.fill"
                             )
                         }
                         .buttonStyle(.plain)
@@ -228,15 +305,17 @@ extension CityActivityDetailView {
     }
 }
 
+// MARK: - HeroArtwork
+
 extension CityActivityDetailView.Hero {
     private struct HeroArtwork: View {
-        let activity: CityActivity
+        let imageURL: URL?
 
         var body: some View {
             Color.clear
                 .aspectRatio(4 / 3, contentMode: .fit)
                 .overlay {
-                    if let imageURL = self.activity.imageURL {
+                    if let imageURL {
                         AsyncImage(
                             url: imageURL,
                             transaction: .init(animation: .smooth)
@@ -282,6 +361,8 @@ extension CityActivityDetailView.Hero {
         }
     }
 }
+
+// MARK: - LinkLabel
 
 extension CityActivityDetailView.LinkCard {
     private struct LinkLabel: View {
