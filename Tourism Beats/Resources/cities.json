@@ -2142,5 +2142,141 @@
     "latitude": 15.34833333,
     "longitude": 44.20638889,
     "timeZoneIdentifier": "Asia/Aden"
+  },
+  {
+    "name": "Venice",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Venezia_aerial_view.jpg",
+    "latitude": 45.4375,
+    "longitude": 12.33583333,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Cancun",
+    "countryCode": "MX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Cancun_Strand_Luftbild_%2822143397586%29.jpg",
+    "latitude": 21.16055556,
+    "longitude": -86.8475,
+    "timeZoneIdentifier": "America/Cancun"
+  },
+  {
+    "name": "Whistler",
+    "countryCode": "CA",
+    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Whistler%20Panorama%202.jpg",
+    "latitude": 50.11666667,
+    "longitude": -122.95416667,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Bora-Bora",
+    "countryCode": "PF",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Bora_Bora_ISS006.jpg",
+    "latitude": -16.501,
+    "longitude": -151.74,
+    "timeZoneIdentifier": "Pacific/Tahiti"
+  },
+  {
+    "name": "Male",
+    "countryCode": "MV",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/83/Mal%C3%A9.jpg",
+    "latitude": 4.17527778,
+    "longitude": 73.50888889,
+    "timeZoneIdentifier": "Indian/Maldives"
+  },
+  {
+    "name": "Orimasvaru",
+    "countryCode": "MV",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/83/Mal%C3%A9.jpg",
+    "latitude": 5.86287,
+    "longitude": 73.2072,
+    "timeZoneIdentifier": "Indian/Maldives"
+  },
+  {
+    "name": "Jerusalem",
+    "countryCode": "IL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/94/%D7%94%D7%9E%D7%A6%D7%95%D7%93%D7%94_%D7%91%D7%9C%D7%99%D7%9C%D7%94.jpg",
+    "latitude": 31.77888889,
+    "longitude": 35.22555556,
+    "timeZoneIdentifier": "Asia/Jerusalem"
+  },
+  {
+    "name": "Kyoto",
+    "countryCode": "JP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Kiyomizu.jpg",
+    "latitude": 35.01161,
+    "longitude": 135.76811,
+    "timeZoneIdentifier": "Asia/Tokyo"
+  },
+  {
+    "name": "Tucson",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d5/View_of_Tucson_from_Sentinel_Peak_2.jpg",
+    "latitude": 32.22166667,
+    "longitude": -110.92638889,
+    "timeZoneIdentifier": "America/Phoenix"
+  },
+  {
+    "name": "Merida",
+    "countryCode": "MX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Collage_Merida_Yucatan.jpg",
+    "latitude": 20.96722222,
+    "longitude": -89.62361111,
+    "timeZoneIdentifier": "America/Merida"
+  },
+  {
+    "name": "Port Louis",
+    "countryCode": "MU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Port_Louis_Skyline.JPG",
+    "latitude": -20.16444444,
+    "longitude": 57.50416667,
+    "timeZoneIdentifier": "Indian/Mauritius"
+  },
+  {
+    "name": "Fira",
+    "countryCode": "GR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Santorini_Fira3_tango7174.jpg",
+    "latitude": 36.42,
+    "longitude": 25.43166667,
+    "timeZoneIdentifier": "Europe/Athens"
+  },
+  {
+    "name": "Honolulu",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e8/2022_Views_from_Diamond_Head_02.jpg",
+    "latitude": 21.3,
+    "longitude": -157.85,
+    "timeZoneIdentifier": "Pacific/Honolulu"
+  },
+  {
+    "name": "Maui",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Maui_Landsat_Photo.jpg",
+    "latitude": 20.8,
+    "longitude": -156.3,
+    "timeZoneIdentifier": "Pacific/Honolulu"
+  },
+  {
+    "name": "Amman",
+    "countryCode": "JO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/24/New_Abdali_2024.png",
+    "latitude": 31.94972222,
+    "longitude": 35.93277778,
+    "timeZoneIdentifier": "Asia/Amman"
+  },
+  {
+    "name": "Banff",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Town_of_Banff_viewed_from_Sulphur_Mountain.jpg",
+    "latitude": 51.17777778,
+    "longitude": -115.57361111,
+    "timeZoneIdentifier": "America/Edmonton"
+  },
+  {
+    "name": "Torshavn",
+    "countryCode": "FO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/48/Is03002-Torshavn.jpg",
+    "latitude": 62.01166667,
+    "longitude": -6.7675,
+    "timeZoneIdentifier": "Atlantic/Faroe"
   }
 ]

@@ -265,5 +265,22 @@
   {"city": "Manama", "countryCode": "BH", "walkScore": 41, "transitScore": 14},
   {"city": "Doha", "countryCode": "QA", "walkScore": 36, "transitScore": 54},
   {"city": "Muscat", "countryCode": "OM", "walkScore": 20, "transitScore": 10},
-  {"city": "Sanaa", "countryCode": "YE", "walkScore": 60, "transitScore": 18}
+  {"city": "Sanaa", "countryCode": "YE", "walkScore": 60, "transitScore": 18},
+  {"city": "Venice", "countryCode": "IT", "walkScore": 86, "transitScore": 64},
+  {"city": "Cancun", "countryCode": "MX", "walkScore": 41, "transitScore": 24},
+  {"city": "Whistler", "countryCode": "CA", "walkScore": 45, "transitScore": 8},
+  {"city": "Bora-Bora", "countryCode": "PF", "walkScore": 18, "transitScore": 2},
+  {"city": "Male", "countryCode": "MV", "walkScore": 72, "transitScore": 10},
+  {"city": "Orimasvaru", "countryCode": "MV", "walkScore": 12, "transitScore": 0},
+  {"city": "Jerusalem", "countryCode": "IL", "walkScore": 77, "transitScore": 56},
+  {"city": "Kyoto", "countryCode": "JP", "walkScore": 82, "transitScore": 74},
+  {"city": "Tucson", "countryCode": "US", "walkScore": 43, "transitScore": 28},
+  {"city": "Merida", "countryCode": "MX", "walkScore": 68, "transitScore": 32},
+  {"city": "Port Louis", "countryCode": "MU", "walkScore": 58, "transitScore": 35},
+  {"city": "Fira", "countryCode": "GR", "walkScore": 64, "transitScore": 8},
+  {"city": "Honolulu", "countryCode": "US", "walkScore": 66, "transitScore": 53},
+  {"city": "Maui", "countryCode": "US", "walkScore": 22, "transitScore": 4},
+  {"city": "Amman", "countryCode": "JO", "walkScore": 54, "transitScore": 34},
+  {"city": "Banff", "countryCode": "CA", "walkScore": 46, "transitScore": 7},
+  {"city": "Torshavn", "countryCode": "FO", "walkScore": 62, "transitScore": 18}
 ]
