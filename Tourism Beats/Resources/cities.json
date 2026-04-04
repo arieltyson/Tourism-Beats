@@ -2278,5 +2278,85 @@
     "latitude": 62.01166667,
     "longitude": -6.7675,
     "timeZoneIdentifier": "Atlantic/Faroe"
+  },
+  {
+    "name": "Kobe",
+    "countryCode": "JP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/1/1c/Kobe_Port_Tower_and_Maritime_Museum%2C_November_2016.jpg",
+    "latitude": 34.69,
+    "longitude": 135.19555556,
+    "timeZoneIdentifier": "Asia/Tokyo"
+  },
+  {
+    "name": "Osaka",
+    "countryCode": "JP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Osaka_Castle_02bs3200.jpg",
+    "latitude": 34.69388889,
+    "longitude": 135.50222222,
+    "timeZoneIdentifier": "Asia/Tokyo"
+  },
+  {
+    "name": "Sapporo",
+    "countryCode": "JP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/54/SapporoCity_Skylines2020.jpg",
+    "latitude": 43.06194444,
+    "longitude": 141.35444444,
+    "timeZoneIdentifier": "Asia/Tokyo"
+  },
+  {
+    "name": "Fukuoka",
+    "countryCode": "JP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Fukuoka_Skyline_of_Seaside_Momochi.jpg",
+    "latitude": 33.59,
+    "longitude": 130.40166667,
+    "timeZoneIdentifier": "Asia/Tokyo"
+  },
+  {
+    "name": "Phnom Penh",
+    "countryCode": "KH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/84/Phnom_Penh_skyline_from_TK_district_Dec_2024.jpg",
+    "latitude": 11.56944444,
+    "longitude": 104.92111111,
+    "timeZoneIdentifier": "Asia/Phnom_Penh"
+  },
+  {
+    "name": "Kolkata",
+    "countryCode": "IN",
+    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Victoria%20Memorial%20Hall%2C%20Kolkata.jpg",
+    "latitude": 22.5726,
+    "longitude": 88.3639,
+    "timeZoneIdentifier": "Asia/Kolkata"
+  },
+  {
+    "name": "Medellin",
+    "countryCode": "CO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/1/13/MEDELL%C3%8DN.jpg",
+    "latitude": 6.23083333,
+    "longitude": -75.59055556,
+    "timeZoneIdentifier": "America/Bogota"
+  },
+  {
+    "name": "Hanoi",
+    "countryCode": "VN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hanoi_skyline_with_Ba_Vi_Mountain.jpg",
+    "latitude": 21,
+    "longitude": 105.85,
+    "timeZoneIdentifier": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "name": "Cluj-Napoca",
+    "countryCode": "RO",
+    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Panoramic%20view%20of%20Cluj-Napoca%20(day).jpg",
+    "latitude": 46.76891111,
+    "longitude": 23.59066111,
+    "timeZoneIdentifier": "Europe/Bucharest"
+  },
+  {
+    "name": "Brasov",
+    "countryCode": "RO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Bra%C8%99ov%2C_Pia%C8%9Ba_Sfatului_-_Flickr_-_Jorge_Franganillo.jpg",
+    "latitude": 45.66666667,
+    "longitude": 25.61666667,
+    "timeZoneIdentifier": "Europe/Bucharest"
   }
 ]

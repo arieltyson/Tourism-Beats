@@ -282,5 +282,15 @@
   {"city": "Maui", "countryCode": "US", "walkScore": 22, "transitScore": 4},
   {"city": "Amman", "countryCode": "JO", "walkScore": 54, "transitScore": 34},
   {"city": "Banff", "countryCode": "CA", "walkScore": 46, "transitScore": 7},
-  {"city": "Torshavn", "countryCode": "FO", "walkScore": 62, "transitScore": 18}
+  {"city": "Torshavn", "countryCode": "FO", "walkScore": 62, "transitScore": 18},
+  {"city": "Kobe", "countryCode": "JP", "walkScore": 76, "transitScore": 83},
+  {"city": "Osaka", "countryCode": "JP", "walkScore": 88, "transitScore": 92},
+  {"city": "Sapporo", "countryCode": "JP", "walkScore": 74, "transitScore": 82},
+  {"city": "Fukuoka", "countryCode": "JP", "walkScore": 78, "transitScore": 84},
+  {"city": "Phnom Penh", "countryCode": "KH", "walkScore": 46, "transitScore": 18},
+  {"city": "Kolkata", "countryCode": "IN", "walkScore": 72, "transitScore": 58},
+  {"city": "Medellin", "countryCode": "CO", "walkScore": 63, "transitScore": 68},
+  {"city": "Hanoi", "countryCode": "VN", "walkScore": 68, "transitScore": 42},
+  {"city": "Cluj-Napoca", "countryCode": "RO", "walkScore": 74, "transitScore": 48},
+  {"city": "Brasov", "countryCode": "RO", "walkScore": 72, "transitScore": 28}
 ]
