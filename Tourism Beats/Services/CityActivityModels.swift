@@ -168,6 +168,14 @@ enum CityActivityAPIModels {
         let info: String
     }
 
+    struct WikimediaPageviewsResponse: Decodable {
+        let items: [WikimediaPageviewItem]?
+    }
+
+    struct WikimediaPageviewItem: Decodable {
+        let views: Int?
+    }
+
     // MARK: Wikidata
 
     struct WikidataEntitiesResponse: Decodable {
@@ -226,6 +234,17 @@ enum CityActivityAPIModels {
         case invalidResponse
         case invalidRequest
         case httpStatus(Int)
+    }
+
+    struct MapKitActivityResult: Sendable {
+        let name: String
+        let websiteURL: URL?
+        let address: String?
+        let latitude: Double
+        let longitude: Double
+        let popularityRank: Int
+        var crossQueryAppearanceCount: Int = 1
+        var reviewQueryAppearanceCount: Int = 0
     }
 
     // MARK: Category Classification

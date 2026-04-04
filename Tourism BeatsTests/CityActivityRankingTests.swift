@@ -4,7 +4,17 @@ import Testing
 @testable import Tourism_Beats
 
 struct CityActivityRankingTests {
-    @Test func topActivitiesPrefersCrossSourceAndPracticalInfoRichResults() throws {
+    @Test func topActivitiesPrefersDemandSignalsOverMetadataAlone() throws {
+        let demandSignals = [
+            CityActivityRanking.activityKey(for: "Royal Palace"): CityActivityRanking.ActivityDemandSignal(
+                popularityRank: 1,
+                crossQueryAppearanceCount: 5,
+                reviewQueryAppearanceCount: 2,
+                pageviewCount: 920_000,
+                pageviewRank: 1
+            )
+        ]
+
         let rankedActivities = CityActivityRanking.topActivities(
             from: [
                 self.activity(
@@ -48,6 +58,7 @@ struct CityActivityRankingTests {
                 )
             ],
             for: self.city,
+            demandSignals: demandSignals,
             limit: 2
         )
 
@@ -56,6 +67,62 @@ struct CityActivityRankingTests {
         #expect(firstActivity.officialURL != nil)
         #expect(firstActivity.address == "1 Palace Square")
         #expect(firstActivity.sourceName == "Wikivoyage")
+    }
+
+    @Test func topActivitiesUsesPageviewDemandWhenReviewQueriesAreUnavailable() throws {
+        let demandSignals = [
+            CityActivityRanking.activityKey(for: "Historic Fortress"): CityActivityRanking.ActivityDemandSignal(
+                popularityRank: nil,
+                crossQueryAppearanceCount: 0,
+                reviewQueryAppearanceCount: 0,
+                pageviewCount: 610_000,
+                pageviewRank: 1
+            ),
+            CityActivityRanking.activityKey(for: "Riverside Gallery"): CityActivityRanking.ActivityDemandSignal(
+                popularityRank: nil,
+                crossQueryAppearanceCount: 0,
+                reviewQueryAppearanceCount: 0,
+                pageviewCount: 90_000,
+                pageviewRank: 2
+            )
+        ]
+
+        let rankedActivities = CityActivityRanking.topActivities(
+            from: [
+                self.activity(
+                    id: "gallery",
+                    name: "Riverside Gallery",
+                    summary: "A well-documented gallery with a website, practical details, and strong imagery.",
+                    category: "Gallery",
+                    kind: .see,
+                    imageURL: URL(string: "https://example.com/gallery.jpg"),
+                    officialURL: URL(string: "https://example.com/gallery"),
+                    sourceURL: URL(string: "https://example.com/gallery-source"),
+                    sourceName: "Wikivoyage",
+                    hours: "Daily",
+                    address: "2 River Road",
+                    latitude: 49.2862,
+                    longitude: -123.1176
+                ),
+                self.activity(
+                    id: "fortress",
+                    name: "Historic Fortress",
+                    summary: "A major heritage landmark with deep city significance.",
+                    category: "Heritage",
+                    kind: .see,
+                    sourceURL: URL(string: "https://example.com/fortress-source"),
+                    sourceName: "Wikipedia",
+                    latitude: 49.2820,
+                    longitude: -123.1210
+                )
+            ],
+            for: self.city,
+            demandSignals: demandSignals,
+            limit: 1
+        )
+
+        let firstActivity = try #require(rankedActivities.first)
+        #expect(firstActivity.name == "Historic Fortress")
     }
 
     @Test func topActivitiesBalancesCategoryVarietyInFinalSelection() {

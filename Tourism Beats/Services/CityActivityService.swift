@@ -3,16 +3,16 @@ import OSLog
 
 // MARK: - CityActivityService
 
-private typealias Models = CityActivityAPIModels
+typealias Models = CityActivityAPIModels
 
 // MARK: - CityActivityService
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
     private static let desiredActivityCount = 6
-    private static let sourceCandidateCount = 12
+    private static let sourceCandidateCount = 18
 
-    private let session: URLSession
+    let session: URLSession
     private let wikivoyageParser = WikivoyageActivityGuideParser()
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
@@ -100,9 +100,23 @@ extension CityActivityService {
             collectedActivities += wikipediaActivities
         }
 
+        let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
+        let mapKitActivities = Self.mapKitActivities(
+            for: city,
+            results: mapKitResults,
+            existingActivities: collectedActivities
+        )
+        collectedActivities += mapKitActivities
+
+        let demandSignals = await self.demandSignals(
+            for: collectedActivities,
+            mapKitResults: mapKitResults
+        )
+
         return CityActivityRanking.topActivities(
             from: collectedActivities,
             for: city,
+            demandSignals: demandSignals,
             limit: Self.desiredActivityCount
         )
     }
@@ -125,11 +139,7 @@ extension CityActivityService {
             let topPOIs = Array(pois.prefix(12))
             let enriched = await self.enrichWithWikipedia(pois: topPOIs)
             let withImages = await self.resolveWikidataImages(for: enriched)
-            return CityActivityRanking.topActivities(
-                from: withImages,
-                for: city,
-                limit: Self.sourceCandidateCount
-            )
+            return Array(withImages.prefix(Self.sourceCandidateCount))
         } catch {
             self.logger.error(
                 "Overpass activity fetch failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
@@ -290,7 +300,7 @@ extension CityActivityService {
         return parts.isEmpty ? nil : parts.joined(separator: ", ")
     }
 
-    private static let excludedKeywords = [
+    static let excludedKeywords = [
         "district", "neighborhood", "neighbourhood", "county",
         "school", "university", "college", "hospital",
         "cemetery", "freeway", "highway", "route ",
@@ -550,11 +560,7 @@ extension CityActivityService {
             guard !parsedActivities.isEmpty else { return [] }
 
             let withImages = await self.resolveWikidataImages(for: parsedActivities)
-            return CityActivityRanking.topActivities(
-                from: withImages,
-                for: city,
-                limit: Self.sourceCandidateCount
-            )
+            return Array(withImages.prefix(Self.sourceCandidateCount))
         } catch {
             self.logger.error(
                 "Wikivoyage activity fallback failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
