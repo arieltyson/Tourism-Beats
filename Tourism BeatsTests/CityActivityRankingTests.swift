@@ -221,6 +221,81 @@ struct CityActivityRankingTests {
         #expect(rankedActivities.contains { $0.officialURL != nil && $0.name == "Old Town" })
     }
 
+    @Test func mapKitActivitiesRejectResultsFromWrongCountryEvenWhenDemandIsHigh() {
+        let asuncion = CityModel(
+            id: "asuncion-py",
+            name: "Asuncion",
+            country: CountryModel(name: "Paraguay", code: "PY", flag: "🇵🇾"),
+            imageURL: URL(string: "https://example.com/asuncion.jpg")!,
+            coordinate: CLLocationCoordinate2D(latitude: -25.2637, longitude: -57.5759),
+            timeZoneIdentifier: "America/Asuncion"
+        )
+
+        let results = [
+            CityActivityAPIModels.MapKitActivityResult(
+                name: "9 O'Clock Gun",
+                websiteURL: URL(string: "https://vancouver.ca/parks-recreation-culture/9-oclock-gun.aspx"),
+                address: "Stanley Park Dr, Vancouver",
+                latitude: 49.3022,
+                longitude: -123.1417,
+                regionName: "Canada",
+                popularityRank: 1,
+                crossQueryAppearanceCount: 6,
+                reviewQueryAppearanceCount: 3
+            ),
+            CityActivityAPIModels.MapKitActivityResult(
+                name: "Casa de la Independencia",
+                websiteURL: URL(string: "https://example.com/casa"),
+                address: "Asuncion",
+                latitude: -25.2797,
+                longitude: -57.6351,
+                regionName: "Paraguay",
+                popularityRank: 2,
+                crossQueryAppearanceCount: 4,
+                reviewQueryAppearanceCount: 2
+            )
+        ]
+
+        let activities = CityActivityService.mapKitActivities(
+            for: asuncion,
+            results: results,
+            existingActivities: []
+        )
+
+        #expect(activities.count == 1)
+        #expect(activities.first?.name == "Casa de la Independencia")
+    }
+
+    @Test func mapKitActivitiesRejectResultsBeyondMaximumDistanceFromCityCenter() {
+        let asuncion = CityModel(
+            id: "asuncion-py",
+            name: "Asuncion",
+            country: CountryModel(name: "Paraguay", code: "PY", flag: "🇵🇾"),
+            imageURL: URL(string: "https://example.com/asuncion.jpg")!,
+            coordinate: CLLocationCoordinate2D(latitude: -25.2637, longitude: -57.5759),
+            timeZoneIdentifier: "America/Asuncion"
+        )
+
+        let farAwayResult = CityActivityAPIModels.MapKitActivityResult(
+            name: "Remote Scenic Point",
+            websiteURL: nil,
+            address: "Remote destination",
+            latitude: -24.6000,
+            longitude: -57.5759,
+            regionName: "Paraguay",
+            popularityRank: 1,
+            crossQueryAppearanceCount: 4,
+            reviewQueryAppearanceCount: 2
+        )
+
+        #expect(
+            CityActivityService.isEligibleMapKitResult(
+                farAwayResult,
+                for: asuncion
+            ) == false
+        )
+    }
+
     private var city: CityModel {
         CityModel(
             id: "vancouver-ca",

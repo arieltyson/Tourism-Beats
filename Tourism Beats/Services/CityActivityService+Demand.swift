@@ -256,6 +256,7 @@ extension CityActivityService {
                 address: result.address,
                 latitude: result.latitude,
                 longitude: result.longitude,
+                regionName: result.regionName,
                 popularityRank: result.popularityRank,
                 crossQueryAppearanceCount: appearanceCounts[key, default: 1],
                 reviewQueryAppearanceCount: reviewQueryCounts[key, default: 0]
@@ -330,14 +331,21 @@ extension CityActivityService {
                 }
 
                 let coordinate = item.location.coordinate
-                return Models.MapKitActivityResult(
+                let result = Models.MapKitActivityResult(
                     name: name,
                     websiteURL: item.url,
                     address: item.address?.shortAddress ?? item.address?.fullAddress,
                     latitude: coordinate.latitude,
                     longitude: coordinate.longitude,
+                    regionName: item.addressRepresentations?.regionName,
                     popularityRank: index + 1
                 )
+
+                guard self.isEligibleMapKitResult(result, for: city) else {
+                    return nil
+                }
+
+                return result
             }
         } catch {
             return []
@@ -354,6 +362,8 @@ extension CityActivityService {
         })
 
         return results.compactMap { result in
+            guard self.isEligibleMapKitResult(result, for: city) else { return nil }
+
             let activityKey = CityActivityRanking.activityKey(for: result.name)
             guard !existingKeys.contains(activityKey) else { return nil }
 
@@ -450,11 +460,43 @@ extension CityActivityService {
         "\(Int((latitude * 10_000).rounded()))_\(Int((longitude * 10_000).rounded()))"
     }
 
+    static func isEligibleMapKitResult(
+        _ result: Models.MapKitActivityResult,
+        for city: CityModel
+    ) -> Bool {
+        if let regionName = result.regionName?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !regionName.isEmpty
+        {
+            let normalizedRegionName = CityActivityRanking.activityKey(for: regionName)
+            let normalizedCountryName = CityActivityRanking.activityKey(for: city.country.name)
+            let regionMatchesCountry = normalizedRegionName == normalizedCountryName
+                || normalizedRegionName.localizedStandardContains(normalizedCountryName)
+                || normalizedCountryName.localizedStandardContains(normalizedRegionName)
+
+            if !regionMatchesCountry {
+                return false
+            }
+        }
+
+        guard let distanceFromCenter = CityActivityRanking.distance(
+            from: city.coordinate,
+            latitude: result.latitude,
+            longitude: result.longitude
+        ) else {
+            return false
+        }
+
+        return distanceFromCenter <= self.maximumMapKitDistanceFromCityCenter
+    }
+
     static let wikipediaArticlePathAllowedCharacters: CharacterSet = {
         var allowed = CharacterSet.urlPathAllowed
         allowed.remove(charactersIn: "/")
         return allowed
     }()
+
+    static let maximumMapKitDistanceFromCityCenter: CLLocationDistance = 35_000
 
     static let activityDemandExcludedKeywords = excludedKeywords + [
         "airport",

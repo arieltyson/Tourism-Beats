@@ -242,6 +242,7 @@ enum CityActivityAPIModels {
         let address: String?
         let latitude: Double
         let longitude: Double
+        let regionName: String?
         let popularityRank: Int
         var crossQueryAppearanceCount: Int = 1
         var reviewQueryAppearanceCount: Int = 0
