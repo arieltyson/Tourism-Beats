@@ -22,7 +22,7 @@ struct GlassMusicCard: View {
 
     var body: some View {
         GlassCard(cornerRadius: 20) {
-            if self.dynamicTypeSize.isAccessibilitySize {
+            if self.dynamicTypeSize.prefersMusicCardVerticalLayout {
                 VStack(alignment: .leading, spacing: SpacingTokens.small) {
                     HStack(spacing: SpacingTokens.small) {
                         GlassMusicCardArtwork(url: self.artworkURL)
@@ -40,13 +40,14 @@ struct GlassMusicCard: View {
                     )
                 }
             } else {
-                HStack(spacing: SpacingTokens.small) {
+                HStack(alignment: .top, spacing: SpacingTokens.small) {
                     GlassMusicCardArtwork(url: self.artworkURL)
 
                     GlassMusicCardInfo(
                         songTitle: self.songTitle,
                         artistName: self.artistName
                     )
+                    .layoutPriority(1)
 
                     Spacer(minLength: SpacingTokens.xxSmall)
 
@@ -55,6 +56,7 @@ struct GlassMusicCard: View {
                         onRestart: self.onRestart,
                         onPlayPause: self.onPlayPause
                     )
+                    .fixedSize()
                 }
             }
         }
@@ -130,14 +132,12 @@ private struct GlassMusicCardInfo: View {
             Text(self.songTitle)
                 .font(TypographyTokens.cardLabel.weight(.semibold))
                 .foregroundStyle(.primary)
-                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
-                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(self.artistName)
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.secondary)
-                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
-                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -174,7 +174,6 @@ private struct GlassMusicCardControls: View {
         }
         .foregroundStyle(.primary)
         .buttonStyle(.plain)
-        .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }
 

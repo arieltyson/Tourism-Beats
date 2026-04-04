@@ -21,7 +21,7 @@ struct GlassSpotifyCard: View {
 
     var body: some View {
         GlassCard(cornerRadius: 20) {
-            if self.dynamicTypeSize.isAccessibilitySize {
+            if self.dynamicTypeSize.prefersMusicCardVerticalLayout {
                 VStack(alignment: .leading, spacing: SpacingTokens.small) {
                     HStack(spacing: SpacingTokens.small) {
                         GlassSpotifyCardArtwork(url: self.artworkURL)
@@ -38,13 +38,14 @@ struct GlassSpotifyCard: View {
                     )
                 }
             } else {
-                HStack(spacing: SpacingTokens.small) {
+                HStack(alignment: .top, spacing: SpacingTokens.small) {
                     GlassSpotifyCardArtwork(url: self.artworkURL)
 
                     GlassSpotifyCardInfo(
                         songTitle: self.songTitle,
                         artistName: self.artistName
                     )
+                    .layoutPriority(1)
 
                     Spacer(minLength: SpacingTokens.xxSmall)
 
@@ -52,6 +53,7 @@ struct GlassSpotifyCard: View {
                         isSearching: self.isSearching,
                         onOpen: self.onOpen
                     )
+                    .fixedSize()
                 }
             }
         }
@@ -127,14 +129,12 @@ private struct GlassSpotifyCardInfo: View {
             Text(self.songTitle)
                 .font(TypographyTokens.cardLabel.weight(.semibold))
                 .foregroundStyle(.primary)
-                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
-                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(self.artistName)
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.secondary)
-                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
-                .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

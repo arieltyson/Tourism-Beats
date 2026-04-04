@@ -140,16 +140,14 @@ private struct MusicSongHeader: View {
                 .font(TypographyTokens.songTitle).bold()
                 .foregroundStyle(AppColors.onImagePrimary)
                 .multilineTextAlignment(.center)
-                .lineLimit(3)
-                .minimumScaleFactor(0.75)
+                .fixedSize(horizontal: false, vertical: true)
                 .shadow(color: .black.opacity(0.30), radius: 10, y: 4)
 
             Text(self.artist)
                 .font(TypographyTokens.artistName)
                 .foregroundStyle(AppColors.onImageSecondary)
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .minimumScaleFactor(0.9)
+                .fixedSize(horizontal: false, vertical: true)
                 .shadow(color: .black.opacity(0.24), radius: 8, y: 3)
         }
         .padding(.horizontal, SpacingTokens.medium)
