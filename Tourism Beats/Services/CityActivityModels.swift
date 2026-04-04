@@ -139,6 +139,35 @@ enum CityActivityAPIModels {
         }
     }
 
+    // MARK: Wikivoyage
+
+    struct WikimediaParseResponse: Decodable {
+        let parse: WikimediaParsePayload?
+        let error: WikimediaErrorPayload?
+    }
+
+    struct WikimediaParsePayload: Decodable {
+        let title: String
+        let wikitext: String?
+        let tocdata: WikimediaTOCData?
+    }
+
+    struct WikimediaTOCData: Decodable {
+        let sections: [WikimediaTOCSection]
+    }
+
+    struct WikimediaTOCSection: Decodable, Sendable {
+        let line: String
+        let index: String
+        let tocLevel: Int
+        let anchor: String
+    }
+
+    struct WikimediaErrorPayload: Decodable {
+        let code: String
+        let info: String
+    }
+
     // MARK: Wikidata
 
     struct WikidataEntitiesResponse: Decodable {

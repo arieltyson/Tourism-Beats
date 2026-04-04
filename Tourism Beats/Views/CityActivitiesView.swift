@@ -20,7 +20,15 @@ struct CityActivitiesView: View {
                 if self.viewModel.isLoading, self.viewModel.activities.isEmpty {
                     Self.LoadingState()
                 } else if self.viewModel.activities.isEmpty {
-                    Self.EmptyState()
+                    Self.EmptyState(
+                        message: self.viewModel.statusMessage
+                            ?? "No activity guide is available for \(self.city.name) right now.",
+                        refreshAction: {
+                            Task {
+                                await self.viewModel.refresh()
+                            }
+                        }
+                    )
                 } else {
                     Self.ActivityGrid(
                         city: self.city,
@@ -134,10 +142,19 @@ extension CityActivitiesView {
     }
 
     private struct EmptyState: View {
+        let message: String
+        let refreshAction: () -> Void
+
         var body: some View {
             Spacer(minLength: 0)
 
-            ContentUnavailableView("No Activities Yet", systemImage: "binoculars")
+            ContentUnavailableView {
+                Label("No Activities Yet", systemImage: "binoculars")
+            } description: {
+                Text(self.message)
+            } actions: {
+                Button("Try Again", action: self.refreshAction)
+            }
 
             Spacer(minLength: 0)
         }

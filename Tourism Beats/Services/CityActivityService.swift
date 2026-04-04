@@ -9,8 +9,10 @@ private typealias Models = CityActivityAPIModels
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
+    private static let desiredActivityCount = 6
 
     private let session: URLSession
+    private let wikivoyageParser = WikivoyageActivityGuideParser()
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
         category: "CityActivityService"
@@ -53,17 +55,8 @@ actor CityActivityService: CityActivityProviding {
             return cached.activities
         }
 
-        do {
-            let activities = try await self.fetchActivities(for: city)
-            let payload = Models.CachedPayload(fetchedAt: .now, activities: activities)
-            try? self.writeToDisk(payload, at: diskURL)
-            self.memoryCache[key] = payload
-            return activities
-        } catch {
-            self.logger.error(
-                "Activity fetch failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
-            )
-
+        let activities = await self.fetchActivities(for: city)
+        guard !activities.isEmpty else {
             if let stale = self.loadFromDisk(at: diskURL) {
                 self.memoryCache[key] = stale
                 return stale.activities
@@ -71,31 +64,81 @@ actor CityActivityService: CityActivityProviding {
 
             return []
         }
+
+        let payload = Models.CachedPayload(fetchedAt: .now, activities: activities)
+        try? self.writeToDisk(payload, at: diskURL)
+        self.memoryCache[key] = payload
+        return activities
     }
 }
 
-// MARK: - Fetch Pipeline (Overpass → Wikipedia Enrichment)
+// MARK: - Fetch Pipeline (Overpass → Wikivoyage → Wikipedia)
 
 extension CityActivityService {
-    private func fetchActivities(for city: CityModel) async throws -> [CityActivity] {
-        let pois = try await self.overpassPOIs(
-            latitude: city.coordinate.latitude,
-            longitude: city.coordinate.longitude,
-            cityName: city.name
+    private func fetchActivities(for city: CityModel) async -> [CityActivity] {
+        var mergedActivities: [CityActivity] = []
+
+        let overpassActivities = await self.overpassActivities(for: city)
+        mergedActivities = Self.mergeActivities(
+            primary: mergedActivities,
+            incoming: overpassActivities
         )
 
-        guard !pois.isEmpty else {
-            self.logger.info(
-                "No Overpass POIs for \(city.name, privacy: .public), using Wikipedia fallback"
+        if mergedActivities.count < Self.desiredActivityCount {
+            let wikivoyageActivities = await self.wikivoyageActivities(for: city)
+            mergedActivities = Self.mergeActivities(
+                primary: mergedActivities,
+                incoming: wikivoyageActivities
             )
-            return try await self.fallbackWikipediaActivities(for: city)
         }
 
-        let topPOIs = Array(pois.prefix(12))
-        let enriched = await self.enrichWithWikipedia(pois: topPOIs)
-        let withImages = await self.resolveWikidataImages(for: enriched)
-        let ranked = Self.rankActivities(withImages)
-        return Array(ranked.prefix(6))
+        if mergedActivities.count < Self.desiredActivityCount {
+            let wikipediaActivities = await self.wikipediaFallbackActivities(for: city)
+            mergedActivities = Self.mergeActivities(
+                primary: mergedActivities,
+                incoming: wikipediaActivities
+            )
+        }
+
+        return Array(Self.rankActivities(mergedActivities).prefix(Self.desiredActivityCount))
+    }
+
+    private func overpassActivities(for city: CityModel) async -> [CityActivity] {
+        do {
+            let pois = try await self.overpassPOIs(
+                latitude: city.coordinate.latitude,
+                longitude: city.coordinate.longitude,
+                cityName: city.name
+            )
+
+            guard !pois.isEmpty else {
+                self.logger.info(
+                    "No Overpass POIs for \(city.name, privacy: .public)"
+                )
+                return []
+            }
+
+            let topPOIs = Array(pois.prefix(12))
+            let enriched = await self.enrichWithWikipedia(pois: topPOIs)
+            let withImages = await self.resolveWikidataImages(for: enriched)
+            return Array(Self.rankActivities(withImages).prefix(Self.desiredActivityCount))
+        } catch {
+            self.logger.error(
+                "Overpass activity fetch failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
+            )
+            return []
+        }
+    }
+
+    private func wikipediaFallbackActivities(for city: CityModel) async -> [CityActivity] {
+        do {
+            return try await self.fallbackWikipediaActivities(for: city)
+        } catch {
+            self.logger.error(
+                "Wikipedia activity fallback failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
+            )
+            return []
+        }
     }
 
     private func fallbackWikipediaActivities(for city: CityModel) async throws -> [CityActivity] {
@@ -110,18 +153,113 @@ extension CityActivityService {
         let titles = candidates.prefix(20).map(\.title)
         let pages = try await self.wikiPageDetails(for: Array(titles))
         let ranked = Self.rankPages(pages)
-        let activities = Array(ranked.prefix(6)).map { Self.mapPageToActivity(page: $0) }
+        let activities = Array(ranked.prefix(Self.desiredActivityCount)).map {
+            Self.mapPageToActivity(page: $0)
+        }
 
         return await self.resolveWikidataImages(for: activities)
     }
 
     private static func rankActivities(_ activities: [CityActivity]) -> [CityActivity] {
         activities.sorted { lhs, rhs in
-            let lhsImage = lhs.imageURL != nil
-            let rhsImage = rhs.imageURL != nil
-            if lhsImage != rhsImage { return lhsImage }
-            return lhs.summary.count > rhs.summary.count
+            let lhsScore = self.activityScore(lhs)
+            let rhsScore = self.activityScore(rhs)
+
+            if lhsScore != rhsScore {
+                return lhsScore > rhsScore
+            }
+
+            return lhs.name.localizedCompare(rhs.name) == .orderedAscending
         }
+    }
+
+    private static func activityScore(_ activity: CityActivity) -> Int {
+        var score = 0
+
+        switch activity.sourceName {
+        case "Wikivoyage":
+            score += 45
+        case "Wikipedia":
+            score += 35
+        default:
+            score += 25
+        }
+
+        if activity.imageURL != nil { score += 15 }
+        if activity.officialURL != nil { score += 12 }
+        if activity.sourceURL != nil { score += 6 }
+        if activity.hours != nil { score += 5 }
+        if activity.price != nil { score += 4 }
+        if activity.address != nil { score += 7 }
+        if activity.latitude != nil, activity.longitude != nil { score += 6 }
+        if activity.wikidataIdentifier != nil { score += 8 }
+
+        score += min(activity.summary.count, 240) / 12
+        return score
+    }
+
+    private static func mergeActivities(
+        primary: [CityActivity],
+        incoming: [CityActivity]
+    ) -> [CityActivity] {
+        var mergedByName: [String: CityActivity] = [:]
+        let sortedActivities = Self.rankActivities(primary + incoming)
+
+        for activity in sortedActivities {
+            let lookupKey = Self.normalizedActivityName(activity.name)
+
+            if let existing = mergedByName[lookupKey] {
+                mergedByName[lookupKey] = Self.mergedActivity(
+                    preferred: existing,
+                    supplemental: activity
+                )
+            } else {
+                mergedByName[lookupKey] = activity
+            }
+        }
+
+        return Self.rankActivities(Array(mergedByName.values))
+    }
+
+    private static func mergedActivity(
+        preferred: CityActivity,
+        supplemental: CityActivity
+    ) -> CityActivity {
+        CityActivity(
+            id: preferred.id,
+            name: preferred.name,
+            summary: preferred.summary.count >= supplemental.summary.count
+                ? preferred.summary
+                : supplemental.summary,
+            category: preferred.category,
+            kind: preferred.kind,
+            imageURL: preferred.imageURL ?? supplemental.imageURL,
+            officialURL: preferred.officialURL ?? supplemental.officialURL,
+            sourceURL: preferred.sourceURL ?? supplemental.sourceURL,
+            sourceName: preferred.sourceName,
+            hours: preferred.hours ?? supplemental.hours,
+            price: preferred.price ?? supplemental.price,
+            address: preferred.address ?? supplemental.address,
+            directions: preferred.directions ?? supplemental.directions,
+            timingTip: preferred.timingTip ?? supplemental.timingTip,
+            latitude: preferred.latitude ?? supplemental.latitude,
+            longitude: preferred.longitude ?? supplemental.longitude,
+            wikidataIdentifier: preferred.wikidataIdentifier ?? supplemental.wikidataIdentifier,
+            sourcePageTitle: preferred.sourcePageTitle ?? supplemental.sourcePageTitle,
+            sourceAnchor: preferred.sourceAnchor ?? supplemental.sourceAnchor
+        )
+    }
+
+    private static func normalizedActivityName(_ name: String) -> String {
+        name
+            .folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
+            .split { !$0.isLetter && !$0.isNumber }
+            .map(String.init)
+            .joined(separator: " ")
+            .lowercased()
     }
 }
 
@@ -472,6 +610,197 @@ extension CityActivityService {
         text
             .replacingOccurrences(of: "\\s*==.*$", with: "", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+// MARK: - Wikivoyage Guide Fallback
+
+extension CityActivityService {
+    private func wikivoyageActivities(for city: CityModel) async -> [CityActivity] {
+        do {
+            guard let guidePageTitle = try await self.wikivoyageGuidePageTitle(for: city) else {
+                return []
+            }
+
+            let tocSections = try await self.wikivoyageTOCSections(for: guidePageTitle)
+            let activitySections = Self.wikivoyageActivitySections(from: tocSections)
+            guard !activitySections.isEmpty else { return [] }
+
+            var parsedActivities: [CityActivity] = []
+
+            for section in activitySections {
+                let wikitext = try await self.wikivoyageSectionWikitext(
+                    for: guidePageTitle,
+                    sectionIndex: section.index
+                )
+
+                parsedActivities += self.wikivoyageParser.activities(
+                    from: wikitext,
+                    guidePageTitle: guidePageTitle,
+                    topSectionTitle: section.line
+                )
+            }
+
+            guard !parsedActivities.isEmpty else { return [] }
+
+            let withImages = await self.resolveWikidataImages(for: parsedActivities)
+            return Array(Self.rankActivities(withImages).prefix(Self.desiredActivityCount))
+        } catch {
+            self.logger.error(
+                "Wikivoyage activity fallback failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
+            )
+            return []
+        }
+    }
+
+    private func wikivoyageGuidePageTitle(for city: CityModel) async throws -> String? {
+        let results = try await self.wikivoyageGeoSearch(
+            latitude: city.coordinate.latitude,
+            longitude: city.coordinate.longitude
+        )
+
+        if let bestTitle = Self.bestWikivoyageGuideTitle(
+            from: results,
+            cityName: city.name
+        ) {
+            return bestTitle
+        }
+
+        return city.name
+    }
+
+    private func wikivoyageGeoSearch(
+        latitude: Double,
+        longitude: Double
+    ) async throws -> [Models.GeoSearchResult] {
+        var components = URLComponents(string: "https://en.wikivoyage.org/w/api.php")
+        components?.queryItems = [
+            URLQueryItem(name: "action", value: "query"),
+            URLQueryItem(name: "list", value: "geosearch"),
+            URLQueryItem(name: "gscoord", value: "\(latitude)|\(longitude)"),
+            URLQueryItem(name: "gsradius", value: "20000"),
+            URLQueryItem(name: "gslimit", value: "20"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "formatversion", value: "2")
+        ]
+
+        guard let url = components?.url else {
+            throw Models.ServiceError.invalidRequest
+        }
+
+        let data = try await self.fetchData(from: url)
+        let response = try self.decoder.decode(Models.GeoSearchResponse.self, from: data)
+        return response.query?.geosearch ?? []
+    }
+
+    private func wikivoyageTOCSections(
+        for pageTitle: String
+    ) async throws -> [Models.WikimediaTOCSection] {
+        var components = URLComponents(string: "https://en.wikivoyage.org/w/api.php")
+        components?.queryItems = [
+            URLQueryItem(name: "action", value: "parse"),
+            URLQueryItem(name: "page", value: pageTitle),
+            URLQueryItem(name: "prop", value: "tocdata"),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "formatversion", value: "2")
+        ]
+
+        guard let url = components?.url else {
+            throw Models.ServiceError.invalidRequest
+        }
+
+        let data = try await self.fetchData(from: url)
+        let response = try self.decoder.decode(Models.WikimediaParseResponse.self, from: data)
+
+        if response.error != nil {
+            throw Models.ServiceError.invalidResponse
+        }
+
+        return response.parse?.tocdata?.sections ?? []
+    }
+
+    private func wikivoyageSectionWikitext(
+        for pageTitle: String,
+        sectionIndex: String
+    ) async throws -> String {
+        var components = URLComponents(string: "https://en.wikivoyage.org/w/api.php")
+        components?.queryItems = [
+            URLQueryItem(name: "action", value: "parse"),
+            URLQueryItem(name: "page", value: pageTitle),
+            URLQueryItem(name: "prop", value: "wikitext"),
+            URLQueryItem(name: "section", value: sectionIndex),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "formatversion", value: "2")
+        ]
+
+        guard let url = components?.url else {
+            throw Models.ServiceError.invalidRequest
+        }
+
+        let data = try await self.fetchData(from: url)
+        let response = try self.decoder.decode(Models.WikimediaParseResponse.self, from: data)
+
+        if response.error != nil {
+            throw Models.ServiceError.invalidResponse
+        }
+
+        return response.parse?.wikitext ?? ""
+    }
+
+    private static func bestWikivoyageGuideTitle(
+        from results: [Models.GeoSearchResult],
+        cityName: String
+    ) -> String? {
+        let normalizedCityName = Self.normalizedGuideTitle(cityName)
+
+        let rankedResults = results.sorted { lhs, rhs in
+            let lhsScore = Self.guideTitleScore(lhs.title, cityName: normalizedCityName)
+            let rhsScore = Self.guideTitleScore(rhs.title, cityName: normalizedCityName)
+
+            if lhsScore != rhsScore {
+                return lhsScore > rhsScore
+            }
+
+            return lhs.dist < rhs.dist
+        }
+
+        return rankedResults.first?.title
+    }
+
+    private static func guideTitleScore(_ title: String, cityName: String) -> Int {
+        let normalizedTitle = Self.normalizedGuideTitle(title)
+        var score = 0
+
+        if normalizedTitle == cityName { score += 100 }
+        if normalizedTitle.hasPrefix("\(cityName) ") { score += 40 }
+        if !title.contains("/") { score += 25 }
+        if normalizedTitle.localizedStandardContains(cityName) { score += 20 }
+        if title.contains("/") { score -= 20 }
+
+        return score
+    }
+
+    private static func normalizedGuideTitle(_ value: String) -> String {
+        value
+            .folding(
+                options: [.caseInsensitive, .diacriticInsensitive],
+                locale: .current
+            )
+            .split { !$0.isLetter && !$0.isNumber }
+            .map(String.init)
+            .joined(separator: " ")
+            .lowercased()
+    }
+
+    private static func wikivoyageActivitySections(
+        from sections: [Models.WikimediaTOCSection]
+    ) -> [Models.WikimediaTOCSection] {
+        sections.filter {
+            $0.tocLevel == 1
+                && ($0.line.localizedStandardContains("see")
+                        || $0.line.localizedStandardContains("do")
+                )
+        }
     }
 }
 
