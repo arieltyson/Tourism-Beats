@@ -28,7 +28,6 @@ struct WorldView: View {
 
     @State private var searchText = ""
     @State private var searchIndex: [SearchIndexRow] = []
-    @FocusState private var isSearchFieldFocused: Bool
 
     private let cities: [CityModel]
 
@@ -46,28 +45,16 @@ struct WorldView: View {
             cities: self.cities,
             onCitySelected: { _ in }
         )
+        .ignoresSafeArea()
         .navigationTitle("Explore")
         .navigationBarTitleDisplayMode(.inline)
-        .safeAreaInset(
-            edge: .bottom,
-            spacing: SpacingTokens.small
-        ) {
-            WorldSearchDock(
-                searchText: self.$searchText,
-                results: self.filteredCities,
-                isPresented: self.isSearchInterfacePresented,
-                onSelect: { city in
-                    self.navigateToCity(city)
-                },
-                onSubmit: {
-                    self.handleSearchSubmit()
-                },
-                onClear: {
-                    self.searchText = ""
-                },
-                searchFieldFocus: self.$isSearchFieldFocused
-            )
-            .padding(.horizontal, SpacingTokens.medium)
+        .searchable(
+            text: self.$searchText,
+            placement: .toolbar,
+            prompt: "Search cities or countries"
+        )
+        .searchSuggestions {
+            self.searchSuggestionsContent
         }
         .onAppear {
             self.zoomOutOnReturn()
@@ -124,17 +111,28 @@ struct WorldView: View {
         return nameMatches + countryMatches
     }
 
-    private var isSearchInterfacePresented: Bool {
-        let query = self.searchText
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        return self.isSearchFieldFocused || !query.isEmpty
+    // MARK: - Search Suggestions
+
+    @ViewBuilder
+    private var searchSuggestionsContent: some View {
+        let results = self.filteredCities
+        ForEach(results, id: \.id) { city in
+            Button {
+                self.navigateToCity(city)
+            } label: {
+                CitySearchResultRow(
+                    city: city,
+                    searchText: self.searchText
+                )
+            }
+            .buttonStyle(.plain)
+        }
     }
 
     // MARK: - Navigation
 
     private func navigateToCity(_ city: CityModel) {
         self.searchText = ""
-        self.isSearchFieldFocused = false
         self.lastVisitedCoordinate = city.coordinate
         self.region = MKCoordinateRegion(
             center: city.coordinate,
@@ -142,13 +140,6 @@ struct WorldView: View {
         )
         self.selectedCity = city
         self.onCitySelected(city)
-    }
-
-    private func handleSearchSubmit() {
-        let query = self.searchText
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !query.isEmpty, let firstResult = self.filteredCities.first else { return }
-        self.navigateToCity(firstResult)
     }
 
     // MARK: - State Management
@@ -166,7 +157,6 @@ struct WorldView: View {
         self.showAlert = false
         self.lastRegion = nil
         self.searchText = ""
-        self.isSearchFieldFocused = false
         self.alertTimeoutTask?.cancel()
     }
 
