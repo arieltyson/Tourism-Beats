@@ -2438,5 +2438,125 @@
     "latitude": 34.52527778,
     "longitude": 69.17833333,
     "timeZoneIdentifier": "Asia/Kabul"
+  },
+  {
+    "name": "Ouagadougou",
+    "countryCode": "BF",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/56/OUAGADOUGOU3.JPG",
+    "latitude": 12.36861111,
+    "longitude": -1.5275,
+    "timeZoneIdentifier": "Africa/Ouagadougou"
+  },
+  {
+    "name": "Bandar Seri Begawan",
+    "countryCode": "BN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/0/05/Brunei_Fireworks_%26_Drone_Light_Show_2024_12.jpg",
+    "latitude": 4.89027778,
+    "longitude": 114.94222222,
+    "timeZoneIdentifier": "Asia/Brunei"
+  },
+  {
+    "name": "Monrovia",
+    "countryCode": "LR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/25/Liberia%2C_Africa_-_panoramio_%28256%29.jpg",
+    "latitude": 6.31333333,
+    "longitude": -10.80138889,
+    "timeZoneIdentifier": "Africa/Monrovia"
+  },
+  {
+    "name": "Conakry",
+    "countryCode": "GN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/51/Ville_de_Conaky.jpg",
+    "latitude": 9.50916667,
+    "longitude": -13.71222222,
+    "timeZoneIdentifier": "Africa/Conakry"
+  },
+  {
+    "name": "Bissau",
+    "countryCode": "GW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/44/Bissau-Stroossenzeen--w.jpg",
+    "latitude": 11.86,
+    "longitude": -15.58333333,
+    "timeZoneIdentifier": "Africa/Bissau"
+  },
+  {
+    "name": "Bamako",
+    "countryCode": "ML",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/7/77/Place_de_la_libert%C3%A9_-_Bamako.jpg",
+    "latitude": 12.63916667,
+    "longitude": -8.00277778,
+    "timeZoneIdentifier": "Africa/Bamako"
+  },
+  {
+    "name": "Porto-Novo",
+    "countryCode": "BJ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Grande_Mosquee_Porto-Novo_Benin_Joseph_Herve_Ahissou.jpg",
+    "latitude": 6.49722222,
+    "longitude": 2.605,
+    "timeZoneIdentifier": "Africa/Porto-Novo"
+  },
+  {
+    "name": "Niamey",
+    "countryCode": "NE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/26/Niamey_from_grand_mosque_theatre_2006.jpg",
+    "latitude": 13.51361111,
+    "longitude": 2.10888889,
+    "timeZoneIdentifier": "Africa/Niamey"
+  },
+  {
+    "name": "N'Djamena",
+    "countryCode": "TD",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Building_of_National_Assembly_DJAMENA.jpg",
+    "latitude": 12.10527778,
+    "longitude": 15.04472222,
+    "timeZoneIdentifier": "Africa/Ndjamena"
+  },
+  {
+    "name": "Bujumbura",
+    "countryCode": "BI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/f/f9/BujumburaFromCathedral.jpg",
+    "latitude": -3.38333333,
+    "longitude": 29.36666667,
+    "timeZoneIdentifier": "Africa/Bujumbura"
+  },
+  {
+    "name": "Lilongwe",
+    "countryCode": "MW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/7/7c/K.a.r-.clocktower-in-lilongwe.jpg",
+    "latitude": -13.98333333,
+    "longitude": 33.78333333,
+    "timeZoneIdentifier": "Africa/Blantyre"
+  },
+  {
+    "name": "Mbabane",
+    "countryCode": "SZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/94/Mbabane_-_City_overview.jpg",
+    "latitude": -26.31666667,
+    "longitude": 31.13333333,
+    "timeZoneIdentifier": "Africa/Mbabane"
+  },
+  {
+    "name": "Windhoek",
+    "countryCode": "NA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Windhoek-269058_1920.jpg",
+    "latitude": -22.57,
+    "longitude": 17.08361111,
+    "timeZoneIdentifier": "Africa/Windhoek"
+  },
+  {
+    "name": "Bangui",
+    "countryCode": "CF",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Bangui_collage.png",
+    "latitude": 4.37333333,
+    "longitude": 18.56277778,
+    "timeZoneIdentifier": "Africa/Bangui"
+  },
+  {
+    "name": "Juba",
+    "countryCode": "SS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/a/a6/John_Garang_Mausoleum_Square_in_Juba.JPG",
+    "latitude": 4.8539,
+    "longitude": 31.5825,
+    "timeZoneIdentifier": "Africa/Juba"
   }
 ]
