@@ -9,7 +9,7 @@ extension CityActivityService {
     ) async -> [CityActivity] {
         let lookupTitlesByIndex: [Int: String] = Dictionary(
             uniqueKeysWithValues: activities.enumerated().compactMap { index, activity in
-                guard activity.hasGenericFallbackSummary,
+                guard activity.hasGenericFallbackSummary || activity.imageURL == nil,
                       let title = Self.wikipediaLookupTitle(for: activity)
                 else {
                     return nil
@@ -70,6 +70,11 @@ extension CityActivityService {
         applying summary: WikipediaSummary
     ) -> CityActivity {
         let cleanedSummary = Self.cleanExtract(summary.extract)
+        let resolvedSummary = if activity.hasGenericFallbackSummary, !cleanedSummary.isEmpty {
+            cleanedSummary
+        } else {
+            activity.summary
+        }
         let resolvedImageURL = activity.imageURL ?? summary.originalImageURL ?? summary.thumbnailURL
         let resolvedSourceURL = activity.sourceURL ?? summary.articleURL
         let resolvedPageTitle = if let sourcePageTitle = activity.sourcePageTitle,
@@ -83,7 +88,7 @@ extension CityActivityService {
         return CityActivity(
             id: activity.id,
             name: activity.name,
-            summary: cleanedSummary.isEmpty ? activity.summary : cleanedSummary,
+            summary: resolvedSummary,
             category: activity.category,
             kind: activity.kind,
             imageURL: resolvedImageURL,

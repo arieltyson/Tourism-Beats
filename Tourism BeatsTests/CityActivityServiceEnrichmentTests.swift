@@ -20,6 +20,16 @@ struct CityActivityServiceEnrichmentTests {
                         thumbnailURL: URL(string: "https://example.com/palace-thumb.jpg"),
                         originalImageURL: URL(string: "https://example.com/palace.jpg"),
                         articleURL: URL(string: "https://en.wikipedia.org/wiki/Royal_Palace_of_Brussels")
+                    ),
+                    "Magritte Museum": WikipediaSummary(
+                        title: "Magritte Museum",
+                        description: "Art museum in Brussels, Belgium",
+                        extract: """
+                        The Magritte Museum is an art museum in Brussels dedicated to the work of Rene Magritte.
+                        """,
+                        thumbnailURL: URL(string: "https://example.com/magritte-thumb.jpg"),
+                        originalImageURL: URL(string: "https://example.com/magritte-full.jpg"),
+                        articleURL: URL(string: "https://en.wikipedia.org/wiki/Magritte_Museum")
                     )
                 ]
             )
@@ -62,9 +72,9 @@ struct CityActivityServiceEnrichmentTests {
                 summary: "A major Brussels museum with a broad collection dedicated to Rene Magritte.",
                 category: "Museum",
                 kind: .see,
-                imageURL: URL(string: "https://example.com/magritte.jpg"),
+                imageURL: nil,
                 officialURL: nil,
-                sourceURL: URL(string: "https://example.com/magritte"),
+                sourceURL: nil,
                 sourceName: "Wikivoyage",
                 hours: nil,
                 price: nil,
@@ -96,7 +106,9 @@ struct CityActivityServiceEnrichmentTests {
 
         let museum = try #require(enrichedActivities.last)
         #expect(museum.summary == activities[1].summary)
-        #expect(museum.imageURL == activities[1].imageURL)
+        #expect(museum.imageURL == URL(string: "https://example.com/magritte-full.jpg"))
+        #expect(museum.sourceURL == URL(string: "https://en.wikipedia.org/wiki/Magritte_Museum"))
+        #expect(museum.sourcePageTitle == "Magritte Museum")
     }
 }
 
