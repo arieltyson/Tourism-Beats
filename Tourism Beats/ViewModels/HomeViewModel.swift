@@ -18,7 +18,9 @@ final class HomeViewModel {
         guard !self.isLoaded else { return }
         guard let cities = try? DataService().loadCities() else { return }
         self.allCityCount = cities.count
-        self.featuredCities = Array(cities.shuffled().prefix(6))
+        let featuredPool = cities.filter(\.isEligibleForFeaturedHeroCarousel)
+        let source = featuredPool.count >= 6 ? featuredPool : cities
+        self.featuredCities = Array(source.shuffled().prefix(6))
         self.isLoaded = true
     }
 

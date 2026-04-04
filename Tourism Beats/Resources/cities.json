@@ -2162,7 +2162,7 @@
   {
     "name": "Whistler",
     "countryCode": "CA",
-    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Whistler%20Panorama%202.jpg",
+    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Whistler%20Village%20-%20November%2018th%201pm%20-%20Mountain%20open%20%3D%20lots%20of%20happy%20faces%20%286360439503%29.jpg",
     "latitude": 50.11666667,
     "longitude": -122.95416667,
     "timeZoneIdentifier": "America/Vancouver"
@@ -2189,7 +2189,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/83/Mal%C3%A9.jpg",
     "latitude": 5.86287,
     "longitude": 73.2072,
-    "timeZoneIdentifier": "Indian/Maldives"
+    "timeZoneIdentifier": "Indian/Maldives",
+    "featuredHeroEligible": false
   },
   {
     "name": "Jerusalem",

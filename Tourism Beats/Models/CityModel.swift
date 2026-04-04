@@ -7,6 +7,25 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
     let imageURL: URL
     let coordinate: CLLocationCoordinate2D
     let timeZoneIdentifier: String
+    let featuredHeroEligibleOverride: Bool?
+
+    init(
+        id: String,
+        name: String,
+        country: CountryModel,
+        imageURL: URL,
+        coordinate: CLLocationCoordinate2D,
+        timeZoneIdentifier: String,
+        featuredHeroEligibleOverride: Bool? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.country = country
+        self.imageURL = imageURL
+        self.coordinate = coordinate
+        self.timeZoneIdentifier = timeZoneIdentifier
+        self.featuredHeroEligibleOverride = featuredHeroEligibleOverride
+    }
 
     var timeZone: TimeZone {
         TimeZone(identifier: self.timeZoneIdentifier) ?? .current
