@@ -9,11 +9,12 @@ typealias Models = CityActivityAPIModels
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
-    private static let cacheVersion = "v4"
+    private static let cacheVersion = "v5"
     private static let desiredActivityCount = 6
     private static let sourceCandidateCount = 18
 
     let session: URLSession
+    let wikipediaSummaryService: WikipediaSummaryProviding
     private let wikivoyageParser = WikivoyageActivityGuideParser()
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
@@ -35,8 +36,12 @@ actor CityActivityService: CityActivityProviding {
         return encoder
     }()
 
-    init(session: URLSession = .shared) {
+    init(
+        session: URLSession = .shared,
+        wikipediaSummaryService: WikipediaSummaryProviding = WikipediaSummaryService.shared
+    ) {
         self.session = session
+        self.wikipediaSummaryService = wikipediaSummaryService
     }
 
     func activities(for city: CityModel) async -> [CityActivity] {
@@ -114,12 +119,14 @@ extension CityActivityService {
             mapKitResults: mapKitResults
         )
 
-        return CityActivityRanking.topActivities(
+        let rankedActivities = CityActivityRanking.topActivities(
             from: collectedActivities,
             for: city,
             demandSignals: demandSignals,
             limit: Self.desiredActivityCount
         )
+
+        return await self.enrichFallbackActivitiesIfNeeded(rankedActivities, for: city)
     }
 
     private func overpassActivities(for city: CityModel) async -> [CityActivity] {
@@ -523,7 +530,7 @@ extension CityActivityService {
         )
     }
 
-    private static func cleanExtract(_ text: String) -> String {
+    static func cleanExtract(_ text: String) -> String {
         text
             .replacingOccurrences(of: "\\s*==.*$", with: "", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)

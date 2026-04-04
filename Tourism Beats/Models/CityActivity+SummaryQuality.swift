@@ -10,13 +10,21 @@ extension CityActivity {
         let isLegacyFallback = normalizedSummary.localizedStandardContains("notable")
             && normalizedSummary.localizedStandardContains("worth visiting")
 
-        let isAppleMapsFallback = normalizedSummary.localizedStandardContains("apple maps")
+        let isLegacyAppleMapsFallback = normalizedSummary.localizedStandardContains("apple maps")
             && (
                 normalizedSummary.localizedStandardContains("surfaced consistently")
                     || normalizedSummary.localizedStandardContains("discovery results")
                     || normalizedSummary.localizedStandardContains("high-demand attraction")
             )
 
-        return isLegacyFallback || isAppleMapsFallback
+        let isGeneratedAppleMapsFallback = self.sourceName == "Apple Maps"
+            && (
+                normalizedSummary.localizedStandardContains("top-rated attraction searches for the city")
+                    || normalizedSummary.localizedStandardContains("popular attraction searches for the city")
+                    || normalizedSummary.localizedStandardContains("stronger attraction matches for the city")
+                    || normalizedSummary.localizedStandardContains("useful visitor stop for the city")
+            )
+
+        return isLegacyFallback || isLegacyAppleMapsFallback || isGeneratedAppleMapsFallback
     }
 }
