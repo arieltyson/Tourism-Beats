@@ -1998,5 +1998,149 @@
     "latitude": 21.9588,
     "longitude": 96.0891,
     "timeZoneIdentifier": "Asia/Yangon"
+  },
+  {
+    "name": "Canberra",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Canberra_panorama_from_Mount_Ainslie.jpg/1280px-Canberra_panorama_from_Mount_Ainslie.jpg",
+    "latitude": -35.29305556,
+    "longitude": 149.12694444,
+    "timeZoneIdentifier": "Australia/Sydney"
+  },
+  {
+    "name": "Kathmandu",
+    "countryCode": "NP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Kathmandu-Durbar_Square-06-Mahavishnu-Kuh-Vishnu-Pratapamalla-Jagannath-2007-gje.jpg/1280px-Kathmandu-Durbar_Square-06-Mahavishnu-Kuh-Vishnu-Pratapamalla-Jagannath-2007-gje.jpg",
+    "latitude": 27.71,
+    "longitude": 85.32,
+    "timeZoneIdentifier": "Asia/Kathmandu"
+  },
+  {
+    "name": "Thimphu",
+    "countryCode": "BT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Tashich%C3%B6dzong_Thimphu-2008-01-23.jpg/1280px-Tashich%C3%B6dzong_Thimphu-2008-01-23.jpg",
+    "latitude": 27.47222222,
+    "longitude": 89.63611111,
+    "timeZoneIdentifier": "Asia/Thimphu"
+  },
+  {
+    "name": "Gold Coast",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Gold_Coast_skyline_%28Unsplash%29.jpg/1280px-Gold_Coast_skyline_%28Unsplash%29.jpg",
+    "latitude": -27.9983,
+    "longitude": 153.3344,
+    "timeZoneIdentifier": "Australia/Brisbane"
+  },
+  {
+    "name": "Vientiane",
+    "countryCode": "LA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/thumb/2/28/Vientiane_-_Patuxai_-_0003.jpg/1280px-Vientiane_-_Patuxai_-_0003.jpg",
+    "latitude": 17.98,
+    "longitude": 102.63,
+    "timeZoneIdentifier": "Asia/Vientiane"
+  },
+  {
+    "name": "George Town",
+    "countryCode": "MY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Skyline_of_George_Town%2C_Penang_at_night_Nov2024-29-17.jpg/1280px-Skyline_of_George_Town%2C_Penang_at_night_Nov2024-29-17.jpg",
+    "latitude": 5.41444444,
+    "longitude": 100.32916667,
+    "timeZoneIdentifier": "Asia/Kuala_Lumpur"
+  },
+  {
+    "name": "Karachi",
+    "countryCode": "PK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Dolmen_Towers_Karachi.jpg/1280px-Dolmen_Towers_Karachi.jpg",
+    "latitude": 24.86,
+    "longitude": 67.01,
+    "timeZoneIdentifier": "Asia/Karachi"
+  },
+  {
+    "name": "Navoiy",
+    "countryCode": "UZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Rabati_Malik%2C_Navoiy%2C_Uzbekistan.jpg/1280px-Rabati_Malik%2C_Navoiy%2C_Uzbekistan.jpg",
+    "latitude": 40.08444444,
+    "longitude": 65.37916667,
+    "timeZoneIdentifier": "Asia/Samarkand"
+  },
+  {
+    "name": "Tashkent",
+    "countryCode": "UZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/Nest_One_Tashkent.jpg/1280px-Nest_One_Tashkent.jpg",
+    "latitude": 41.31111111,
+    "longitude": 69.27972222,
+    "timeZoneIdentifier": "Asia/Tashkent"
+  },
+  {
+    "name": "Bishkek",
+    "countryCode": "KG",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Bishkek_City%27s_business_center.jpg/1280px-Bishkek_City%27s_business_center.jpg",
+    "latitude": 42.87472222,
+    "longitude": 74.61222222,
+    "timeZoneIdentifier": "Asia/Bishkek"
+  },
+  {
+    "name": "Ashgabat",
+    "countryCode": "TM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/View_of_Ashgabat_%2842376779291%29.jpg/1280px-View_of_Ashgabat_%2842376779291%29.jpg",
+    "latitude": 37.9375,
+    "longitude": 58.38,
+    "timeZoneIdentifier": "Asia/Ashgabat"
+  },
+  {
+    "name": "Dushanbe",
+    "countryCode": "TJ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Panorama_with_buildings%2C_Dushanbe.jpg/1280px-Panorama_with_buildings%2C_Dushanbe.jpg",
+    "latitude": 38.53666667,
+    "longitude": 68.78,
+    "timeZoneIdentifier": "Asia/Dushanbe"
+  },
+  {
+    "name": "Yakutsk",
+    "countryCode": "RU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Yakutsk_-_190228_DSC_5379.jpg/1280px-Yakutsk_-_190228_DSC_5379.jpg",
+    "latitude": 62.03,
+    "longitude": 129.73,
+    "timeZoneIdentifier": "Asia/Yakutsk"
+  },
+  {
+    "name": "Kuwait City",
+    "countryCode": "KW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Kuwait_City_Skyline_1.jpg/1280px-Kuwait_City_Skyline_1.jpg",
+    "latitude": 29.36972222,
+    "longitude": 47.97833333,
+    "timeZoneIdentifier": "Asia/Kuwait"
+  },
+  {
+    "name": "Manama",
+    "countryCode": "BH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Manama%2C_Bahrain_Decembre_2014.jpg/1280px-Manama%2C_Bahrain_Decembre_2014.jpg",
+    "latitude": 26.22333333,
+    "longitude": 50.5875,
+    "timeZoneIdentifier": "Asia/Bahrain"
+  },
+  {
+    "name": "Doha",
+    "countryCode": "QA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/The_Pearl_Marina_in_Nov_2013.jpg/1280px-The_Pearl_Marina_in_Nov_2013.jpg",
+    "latitude": 25.28666667,
+    "longitude": 51.53333333,
+    "timeZoneIdentifier": "Asia/Qatar"
+  },
+  {
+    "name": "Muscat",
+    "countryCode": "OM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Al_Alam_Palace.jpg/1280px-Al_Alam_Palace.jpg",
+    "latitude": 23.58888889,
+    "longitude": 58.40833333,
+    "timeZoneIdentifier": "Asia/Muscat"
+  },
+  {
+    "name": "Sanaa",
+    "countryCode": "YE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Sana%27a_%282286825748%29.jpg/1280px-Sana%27a_%282286825748%29.jpg",
+    "latitude": 15.34833333,
+    "longitude": 44.20638889,
+    "timeZoneIdentifier": "Asia/Aden"
   }
 ]
