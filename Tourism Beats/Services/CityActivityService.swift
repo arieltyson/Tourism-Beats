@@ -10,6 +10,7 @@ private typealias Models = CityActivityAPIModels
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
     private static let desiredActivityCount = 6
+    private static let sourceCandidateCount = 12
 
     private let session: URLSession
     private let wikivoyageParser = WikivoyageActivityGuideParser()
@@ -76,31 +77,34 @@ actor CityActivityService: CityActivityProviding {
 
 extension CityActivityService {
     private func fetchActivities(for city: CityModel) async -> [CityActivity] {
-        var mergedActivities: [CityActivity] = []
+        var collectedActivities: [CityActivity] = []
 
         let overpassActivities = await self.overpassActivities(for: city)
-        mergedActivities = Self.mergeActivities(
-            primary: mergedActivities,
-            incoming: overpassActivities
-        )
+        collectedActivities += overpassActivities
 
-        if mergedActivities.count < Self.desiredActivityCount {
+        if CityActivityRanking.topActivities(
+            from: collectedActivities,
+            for: city,
+            limit: Self.desiredActivityCount
+        ).count < Self.desiredActivityCount {
             let wikivoyageActivities = await self.wikivoyageActivities(for: city)
-            mergedActivities = Self.mergeActivities(
-                primary: mergedActivities,
-                incoming: wikivoyageActivities
-            )
+            collectedActivities += wikivoyageActivities
         }
 
-        if mergedActivities.count < Self.desiredActivityCount {
+        if CityActivityRanking.topActivities(
+            from: collectedActivities,
+            for: city,
+            limit: Self.desiredActivityCount
+        ).count < Self.desiredActivityCount {
             let wikipediaActivities = await self.wikipediaFallbackActivities(for: city)
-            mergedActivities = Self.mergeActivities(
-                primary: mergedActivities,
-                incoming: wikipediaActivities
-            )
+            collectedActivities += wikipediaActivities
         }
 
-        return Array(Self.rankActivities(mergedActivities).prefix(Self.desiredActivityCount))
+        return CityActivityRanking.topActivities(
+            from: collectedActivities,
+            for: city,
+            limit: Self.desiredActivityCount
+        )
     }
 
     private func overpassActivities(for city: CityModel) async -> [CityActivity] {
@@ -121,7 +125,11 @@ extension CityActivityService {
             let topPOIs = Array(pois.prefix(12))
             let enriched = await self.enrichWithWikipedia(pois: topPOIs)
             let withImages = await self.resolveWikidataImages(for: enriched)
-            return Array(Self.rankActivities(withImages).prefix(Self.desiredActivityCount))
+            return CityActivityRanking.topActivities(
+                from: withImages,
+                for: city,
+                limit: Self.sourceCandidateCount
+            )
         } catch {
             self.logger.error(
                 "Overpass activity fetch failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
@@ -153,113 +161,11 @@ extension CityActivityService {
         let titles = candidates.prefix(20).map(\.title)
         let pages = try await self.wikiPageDetails(for: Array(titles))
         let ranked = Self.rankPages(pages)
-        let activities = Array(ranked.prefix(Self.desiredActivityCount)).map {
+        let activities = Array(ranked.prefix(Self.sourceCandidateCount)).map {
             Self.mapPageToActivity(page: $0)
         }
 
         return await self.resolveWikidataImages(for: activities)
-    }
-
-    private static func rankActivities(_ activities: [CityActivity]) -> [CityActivity] {
-        activities.sorted { lhs, rhs in
-            let lhsScore = self.activityScore(lhs)
-            let rhsScore = self.activityScore(rhs)
-
-            if lhsScore != rhsScore {
-                return lhsScore > rhsScore
-            }
-
-            return lhs.name.localizedCompare(rhs.name) == .orderedAscending
-        }
-    }
-
-    private static func activityScore(_ activity: CityActivity) -> Int {
-        var score = 0
-
-        switch activity.sourceName {
-        case "Wikivoyage":
-            score += 45
-        case "Wikipedia":
-            score += 35
-        default:
-            score += 25
-        }
-
-        if activity.imageURL != nil { score += 15 }
-        if activity.officialURL != nil { score += 12 }
-        if activity.sourceURL != nil { score += 6 }
-        if activity.hours != nil { score += 5 }
-        if activity.price != nil { score += 4 }
-        if activity.address != nil { score += 7 }
-        if activity.latitude != nil, activity.longitude != nil { score += 6 }
-        if activity.wikidataIdentifier != nil { score += 8 }
-
-        score += min(activity.summary.count, 240) / 12
-        return score
-    }
-
-    private static func mergeActivities(
-        primary: [CityActivity],
-        incoming: [CityActivity]
-    ) -> [CityActivity] {
-        var mergedByName: [String: CityActivity] = [:]
-        let sortedActivities = Self.rankActivities(primary + incoming)
-
-        for activity in sortedActivities {
-            let lookupKey = Self.normalizedActivityName(activity.name)
-
-            if let existing = mergedByName[lookupKey] {
-                mergedByName[lookupKey] = Self.mergedActivity(
-                    preferred: existing,
-                    supplemental: activity
-                )
-            } else {
-                mergedByName[lookupKey] = activity
-            }
-        }
-
-        return Self.rankActivities(Array(mergedByName.values))
-    }
-
-    private static func mergedActivity(
-        preferred: CityActivity,
-        supplemental: CityActivity
-    ) -> CityActivity {
-        CityActivity(
-            id: preferred.id,
-            name: preferred.name,
-            summary: preferred.summary.count >= supplemental.summary.count
-                ? preferred.summary
-                : supplemental.summary,
-            category: preferred.category,
-            kind: preferred.kind,
-            imageURL: preferred.imageURL ?? supplemental.imageURL,
-            officialURL: preferred.officialURL ?? supplemental.officialURL,
-            sourceURL: preferred.sourceURL ?? supplemental.sourceURL,
-            sourceName: preferred.sourceName,
-            hours: preferred.hours ?? supplemental.hours,
-            price: preferred.price ?? supplemental.price,
-            address: preferred.address ?? supplemental.address,
-            directions: preferred.directions ?? supplemental.directions,
-            timingTip: preferred.timingTip ?? supplemental.timingTip,
-            latitude: preferred.latitude ?? supplemental.latitude,
-            longitude: preferred.longitude ?? supplemental.longitude,
-            wikidataIdentifier: preferred.wikidataIdentifier ?? supplemental.wikidataIdentifier,
-            sourcePageTitle: preferred.sourcePageTitle ?? supplemental.sourcePageTitle,
-            sourceAnchor: preferred.sourceAnchor ?? supplemental.sourceAnchor
-        )
-    }
-
-    private static func normalizedActivityName(_ name: String) -> String {
-        name
-            .folding(
-                options: [.caseInsensitive, .diacriticInsensitive],
-                locale: .current
-            )
-            .split { !$0.isLetter && !$0.isNumber }
-            .map(String.init)
-            .joined(separator: " ")
-            .lowercased()
     }
 }
 
@@ -443,7 +349,7 @@ extension CityActivityService {
             "A notable \(result.category.lowercased()) worth visiting."
         }
 
-        let encodedName = poi.name
+        let encodedName = (page?.title ?? poi.name)
             .replacingOccurrences(of: " ", with: "_")
             .addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? poi.name
 
@@ -468,7 +374,7 @@ extension CityActivityService {
             imageURL: imageURL,
             officialURL: officialURL,
             sourceURL: sourceURL,
-            sourceName: page != nil ? "Wikipedia" : "OpenStreetMap",
+            sourceName: "OpenStreetMap",
             hours: poi.openingHours,
             price: poi.fee == "yes" ? "Paid admission" : (poi.fee == "no" ? "Free" : nil),
             address: poi.address,
@@ -644,7 +550,11 @@ extension CityActivityService {
             guard !parsedActivities.isEmpty else { return [] }
 
             let withImages = await self.resolveWikidataImages(for: parsedActivities)
-            return Array(Self.rankActivities(withImages).prefix(Self.desiredActivityCount))
+            return CityActivityRanking.topActivities(
+                from: withImages,
+                for: city,
+                limit: Self.sourceCandidateCount
+            )
         } catch {
             self.logger.error(
                 "Wikivoyage activity fallback failed for \(city.id, privacy: .public): \(error.localizedDescription, privacy: .public)"
