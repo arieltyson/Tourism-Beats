@@ -3,7 +3,7 @@
 //
 // Enriches a CityActivity with additional detail from the
 // Wikipedia REST API when the initial pipeline only produced
-// a generic fallback summary.
+// a fallback summary or placeholder imagery.
 
 import Foundation
 
@@ -43,10 +43,9 @@ final class CityActivityDetailViewModel {
         self.enrichedImageURL ?? self.activity.imageURL
     }
 
-    /// Whether the original summary is a generic fallback placeholder.
+    /// Whether the original summary is still a generic fallback placeholder.
     var needsEnrichment: Bool {
-        self.activity.summary.localizedStandardContains("notable")
-            && self.activity.summary.localizedStandardContains("worth visiting")
+        self.activity.hasGenericFallbackSummary
     }
 
     func loadIfNeeded() async {

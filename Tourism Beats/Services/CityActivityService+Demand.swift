@@ -334,7 +334,9 @@ extension CityActivityService {
                 let result = Models.MapKitActivityResult(
                     name: name,
                     websiteURL: item.url,
-                    address: item.address?.shortAddress ?? item.address?.fullAddress,
+                    address: self.cleanedMapKitAddress(
+                        item.address?.shortAddress ?? item.address?.fullAddress
+                    ),
                     latitude: coordinate.latitude,
                     longitude: coordinate.longitude,
                     regionName: item.addressRepresentations?.regionName,
@@ -375,11 +377,16 @@ extension CityActivityService {
                 latitude: result.latitude,
                 longitude: result.longitude
             )
+            let summary = self.mapKitSummary(
+                for: result,
+                city: city,
+                categoryResult: categoryResult
+            )
 
             return CityActivity(
                 id: "apple-maps-\(coordinateKey)",
                 name: result.name,
-                summary: "A high-demand attraction in \(city.name) surfaced consistently in Apple Maps discovery results.",
+                summary: summary,
                 category: categoryResult.category,
                 kind: categoryResult.kind,
                 imageURL: nil,

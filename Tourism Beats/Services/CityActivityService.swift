@@ -9,7 +9,7 @@ typealias Models = CityActivityAPIModels
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
-    private static let cacheVersion = "v3"
+    private static let cacheVersion = "v4"
     private static let desiredActivityCount = 6
     private static let sourceCandidateCount = 18
 

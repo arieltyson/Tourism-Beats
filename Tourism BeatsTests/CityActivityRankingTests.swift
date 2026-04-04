@@ -296,6 +296,42 @@ struct CityActivityRankingTests {
         )
     }
 
+    @Test func mapKitActivitiesCreateSpecificFallbackSummaries() throws {
+        let bratislava = CityModel(
+            id: "bratislava-sk",
+            name: "Bratislava",
+            country: CountryModel(name: "Slovakia", code: "SK", flag: "🇸🇰"),
+            imageURL: URL(string: "https://example.com/bratislava.jpg")!,
+            coordinate: CLLocationCoordinate2D(latitude: 48.1486, longitude: 17.1077),
+            timeZoneIdentifier: "Europe/Bratislava"
+        )
+
+        let activities = CityActivityService.mapKitActivities(
+            for: bratislava,
+            results: [
+                CityActivityAPIModels.MapKitActivityResult(
+                    name: "Slovak National Gallery",
+                    websiteURL: URL(string: "https://example.com/gallery"),
+                    address: "Nám Ľudovíta Štúra 33/4, Bratislava | Slovakia",
+                    latitude: 48.1418,
+                    longitude: 17.1168,
+                    regionName: "Slovakia",
+                    popularityRank: 1,
+                    crossQueryAppearanceCount: 4,
+                    reviewQueryAppearanceCount: 2
+                )
+            ],
+            existingActivities: []
+        )
+
+        let activity = try #require(activities.first)
+        #expect(!activity.summary.localizedStandardContains("Apple Maps"))
+        #expect(activity.summary.localizedStandardContains("gallery"))
+        #expect(activity.summary.localizedStandardContains("Bratislava"))
+        #expect(activity.summary.localizedStandardContains("Nám Ľudovíta Štúra 33/4"))
+        #expect(activity.address == "Nám Ľudovíta Štúra 33/4, Bratislava, Slovakia")
+    }
+
     private var city: CityModel {
         CityModel(
             id: "vancouver-ca",
