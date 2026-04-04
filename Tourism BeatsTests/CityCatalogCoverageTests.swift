@@ -6,6 +6,16 @@ struct CityCatalogCoverageTests {
         let cityKeys = try Self.loadCityKeys()
         let walkabilityKeys = try Self.loadWalkabilityKeys()
         let requestedKeys: Set<String> = [
+            Self.lookupKey(city: "Perth", countryCode: "AU"),
+            Self.lookupKey(city: "Adelaide", countryCode: "AU"),
+            Self.lookupKey(city: "Jayapura", countryCode: "ID"),
+            Self.lookupKey(city: "Shenzhen", countryCode: "CN"),
+            Self.lookupKey(city: "Chongqing", countryCode: "CN"),
+            Self.lookupKey(city: "Xi'an", countryCode: "CN"),
+            Self.lookupKey(city: "Chengdu", countryCode: "CN"),
+            Self.lookupKey(city: "Kunming", countryCode: "CN"),
+            Self.lookupKey(city: "Almaty", countryCode: "KZ"),
+            Self.lookupKey(city: "Kabul", countryCode: "AF"),
             Self.lookupKey(city: "Kobe", countryCode: "JP"),
             Self.lookupKey(city: "Osaka", countryCode: "JP"),
             Self.lookupKey(city: "Sapporo", countryCode: "JP"),

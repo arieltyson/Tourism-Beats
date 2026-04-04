@@ -2358,5 +2358,85 @@
     "latitude": 45.66666667,
     "longitude": 25.61666667,
     "timeZoneIdentifier": "Europe/Bucharest"
+  },
+  {
+    "name": "Perth",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Perth_CBD_skyline_from_State_War_Memorial_Lookout%2C_2023%2C_04_b.jpg",
+    "latitude": -31.9558,
+    "longitude": 115.8597,
+    "timeZoneIdentifier": "Australia/Perth"
+  },
+  {
+    "name": "Adelaide",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Adelaide_skyline%2C_December_2022_b.jpg",
+    "latitude": -34.9275,
+    "longitude": 138.6,
+    "timeZoneIdentifier": "Australia/Adelaide"
+  },
+  {
+    "name": "Jayapura",
+    "countryCode": "ID",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Kota_Jayapura%2C_Papua.jpg",
+    "latitude": -2.533,
+    "longitude": 140.717,
+    "timeZoneIdentifier": "Asia/Jayapura"
+  },
+  {
+    "name": "Shenzhen",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Commercial_area_of_futian_to_east2020.jpg",
+    "latitude": 22.54666667,
+    "longitude": 114.05444444,
+    "timeZoneIdentifier": "Asia/Shanghai"
+  },
+  {
+    "name": "Chongqing",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/67/Chongqing_Nightscape.jpg",
+    "latitude": 29.5637,
+    "longitude": 106.5504,
+    "timeZoneIdentifier": "Asia/Shanghai"
+  },
+  {
+    "name": "Xi'an",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/32/City_wall_of_Xi%27an_51550-Xian_%2827959363326%29.jpg",
+    "latitude": 34.26111111,
+    "longitude": 108.94222222,
+    "timeZoneIdentifier": "Asia/Shanghai"
+  },
+  {
+    "name": "Chengdu",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/7/74/%E9%9B%AA%E5%B1%B1%E4%B8%8B%E7%9A%84%E6%88%90%E9%83%BD%E5%B8%82%E5%A4%A9%E9%99%85%E7%BA%BF_Chengdu_skyline_with_snow_capped_mountains.jpg",
+    "latitude": 30.66,
+    "longitude": 104.06333333,
+    "timeZoneIdentifier": "Asia/Shanghai"
+  },
+  {
+    "name": "Kunming",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e2/%E4%BA%94%E5%8D%8E%E5%8C%BA%E4%B8%8E%E7%9B%98%E9%BE%99%E5%8C%BA%E5%A4%A9%E9%99%85%E7%BA%BF_-_%E8%88%AA%E6%8B%8D_-_2025-05-16_03.jpg",
+    "latitude": 25.0464,
+    "longitude": 102.7094,
+    "timeZoneIdentifier": "Asia/Shanghai"
+  },
+  {
+    "name": "Almaty",
+    "countryCode": "KZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Almaty_city_skyline.jpg",
+    "latitude": 43.23333333,
+    "longitude": 76.95,
+    "timeZoneIdentifier": "Asia/Almaty"
+  },
+  {
+    "name": "Kabul",
+    "countryCode": "AF",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/43/Kabul%2C_Afghanistan_view.jpg",
+    "latitude": 34.52527778,
+    "longitude": 69.17833333,
+    "timeZoneIdentifier": "Asia/Kabul"
   }
 ]

@@ -292,5 +292,15 @@
   {"city": "Medellin", "countryCode": "CO", "walkScore": 63, "transitScore": 68},
   {"city": "Hanoi", "countryCode": "VN", "walkScore": 68, "transitScore": 42},
   {"city": "Cluj-Napoca", "countryCode": "RO", "walkScore": 74, "transitScore": 48},
-  {"city": "Brasov", "countryCode": "RO", "walkScore": 72, "transitScore": 28}
+  {"city": "Brasov", "countryCode": "RO", "walkScore": 72, "transitScore": 28},
+  {"city": "Perth", "countryCode": "AU", "walkScore": 49, "transitScore": 44},
+  {"city": "Adelaide", "countryCode": "AU", "walkScore": 57, "transitScore": 50},
+  {"city": "Jayapura", "countryCode": "ID", "walkScore": 34, "transitScore": 12},
+  {"city": "Shenzhen", "countryCode": "CN", "walkScore": 78, "transitScore": 88},
+  {"city": "Chongqing", "countryCode": "CN", "walkScore": 72, "transitScore": 76},
+  {"city": "Xi'an", "countryCode": "CN", "walkScore": 76, "transitScore": 72},
+  {"city": "Chengdu", "countryCode": "CN", "walkScore": 74, "transitScore": 78},
+  {"city": "Kunming", "countryCode": "CN", "walkScore": 68, "transitScore": 58},
+  {"city": "Almaty", "countryCode": "KZ", "walkScore": 67, "transitScore": 66},
+  {"city": "Kabul", "countryCode": "AF", "walkScore": 51, "transitScore": 16}
 ]
