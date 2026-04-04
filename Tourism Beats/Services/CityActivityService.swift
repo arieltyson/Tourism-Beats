@@ -9,6 +9,7 @@ typealias Models = CityActivityAPIModels
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
+    private static let cacheVersion = "v2"
     private static let desiredActivityCount = 6
     private static let sourceCandidateCount = 18
 
@@ -852,10 +853,12 @@ extension CityActivityService {
     }
 
     private static func cacheKey(for city: CityModel) -> String {
-        city.id
+        let normalizedCityIdentifier = city.id
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
             .split { !$0.isLetter && !$0.isNumber }
             .map(String.init)
             .joined(separator: "_")
+
+        return "\(Self.cacheVersion)_\(normalizedCityIdentifier)"
     }
 }

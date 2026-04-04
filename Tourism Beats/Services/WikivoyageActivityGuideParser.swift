@@ -73,9 +73,9 @@ private extension WikivoyageActivityGuideParser {
         guard let kind = self.kindFromTemplate(templateText) else { return nil }
 
         let parameters = self.templateParameters(from: templateText)
-        let name = self.cleanedWikitext(parameters["name"] ?? "")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !name.isEmpty else { return nil }
+        guard let name = self.cleanedListingName(parameters["name"]) else {
+            return nil
+        }
 
         let summary = self.cleanedSummary(
             parameters["content"],
@@ -188,38 +188,25 @@ private extension WikivoyageActivityGuideParser {
         else { return [:] }
 
         var body = String(templateText[startRange.upperBound...])
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         if body.hasSuffix("}}") {
             body.removeLast(2)
         }
 
         var parameters: [String: String] = [:]
-        var currentKey: String?
+        for segment in self.topLevelTemplateSegments(from: body) {
+            guard
+                let separatorIndex = self.firstTopLevelAssignmentIndex(in: segment)
+            else { continue }
 
-        for rawLine in body.components(separatedBy: .newlines) {
-            let line = rawLine.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !line.isEmpty else { continue }
+            let key = segment[..<separatorIndex]
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+            guard !key.isEmpty else { continue }
 
-            if line.hasPrefix("|") {
-                let parameter = line.dropFirst().trimmingCharacters(in: .whitespaces)
-                if let separatorIndex = parameter.firstIndex(of: "=") {
-                    let key = parameter[..<separatorIndex]
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                        .lowercased()
-                    let value = parameter[parameter.index(after: separatorIndex)...]
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                    parameters[key] = value
-                    currentKey = key
-                } else {
-                    currentKey = nil
-                }
-            } else if let currentKey {
-                let value = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                guard !value.isEmpty else { continue }
-                let existing = parameters[currentKey]
-                parameters[currentKey] = [existing, value]
-                    .compactMap(\.self)
-                    .joined(separator: " ")
-            }
+            let value = segment[segment.index(after: separatorIndex)...]
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            parameters[key] = value
         }
 
         return parameters
@@ -246,6 +233,103 @@ private extension WikivoyageActivityGuideParser {
 
     static func templateBraceDelta(in value: String) -> Int {
         value.matches(of: /\{\{/).count - value.matches(of: /\}\}/).count
+    }
+
+    static func topLevelTemplateSegments(from body: String) -> [String] {
+        var segments: [String] = []
+        var currentSegment = ""
+        var nestedTemplateDepth = 0
+        var nestedLinkDepth = 0
+        var index = body.startIndex
+
+        while index < body.endIndex {
+            let currentCharacter = body[index]
+            let nextIndex = body.index(after: index)
+            let nextCharacter = nextIndex < body.endIndex ? body[nextIndex] : nil
+
+            switch (currentCharacter, nextCharacter) {
+            case ("{", "{"):
+                nestedTemplateDepth += 1
+                currentSegment.append(currentCharacter)
+                currentSegment.append(nextCharacter!)
+                index = body.index(after: nextIndex)
+
+            case ("}", "}"):
+                nestedTemplateDepth = max(0, nestedTemplateDepth - 1)
+                currentSegment.append(currentCharacter)
+                currentSegment.append(nextCharacter!)
+                index = body.index(after: nextIndex)
+
+            case ("[", "["):
+                nestedLinkDepth += 1
+                currentSegment.append(currentCharacter)
+                currentSegment.append(nextCharacter!)
+                index = body.index(after: nextIndex)
+
+            case ("]", "]"):
+                nestedLinkDepth = max(0, nestedLinkDepth - 1)
+                currentSegment.append(currentCharacter)
+                currentSegment.append(nextCharacter!)
+                index = body.index(after: nextIndex)
+
+            case ("|", _) where nestedTemplateDepth == 0 && nestedLinkDepth == 0:
+                let trimmedSegment = currentSegment.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmedSegment.isEmpty {
+                    segments.append(trimmedSegment)
+                }
+                currentSegment.removeAll(keepingCapacity: true)
+                index = nextIndex
+
+            default:
+                currentSegment.append(currentCharacter)
+                index = nextIndex
+            }
+        }
+
+        let trimmedSegment = currentSegment.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmedSegment.isEmpty {
+            segments.append(trimmedSegment)
+        }
+
+        return segments
+    }
+
+    static func firstTopLevelAssignmentIndex(in value: String) -> String.Index? {
+        var nestedTemplateDepth = 0
+        var nestedLinkDepth = 0
+        var index = value.startIndex
+
+        while index < value.endIndex {
+            let currentCharacter = value[index]
+            let nextIndex = value.index(after: index)
+            let nextCharacter = nextIndex < value.endIndex ? value[nextIndex] : nil
+
+            switch (currentCharacter, nextCharacter) {
+            case ("{", "{"):
+                nestedTemplateDepth += 1
+                index = value.index(after: nextIndex)
+
+            case ("}", "}"):
+                nestedTemplateDepth = max(0, nestedTemplateDepth - 1)
+                index = value.index(after: nextIndex)
+
+            case ("[", "["):
+                nestedLinkDepth += 1
+                index = value.index(after: nextIndex)
+
+            case ("]", "]"):
+                nestedLinkDepth = max(0, nestedLinkDepth - 1)
+                index = value.index(after: nextIndex)
+
+            case ("=", _) where nestedTemplateDepth == 0 && nestedLinkDepth == 0:
+                return index
+
+            default:
+                index = nextIndex
+            }
+        }
+
+        return nil
     }
 
     static func headingTitle(from value: String) -> String? {
@@ -319,6 +403,20 @@ private extension WikivoyageActivityGuideParser {
         guard let rawValue else { return nil }
         let cleanedValue = self.cleanedWikitext(rawValue)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+        return cleanedValue.isEmpty ? nil : cleanedValue
+    }
+
+    static func cleanedListingName(_ rawValue: String?) -> String? {
+        guard var cleanedValue = self.cleanedOptionalValue(rawValue) else { return nil }
+
+        if let artifactRange = cleanedValue.range(
+            of: #"\s*\|\s*(?:alt|url|email|address|directions|phone|fax|lat|long|hours|price|content|wikidata|wikipedia)\s*="#,
+            options: .regularExpression
+        ) {
+            cleanedValue = String(cleanedValue[..<artifactRange.lowerBound])
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+
         return cleanedValue.isEmpty ? nil : cleanedValue
     }
 

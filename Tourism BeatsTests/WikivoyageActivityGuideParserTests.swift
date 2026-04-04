@@ -83,4 +83,29 @@ struct WikivoyageActivityGuideParserTests {
         #expect(festival.wikidataIdentifier == "Q11994226")
         #expect(festival.sourceURL?.absoluteString == "https://en.wikivoyage.org/wiki/Oslo#Music")
     }
+
+    @Test func parseInlineTemplateListingDoesNotLeakParameterMarkupIntoName() throws {
+        let parser = WikivoyageActivityGuideParser()
+        let wikitext = """
+        ==See==
+        ===Museums===
+        * {{see|name=[[Museo Nacional de Etnografía y Folklore|National Ethnographic and Folk Museum]]|alt=Museo Nacional de Etnografía y Folklore|url=http://www.musef.org.bo/|email=|content=Folklore museum in central La Paz.}}
+        """
+
+        let activities = parser.activities(
+            from: wikitext,
+            guidePageTitle: "La Paz",
+            topSectionTitle: "See"
+        )
+
+        #expect(activities.count == 1)
+
+        let activity = try #require(activities.first)
+        #expect(activity.name == "National Ethnographic and Folk Museum")
+        #expect(activity.officialURL?.absoluteString == "http://www.musef.org.bo/")
+        #expect(activity.summary == "Folklore museum in central La Paz.")
+        #expect(activity.name.contains("alt=") == false)
+        #expect(activity.name.contains("url=") == false)
+        #expect(activity.name.contains("email=") == false)
+    }
 }
