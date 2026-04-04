@@ -39,26 +39,35 @@ Tourism Beats is a native iOS application that offers an immersive experience ex
 
 ## Technologies Used 💻
 
-Built entirely with native Apple frameworks and free public APIs — zero third-party dependencies.
+Built with native Apple frameworks, Apple platform services, and lightweight web APIs — zero third-party SDK dependencies.
 
-### Frameworks & APIs
+### Frameworks
 
 - [x] **SwiftUI** — Declarative UI with `@Observable`, `NavigationStack`, `Tab` API, and `MeshGradient`
+- [x] **Observation** — State management powered by `@Observable` view models
 - [x] **SwiftData** — Persistent storage for restaurants, meal photos, and trip itineraries
-- [x] **MusicKit** — Apple Music integration for trending city playlists and album artwork
 - [x] **MapKit** — Interactive world map with city annotations and search
+- [x] **CoreLocation** — Coordinate-based city discovery, filtering, and proximity logic
 - [x] **WeatherKit** — Real-time weather conditions and forecasts per city
+- [x] **MusicKit** — Apple Music integration for city charts, playlists, and album artwork
 - [x] **SceneKit** — 3D interactive Earth globe on the home screen
-- [x] **CoreLocation** — Coordinate-based city discovery and geospatial queries
+- [x] **AVFoundation** — Playback coordination and audio-session-aware music experiences
+- [x] **PhotosUI** — Meal photo import for the food journal
+- [x] **UIKit** — Focused interop for quick actions, mail composition, and SceneKit hosting
 - [x] **OSLog** — Structured logging across all services
 - [x] **Swift Concurrency** — `async`/`await`, `actor` isolation, and structured tasks throughout
 
-### External APIs (Free, No Keys Required)
+### APIs & Web Services
 
-- [x] **Overpass API (OpenStreetMap)** — Primary source for tourism POI discovery (museums, landmarks, parks, etc.)
-- [x] **Wikipedia API** — Article enrichment with descriptions, images, and coordinates
-- [x] **Wikidata API** — Image resolution via P18 claims for activities missing photos
-- [x] **Travel Advisory API** — Country-level safety risk scores
+- [x] **Apple Music API** — Catalog charts, playlists, and track metadata surfaced through MusicKit-backed requests
+- [x] **Spotify Accounts + Web API** — Optional authenticated mirroring of the selected song for Spotify deep links
+- [x] **MapKit Local Search / Apple Maps data** — City search, attraction demand signals, and restaurant candidate discovery
+- [x] **Overpass API (OpenStreetMap)** — Tourism POI and restaurant metadata enrichment
+- [x] **Wikipedia REST API** — Lead summaries and imagery for activity and city enrichment
+- [x] **MediaWiki Action API** — Wikipedia geosearch/page lookup and Wikivoyage guide parsing
+- [x] **Wikivoyage API** — Travel-guide listings used to improve activity coverage and editorial relevance
+- [x] **Wikidata API + Query Service** — Entity matching, award metadata, and Commons image resolution
+- [x] **Wikimedia Commons** — Activity and destination image delivery
 
 ### Data Sources
 
