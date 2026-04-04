@@ -281,7 +281,7 @@ extension CityActivitiesView.ActivityCard {
                     ) { phase in
                         switch phase {
                         case .empty:
-                            Self.placeholder
+                            Self.loadingPlaceholder
                         case let .success(image):
                             image
                                 .resizable()
@@ -299,6 +299,22 @@ extension CityActivitiesView.ActivityCard {
         }
 
         private static var placeholder: some View {
+            placeholderBackground
+                .overlay(alignment: .topTrailing) {
+                    placeholderBadge(symbolName: "sparkles.rectangle.stack.fill")
+                        .padding(SpacingTokens.small)
+                }
+        }
+
+        private static var loadingPlaceholder: some View {
+            placeholderBackground
+                .overlay(alignment: .topTrailing) {
+                    loadingBadge
+                        .padding(SpacingTokens.small)
+                }
+        }
+
+        private static var placeholderBackground: some View {
             Rectangle()
                 .fill(
                     LinearGradient(
@@ -311,11 +327,30 @@ extension CityActivitiesView.ActivityCard {
                         endPoint: .bottomTrailing
                     )
                 )
-                .overlay {
-                    Image(systemName: "sparkles.rectangle.stack.fill")
-                        .font(.system(.title, design: .rounded))
-                        .foregroundStyle(AppColors.onImagePrimary.opacity(0.92))
-                }
+        }
+
+        private static func placeholderBadge(symbolName: String) -> some View {
+            ZStack {
+                Circle()
+                    .fill(.ultraThinMaterial)
+
+                Image(systemName: symbolName)
+                    .font(.system(.headline, design: .rounded).weight(.semibold))
+                    .foregroundStyle(AppColors.onImagePrimary.opacity(0.92))
+            }
+            .frame(width: 34, height: 34)
+        }
+
+        private static var loadingBadge: some View {
+            ZStack {
+                Circle()
+                    .fill(.ultraThinMaterial)
+
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(AppColors.onImagePrimary)
+            }
+            .frame(width: 34, height: 34)
         }
     }
 }
