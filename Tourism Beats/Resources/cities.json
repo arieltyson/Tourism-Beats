@@ -2983,5 +2983,13 @@
     "latitude": 24.46666667,
     "longitude": 54.36666667,
     "timeZoneIdentifier": "Asia/Dubai"
+  },
+  {
+    "name": "Nouméa",
+    "countryCode": "NC",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/27/View_over_Noumea.jpg",
+    "latitude": -22.2758,
+    "longitude": 166.458,
+    "timeZoneIdentifier": "Pacific/Noumea"
   }
 ]

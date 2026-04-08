@@ -370,5 +370,6 @@
   {"city": "Sri Jayawardenepura Kotte", "countryCode": "LK", "walkScore": 44, "transitScore": 28},
   {"city": "Bern", "countryCode": "CH", "walkScore": 85, "transitScore": 82},
   {"city": "Ankara", "countryCode": "TR", "walkScore": 64, "transitScore": 72},
-  {"city": "Abu Dhabi", "countryCode": "AE", "walkScore": 39, "transitScore": 34}
+  {"city": "Abu Dhabi", "countryCode": "AE", "walkScore": 39, "transitScore": 34},
+  {"city": "Nouméa", "countryCode": "NC", "walkScore": 61, "transitScore": 20}
 ]

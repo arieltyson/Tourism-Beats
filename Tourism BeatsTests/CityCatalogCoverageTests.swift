@@ -100,7 +100,8 @@ struct CityCatalogCoverageTests {
             Self.lookupKey(city: "Sri Jayawardenepura Kotte", countryCode: "LK"),
             Self.lookupKey(city: "Bern", countryCode: "CH"),
             Self.lookupKey(city: "Ankara", countryCode: "TR"),
-            Self.lookupKey(city: "Abu Dhabi", countryCode: "AE")
+            Self.lookupKey(city: "Abu Dhabi", countryCode: "AE"),
+            Self.lookupKey(city: "Nouméa", countryCode: "NC")
         ]
 
         #expect(requestedKeys.isSubset(of: cityKeys))
