@@ -83,7 +83,24 @@ struct CityCatalogCoverageTests {
             Self.lookupKey(city: "Tallinn", countryCode: "EE"),
             Self.lookupKey(city: "Riga", countryCode: "LV"),
             Self.lookupKey(city: "Vilnius", countryCode: "LT"),
-            Self.lookupKey(city: "Minsk", countryCode: "BY")
+            Self.lookupKey(city: "Minsk", countryCode: "BY"),
+            Self.lookupKey(city: "Belmopan", countryCode: "BZ"),
+            Self.lookupKey(city: "Sucre", countryCode: "BO"),
+            Self.lookupKey(city: "Gitega", countryCode: "BI"),
+            Self.lookupKey(city: "Ciudad de la Paz", countryCode: "GQ"),
+            Self.lookupKey(city: "Suva", countryCode: "FJ"),
+            Self.lookupKey(city: "Papeete", countryCode: "PF"),
+            Self.lookupKey(city: "City of Victoria", countryCode: "HK"),
+            Self.lookupKey(city: "Monaco", countryCode: "MC"),
+            Self.lookupKey(city: "Plymouth", countryCode: "MS"),
+            Self.lookupKey(city: "Naypyidaw", countryCode: "MM"),
+            Self.lookupKey(city: "Wellington", countryCode: "NZ"),
+            Self.lookupKey(city: "Ramallah", countryCode: "PS"),
+            Self.lookupKey(city: "Bloemfontein", countryCode: "ZA"),
+            Self.lookupKey(city: "Sri Jayawardenepura Kotte", countryCode: "LK"),
+            Self.lookupKey(city: "Bern", countryCode: "CH"),
+            Self.lookupKey(city: "Ankara", countryCode: "TR"),
+            Self.lookupKey(city: "Abu Dhabi", countryCode: "AE")
         ]
 
         #expect(requestedKeys.isSubset(of: cityKeys))
@@ -114,6 +131,18 @@ struct CityCatalogCoverageTests {
 
         #expect(countryCodes.isSubset(of: cityCountryCodes))
         #expect(cityCountryCodes.isSubset(of: countryCodes))
+    }
+
+    @Test func capitalCitiesAddedForKnownCapitalGapCountries() throws {
+        let cityRows = try Self.loadCityRows()
+
+        for (countryCode, capitalCity) in Self.additionalCapitalCityByCountryCode {
+            let hasMatch = cityRows.contains {
+                $0.countryCode == countryCode && $0.name == capitalCity
+            }
+
+            #expect(hasMatch)
+        }
     }
 
     private struct CityRow: Decodable {
@@ -161,6 +190,26 @@ struct CityCatalogCoverageTests {
         "TO": "Nuku'alofa",
         "TV": "Funafuti",
         "VU": "Port Vila"
+    ]
+
+    private static let additionalCapitalCityByCountryCode: [String: String] = [
+        "BZ": "Belmopan",
+        "BO": "Sucre",
+        "BI": "Gitega",
+        "GQ": "Ciudad de la Paz",
+        "FJ": "Suva",
+        "PF": "Papeete",
+        "HK": "City of Victoria",
+        "MC": "Monaco",
+        "MS": "Plymouth",
+        "MM": "Naypyidaw",
+        "NZ": "Wellington",
+        "PS": "Ramallah",
+        "ZA": "Bloemfontein",
+        "LK": "Sri Jayawardenepura Kotte",
+        "CH": "Bern",
+        "TR": "Ankara",
+        "AE": "Abu Dhabi"
     ]
 
     private static var resourcesDirectory: URL {

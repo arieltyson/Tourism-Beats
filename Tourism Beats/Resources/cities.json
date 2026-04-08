@@ -2847,5 +2847,141 @@
     "latitude": -17.73333333,
     "longitude": 168.31666667,
     "timeZoneIdentifier": "Pacific/Efate"
+  },
+  {
+    "name": "Belmopan",
+    "countryCode": "BZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/f/f9/National_Assembly_Building%2C_Belize.png",
+    "latitude": 17.25222222,
+    "longitude": -88.76388889,
+    "timeZoneIdentifier": "America/Belize"
+  },
+  {
+    "name": "Sucre",
+    "countryCode": "BO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/be/Sucre_Ciudad_Bolivia.jpg",
+    "latitude": -19.0475,
+    "longitude": -65.26,
+    "timeZoneIdentifier": "America/La_Paz"
+  },
+  {
+    "name": "Gitega",
+    "countryCode": "BI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/90/Dioc%C3%A8se_Gitega_y.jpg",
+    "latitude": -3.42833333,
+    "longitude": 29.925,
+    "timeZoneIdentifier": "Africa/Bujumbura"
+  },
+  {
+    "name": "Ciudad de la Paz",
+    "countryCode": "GQ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/36/Autobahnbau_in_Oyala.JPG",
+    "latitude": 1.58888889,
+    "longitude": 10.8225,
+    "timeZoneIdentifier": "Africa/Malabo"
+  },
+  {
+    "name": "Suva",
+    "countryCode": "FJ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/53/Suva%2C_Fiji_77.jpg",
+    "latitude": -18.1416,
+    "longitude": 178.4419,
+    "timeZoneIdentifier": "Pacific/Fiji"
+  },
+  {
+    "name": "Papeete",
+    "countryCode": "PF",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Papeete_-_Marina_Taina.JPG",
+    "latitude": -17.535,
+    "longitude": -149.5696,
+    "timeZoneIdentifier": "Pacific/Tahiti"
+  },
+  {
+    "name": "City of Victoria",
+    "countryCode": "HK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Hong_Kong_Night_Skyline_2.jpg/1280px-Hong_Kong_Night_Skyline_2.jpg",
+    "latitude": 22.27833333,
+    "longitude": 114.17444444,
+    "timeZoneIdentifier": "Asia/Hong_Kong"
+  },
+  {
+    "name": "Monaco",
+    "countryCode": "MC",
+    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Monaco-Ville%2C%20Monaco%20-%20panoramio%20%2826%29.jpg",
+    "latitude": 43.73111111,
+    "longitude": 7.42,
+    "timeZoneIdentifier": "Europe/Monaco"
+  },
+  {
+    "name": "Plymouth",
+    "countryCode": "MS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/97/Plymouth_Montserrat_Heli.jpg",
+    "latitude": 16.706417,
+    "longitude": -62.215839,
+    "timeZoneIdentifier": "America/Montserrat"
+  },
+  {
+    "name": "Naypyidaw",
+    "countryCode": "MM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/94/NPT_Water_Fountain.jpg",
+    "latitude": 19.7475,
+    "longitude": 96.115,
+    "timeZoneIdentifier": "Asia/Yangon"
+  },
+  {
+    "name": "Wellington",
+    "countryCode": "NZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/32/Seddon_Statue_in_Parliament_Grounds.jpg",
+    "latitude": -41.28888889,
+    "longitude": 174.77722222,
+    "timeZoneIdentifier": "Pacific/Auckland"
+  },
+  {
+    "name": "Ramallah",
+    "countryCode": "PS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/31/Mausol%C3%A9e_de_Yasser_Arafat.jpg",
+    "latitude": 31.9,
+    "longitude": 35.2,
+    "timeZoneIdentifier": "Asia/Jerusalem"
+  },
+  {
+    "name": "Bloemfontein",
+    "countryCode": "ZA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/1/11/Bloemfontein%2C_Free_State%2C_South_Africa_%2820349855518%29.jpg",
+    "latitude": -29.11666667,
+    "longitude": 26.21666667,
+    "timeZoneIdentifier": "Africa/Johannesburg"
+  },
+  {
+    "name": "Sri Jayawardenepura Kotte",
+    "countryCode": "LK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/a/af/Diyawanna_Lake_-_October_2017_%281_of_3%29.jpg",
+    "latitude": 6.91083333,
+    "longitude": 79.88783611,
+    "timeZoneIdentifier": "Asia/Colombo"
+  },
+  {
+    "name": "Bern",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/45/Bundeshaus_Bern_2009%2C_Flooffy.jpg",
+    "latitude": 46.94805556,
+    "longitude": 7.4475,
+    "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Ankara",
+    "countryCode": "TR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/44/Ankara_from_bus_station.jpg",
+    "latitude": 39.92888889,
+    "longitude": 32.85472222,
+    "timeZoneIdentifier": "Europe/Istanbul"
+  },
+  {
+    "name": "Abu Dhabi",
+    "countryCode": "AE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Abu_dhabi_skylines_2014.jpg",
+    "latitude": 24.46666667,
+    "longitude": 54.36666667,
+    "timeZoneIdentifier": "Asia/Dubai"
   }
 ]

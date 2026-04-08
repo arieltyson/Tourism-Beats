@@ -353,5 +353,22 @@
   {"city": "Dili", "countryCode": "TL", "walkScore": 46, "transitScore": 18},
   {"city": "Nuku'alofa", "countryCode": "TO", "walkScore": 44, "transitScore": 8},
   {"city": "Funafuti", "countryCode": "TV", "walkScore": 26, "transitScore": 4},
-  {"city": "Port Vila", "countryCode": "VU", "walkScore": 49, "transitScore": 14}
+  {"city": "Port Vila", "countryCode": "VU", "walkScore": 49, "transitScore": 14},
+  {"city": "Belmopan", "countryCode": "BZ", "walkScore": 34, "transitScore": 8},
+  {"city": "Sucre", "countryCode": "BO", "walkScore": 68, "transitScore": 22},
+  {"city": "Gitega", "countryCode": "BI", "walkScore": 48, "transitScore": 12},
+  {"city": "Ciudad de la Paz", "countryCode": "GQ", "walkScore": 18, "transitScore": 2},
+  {"city": "Suva", "countryCode": "FJ", "walkScore": 58, "transitScore": 24},
+  {"city": "Papeete", "countryCode": "PF", "walkScore": 63, "transitScore": 18},
+  {"city": "City of Victoria", "countryCode": "HK", "walkScore": 90, "transitScore": 86},
+  {"city": "Monaco", "countryCode": "MC", "walkScore": 95, "transitScore": 66},
+  {"city": "Plymouth", "countryCode": "MS", "walkScore": 8, "transitScore": 0},
+  {"city": "Naypyidaw", "countryCode": "MM", "walkScore": 14, "transitScore": 6},
+  {"city": "Wellington", "countryCode": "NZ", "walkScore": 75, "transitScore": 60},
+  {"city": "Ramallah", "countryCode": "PS", "walkScore": 68, "transitScore": 28},
+  {"city": "Bloemfontein", "countryCode": "ZA", "walkScore": 49, "transitScore": 20},
+  {"city": "Sri Jayawardenepura Kotte", "countryCode": "LK", "walkScore": 44, "transitScore": 28},
+  {"city": "Bern", "countryCode": "CH", "walkScore": 85, "transitScore": 82},
+  {"city": "Ankara", "countryCode": "TR", "walkScore": 64, "transitScore": 72},
+  {"city": "Abu Dhabi", "countryCode": "AE", "walkScore": 39, "transitScore": 34}
 ]
