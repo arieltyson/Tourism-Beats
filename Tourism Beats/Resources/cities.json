@@ -2607,5 +2607,245 @@
     "latitude": 53.9006,
     "longitude": 27.559,
     "timeZoneIdentifier": "Europe/Minsk"
+  },
+  {
+    "name": "Andorra la Vella",
+    "countryCode": "AD",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/d/da/Casa_de_la_Vall_4.JPG",
+    "latitude": 42.5,
+    "longitude": 1.5,
+    "timeZoneIdentifier": "Europe/Andorra"
+  },
+  {
+    "name": "Praia",
+    "countryCode": "CV",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Pal%C3%A1cio_da_Cultura%2C_Praia%2C_Cape_Verde.jpg",
+    "latitude": 14.918,
+    "longitude": -23.509,
+    "timeZoneIdentifier": "Atlantic/Cape_Verde"
+  },
+  {
+    "name": "Yaounde",
+    "countryCode": "CM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/1/10/Yaound%C3%A9_1.jpg",
+    "latitude": 3.86666667,
+    "longitude": 11.51666667,
+    "timeZoneIdentifier": "Africa/Douala"
+  },
+  {
+    "name": "Moroni",
+    "countryCode": "KM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/94/Moroni-Harbour.jpg",
+    "latitude": -11.699,
+    "longitude": 43.256,
+    "timeZoneIdentifier": "Indian/Comoro"
+  },
+  {
+    "name": "Brazzaville",
+    "countryCode": "CG",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/43/Les_lieux_de_Brazzaville_03.jpg",
+    "latitude": -4.26666667,
+    "longitude": 15.26666667,
+    "timeZoneIdentifier": "Africa/Brazzaville"
+  },
+  {
+    "name": "Malabo",
+    "countryCode": "GQ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/7/74/Hotel_de_Federaciones_02.jpg",
+    "latitude": 3.74555556,
+    "longitude": 8.77444444,
+    "timeZoneIdentifier": "Africa/Malabo"
+  },
+  {
+    "name": "Libreville",
+    "countryCode": "GA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Libreville_frond_de_mer.jpg",
+    "latitude": 0.40777778,
+    "longitude": 9.44027778,
+    "timeZoneIdentifier": "Africa/Libreville"
+  },
+  {
+    "name": "Vatican City",
+    "countryCode": "VA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/St_Peter%27s_Square%2C_Vatican_City_2025-03-10.jpg/1280px-St_Peter%27s_Square%2C_Vatican_City_2025-03-10.jpg",
+    "latitude": 41.9025,
+    "longitude": 12.4525,
+    "timeZoneIdentifier": "Europe/Vatican"
+  },
+  {
+    "name": "South Tarawa",
+    "countryCode": "KI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/b5/South_Tarawa_from_the_air.jpg",
+    "latitude": 1.43333333,
+    "longitude": 173.0,
+    "timeZoneIdentifier": "Pacific/Tarawa"
+  },
+  {
+    "name": "Beirut",
+    "countryCode": "LB",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Beirut_close_to_plane_descent.jpg",
+    "latitude": 33.89805556,
+    "longitude": 35.50583333,
+    "timeZoneIdentifier": "Asia/Beirut"
+  },
+  {
+    "name": "Maseru",
+    "countryCode": "LS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/29/Maseru_City_CBD.jpg",
+    "latitude": -29.31,
+    "longitude": 27.48,
+    "timeZoneIdentifier": "Africa/Maseru"
+  },
+  {
+    "name": "Tripoli",
+    "countryCode": "LY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Tripoli_at_night.jpg",
+    "latitude": 32.88722222,
+    "longitude": 13.19138889,
+    "timeZoneIdentifier": "Africa/Tripoli"
+  },
+  {
+    "name": "Vaduz",
+    "countryCode": "LI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/9b/View_of_Vaduz.jpg",
+    "latitude": 47.1406,
+    "longitude": 9.5222,
+    "timeZoneIdentifier": "Europe/Vaduz"
+  },
+  {
+    "name": "Valletta",
+    "countryCode": "MT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/b7/St_Sebastian_Curtain_%28cropped%29.jpg",
+    "latitude": 35.89833333,
+    "longitude": 14.5125,
+    "timeZoneIdentifier": "Europe/Malta"
+  },
+  {
+    "name": "Majuro",
+    "countryCode": "MH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Eneko_Islet_02.JPG",
+    "latitude": 7.08333333,
+    "longitude": 171.38333333,
+    "timeZoneIdentifier": "Pacific/Majuro"
+  },
+  {
+    "name": "Palikir",
+    "countryCode": "FM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/28/Palikir_2025-Presidential2.jpg",
+    "latitude": 6.91722222,
+    "longitude": 158.15888889,
+    "timeZoneIdentifier": "Pacific/Pohnpei"
+  },
+  {
+    "name": "Yaren",
+    "countryCode": "NR",
+    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Nauru-parliament.jpg",
+    "latitude": -0.54555556,
+    "longitude": 166.925,
+    "timeZoneIdentifier": "Pacific/Nauru"
+  },
+  {
+    "name": "Pyongyang",
+    "countryCode": "KP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e7/The_Arch_of_Triumph_%2811360607534%29.jpg",
+    "latitude": 39.01666667,
+    "longitude": 125.7475,
+    "timeZoneIdentifier": "Asia/Pyongyang"
+  },
+  {
+    "name": "Ngerulmud",
+    "countryCode": "PW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/8/8f/Capitol%2C_Melekeok%2C_Palau.jpg",
+    "latitude": 7.50055556,
+    "longitude": 134.62416667,
+    "timeZoneIdentifier": "Pacific/Palau"
+  },
+  {
+    "name": "Jerusalem",
+    "countryCode": "PS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/94/%D7%94%D7%9E%D7%A6%D7%95%D7%93%D7%94_%D7%91%D7%9C%D7%99%D7%9C%D7%94.jpg",
+    "latitude": 31.77888889,
+    "longitude": 35.22555556,
+    "timeZoneIdentifier": "Asia/Jerusalem"
+  },
+  {
+    "name": "Apia",
+    "countryCode": "WS",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/en/a/a8/WS-apia-regierg.jpg",
+    "latitude": -13.83333333,
+    "longitude": -171.75,
+    "timeZoneIdentifier": "Pacific/Apia"
+  },
+  {
+    "name": "San Marino",
+    "countryCode": "SM",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Funivia_di_San_Marino_-_2019-05-07.jpg",
+    "latitude": 43.9346,
+    "longitude": 12.4473,
+    "timeZoneIdentifier": "Europe/San_Marino"
+  },
+  {
+    "name": "Sao Tome",
+    "countryCode": "ST",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/ed/2012SaoTome-8_%288042889363%29.jpg",
+    "latitude": 0.3375,
+    "longitude": 6.72833333,
+    "timeZoneIdentifier": "Africa/Sao_Tome"
+  },
+  {
+    "name": "Victoria",
+    "countryCode": "SC",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Victoria_clock_tower.jpg",
+    "latitude": -4.6231,
+    "longitude": 55.4525,
+    "timeZoneIdentifier": "Indian/Mahe"
+  },
+  {
+    "name": "Honiara",
+    "countryCode": "SB",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Honiara_View.jpg",
+    "latitude": -9.43194444,
+    "longitude": 159.95555556,
+    "timeZoneIdentifier": "Pacific/Guadalcanal"
+  },
+  {
+    "name": "Mogadishu",
+    "countryCode": "SO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Lido_beach_from_the_sea_in_Mogadishu.jpg",
+    "latitude": 2.03916667,
+    "longitude": 45.34194444,
+    "timeZoneIdentifier": "Africa/Mogadishu"
+  },
+  {
+    "name": "Dili",
+    "countryCode": "TL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/7/77/Government_Palace%2C_Dili%2C_2023_%2802%29.jpg",
+    "latitude": -8.55361111,
+    "longitude": 125.57833333,
+    "timeZoneIdentifier": "Asia/Dili"
+  },
+  {
+    "name": "Nuku'alofa",
+    "countryCode": "TO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/94/Royal_Palace%2C_Nuku%27alofa%2C_Nov_18.jpg",
+    "latitude": -21.13333333,
+    "longitude": -175.2,
+    "timeZoneIdentifier": "Pacific/Tongatapu"
+  },
+  {
+    "name": "Funafuti",
+    "countryCode": "TV",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/91/Funafuti_airport_-_Fiji_Airways.jpg",
+    "latitude": -8.51666667,
+    "longitude": 179.2,
+    "timeZoneIdentifier": "Pacific/Funafuti"
+  },
+  {
+    "name": "Port Vila",
+    "countryCode": "VU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Port_Vila_aerial.jpg",
+    "latitude": -17.73333333,
+    "longitude": 168.31666667,
+    "timeZoneIdentifier": "Pacific/Efate"
   }
 ]

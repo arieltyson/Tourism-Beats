@@ -97,15 +97,71 @@ struct CityCatalogCoverageTests {
         #expect(cityKeys.isSubset(of: walkabilityKeys))
     }
 
+    @Test func missingCountriesNowResolveToSingleCapitalCityRows() throws {
+        let cityRows = try Self.loadCityRows()
+
+        for (countryCode, capitalCity) in Self.capitalCityByCountryCode {
+            let matches = cityRows.filter { $0.countryCode == countryCode }
+
+            #expect(matches.count == 1)
+            #expect(matches.first?.name == capitalCity)
+        }
+    }
+
+    @Test func countryCatalogAndCityCatalogCountryCodesStayInSync() throws {
+        let countryCodes = try Self.loadCountryCodes()
+        let cityCountryCodes = try Self.loadCityCountryCodes()
+
+        #expect(countryCodes.isSubset(of: cityCountryCodes))
+        #expect(cityCountryCodes.isSubset(of: countryCodes))
+    }
+
     private struct CityRow: Decodable {
         let name: String
         let countryCode: String
+    }
+
+    private struct CountryRow: Decodable {
+        let code: String
     }
 
     private struct WalkabilityRow: Decodable {
         let city: String
         let countryCode: String
     }
+
+    private static let capitalCityByCountryCode: [String: String] = [
+        "AD": "Andorra la Vella",
+        "CV": "Praia",
+        "CM": "Yaounde",
+        "KM": "Moroni",
+        "CG": "Brazzaville",
+        "GQ": "Malabo",
+        "GA": "Libreville",
+        "VA": "Vatican City",
+        "KI": "South Tarawa",
+        "LB": "Beirut",
+        "LS": "Maseru",
+        "LY": "Tripoli",
+        "LI": "Vaduz",
+        "MT": "Valletta",
+        "MH": "Majuro",
+        "FM": "Palikir",
+        "NR": "Yaren",
+        "KP": "Pyongyang",
+        "PW": "Ngerulmud",
+        "PS": "Jerusalem",
+        "WS": "Apia",
+        "SM": "San Marino",
+        "ST": "Sao Tome",
+        "SC": "Victoria",
+        "SB": "Honiara",
+        "SO": "Mogadishu",
+        "TL": "Dili",
+        "TO": "Nuku'alofa",
+        "TV": "Funafuti",
+        "VU": "Port Vila"
+    ]
 
     private static var resourcesDirectory: URL {
         URL(filePath: #filePath)
@@ -116,13 +172,27 @@ struct CityCatalogCoverageTests {
     }
 
     private static func loadCityKeys() throws -> Set<String> {
-        let rows: [CityRow] = try self.decodeJSON(named: "cities.json")
+        let rows = try self.loadCityRows()
         return Set(rows.map { self.lookupKey(city: $0.name, countryCode: $0.countryCode) })
     }
 
     private static func loadWalkabilityKeys() throws -> Set<String> {
         let rows: [WalkabilityRow] = try self.decodeJSON(named: "walkability_data.json")
         return Set(rows.map { self.lookupKey(city: $0.city, countryCode: $0.countryCode) })
+    }
+
+    private static func loadCityRows() throws -> [CityRow] {
+        try self.decodeJSON(named: "cities.json")
+    }
+
+    private static func loadCountryCodes() throws -> Set<String> {
+        let rows: [CountryRow] = try self.decodeJSON(named: "countries.json")
+        return Set(rows.map(\.code))
+    }
+
+    private static func loadCityCountryCodes() throws -> Set<String> {
+        let rows = try self.loadCityRows()
+        return Set(rows.map(\.countryCode))
     }
 
     private static func decodeJSON<T: Decodable>(named fileName: String) throws -> T {
