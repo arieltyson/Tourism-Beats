@@ -2559,5 +2559,53 @@
     "latitude": 4.8539,
     "longitude": 31.5825,
     "timeZoneIdentifier": "Africa/Juba"
+  },
+  {
+    "name": "Florence",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Florence_skyline_%2827407894606%29.jpg/1280px-Florence_skyline_%2827407894606%29.jpg",
+    "latitude": 43.7696,
+    "longitude": 11.2558,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Saint-Tropez",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Port_of_Saint-Tropez.jpg/1280px-Port_of_Saint-Tropez.jpg",
+    "latitude": 43.267,
+    "longitude": 6.6407,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Tallinn",
+    "countryCode": "EE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Tallinn_Skyline_%2852431749972%29.jpg/1280px-Tallinn_Skyline_%2852431749972%29.jpg",
+    "latitude": 59.437,
+    "longitude": 24.7536,
+    "timeZoneIdentifier": "Europe/Tallinn"
+  },
+  {
+    "name": "Riga",
+    "countryCode": "LV",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Skyline%2C_Riga.jpg/1280px-Skyline%2C_Riga.jpg",
+    "latitude": 56.9496,
+    "longitude": 24.1052,
+    "timeZoneIdentifier": "Europe/Riga"
+  },
+  {
+    "name": "Vilnius",
+    "countryCode": "LT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Vilnius_skyline.jpg/1280px-Vilnius_skyline.jpg",
+    "latitude": 54.6872,
+    "longitude": 25.2797,
+    "timeZoneIdentifier": "Europe/Vilnius"
+  },
+  {
+    "name": "Minsk",
+    "countryCode": "BY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Minsk_city_skyline.jpg/1280px-Minsk_city_skyline.jpg",
+    "latitude": 53.9006,
+    "longitude": 27.559,
+    "timeZoneIdentifier": "Europe/Minsk"
   }
 ]

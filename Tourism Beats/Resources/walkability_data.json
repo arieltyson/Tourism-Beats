@@ -317,5 +317,11 @@
   {"city": "Mbabane", "countryCode": "SZ", "walkScore": 36, "transitScore": 10},
   {"city": "Windhoek", "countryCode": "NA", "walkScore": 41, "transitScore": 16},
   {"city": "Bangui", "countryCode": "CF", "walkScore": 39, "transitScore": 10},
-  {"city": "Juba", "countryCode": "SS", "walkScore": 34, "transitScore": 8}
+  {"city": "Juba", "countryCode": "SS", "walkScore": 34, "transitScore": 8},
+  {"city": "Florence", "countryCode": "IT", "walkScore": 90, "transitScore": 56},
+  {"city": "Saint-Tropez", "countryCode": "FR", "walkScore": 71, "transitScore": 16},
+  {"city": "Tallinn", "countryCode": "EE", "walkScore": 82, "transitScore": 65},
+  {"city": "Riga", "countryCode": "LV", "walkScore": 80, "transitScore": 70},
+  {"city": "Vilnius", "countryCode": "LT", "walkScore": 78, "transitScore": 59},
+  {"city": "Minsk", "countryCode": "BY", "walkScore": 74, "transitScore": 73}
 ]
