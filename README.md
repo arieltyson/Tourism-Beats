@@ -4,7 +4,7 @@
 
 
 <kbd>
-    <img src="https://github.com/user-attachments/assets/349d0d9f-f863-44c3-a21b-f2ab1ac8b9d7" alt="tourismBeatsLogo" width="800" height="500">
+    <img src="https://github.com/user-attachments/assets/349d0d9f-f863-44c3-a21b-f2ab1ac8b9d7" alt="tourismBeatsLogo" width="1000" height="500">
 </kbd>
 
 ## Project Description 🎨
