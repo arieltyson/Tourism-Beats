@@ -38,10 +38,17 @@ private struct WalkabilityLoadedContent: View {
     let walkColor: Color
     let transitColor: Color
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
+        // Side by side normally; stacked at accessibility text sizes so each
+        // rating keeps a readable line length.
+        let layout = self.dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: SpacingTokens.small))
+            : AnyLayout(HStackLayout(spacing: SpacingTokens.small))
+
         VStack(alignment: .leading, spacing: SpacingTokens.small) {
-            // Two side-by-side score tiles
-            HStack(spacing: SpacingTokens.small) {
+            layout {
                 ScoreTile(
                     icon: "figure.walk",
                     label: "Walking",
@@ -101,14 +108,12 @@ private struct ScoreTile: View {
             Text(self.description)
                 .font(TypographyTokens.cardLabel.weight(.medium))
                 .foregroundStyle(.primary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .fixedSize(horizontal: false, vertical: true)
 
             // Detail text
             Text(self.detail)
                 .font(TypographyTokens.caption)
                 .foregroundStyle(.secondary)
-                .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(SpacingTokens.small)
