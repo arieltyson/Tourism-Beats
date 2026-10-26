@@ -24,7 +24,6 @@ struct AddEditRestaurantView: View {
     @State private var menuURLString: String
     @State private var status: RestaurantStatus
     @State private var notes: String
-    @State private var showCitySuggestions: Bool = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
     @State private var stagedMealPhotos: [StagedRestaurantMealPhoto] = []
     @State private var removedPhotoIdentifiers: Set<UUID> = []
@@ -50,10 +49,6 @@ struct AddEditRestaurantView: View {
         }
     }
 
-    private var totalMealPhotoCount: Int {
-        self.existingMealPhotos.count + self.stagedMealPhotos.count
-    }
-
     init(restaurant: Restaurant? = nil, existingCities: [String] = []) {
         self.restaurant = restaurant
         self.restaurantIdentifier = restaurant?.restaurantIdentifier ?? UUID()
@@ -74,16 +69,38 @@ struct AddEditRestaurantView: View {
     var body: some View {
         NavigationStack {
             Form {
-                self.restaurantSection
-                self.detailsSection
-                self.mealPhotosSection
-                self.ratingSection
-                self.linksSection
-                self.statusSection
-                self.notesSection
+                RestaurantFormIdentitySection(
+                    name: self.$name,
+                    city: self.$city,
+                    country: self.$country,
+                    existingCities: self.existingCities
+                )
+                RestaurantFormDetailsSection(cuisine: self.$cuisine, bestDish: self.$bestDish)
+                RestaurantFormMealPhotosSection(
+                    selectedPhotoItems: self.$selectedPhotoItems,
+                    isImporting: self.isImportingMealPhotos,
+                    errorMessage: self.photoImportErrorMessage,
+                    existingMealPhotos: self.existingMealPhotos,
+                    stagedMealPhotos: self.stagedMealPhotos,
+                    onRemoveExisting: { photo in
+                        self.removedPhotoIdentifiers.insert(photo.photoIdentifier)
+                    },
+                    onRemoveStaged: self.removeStagedMealPhoto
+                )
+                RestaurantFormRatingSection(hasScore: self.$hasScore, scoreValue: self.$scoreValue)
+                RestaurantFormLinksSection(
+                    locationURLString: self.$locationURLString,
+                    menuURLString: self.$menuURLString,
+                    locationValidationMessage: self.locationURLValidationMessage,
+                    menuValidationMessage: self.menuURLValidationMessage
+                )
+                RestaurantFormStatusSection(status: self.$status)
+                RestaurantFormNotesSection(notes: self.$notes)
 
                 if self.isEditing {
-                    self.dangerZoneSection
+                    RestaurantFormDangerZoneSection {
+                        self.isDeleteConfirmationPresented = true
+                    }
                 }
             }
             .navigationTitle(self.isEditing ? "Edit Restaurant" : "Add Restaurant")
@@ -127,261 +144,6 @@ struct AddEditRestaurantView: View {
             Task {
                 try? await RestaurantMealPhotoStore.shared.deleteFiles(at: stagedPaths)
             }
-        }
-    }
-
-    private var restaurantSection: some View {
-        Section("Restaurant") {
-            TextField("Restaurant Name", text: self.$name)
-                .textContentType(.organizationName)
-                .autocorrectionDisabled()
-
-            VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                TextField("City", text: self.$city)
-                    .textContentType(.addressCity)
-                    .autocorrectionDisabled()
-                    .onChange(of: self.city) { _, newValue in
-                        let normalizedValue = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
-                        self.showCitySuggestions = !normalizedValue.isEmpty
-                            && !self.matchingCities.isEmpty
-                            && !self.matchingCities.contains(where: {
-                                $0.caseInsensitiveCompare(normalizedValue) == .orderedSame
-                            })
-                    }
-
-                if self.showCitySuggestions {
-                    self.citySuggestions
-                }
-            }
-
-            TextField("Country", text: self.$country)
-                .textContentType(.countryName)
-                .autocorrectionDisabled()
-        }
-    }
-
-    private var detailsSection: some View {
-        Section("Details") {
-            Picker("Cuisine", selection: self.$cuisine) {
-                Text("None")
-                    .tag(nil as RestaurantCuisine?)
-
-                ForEach(RestaurantCuisine.allCases) { cuisine in
-                    Text(cuisine.label)
-                        .tag(cuisine as RestaurantCuisine?)
-                }
-            }
-
-            TextField("Best Dish (optional)", text: self.$bestDish)
-        }
-    }
-
-    private var mealPhotosSection: some View {
-        Section {
-            PhotosPicker(
-                selection: self.$selectedPhotoItems,
-                maxSelectionCount: 6,
-                matching: .images
-            ) {
-                Label("Add Meal Photos", systemImage: "photo.on.rectangle.angled")
-                    .font(TypographyTokens.cardLabel)
-                    .foregroundStyle(AppColors.coral)
-            }
-            .disabled(self.isImportingMealPhotos)
-
-            if self.isImportingMealPhotos {
-                HStack(spacing: SpacingTokens.small) {
-                    ProgressView()
-                    Text("Importing photos…")
-                        .font(TypographyTokens.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
-
-            if let photoImportErrorMessage {
-                Text(photoImportErrorMessage)
-                    .font(TypographyTokens.footnote)
-                    .foregroundStyle(AppColors.danger)
-            }
-
-            if self.totalMealPhotoCount == 0 {
-                Text("Add photos from your camera roll to remember what you ordered.")
-                    .font(TypographyTokens.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                ScrollView(.horizontal) {
-                    HStack(spacing: SpacingTokens.small) {
-                        ForEach(self.existingMealPhotos, id: \.photoIdentifier) { photo in
-                            EditableMealPhotoThumbnail(
-                                fileURL: RestaurantMealPhotoStore.fileURL(for: photo.relativePath)
-                            ) {
-                                self.removedPhotoIdentifiers.insert(photo.photoIdentifier)
-                            }
-                        }
-
-                        ForEach(self.stagedMealPhotos) { photo in
-                            EditableMealPhotoThumbnail(
-                                fileURL: RestaurantMealPhotoStore.fileURL(for: photo.relativePath)
-                            ) {
-                                self.removeStagedMealPhoto(photo)
-                            }
-                        }
-                    }
-                    .padding(.vertical, SpacingTokens.xxSmall)
-                }
-                .scrollIndicators(.hidden)
-            }
-        } header: {
-            Text("Meal Photos")
-        } footer: {
-            Text("Photos are optimized and stored locally to keep the journal fast and space-efficient.")
-        }
-    }
-
-    private var ratingSection: some View {
-        Section("Rating") {
-            Toggle(
-                "Rate this restaurant",
-                isOn: self.$hasScore.animation(
-                    self.reduceMotion ? .none : AnimationTokens.standard
-                )
-            )
-            .tint(AppColors.coral)
-
-            if self.hasScore {
-                VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-                    HStack {
-                        Text("Score")
-                            .font(TypographyTokens.body)
-
-                        Spacer()
-
-                        Text("\(self.scoreValue, format: .number)/10")
-                            .font(TypographyTokens.songTitle.monospacedDigit())
-                            .bold()
-                            .foregroundStyle(AppColors.gold)
-                    }
-
-                    HStack(spacing: SpacingTokens.xxSmall) {
-                        ForEach(1 ... 10, id: \.self) { index in
-                            Button {
-                                withAnimation(
-                                    self.reduceMotion ? .none : AnimationTokens.press
-                                ) {
-                                    self.scoreValue = index
-                                }
-                            } label: {
-                                Circle()
-                                    .fill(
-                                        index <= self.scoreValue
-                                            ? AnyShapeStyle(AppColors.gold)
-                                            : AnyShapeStyle(.quaternary)
-                                    )
-                                    .frame(width: 22, height: 22)
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel("\(index, format: .number)")
-                        }
-                    }
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("Score: \(self.scoreValue) out of 10")
-                    .accessibilityAdjustableAction { direction in
-                        switch direction {
-                        case .increment:
-                            self.scoreValue = min(self.scoreValue + 1, 10)
-                        case .decrement:
-                            self.scoreValue = max(self.scoreValue - 1, 0)
-                        @unknown default:
-                            break
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private var linksSection: some View {
-        Section {
-            TextField("Apple Maps or Google Maps link", text: self.$locationURLString)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.URL)
-                .textContentType(.URL)
-                .autocorrectionDisabled()
-
-            if let locationURLValidationMessage {
-                Text(locationURLValidationMessage)
-                    .font(TypographyTokens.footnote)
-                    .foregroundStyle(AppColors.danger)
-            }
-
-            TextField("Menu link", text: self.$menuURLString)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.URL)
-                .textContentType(.URL)
-                .autocorrectionDisabled()
-
-            if let menuURLValidationMessage {
-                Text(menuURLValidationMessage)
-                    .font(TypographyTokens.footnote)
-                    .foregroundStyle(AppColors.danger)
-            }
-        } header: {
-            Text("Links")
-        } footer: {
-            Text("Paste full links, or just the site address, and the app will normalize them.")
-        }
-    }
-
-    private var statusSection: some View {
-        Section("Status") {
-            Picker("Status", selection: self.$status) {
-                ForEach(RestaurantStatus.allCases) { restaurantStatus in
-                    Label(restaurantStatus.label, systemImage: restaurantStatus.systemImage)
-                        .tag(restaurantStatus)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-    }
-
-    private var notesSection: some View {
-        Section("Notes") {
-            TextField("Add notes (optional)", text: self.$notes, axis: .vertical)
-                .lineLimit(3 ... 8)
-        }
-    }
-
-    private var dangerZoneSection: some View {
-        Section {
-            Button("Delete Restaurant", role: .destructive) {
-                self.isDeleteConfirmationPresented = true
-            }
-        } header: {
-            Text("Danger Zone")
-        }
-    }
-
-    private var matchingCities: [String] {
-        self.existingCities.filter { $0.localizedStandardContains(self.city) }
-    }
-
-    private var citySuggestions: some View {
-        ForEach(self.matchingCities.prefix(5), id: \.self) { suggestion in
-            Button {
-                self.city = suggestion
-                self.showCitySuggestions = false
-            } label: {
-                HStack(spacing: SpacingTokens.xSmall) {
-                    Image(systemName: "mappin.circle.fill")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    Text(suggestion)
-                        .font(TypographyTokens.caption)
-                        .foregroundStyle(.primary)
-                }
-            }
-            .buttonStyle(.plain)
         }
     }
 
@@ -606,52 +368,5 @@ struct AddEditRestaurantView: View {
         }
 
         return url.absoluteString
-    }
-}
-
-// MARK: - EditableMealPhotoThumbnail
-
-private struct EditableMealPhotoThumbnail: View {
-    let fileURL: URL
-    let onRemove: () -> Void
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            AsyncImage(url: self.fileURL, transaction: .init(animation: .smooth)) { phase in
-                switch phase {
-                case .empty:
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            ProgressView()
-                        }
-                case let .success(image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                case .failure:
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            Image(systemName: "photo")
-                                .foregroundStyle(.secondary)
-                        }
-                @unknown default:
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                }
-            }
-            .frame(width: 112, height: 112)
-            .clipShape(.rect(cornerRadius: 18, style: .continuous))
-
-            Button("Remove Photo", systemImage: "xmark.circle.fill") {
-                self.onRemove()
-            }
-            .labelStyle(.iconOnly)
-            .font(.title3)
-            .tint(AppColors.onImagePrimary)
-            .padding(SpacingTokens.xxSmall)
-            .accessibilityInputLabels(["Remove Photo", "Delete Photo"])
-        }
     }
 }
