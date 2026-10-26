@@ -64,6 +64,38 @@ struct TripItineraryPlannerTests {
         #expect(names.contains("Chaud Café"))
     }
 
+    @Test func regionalNameVariantsAreTreatedAsOnePlace() {
+        let plan = Planner.plan(
+            days: Self.emptyDays(count: 1),
+            activities: [
+                Fixtures.activity("Royal Botanic Gardens"),
+                Fixtures.activity("Royal Botanic Gardens, Trinidad"),
+                Fixtures.activity("Emperor Valley Zoo (Port of Spain)"),
+                Fixtures.activity("Emperor Valley Zoo")
+            ],
+            restaurants: [],
+            excludedPlaceNames: []
+        )
+
+        #expect(plan.first?.map(\.name) == ["Royal Botanic Gardens", "Emperor Valley Zoo (Port of Spain)"])
+    }
+
+    @Test func descriptiveUserPlansStillExcludeThePlaceTheyName() {
+        let plan = Planner.plan(
+            days: Self.emptyDays(count: 1),
+            activities: [Fixtures.activity("Fort George"), Fixtures.activity("Maracas Bay")],
+            restaurants: [Fixtures.restaurant("Veni Mangé"), Fixtures.restaurant("Chaud Café")],
+            excludedPlaceNames: ["Fort George lookout", "Lunch at Veni Mangé", "Maracas Bay Beach"]
+        )
+
+        #expect(plan.first?.map(\.name) == ["Chaud Café"])
+    }
+
+    @Test func singleWordNamesDoNotSwallowLongerPlaces() {
+        #expect(!Planner.isSamePlace("park", "queen s park savannah"))
+        #expect(Planner.isSamePlace("queen s park", "queen s park savannah walk"))
+    }
+
     @Test func timedPlansCoverTheirSlotsButBreakfastKeepsMorningOpen() {
         let breakfastOnly = Planner.Day(
             existingActivities: [
@@ -189,6 +221,22 @@ struct TripItineraryPlannerTests {
         #expect(sight.notes == "Viewpoint · Go at sunset")
         #expect(meal.location == "Chaud Café Street")
         #expect(meal.notes == "Creole")
+    }
+
+    @Test func genericCategoriesAreNotRepeatedAsNotes() throws {
+        let plan = Planner.plan(
+            days: Self.emptyDays(count: 1),
+            activities: [Fixtures.activity("Caroni Bird Sanctuary", category: "Attraction")],
+            restaurants: [
+                Fixtures.restaurant("Rasam", cuisine: nil),
+                Fixtures.restaurant("Buzo", cuisine: "Restaurant")
+            ],
+            excludedPlaceNames: []
+        )
+
+        let suggestions = try #require(plan.first)
+        #expect(suggestions.count == 3)
+        #expect(suggestions.allSatisfy { $0.notes == nil })
     }
 
     private static func emptyDays(count: Int) -> [Planner.Day] {

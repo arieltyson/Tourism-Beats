@@ -117,14 +117,14 @@ enum TripItineraryPlanner {
         restaurants: [CityRestaurant],
         excludedPlaceNames: some Sequence<String>
     ) -> [[TripActivitySuggestion]] {
-        let excludedKeys = Set(excludedPlaceNames.map(CityActivityRanking.activityKey(for:)))
+        let excludedKeys = excludedPlaceNames.map(Self.placeKey(for:))
         var sightPool = Self.uniqueCandidates(
             activities.map(Candidate.init(activity:)),
             excluding: excludedKeys
         )
         var restaurantPool = Self.uniqueCandidates(
             restaurants.map(Candidate.init(restaurant:)),
-            excluding: excludedKeys.union(sightPool.map(\.key))
+            excluding: excludedKeys + sightPool.map(\.key)
         )
 
         let openSlotsByDay = days.map(Self.openSlots(for:))
@@ -251,7 +251,7 @@ extension TripItineraryPlanner {
 
         init(activity: CityActivity) {
             self.id = activity.id
-            self.key = CityActivityRanking.activityKey(for: activity.name)
+            self.key = TripItineraryPlanner.placeKey(for: activity.name)
             self.name = activity.name
             self.type = .attraction
             self.coordinate = TripItineraryPlanner.coordinate(
@@ -259,13 +259,16 @@ extension TripItineraryPlanner {
                 longitude: activity.longitude
             )
             self.location = activity.locationSummary
-            self.notes = TripItineraryPlanner.joinedNote([activity.category, activity.timingTip])
+            self.notes = TripItineraryPlanner.joinedNote([
+                TripItineraryPlanner.genericLabels.contains(activity.category) ? nil : activity.category,
+                activity.timingTip
+            ])
             self.sourceName = activity.sourceName
         }
 
         init(restaurant: CityRestaurant) {
             self.id = restaurant.id
-            self.key = CityActivityRanking.activityKey(for: restaurant.name)
+            self.key = TripItineraryPlanner.placeKey(for: restaurant.name)
             self.name = restaurant.name
             self.type = .food
             self.coordinate = TripItineraryPlanner.coordinate(
@@ -274,20 +277,49 @@ extension TripItineraryPlanner {
             )
             self.location = restaurant.address
             self.notes = TripItineraryPlanner.joinedNote([
-                restaurant.displayCuisine,
+                restaurant.cuisine.flatMap { TripItineraryPlanner.genericLabels.contains($0) ? nil : $0 },
                 restaurant.dietarySummary
             ])
             self.sourceName = restaurant.sourceName
         }
     }
 
+    /// Category names that only repeat the activity type, so they are not
+    /// worth showing as a note.
+    private static let genericLabels: Set<String> = ["Attraction", "Experience", "Restaurant"]
+
+    /// Normalized name used to recognize one place across sources and the
+    /// user's own plans. A trailing ", Region" or "(…)" qualifier is dropped.
+    static func placeKey(for name: String) -> String {
+        let baseName = name.prefix { $0 != "," && $0 != "(" }
+        return CityActivityRanking.activityKey(for: String(baseName))
+    }
+
+    /// Whether two place keys name the same place. Besides exact matches, a
+    /// name of two or more words inside another counts, so "Fort George"
+    /// matches "Fort George lookout" and "Lunch at Veni Mange" matches "Veni Mange".
+    static func isSamePlace(_ lhs: String, _ rhs: String) -> Bool {
+        guard lhs != rhs else { return true }
+
+        let (shorter, longer) = lhs.count < rhs.count ? (lhs, rhs) : (rhs, lhs)
+        guard shorter.split(separator: " ").count >= 2 else { return false }
+        return " \(longer) ".contains(" \(shorter) ")
+    }
+
     private static func uniqueCandidates(
         _ candidates: [Candidate],
-        excluding excludedKeys: Set<String>
+        excluding excludedKeys: [String]
     ) -> [Candidate] {
         var seenKeys = excludedKeys
         return candidates.filter { candidate in
-            !candidate.key.isEmpty && seenKeys.insert(candidate.key).inserted
+            guard !candidate.key.isEmpty,
+                  !seenKeys.contains(where: { Self.isSamePlace($0, candidate.key) })
+            else {
+                return false
+            }
+
+            seenKeys.append(candidate.key)
+            return true
         }
     }
 
