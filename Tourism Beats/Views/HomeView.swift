@@ -297,7 +297,7 @@ private struct DiscoveryCityCard: View {
                 y: 4
             )
         }
-        .buttonStyle(CardPressStyle())
+        .buttonStyle(.cardPress)
         .accessibilityLabel(
             "\(self.city.country.flag) \(self.city.name), \(self.city.country.name). Local time \(self.localTime)"
         )
@@ -357,30 +357,8 @@ private struct DiscoveryCTACard: View {
             )
             .contentShape(.rect(cornerRadius: 16, style: .continuous))
         }
-        .buttonStyle(CardPressStyle())
+        .buttonStyle(.cardPress)
         .accessibilityLabel("Explore all destinations. \(self.cityCount) cities worldwide.")
         .accessibilityHint("Opens the search tab to explore destinations")
-    }
-}
-
-// MARK: - CardPressStyle
-
-private struct CardPressStyle: ButtonStyle {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(
-                self.reduceMotion ? 1.0 : (configuration.isPressed ? 0.97 : 1.0)
-            )
-            .opacity(
-                self.reduceMotion ? 1.0 : (configuration.isPressed ? 0.9 : 1.0)
-            )
-            .animation(
-                self.reduceMotion
-                    ? .none
-                    : .spring(response: 0.25, dampingFraction: 0.7),
-                value: configuration.isPressed
-            )
     }
 }
