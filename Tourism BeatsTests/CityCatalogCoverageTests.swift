@@ -115,14 +115,20 @@ struct CityCatalogCoverageTests {
         #expect(cityKeys.isSubset(of: walkabilityKeys))
     }
 
-    @Test func missingCountriesNowResolveToSingleCapitalCityRows() throws {
+    /// Each gap country lists exactly its capital rows: the original capital,
+    /// plus a second designated capital where one was added later (for
+    /// example Ciudad de la Paz alongside Malabo). Anything else is a duplicate.
+    @Test func missingCountriesResolveToExactlyTheirCapitalCityRows() throws {
         let cityRows = try Self.loadCityRows()
 
         for (countryCode, capitalCity) in Self.capitalCityByCountryCode {
+            let expectedNames = Set(
+                [capitalCity, Self.additionalCapitalCityByCountryCode[countryCode]].compactMap(\.self)
+            )
             let matches = cityRows.filter { $0.countryCode == countryCode }
 
-            #expect(matches.count == 1)
-            #expect(matches.first?.name == capitalCity)
+            #expect(Set(matches.map(\.name)) == expectedNames, "\(countryCode)")
+            #expect(matches.count == expectedNames.count, "\(countryCode) has duplicate rows")
         }
     }
 
@@ -213,14 +219,6 @@ struct CityCatalogCoverageTests {
         "AE": "Abu Dhabi"
     ]
 
-    private static var resourcesDirectory: URL {
-        URL(filePath: #filePath)
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appending(component: "Tourism Beats", directoryHint: .isDirectory)
-            .appending(component: "Resources", directoryHint: .isDirectory)
-    }
-
     private static func loadCityKeys() throws -> Set<String> {
         let rows = try self.loadCityRows()
         return Set(rows.map { self.lookupKey(city: $0.name, countryCode: $0.countryCode) })
@@ -245,8 +243,11 @@ struct CityCatalogCoverageTests {
         return Set(rows.map(\.countryCode))
     }
 
+    /// Reads the catalog the app actually ships. Unit tests run inside the
+    /// app, so its bundle is `Bundle.main`; reading the source tree instead
+    /// fails in the simulator sandbox and would not cover what users get.
     private static func decodeJSON<T: Decodable>(named fileName: String) throws -> T {
-        let url = self.resourcesDirectory.appending(component: fileName)
+        let url = try #require(Bundle.main.url(forResource: fileName, withExtension: nil))
         let data = try Data(contentsOf: url)
         return try JSONDecoder().decode(T.self, from: data)
     }
