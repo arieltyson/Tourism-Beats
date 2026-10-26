@@ -53,6 +53,15 @@ enum AccessibilityAnnouncer {
         self.post("Search cleared.")
     }
 
+    // MARK: - Trips
+
+    static func announceActivitiesAdded(count: Int) {
+        let label = count == 1
+            ? "Added 1 activity to your itinerary."
+            : "Added \(count) activities to your itinerary."
+        self.post(label)
+    }
+
     // MARK: - Private
 
     private static func post(_ message: String) {

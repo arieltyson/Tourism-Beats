@@ -21,7 +21,8 @@ struct TripSuggestionsViewModelTests {
         #expect(days.count == 3)
         #expect(days.allSatisfy { $0.suggestions.count == 4 })
         #expect(viewModel.selectedCount == 12)
-        #expect(viewModel.addButtonTitle == "Add 12 Activities")
+        #expect(viewModel.addButtonTitle == "Add 12")
+        #expect(viewModel.addButtonAccessibilityLabel == "Add 12 activities")
         #expect(viewModel.coverageNote == nil)
     }
 

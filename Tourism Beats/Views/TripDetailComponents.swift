@@ -138,7 +138,8 @@ struct TripSampleNoticeCard: View {
         let dayLabel = self.trip.dayCount == 1 ? "a day" : "\(self.trip.dayCount.formatted(.number)) days"
         let destination = self.trip.city.isEmpty ? self.trip.displayLocation : self.trip.city
         return "An example of \(dayLabel) in \(destination), not a suggested trip length. "
-            + "Add as many days as you like, or create your own trip to replace the samples."
+            + "Add as many days as you like and use Suggest to plan them from the city guide, "
+            + "or create your own trip to replace the samples."
     }
 }
 
@@ -168,6 +169,7 @@ struct TripNotesCard: View {
 struct TripItinerarySection: View {
     let trip: Trip
     let onAddDay: () -> Void
+    let onSuggest: ((TripSuggestionsViewModel.Scope) -> Void)?
     let onAddActivity: (TripDay) -> Void
     let onEditActivity: (TripActivity) -> Void
     let onCycleActivityStatus: (TripActivity) -> Void
@@ -176,7 +178,12 @@ struct TripItinerarySection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.medium) {
-            TripItineraryHeader(onAddDay: self.onAddDay)
+            TripItineraryHeader(
+                onAddDay: self.onAddDay,
+                onSuggest: self.onSuggest.map { onSuggest in
+                    { onSuggest(.trip) }
+                }
+            )
 
             ForEach(self.trip.sortedDays) { day in
                 TripDayCard(
@@ -184,6 +191,9 @@ struct TripItinerarySection: View {
                     canDelete: self.trip.sortedDays.count > 1,
                     onAddActivity: {
                         self.onAddActivity(day)
+                    },
+                    onSuggestActivities: self.onSuggest.map { onSuggest in
+                        { onSuggest(.day(day)) }
                     },
                     onEditActivity: self.onEditActivity,
                     onCycleActivityStatus: self.onCycleActivityStatus,
@@ -203,6 +213,7 @@ struct TripItinerarySection: View {
 
 struct TripItineraryHeader: View {
     let onAddDay: () -> Void
+    let onSuggest: (() -> Void)?
 
     var body: some View {
         ViewThatFits(in: .horizontal) {
@@ -213,11 +224,7 @@ struct TripItineraryHeader: View {
 
                 Spacer(minLength: SpacingTokens.small)
 
-                Button("Add Day", systemImage: "plus") {
-                    self.onAddDay()
-                }
-                .buttonStyle(.bordered)
-                .tint(AppColors.coral)
+                self.actions
             }
 
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
@@ -225,13 +232,38 @@ struct TripItineraryHeader: View {
                     .font(TypographyTokens.songTitle)
                     .bold()
 
-                Button("Add Day", systemImage: "plus") {
-                    self.onAddDay()
+                HStack(spacing: SpacingTokens.small) {
+                    self.actions
                 }
-                .buttonStyle(.bordered)
-                .tint(AppColors.coral)
+            }
+
+            VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                Text("Itinerary")
+                    .font(TypographyTokens.songTitle)
+                    .bold()
+
+                self.actions
             }
         }
+    }
+
+    @ViewBuilder
+    private var actions: some View {
+        if let onSuggest {
+            Button("Suggest", systemImage: "sparkles") {
+                onSuggest()
+            }
+            .buttonStyle(.bordered)
+            .tint(AppColors.gold)
+            .accessibilityLabel("Suggest Activities")
+            .accessibilityInputLabels(["Suggest", "Suggest Activities", "Suggest a Plan"])
+        }
+
+        Button("Add Day", systemImage: "plus") {
+            self.onAddDay()
+        }
+        .buttonStyle(.bordered)
+        .tint(AppColors.coral)
     }
 }
 
@@ -241,6 +273,7 @@ struct TripDayCard: View {
     let day: TripDay
     let canDelete: Bool
     let onAddActivity: () -> Void
+    let onSuggestActivities: (() -> Void)?
     let onEditActivity: (TripActivity) -> Void
     let onCycleActivityStatus: (TripActivity) -> Void
     let onDeleteActivity: (TripActivity) -> Void
@@ -253,21 +286,15 @@ struct TripDayCard: View {
                     day: self.day,
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
+                    onSuggestActivities: self.onSuggestActivities,
                     onDeleteDay: self.onDeleteDay
                 )
 
                 if self.day.sortedActivities.isEmpty {
-                    VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                        Text("No activities yet")
-                            .font(TypographyTokens.cardLabel)
-                            .foregroundStyle(.secondary)
-
-                        Button("Add First Activity", systemImage: "plus") {
-                            self.onAddActivity()
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(AppColors.coral)
-                    }
+                    TripEmptyDayContent(
+                        onAddActivity: self.onAddActivity,
+                        onSuggestActivities: self.onSuggestActivities
+                    )
                 } else {
                     VStack(spacing: SpacingTokens.small) {
                         ForEach(self.day.sortedActivities) { activity in
@@ -297,12 +324,61 @@ struct TripDayCard: View {
     }
 }
 
+// MARK: - TripEmptyDayContent
+
+struct TripEmptyDayContent: View {
+    let onAddActivity: () -> Void
+    let onSuggestActivities: (() -> Void)?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: SpacingTokens.small) {
+            Text("No activities yet")
+                .font(TypographyTokens.cardLabel)
+                .foregroundStyle(.secondary)
+
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: SpacingTokens.small) {
+                    self.actions
+                }
+
+                VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                    self.actions
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var actions: some View {
+        if let onSuggestActivities {
+            Button("Suggest Activities", systemImage: "sparkles") {
+                onSuggestActivities()
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(AppColors.coral)
+
+            Button("Add First Activity", systemImage: "plus") {
+                self.onAddActivity()
+            }
+            .buttonStyle(.bordered)
+            .tint(AppColors.coral)
+        } else {
+            Button("Add First Activity", systemImage: "plus") {
+                self.onAddActivity()
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(AppColors.coral)
+        }
+    }
+}
+
 // MARK: - TripDayHeader
 
 struct TripDayHeader: View {
     let day: TripDay
     let canDelete: Bool
     let onAddActivity: () -> Void
+    let onSuggestActivities: (() -> Void)?
     let onDeleteDay: () -> Void
 
     var body: some View {
@@ -316,6 +392,7 @@ struct TripDayHeader: View {
                     day: self.day,
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
+                    onSuggestActivities: self.onSuggestActivities,
                     onDeleteDay: self.onDeleteDay
                 )
             }
@@ -327,6 +404,7 @@ struct TripDayHeader: View {
                     day: self.day,
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
+                    onSuggestActivities: self.onSuggestActivities,
                     onDeleteDay: self.onDeleteDay
                 )
             }
@@ -362,6 +440,7 @@ struct TripDayHeaderAccessoryContent: View {
     let day: TripDay
     let canDelete: Bool
     let onAddActivity: () -> Void
+    let onSuggestActivities: (() -> Void)?
     let onDeleteDay: () -> Void
 
     var body: some View {
@@ -371,6 +450,7 @@ struct TripDayHeaderAccessoryContent: View {
                 TripDayHeaderMenu(
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
+                    onSuggestActivities: self.onSuggestActivities,
                     onDeleteDay: self.onDeleteDay
                 )
             }
@@ -380,6 +460,7 @@ struct TripDayHeaderAccessoryContent: View {
                 TripDayHeaderMenu(
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
+                    onSuggestActivities: self.onSuggestActivities,
                     onDeleteDay: self.onDeleteDay
                 )
             }
@@ -413,17 +494,26 @@ struct TripDayHeaderCounts: View {
 struct TripDayHeaderMenu: View {
     let canDelete: Bool
     let onAddActivity: () -> Void
+    let onSuggestActivities: (() -> Void)?
     let onDeleteDay: () -> Void
 
     var body: some View {
-        if self.canDelete {
+        if self.canDelete || self.onSuggestActivities != nil {
             Menu("Day Actions", systemImage: "ellipsis.circle") {
                 Button("Add Activity", systemImage: "plus") {
                     self.onAddActivity()
                 }
 
-                Button("Delete Day", systemImage: "trash", role: .destructive) {
-                    self.onDeleteDay()
+                if let onSuggestActivities {
+                    Button("Suggest Activities", systemImage: "sparkles") {
+                        onSuggestActivities()
+                    }
+                }
+
+                if self.canDelete {
+                    Button("Delete Day", systemImage: "trash", role: .destructive) {
+                        self.onDeleteDay()
+                    }
                 }
             }
             .labelStyle(.iconOnly)

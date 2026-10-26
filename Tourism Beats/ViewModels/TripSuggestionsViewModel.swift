@@ -76,11 +76,16 @@ final class TripSuggestionsViewModel {
         self.selectedSuggestionIDs.count
     }
 
+    /// Short enough to leave room for the sheet title in the navigation bar.
     var addButtonTitle: String {
+        self.selectedCount == 0 ? "Add" : "Add \(self.selectedCount.formatted(.number))"
+    }
+
+    var addButtonAccessibilityLabel: String {
         switch self.selectedCount {
-        case 0: "Add"
-        case 1: "Add 1 Activity"
-        default: "Add \(self.selectedCount.formatted(.number)) Activities"
+        case 0: "Add activities"
+        case 1: "Add 1 activity"
+        default: "Add \(self.selectedCount.formatted(.number)) activities"
         }
     }
 
@@ -95,6 +100,20 @@ final class TripSuggestionsViewModel {
     }
 
     // MARK: Loading
+
+    /// Warms both guide caches so suggestions open quickly later.
+    ///
+    /// The services share in-flight fetches, so a sheet opened before this
+    /// finishes waits on the same request instead of starting another.
+    static func prefetchGuides(
+        for city: CityModel,
+        activityService: any CityActivityProviding = CityActivityService.shared,
+        restaurantService: any CityRestaurantProviding = CityRestaurantService.shared
+    ) async {
+        async let activities = activityService.activities(for: city)
+        async let restaurants = restaurantService.restaurants(for: city)
+        _ = await (activities, restaurants)
+    }
 
     func load() async {
         self.state = .loading

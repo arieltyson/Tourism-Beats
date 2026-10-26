@@ -17,15 +17,22 @@ struct TripDetailView: View {
     @State private var isTripDeleteConfirmationPresented: Bool = false
     @State private var errorMessage: String?
     @State private var scrollTargetDayID: PersistentIdentifier?
+    @State private var suggestionRequest: TripSuggestionRequest?
+    @State private var addedSuggestionCount = 0
 
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 TripDetailContent(
                     trip: self.trip,
-                    cityModel: self.viewModel.cityModel(for: self.trip),
+                    cityModel: self.cityModel,
                     countryFlag: self.viewModel.countryFlag(for: self.trip),
                     onAddDay: self.addDay,
+                    onSuggest: self.cityModel.map { city in
+                        { scope in
+                            self.suggestionRequest = TripSuggestionRequest(city: city, scope: scope)
+                        }
+                    },
                     onAddActivity: { day in
                         self.dayForNewActivity = day
                     },
@@ -67,6 +74,12 @@ struct TripDetailView: View {
                 .accessibilityInputLabels(["Add Day", "Create Day"])
 
                 Menu {
+                    if let cityModel = self.cityModel {
+                        Button("Suggest Activities", systemImage: "sparkles") {
+                            self.suggestionRequest = TripSuggestionRequest(city: cityModel, scope: .trip)
+                        }
+                    }
+
                     Button("Edit Trip", systemImage: "pencil") {
                         self.isEditTripPresented = true
                     }
@@ -84,6 +97,19 @@ struct TripDetailView: View {
         }
         .sheet(isPresented: self.$isEditTripPresented) {
             AddEditTripView(trip: self.trip)
+        }
+        .sheet(item: self.$suggestionRequest) { request in
+            TripSuggestionsView(
+                trip: self.trip,
+                city: request.city,
+                scope: request.scope,
+                onApplied: self.suggestionsApplied
+            )
+        }
+        .sensoryFeedback(.success, trigger: self.addedSuggestionCount)
+        .task(id: self.cityModel?.id) {
+            guard let cityModel = self.cityModel else { return }
+            await TripSuggestionsViewModel.prefetchGuides(for: cityModel)
         }
         .sheet(item: self.$dayForNewActivity) { day in
             AddEditActivityView(day: day)
@@ -154,6 +180,16 @@ struct TripDetailView: View {
         )
     }
 
+    private var cityModel: CityModel? {
+        self.viewModel.cityModel(for: self.trip)
+    }
+
+    private func suggestionsApplied(_ addedCount: Int) {
+        guard addedCount > 0 else { return }
+        self.addedSuggestionCount += addedCount
+        AccessibilityAnnouncer.announceActivitiesAdded(count: addedCount)
+    }
+
     private func addDay() {
         let newDay = TripDay(
             dayNumber: self.trip.nextDayNumber,
@@ -208,6 +244,15 @@ struct TripDetailView: View {
     }
 }
 
+// MARK: - TripSuggestionRequest
+
+/// Identifies one presentation of the suggestions sheet.
+private struct TripSuggestionRequest: Identifiable {
+    let id = UUID()
+    let city: CityModel
+    let scope: TripSuggestionsViewModel.Scope
+}
+
 // MARK: - TripDetailContent
 
 private struct TripDetailContent: View {
@@ -215,6 +260,7 @@ private struct TripDetailContent: View {
     let cityModel: CityModel?
     let countryFlag: String
     let onAddDay: () -> Void
+    let onSuggest: ((TripSuggestionsViewModel.Scope) -> Void)?
     let onAddActivity: (TripDay) -> Void
     let onEditActivity: (TripActivity) -> Void
     let onCycleActivityStatus: (TripActivity) -> Void
@@ -239,9 +285,16 @@ private struct TripDetailContent: View {
                 TripNotesCard(notes: notes)
             }
 
+            if self.trip.activityCount == 0, let onSuggest {
+                TripSuggestionPromptCard(trip: self.trip) {
+                    onSuggest(.trip)
+                }
+            }
+
             TripItinerarySection(
                 trip: self.trip,
                 onAddDay: self.onAddDay,
+                onSuggest: self.onSuggest,
                 onAddActivity: self.onAddActivity,
                 onEditActivity: self.onEditActivity,
                 onCycleActivityStatus: self.onCycleActivityStatus,
