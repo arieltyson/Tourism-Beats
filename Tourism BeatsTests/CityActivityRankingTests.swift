@@ -221,6 +221,77 @@ struct CityActivityRankingTests {
         #expect(rankedActivities.contains { $0.officialURL != nil && $0.name == "Old Town" })
     }
 
+    @Test func topActivitiesMergesRegionQualifiedNameVariants() {
+        let rankedActivities = CityActivityRanking.topActivities(
+            from: [
+                self.activity(
+                    id: "gardens-guide",
+                    name: "Royal Botanic Gardens",
+                    summary: "One of the oldest botanical gardens in the Western Hemisphere, beside the Savannah.",
+                    category: "Nature",
+                    kind: .do,
+                    sourceName: "Wikivoyage"
+                ),
+                self.activity(
+                    id: "gardens-maps",
+                    name: "Royal Botanic Gardens, Trinidad",
+                    summary: "Botanical garden.",
+                    category: "Nature",
+                    kind: .see,
+                    sourceName: "Apple Maps",
+                    address: "Circular Road, Port of Spain",
+                    latitude: 49.2830,
+                    longitude: -123.1200
+                ),
+                self.activity(
+                    id: "zoo",
+                    name: "Emperor Valley Zoo (Port of Spain)",
+                    summary: "The country's main zoo.",
+                    category: "Zoo",
+                    kind: .do,
+                    sourceName: "Wikipedia"
+                )
+            ],
+            for: self.city,
+            limit: 3
+        )
+
+        #expect(rankedActivities.count == 2)
+        let gardens = rankedActivities.first { $0.id == "gardens-guide" || $0.id == "gardens-maps" }
+        #expect(gardens?.name == "Royal Botanic Gardens")
+        #expect(gardens?.sourceName == "Wikivoyage")
+        #expect(gardens?.address == "Circular Road, Port of Spain")
+    }
+
+    @Test func mergedActivityCreditsTheSourceWhoseSummaryIsShown() {
+        let merged = CityActivityRanking.mergedActivity(
+            preferred: self.activity(
+                id: "osm",
+                name: "Fort-George",
+                summary: "Fort.",
+                category: "Heritage",
+                kind: .see,
+                sourceURL: URL(string: "https://www.openstreetmap.org/node/1"),
+                sourceName: "OpenStreetMap",
+                hours: "Daily"
+            ),
+            supplemental: self.activity(
+                id: "guide",
+                name: "Fort George",
+                summary: "A hilltop fort built in 1804 with sweeping views over Port of Spain and the Gulf of Paria.",
+                category: "Heritage",
+                kind: .see,
+                sourceURL: URL(string: "https://en.wikivoyage.org/wiki/Port_of_Spain#Fort_George"),
+                sourceName: "Wikivoyage"
+            )
+        )
+
+        #expect(merged.name == "Fort George")
+        #expect(merged.sourceName == "Wikivoyage")
+        #expect(merged.sourceURL?.host() == "en.wikivoyage.org")
+        #expect(merged.hours == "Daily")
+    }
+
     @Test func mapKitActivitiesRejectResultsFromWrongCountryEvenWhenDemandIsHigh() {
         let asuncion = CityModel(
             id: "asuncion-py",

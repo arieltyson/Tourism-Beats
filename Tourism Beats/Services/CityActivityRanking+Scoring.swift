@@ -21,7 +21,7 @@ extension CityActivityRanking {
         demandSignals: [String: ActivityDemandSignal]
     ) -> [ConsolidatedActivity] {
         let grouped = Dictionary(grouping: activities) {
-            self.normalizedActivityName($0.name)
+            self.placeKey(for: $0.name)
         }
 
         return grouped.values.compactMap { group in
@@ -39,7 +39,10 @@ extension CityActivityRanking {
 
             return ConsolidatedActivity(
                 activity: merged,
-                demandSignal: demandSignals[self.normalizedActivityName(merged.name)] ?? ActivityDemandSignal(),
+                demandSignal: ([merged] + group)
+                    .lazy
+                    .compactMap { demandSignals[self.normalizedActivityName($0.name)] }
+                    .first ?? ActivityDemandSignal(),
                 supportingSourceNames: Set(group.map(\.sourceName)),
                 metadataRichnessScore: self.metadataRichnessScore(for: merged),
                 practicalInfoCount: self.practicalInfoCount(for: merged)

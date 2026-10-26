@@ -76,16 +76,21 @@ extension CityActivityRanking {
             mergedCategory: mergedCategory
         )
 
+        // The source whose words are shown also names the place and is the one
+        // credited, so attribution always matches the text (CC BY-SA sources
+        // such as Wikivoyage require it). Practical details fill in from both.
+        let author = self.summaryAuthor(primary: preferred, secondary: supplemental)
+
         return CityActivity(
             id: preferred.id,
-            name: preferred.name,
-            summary: self.preferredSummary(primary: preferred, secondary: supplemental),
+            name: author.name,
+            summary: author.summary,
             category: mergedCategory,
             kind: mergedKind,
             imageURL: preferred.imageURL ?? supplemental.imageURL,
             officialURL: preferred.officialURL ?? supplemental.officialURL,
-            sourceURL: preferred.sourceURL ?? supplemental.sourceURL,
-            sourceName: preferred.sourceName,
+            sourceURL: author.sourceURL,
+            sourceName: author.sourceName,
             hours: preferred.hours ?? supplemental.hours,
             price: preferred.price ?? supplemental.price,
             address: preferred.address ?? supplemental.address,
@@ -94,26 +99,26 @@ extension CityActivityRanking {
             latitude: preferred.latitude ?? supplemental.latitude,
             longitude: preferred.longitude ?? supplemental.longitude,
             wikidataIdentifier: preferred.wikidataIdentifier ?? supplemental.wikidataIdentifier,
-            sourcePageTitle: preferred.sourcePageTitle ?? supplemental.sourcePageTitle,
-            sourceAnchor: preferred.sourceAnchor ?? supplemental.sourceAnchor
+            sourcePageTitle: author.sourcePageTitle,
+            sourceAnchor: author.sourceAnchor
         )
     }
 
-    static func preferredSummary(
+    /// The activity whose summary a merge keeps: a substantial Wikivoyage
+    /// entry first, otherwise the longer summary.
+    static func summaryAuthor(
         primary: CityActivity,
         secondary: CityActivity
-    ) -> String {
+    ) -> CityActivity {
         if primary.sourceName == "Wikivoyage", primary.summary.count >= 90 {
-            return primary.summary
+            return primary
         }
 
         if secondary.sourceName == "Wikivoyage", secondary.summary.count >= 90 {
-            return secondary.summary
+            return secondary
         }
 
-        return primary.summary.count >= secondary.summary.count
-            ? primary.summary
-            : secondary.summary
+        return primary.summary.count >= secondary.summary.count ? primary : secondary
     }
 
     static func preferredCategory(primary: String, secondary: String) -> String {
@@ -223,6 +228,14 @@ extension CityActivityRanking {
             .map(String.init)
             .joined(separator: " ")
             .lowercased()
+    }
+
+    /// Identifies one place across sources. A trailing ", Region" or "(…)"
+    /// qualifier is dropped, so "Royal Botanic Gardens, Trinidad" and
+    /// "Royal Botanic Gardens" are recognized as the same place.
+    static func placeKey(for name: String) -> String {
+        let baseName = name.prefix { $0 != "," && $0 != "(" }
+        return self.normalizedActivityName(String(baseName))
     }
 
     static func normalizedCategoryKey(_ category: String) -> String {

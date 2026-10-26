@@ -117,7 +117,7 @@ enum TripItineraryPlanner {
         restaurants: [CityRestaurant],
         excludedPlaceNames: some Sequence<String>
     ) -> [[TripActivitySuggestion]] {
-        let excludedKeys = excludedPlaceNames.map(Self.placeKey(for:))
+        let excludedKeys = excludedPlaceNames.map(CityActivityRanking.placeKey(for:))
         var sightPool = Self.uniqueCandidates(
             activities.map(Candidate.init(activity:)),
             excluding: excludedKeys
@@ -251,7 +251,7 @@ extension TripItineraryPlanner {
 
         init(activity: CityActivity) {
             self.id = activity.id
-            self.key = TripItineraryPlanner.placeKey(for: activity.name)
+            self.key = CityActivityRanking.placeKey(for: activity.name)
             self.name = activity.name
             self.type = .attraction
             self.coordinate = TripItineraryPlanner.coordinate(
@@ -268,7 +268,7 @@ extension TripItineraryPlanner {
 
         init(restaurant: CityRestaurant) {
             self.id = restaurant.id
-            self.key = TripItineraryPlanner.placeKey(for: restaurant.name)
+            self.key = CityActivityRanking.placeKey(for: restaurant.name)
             self.name = restaurant.name
             self.type = .food
             self.coordinate = TripItineraryPlanner.coordinate(
@@ -287,13 +287,6 @@ extension TripItineraryPlanner {
     /// Category names that only repeat the activity type, so they are not
     /// worth showing as a note.
     private static let genericLabels: Set<String> = ["Attraction", "Experience", "Restaurant"]
-
-    /// Normalized name used to recognize one place across sources and the
-    /// user's own plans. A trailing ", Region" or "(…)" qualifier is dropped.
-    static func placeKey(for name: String) -> String {
-        let baseName = name.prefix { $0 != "," && $0 != "(" }
-        return CityActivityRanking.activityKey(for: String(baseName))
-    }
 
     /// Whether two place keys name the same place. Besides exact matches, a
     /// name of two or more words inside another counts, so "Fort George"
