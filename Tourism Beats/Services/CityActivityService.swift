@@ -18,6 +18,7 @@ actor CityActivityService: CityActivityProviding {
 
     let session: URLSession
     let wikipediaSummaryService: WikipediaSummaryProviding
+    private let overpassClient: OverpassClient
     private let wikivoyageParser = WikivoyageActivityGuideParser()
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
@@ -48,6 +49,7 @@ actor CityActivityService: CityActivityProviding {
     ) {
         self.session = session
         self.wikipediaSummaryService = wikipediaSummaryService
+        self.overpassClient = OverpassClient(session: session)
     }
 
     func activities(for city: CityModel) async -> [CityActivity] {
@@ -219,15 +221,7 @@ extension CityActivityService {
     ) async throws -> [Models.OverpassPOI] {
         let radius = 12_000
         let query = Self.overpassQuery(latitude: latitude, longitude: longitude, radius: radius)
-
-        var components = URLComponents(string: "https://overpass-api.de/api/interpreter")
-        components?.queryItems = [URLQueryItem(name: "data", value: query)]
-
-        guard let url = components?.url else {
-            throw Models.ServiceError.invalidRequest
-        }
-
-        let data = try await self.fetchData(from: url, timeout: 25)
+        let data = try await self.overpassClient.data(for: query)
         let response = try self.decoder.decode(Models.OverpassResponse.self, from: data)
 
         return Self.processOverpassElements(response.elements, cityName: cityName)

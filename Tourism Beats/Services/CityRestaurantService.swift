@@ -17,6 +17,7 @@ actor CityRestaurantService: CityRestaurantProviding {
     private static let rankedRestaurantLimit = 18
 
     private let session: URLSession
+    private let overpassClient: OverpassClient
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
         category: "CityRestaurantService"
@@ -42,6 +43,7 @@ actor CityRestaurantService: CityRestaurantProviding {
 
     init(session: URLSession = .shared) {
         self.session = session
+        self.overpassClient = OverpassClient(session: session)
     }
 
     func restaurants(for city: CityModel) async -> [CityRestaurant] {
@@ -443,16 +445,7 @@ extension CityRestaurantService {
             radius: radius
         )
 
-        var components = URLComponents(string: "https://overpass-api.de/api/interpreter")
-        components?.queryItems = [
-            URLQueryItem(name: "data", value: query)
-        ]
-
-        guard let url = components?.url else {
-            throw RestaurantModels.ServiceError.invalidRequest
-        }
-
-        let data = try await self.fetchData(from: url, timeout: 30)
+        let data = try await self.overpassClient.data(for: query)
         let response = try self.decoder.decode(RestaurantModels.OverpassResponse.self, from: data)
         return Self.processOverpassElements(response.elements, cityName: cityName)
     }
@@ -625,13 +618,8 @@ extension CityRestaurantService {
         out center 500;
         """
 
-        var components = URLComponents(string: "https://overpass-api.de/api/interpreter")
-        components?.queryItems = [URLQueryItem(name: "data", value: query)]
-
-        guard let url = components?.url else { return [] }
-
         do {
-            let data = try await self.fetchData(from: url, timeout: 20)
+            let data = try await self.overpassClient.data(for: query)
             let response = try self.decoder.decode(RestaurantModels.OverpassResponse.self, from: data)
 
             let entries = response.elements.compactMap { element
@@ -825,32 +813,6 @@ extension CityRestaurantService {
         "staff restaurant",
         "employee restaurant"
     ]
-}
-
-// MARK: - Networking
-
-extension CityRestaurantService {
-    private func fetchData(from url: URL, timeout: TimeInterval = 15) async throws -> Data {
-        var request = URLRequest(url: url)
-        request.cachePolicy = .useProtocolCachePolicy
-        request.timeoutInterval = timeout
-        request.setValue(
-            "TourismBeats/1.0 (\(Bundle.main.bundleIdentifier ?? "city-restaurants"))",
-            forHTTPHeaderField: "User-Agent"
-        )
-
-        let (data, response) = try await self.session.data(for: request)
-
-        guard let http = response as? HTTPURLResponse else {
-            throw RestaurantModels.ServiceError.invalidResponse
-        }
-
-        guard 200 ..< 300 ~= http.statusCode else {
-            throw RestaurantModels.ServiceError.httpStatus(http.statusCode)
-        }
-
-        return data
-    }
 }
 
 // MARK: - Disk Cache
