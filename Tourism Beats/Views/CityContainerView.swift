@@ -8,6 +8,7 @@ struct CityContainerView: View {
 
     @State private var pageIndex: Int? = 0
     @State private var haptic = HapticTrigger()
+    @State private var barInsets = EdgeInsets()
 
     private let pages = PageDescriptor.defaults
 
@@ -19,6 +20,11 @@ struct CityContainerView: View {
         ZStack {
             self.backgroundForCurrentPage
                 .ignoresSafeArea()
+                .onGeometryChange(for: EdgeInsets.self) { proxy in
+                    proxy.safeAreaInsets
+                } action: { insets in
+                    self.barInsets = insets
+                }
                 .motionSensitiveAnimation(
                     .easeInOut(duration: 0.4),
                     reduced: .linear(duration: 0.01),
@@ -28,30 +34,30 @@ struct CityContainerView: View {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 0) {
                     CityView(city: self.city)
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .id(0)
+                        .cityPageFrame(index: 0, barInsets: self.barInsets)
 
                     MusicView(city: self.city, fallbackView: FallbackMusicView())
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .id(1)
+                        .cityPageFrame(index: 1, barInsets: self.barInsets)
 
                     AdvisoriesView(city: self.city)
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .id(2)
+                        .cityPageFrame(index: 2, barInsets: self.barInsets)
 
                     CityActivitiesView(city: self.city)
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .id(3)
+                        .cityPageFrame(index: 3, barInsets: self.barInsets)
 
                     CityRestaurantsView(city: self.city)
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .id(4)
+                        .cityPageFrame(index: 4, barInsets: self.barInsets)
                 }
                 .scrollTargetLayout()
             }
             .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
             .scrollPosition(id: self.$pageIndex)
             .scrollIndicators(.hidden)
+            .ignoresSafeArea(.container, edges: .vertical)
+            // The pager is inset from the screen edges for the page indicator,
+            // so its own top edge effect drew a band narrower than the bar.
+            // Each page already sits clear of the bar at rest.
+            .scrollEdgeEffectHidden(true, for: .top)
             .padding(.horizontal, PageIndicatorTokens.contentInset)
             .navigationDestination(for: CityActivityRoute.self) { route in
                 CityActivityDetailView(city: route.city, activity: route.activity)
