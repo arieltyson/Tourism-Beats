@@ -1,6 +1,6 @@
 # Tourism Beats Privacy Policy
 
-**Last updated:** March 17, 2026
+**Last updated:** October 25, 2026
 
 Tourism Beats is an iPhone app for destination discovery, travel research, food journaling, and trip planning. The app is designed to keep personal data handling narrow and local-first wherever possible.
 
@@ -10,7 +10,7 @@ The public privacy policy for App Store Connect is also available at [arieltyson
 
 Tourism Beats does **not** require you to create an account to use the app.
 
-Most information you create in the app, such as saved restaurants, trip plans, trip activities, ratings, notes, and meal photos, is stored **locally on your device**. The app makes limited network requests to support features such as weather, city facts, Apple Music results, Spotify handoff, and remote city images.
+Most information you create in the app, such as saved restaurants, trip plans, trip activities, ratings, notes, and meal photos, is stored **locally on your device**. The app makes limited network requests to support features such as weather, city facts, activity and restaurant guides, Apple Music results, Spotify handoff, and remote city images.
 
 ## What We Store
 
@@ -20,6 +20,7 @@ Most information you create in the app, such as saved restaurants, trip plans, t
 | **Meal photos you choose to add** | Lets you attach your own food photos to restaurant entries. | On-device in the app's Application Support storage after optimization. | No |
 | **City image cache** | Improves loading performance for destination imagery. | On-device in the app cache. | No |
 | **City fact cache** | Improves loading performance for city facts. | On-device in the app cache. | No |
+| **Activity and restaurant guide cache** | Improves loading performance for city guides and trip suggestions. | On-device in the app cache. | No |
 | **Spotify access token (optional)** | Supports the optional Spotify feature if you choose to authenticate with Spotify. | On-device in the iOS Keychain. | No |
 
 ## What Tourism Beats Sends Off Device
@@ -57,6 +58,16 @@ Tourism Beats does **not** collect your Spotify password.
 ### City Facts
 
 To generate city facts, Tourism Beats requests public article summaries from Wikipedia and caches the results locally on your device for performance.
+
+### Activity and Restaurant Guides
+
+To show a city's top activities and restaurants, and to suggest activities for your trips, Tourism Beats looks up places near the selected destination's catalog coordinates using:
+
+- **OpenStreetMap** data through public Overpass API servers
+- **Wikivoyage**, **Wikipedia**, and **Wikidata** for travel guide listings, summaries, images, and page view counts
+- **Apple Maps** search through Apple's MapKit framework
+
+These requests contain the destination's name and catalog coordinates, never your location, trips, or other personal data. Results are cached locally on your device.
 
 ### Remote City Images
 
@@ -97,7 +108,8 @@ When you use specific features, limited information may be handled by the servic
 
 - **Apple** for WeatherKit and Apple Music
 - **Spotify** if you choose to authenticate and open music through Spotify
-- **Wikipedia** for city fact summaries
+- **Wikipedia**, **Wikivoyage**, and **Wikidata** for city facts and guide content
+- **OpenStreetMap** (through public Overpass API servers) and **Apple Maps** for nearby places
 - **Remote image hosts** referenced by the app's destination catalog
 
 Those providers handle data under their own terms and privacy policies.
