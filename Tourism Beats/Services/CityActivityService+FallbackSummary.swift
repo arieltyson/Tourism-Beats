@@ -4,37 +4,6 @@ import Foundation
 // MARK: - Apple Maps Fallback Summaries
 
 extension CityActivityService {
-    static func cleanedMapKitAddress(_ address: String?) -> String? {
-        guard let address = address?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
-            !address.isEmpty
-        else {
-            return nil
-        }
-
-        let cleaned = address
-            .replacingOccurrences(
-                of: #"\s*\|\s*"#,
-                with: ", ",
-                options: .regularExpression
-            )
-            .replacingOccurrences(
-                of: #",\s*,+"#,
-                with: ", ",
-                options: .regularExpression
-            )
-            .replacingOccurrences(
-                of: #"\s{2,}"#,
-                with: " ",
-                options: .regularExpression
-            )
-            .trimmingCharacters(
-                in: CharacterSet(charactersIn: ",| ").union(.whitespacesAndNewlines)
-            )
-
-        return cleaned.isEmpty ? nil : cleaned
-    }
-
     static func mapKitSummary(
         for result: Models.MapKitActivityResult,
         city: CityModel,
@@ -155,7 +124,7 @@ extension CityActivityService {
         from address: String?,
         city: CityModel
     ) -> String? {
-        guard let cleanedAddress = self.cleanedMapKitAddress(address) else {
+        guard let cleanedAddress = MapKitAddressFormatter.displayAddress(address) else {
             return nil
         }
 

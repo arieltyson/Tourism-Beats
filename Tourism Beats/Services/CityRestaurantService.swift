@@ -304,7 +304,9 @@ extension CityRestaurantService {
                     name: name,
                     phoneNumber: item.phoneNumber,
                     websiteURL: item.url,
-                    address: item.address?.shortAddress ?? item.address?.fullAddress,
+                    address: MapKitAddressFormatter.displayAddress(
+                        item.address?.shortAddress ?? item.address?.fullAddress
+                    ),
                     latitude: coordinate.latitude,
                     longitude: coordinate.longitude,
                     popularityRank: index + 1

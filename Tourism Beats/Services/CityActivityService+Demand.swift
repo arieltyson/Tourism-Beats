@@ -334,7 +334,7 @@ extension CityActivityService {
                 let result = Models.MapKitActivityResult(
                     name: name,
                     websiteURL: item.url,
-                    address: self.cleanedMapKitAddress(
+                    address: MapKitAddressFormatter.displayAddress(
                         item.address?.shortAddress ?? item.address?.fullAddress
                     ),
                     latitude: coordinate.latitude,
@@ -395,7 +395,7 @@ extension CityActivityService {
                 sourceName: "Apple Maps",
                 hours: nil,
                 price: nil,
-                address: result.address,
+                address: MapKitAddressFormatter.displayAddress(result.address),
                 directions: nil,
                 timingTip: nil,
                 latitude: result.latitude,
