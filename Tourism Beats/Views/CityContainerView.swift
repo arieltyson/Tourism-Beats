@@ -66,6 +66,10 @@ struct CityContainerView: View {
                 CityRestaurantDetailView(city: route.city, restaurant: route.restaurant)
             }
         }
+        // Every city backdrop is a dark gradient designed for light text, so
+        // the pages always use the dark appearance. In Light Mode, glass cards
+        // would otherwise turn pale and pair dark text with a dark backdrop.
+        .environment(\.colorScheme, .dark)
         .overlay(alignment: .trailing) {
             VerticalIconPageIndicator(
                 activeIndex: self.currentPageIndex,
