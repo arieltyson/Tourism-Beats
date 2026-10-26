@@ -9,8 +9,11 @@ typealias Models = CityActivityAPIModels
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
-    private static let cacheVersion = "v5"
+    private static let cacheVersion = "v6"
     private static let desiredActivityCount = 6
+    /// The City tab shows the top six, but trip planning needs a deeper pool so
+    /// longer itineraries can be filled without repeating places.
+    private static let rankedActivityLimit = 18
     private static let sourceCandidateCount = 18
 
     let session: URLSession
@@ -123,7 +126,7 @@ extension CityActivityService {
             from: collectedActivities,
             for: city,
             demandSignals: demandSignals,
-            limit: Self.desiredActivityCount
+            limit: Self.rankedActivityLimit
         )
 
         return await self.enrichFallbackActivitiesIfNeeded(rankedActivities, for: city)

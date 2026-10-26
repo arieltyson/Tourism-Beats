@@ -11,6 +11,10 @@ private typealias RestaurantModels = CityRestaurantAPIModels
 
 actor CityRestaurantService: CityRestaurantProviding {
     static let shared = CityRestaurantService()
+    private static let cacheVersion = "v2"
+    /// The City tab shows the top six, but trip planning needs enough distinct
+    /// restaurants to suggest a different meal for each day of a longer trip.
+    private static let rankedRestaurantLimit = 18
 
     private let session: URLSession
     private let logger = Logger(
@@ -129,7 +133,11 @@ extension CityRestaurantService {
             candidates = Self.applyChainSignatures(chainSignatures, to: candidates)
         }
 
-        return CityRestaurantRanking.topRestaurants(from: candidates, for: city, limit: 6)
+        return CityRestaurantRanking.topRestaurants(
+            from: candidates,
+            for: city,
+            limit: Self.rankedRestaurantLimit
+        )
     }
 
     private func fetchOverpassCandidates(
@@ -849,10 +857,12 @@ extension CityRestaurantService {
     }
 
     private static func cacheKey(for city: CityModel) -> String {
-        city.id
+        let normalizedCityIdentifier = city.id
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
             .split { !$0.isLetter && !$0.isNumber }
             .map(String.init)
             .joined(separator: "_")
+
+        return "\(Self.cacheVersion)_\(normalizedCityIdentifier)"
     }
 }
