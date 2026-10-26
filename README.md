@@ -4,38 +4,12 @@
 
 
 <kbd>
-    <img src="https://github.com/user-attachments/assets/349d0d9f-f863-44c3-a21b-f2ab1ac8b9d7" alt="tourismBeatsLogo" width="1000" height="500">
+    <img src="https://github.com/user-attachments/assets/349d0d9f-f863-44c3-a21b-f2ab1ac8b9d7" alt="tourismBeatsLogo" width="700" height="300">
 </kbd>
 
 ## Project Description 🎨
 
 Tourism Beats is a native iOS application that offers an immersive experience exploring 250 cities worldwide. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management rounds out the experience.
-
-## Screenshots:
-
-<div style="display: flex; justify-content: center; align-items: center;">
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/01a8c7ad-bb31-4137-8929-c7709dd935f9" alt="Home" width="200">
-    </kbd>
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/6d927da5-0ab3-467c-99b5-9bf0dd8fcd65" alt="Map" width="200">
-    </kbd>
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/f60c3eb4-6acb-4503-a625-e20631f5a700" alt="City" width="200">
-    </kbd>
-</div>
-
-<div style="display: flex; justify-content: center; align-items: center;">
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/fcbc6541-4f75-4758-8898-f1b90fe509d7" alt="Activities" width="200">
-    </kbd>
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/96dc55dd-d921-4fb8-bd88-bae66f28638b" alt="Food" width="200">
-    </kbd>
-    <kbd>
-        <img src="https://github.com/user-attachments/assets/9f941f81-ebaa-418d-8f23-286565ddc8f0" alt="Advisories" width="200">
-    </kbd>
-</div>
 
 ## Technologies Used 💻
 
