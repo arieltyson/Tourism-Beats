@@ -18,7 +18,11 @@ enum TripSeedService {
             return
         }
 
-        guard !trips.contains(where: \.isSample) else { return }
+        let sampleTrips = trips.filter(\.isSample)
+        guard sampleTrips.isEmpty else {
+            try self.repairSampleSchedulesIfNeeded(sampleTrips, in: context)
+            return
+        }
 
         try self.restoreSamples(in: context)
     }
@@ -56,13 +60,34 @@ enum TripSeedService {
         }
     }
 
+    /// Earlier releases seeded samples whose date ranges ran past their last
+    /// itinerary day, which made them look truncated. Re-aligning keeps any
+    /// days or activities the user added while fixing the advertised range.
+    @MainActor
+    private static func repairSampleSchedulesIfNeeded(
+        _ sampleTrips: [Trip],
+        in context: ModelContext
+    ) throws {
+        for trip in sampleTrips where !trip.isScheduleAligned() {
+            trip.alignScheduleWithDays()
+        }
+
+        if context.hasChanges {
+            try context.save()
+        }
+    }
+
     @MainActor
     private static func restoreSamplesIfNeededAfterDeletingLastCustomTrip(
         in context: ModelContext
     ) throws {
         let trips = try context.fetch(FetchDescriptor<Trip>())
         guard !trips.contains(where: { !$0.isSample }) else { return }
-        guard !trips.contains(where: \.isSample) else { return }
+        let sampleTrips = trips.filter(\.isSample)
+        guard sampleTrips.isEmpty else {
+            try self.repairSampleSchedulesIfNeeded(sampleTrips, in: context)
+            return
+        }
 
         try self.restoreSamples(in: context)
     }
@@ -100,7 +125,6 @@ enum TripSeedService {
             country: "Trinidad and Tobago",
             isSample: true,
             startDate: Self.date(2_026, 12, 20),
-            endDate: Self.date(2_026, 12, 27),
             notes: "Sample itinerary balancing beaches, local food, and light city exploration.",
             status: .upcoming
         )
@@ -131,6 +155,8 @@ enum TripSeedService {
         Self.addActivity("Queen's Park Savannah walk", type: .attraction, time: Self.time(9, 0), day: day3, in: context)
         Self.addActivity("Lunch at Veni Mangé", type: .food, time: Self.time(12, 0), day: day3, in: context)
         Self.addActivity("Fort George lookout", type: .attraction, time: Self.time(15, 0), day: day3, in: context)
+
+        trip.alignScheduleWithDays()
     }
 
     // MARK: - Vancouver
@@ -142,7 +168,6 @@ enum TripSeedService {
             country: "Canada",
             isSample: true,
             startDate: Self.date(2_027, 2, 14),
-            endDate: Self.date(2_027, 2, 20),
             notes: "Sample itinerary mixing food stops, neighborhood walks, and one bigger mountain day.",
             status: .upcoming
         )
@@ -172,6 +197,8 @@ enum TripSeedService {
         )
         Self.addActivity("Lunch at The Sandbar", type: .food, time: Self.time(13, 0), day: day3, in: context)
         Self.addActivity("Stanley Park Seawall walk", type: .attraction, time: Self.time(15, 0), day: day3, in: context)
+
+        trip.alignScheduleWithDays()
     }
 
     // MARK: - San Francisco
@@ -183,7 +210,6 @@ enum TripSeedService {
             country: "United States",
             isSample: true,
             startDate: Self.date(2_027, 7, 5),
-            endDate: Self.date(2_027, 7, 10),
             notes: "Sample itinerary covering iconic sights with flexible space for food and neighborhoods.",
             status: .upcoming
         )
@@ -226,6 +252,8 @@ enum TripSeedService {
             day: day3,
             in: context
         )
+
+        trip.alignScheduleWithDays()
     }
 
     // MARK: - Helpers
