@@ -8,8 +8,10 @@ import SwiftUI
 
 // MARK: - GlassSpotifyCard
 
-/// A glass-styled card for Spotify showing artwork, song metadata,
-/// and a button to open the track in the Spotify app or web.
+/// A glass-styled card for Spotify showing artwork and song metadata.
+///
+/// The whole card is one button that opens the track in the Spotify app or
+/// on the web; the Spotify mark on the trailing edge signals where it goes.
 struct GlassSpotifyCard: View {
     let artworkURL: URL?
     let songTitle: String
@@ -20,45 +22,46 @@ struct GlassSpotifyCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        GlassCard(cornerRadius: 20) {
-            if self.dynamicTypeSize.prefersMusicCardVerticalLayout {
-                VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                    HStack(spacing: SpacingTokens.small) {
+        Button(action: self.onOpen) {
+            GlassCard(cornerRadius: 20) {
+                if self.dynamicTypeSize.prefersMusicCardVerticalLayout {
+                    VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                        HStack(spacing: SpacingTokens.small) {
+                            GlassSpotifyCardArtwork(url: self.artworkURL)
+
+                            GlassSpotifyCardInfo(
+                                songTitle: self.songTitle,
+                                artistName: self.artistName
+                            )
+                        }
+
+                        GlassSpotifyCardAccessory(isSearching: self.isSearching)
+                    }
+                } else {
+                    HStack(alignment: .top, spacing: SpacingTokens.small) {
                         GlassSpotifyCardArtwork(url: self.artworkURL)
 
                         GlassSpotifyCardInfo(
                             songTitle: self.songTitle,
                             artistName: self.artistName
                         )
+                        .layoutPriority(1)
+
+                        Spacer(minLength: SpacingTokens.xxSmall)
+
+                        GlassSpotifyCardAccessory(isSearching: self.isSearching)
+                            .fixedSize()
                     }
-
-                    GlassSpotifyCardAction(
-                        isSearching: self.isSearching,
-                        onOpen: self.onOpen
-                    )
-                }
-            } else {
-                HStack(alignment: .top, spacing: SpacingTokens.small) {
-                    GlassSpotifyCardArtwork(url: self.artworkURL)
-
-                    GlassSpotifyCardInfo(
-                        songTitle: self.songTitle,
-                        artistName: self.artistName
-                    )
-                    .layoutPriority(1)
-
-                    Spacer(minLength: SpacingTokens.xxSmall)
-
-                    GlassSpotifyCardAction(
-                        isSearching: self.isSearching,
-                        onOpen: self.onOpen
-                    )
-                    .fixedSize()
                 }
             }
+            .contentShape(.rect(cornerRadius: 20))
         }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Spotify. \(self.songTitle) by \(self.artistName)")
+        .buttonStyle(.cardPress)
+        .disabled(self.isSearching)
+        .accessibilityLabel("Open \(self.songTitle) by \(self.artistName) in Spotify")
+        .accessibilityValue(self.isSearching ? "Searching Spotify" : "")
+        .accessibilityHint("Opens Spotify")
+        .accessibilityInputLabels(["Open in Spotify", "Spotify", "Open Spotify"])
     }
 }
 
@@ -140,31 +143,24 @@ private struct GlassSpotifyCardInfo: View {
     }
 }
 
-// MARK: - GlassSpotifyCardAction
+// MARK: - GlassSpotifyCardAccessory
 
-private struct GlassSpotifyCardAction: View {
+/// The Spotify mark, or a spinner while the track is being looked up.
+private struct GlassSpotifyCardAccessory: View {
     let isSearching: Bool
-    let onOpen: () -> Void
 
     var body: some View {
-        if self.isSearching {
-            ProgressView()
-                .controlSize(.small)
-                .tint(.primary)
-                .frame(width: 32, height: 32)
-        } else {
-            Button(action: self.onOpen) {
-                Label {
-                    Text("Open in Spotify")
-                } icon: {
-                    ProviderLogo.spotify.actionIcon
-                }
-                .labelStyle(.iconOnly)
+        Group {
+            if self.isSearching {
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(.primary)
+            } else {
+                ProviderLogo.spotify.actionIcon
             }
-            .buttonStyle(.plain)
-            .accessibilityHint("Opens this song in Spotify")
-            .accessibilityInputLabels(["Open in Spotify", "Open Spotify"])
         }
+        .frame(minWidth: 32, minHeight: 32)
+        .accessibilityHidden(true)
     }
 }
 

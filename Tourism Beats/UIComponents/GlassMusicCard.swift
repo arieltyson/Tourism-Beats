@@ -9,7 +9,10 @@ import SwiftUI
 // MARK: - GlassMusicCard
 
 /// A glass-styled card for Apple Music showing artwork, song metadata,
-/// and inline playback controls (restart and play/pause).
+/// and playback controls.
+///
+/// Tapping anywhere on the card plays or pauses. Restart stays a separate
+/// control so it can't be triggered by a tap meant for playback.
 struct GlassMusicCard: View {
     let artworkURL: URL?
     let songTitle: String
@@ -21,35 +24,34 @@ struct GlassMusicCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        GlassCard(cornerRadius: 20) {
+        GlassCard(cornerRadius: 20, contentPadding: 0) {
             if self.dynamicTypeSize.prefersMusicCardVerticalLayout {
-                VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                    HStack(spacing: SpacingTokens.small) {
-                        GlassMusicCardArtwork(url: self.artworkURL)
-
-                        GlassMusicCardInfo(
-                            songTitle: self.songTitle,
-                            artistName: self.artistName
-                        )
-                    }
+                VStack(alignment: .leading, spacing: 0) {
+                    GlassMusicCardPlaybackSurface(
+                        artworkURL: self.artworkURL,
+                        songTitle: self.songTitle,
+                        artistName: self.artistName,
+                        isPlaying: self.isPlaying,
+                        onPlayPause: self.onPlayPause
+                    )
 
                     GlassMusicCardControls(
                         isPlaying: self.isPlaying,
                         onRestart: self.onRestart,
                         onPlayPause: self.onPlayPause
                     )
+                    .padding([.horizontal, .bottom], SpacingTokens.xSmall)
                 }
             } else {
-                HStack(alignment: .top, spacing: SpacingTokens.small) {
-                    GlassMusicCardArtwork(url: self.artworkURL)
-
-                    GlassMusicCardInfo(
+                HStack(alignment: .top, spacing: 0) {
+                    GlassMusicCardPlaybackSurface(
+                        artworkURL: self.artworkURL,
                         songTitle: self.songTitle,
-                        artistName: self.artistName
+                        artistName: self.artistName,
+                        isPlaying: self.isPlaying,
+                        onPlayPause: self.onPlayPause
                     )
                     .layoutPriority(1)
-
-                    Spacer(minLength: SpacingTokens.xxSmall)
 
                     GlassMusicCardControls(
                         isPlaying: self.isPlaying,
@@ -57,11 +59,44 @@ struct GlassMusicCard: View {
                         onPlayPause: self.onPlayPause
                     )
                     .fixedSize()
+                    .padding([.top, .trailing], SpacingTokens.xxSmall)
                 }
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Apple Music. \(self.songTitle) by \(self.artistName)")
+        .accessibilityLabel("Apple Music")
+    }
+}
+
+// MARK: - GlassMusicCardPlaybackSurface
+
+/// The artwork and song details, filling the card as one play/pause button.
+private struct GlassMusicCardPlaybackSurface: View {
+    let artworkURL: URL?
+    let songTitle: String
+    let artistName: String
+    let isPlaying: Bool
+    let onPlayPause: () -> Void
+
+    var body: some View {
+        Button(action: self.onPlayPause) {
+            HStack(alignment: .top, spacing: SpacingTokens.small) {
+                GlassMusicCardArtwork(url: self.artworkURL)
+
+                GlassMusicCardInfo(
+                    songTitle: self.songTitle,
+                    artistName: self.artistName
+                )
+            }
+            .padding(SpacingTokens.small)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(self.songTitle) by \(self.artistName)")
+        .accessibilityValue(self.isPlaying ? "Playing" : "Paused")
+        .accessibilityHint(self.isPlaying ? "Pauses playback" : "Plays the song in Apple Music")
+        .accessibilityInputLabels([self.songTitle, "Apple Music"])
     }
 }
 
@@ -150,11 +185,14 @@ private struct GlassMusicCardControls: View {
     let onRestart: () -> Void
     let onPlayPause: () -> Void
 
+    @ScaledMetric(relativeTo: .title3) private var minimumTapTarget = SpacingTokens.minimumTapTarget
+
     var body: some View {
-        HStack(spacing: SpacingTokens.medium) {
+        HStack(spacing: 0) {
             Button("Restart", systemImage: "backward.end.fill", action: self.onRestart)
-                .labelStyle(.iconOnly)
                 .font(.callout)
+                .frame(minWidth: self.minimumTapTarget, minHeight: self.minimumTapTarget)
+                .contentShape(.rect)
                 .accessibilityHint("Restarts the current song")
                 .accessibilityInputLabels(["Restart Song", "Restart"])
 
@@ -163,15 +201,16 @@ private struct GlassMusicCardControls: View {
                 systemImage: self.isPlaying ? "pause.fill" : "play.fill",
                 action: self.onPlayPause
             )
-            .labelStyle(.iconOnly)
             .font(.title3)
-            .accessibilityHint(
-                self.isPlaying ? "Pauses playback" : "Plays the song"
-            )
+            .contentTransition(.symbolEffect(.replace))
+            .frame(minWidth: self.minimumTapTarget, minHeight: self.minimumTapTarget)
+            .contentShape(.rect)
+            .accessibilityHint(self.isPlaying ? "Pauses playback" : "Plays the song")
             .accessibilityInputLabels(
-                self.isPlaying ? ["Pause Song", "Pause"] : ["Play Song", "Play"]
+                self.isPlaying ? ["Pause", "Pause Song"] : ["Play", "Play Song"]
             )
         }
+        .labelStyle(.iconOnly)
         .foregroundStyle(.primary)
         .buttonStyle(.plain)
     }

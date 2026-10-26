@@ -22,19 +22,25 @@ struct GlassCard<Content: View>: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     let cornerRadius: CGFloat
+    let contentPadding: CGFloat
     @ViewBuilder let content: Content
 
+    /// - Parameter contentPadding: Inset around the content. Pass zero when
+    ///   the content supplies its own insets, such as buttons that should
+    ///   respond to taps right up to the card's edge.
     init(
         cornerRadius: CGFloat = 20,
+        contentPadding: CGFloat = SpacingTokens.small,
         @ViewBuilder content: () -> Content
     ) {
         self.cornerRadius = cornerRadius
+        self.contentPadding = contentPadding
         self.content = content()
     }
 
     var body: some View {
         self.content
-            .padding(SpacingTokens.small)
+            .padding(self.contentPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 self.cardBackground,

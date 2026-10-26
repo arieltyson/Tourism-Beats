@@ -32,4 +32,7 @@ enum SpacingTokens {
 
     /// 48pt — Top-level layout spacing.
     static let xxLarge: CGFloat = 48
+
+    /// 44pt — The smallest tap target the Human Interface Guidelines allow.
+    static let minimumTapTarget: CGFloat = 44
 }
