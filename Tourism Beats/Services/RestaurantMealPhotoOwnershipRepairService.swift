@@ -28,9 +28,35 @@ struct RestaurantMealPhotoOwnershipRepairService {
         )
         let sortedMealPhotos = mealPhotos.sorted(by: self.photoSortOrder)
 
-        var repairedOwnershipCount = 0
-        var synchronizedLegacyIdentifierCount = 0
-        var reassignedRestaurantIdentifierCount = 0
+        let (repairedOwnershipCount, linkedPhotoCountsByRestaurant) = self.attachOrphanedMealPhotos(
+            sortedMealPhotos,
+            legacyIdentifierGroups: legacyIdentifierGroups
+        )
+        let reassignedRestaurantIdentifierCount = self.reassignDuplicateRestaurantIdentifiers(
+            in: legacyIdentifierGroups,
+            linkedPhotoCountsByRestaurant: linkedPhotoCountsByRestaurant
+        )
+        let synchronizedLegacyIdentifierCount = self.synchronizeLegacyIdentifiers(of: sortedMealPhotos)
+
+        guard modelContext.hasChanges else { return }
+
+        try modelContext.save()
+        self.logger.notice(
+            """
+            Repaired \(repairedOwnershipCount, privacy: .public) meal photo ownership records, \
+            synchronized \(synchronizedLegacyIdentifierCount, privacy: .public) legacy identifiers, \
+            and reassigned \(reassignedRestaurantIdentifierCount, privacy: .public) duplicate restaurant identifiers.
+            """
+        )
+    }
+
+    /// Links each photo without a restaurant to the best legacy-identifier
+    /// match, returning how many were repaired and every restaurant's photo count.
+    private func attachOrphanedMealPhotos(
+        _ sortedMealPhotos: [RestaurantMealPhoto],
+        legacyIdentifierGroups: [UUID: [Restaurant]]
+    ) -> (repairedCount: Int, linkedPhotoCountsByRestaurant: [ObjectIdentifier: Int]) {
+        var repairedCount = 0
         var linkedPhotoCountsByRestaurant = [ObjectIdentifier: Int]()
 
         for mealPhoto in sortedMealPhotos {
@@ -52,8 +78,19 @@ struct RestaurantMealPhotoOwnershipRepairService {
 
             owner.attachMealPhoto(mealPhoto)
             linkedPhotoCountsByRestaurant[ObjectIdentifier(owner), default: 0] += 1
-            repairedOwnershipCount += 1
+            repairedCount += 1
         }
+
+        return (repairedCount, linkedPhotoCountsByRestaurant)
+    }
+
+    /// Keeps one restaurant per shared legacy identifier and gives the rest
+    /// fresh identifiers, returning how many were reassigned.
+    private func reassignDuplicateRestaurantIdentifiers(
+        in legacyIdentifierGroups: [UUID: [Restaurant]],
+        linkedPhotoCountsByRestaurant: [ObjectIdentifier: Int]
+    ) -> Int {
+        var reassignedCount = 0
 
         for restaurantsWithSharedLegacyIdentifier in legacyIdentifierGroups.values {
             let orderedRestaurants = self.restaurantsOrderedForLegacyIdentifierRepair(
@@ -70,9 +107,17 @@ struct RestaurantMealPhotoOwnershipRepairService {
                 }
 
                 duplicateRestaurant.restaurantIdentifier = UUID()
-                reassignedRestaurantIdentifierCount += 1
+                reassignedCount += 1
             }
         }
+
+        return reassignedCount
+    }
+
+    /// Copies each linked photo's restaurant identifier onto the photo,
+    /// returning how many were out of date.
+    private func synchronizeLegacyIdentifiers(of sortedMealPhotos: [RestaurantMealPhoto]) -> Int {
+        var synchronizedCount = 0
 
         for mealPhoto in sortedMealPhotos {
             guard
@@ -83,19 +128,10 @@ struct RestaurantMealPhotoOwnershipRepairService {
             }
 
             mealPhoto.restaurantIdentifier = restaurant.restaurantIdentifier
-            synchronizedLegacyIdentifierCount += 1
+            synchronizedCount += 1
         }
 
-        guard modelContext.hasChanges else { return }
-
-        try modelContext.save()
-        self.logger.notice(
-            """
-            Repaired \(repairedOwnershipCount, privacy: .public) meal photo ownership records, \
-            synchronized \(synchronizedLegacyIdentifierCount, privacy: .public) legacy identifiers, \
-            and reassigned \(reassignedRestaurantIdentifierCount, privacy: .public) duplicate restaurant identifiers.
-            """
-        )
+        return synchronizedCount
     }
 
     private func resolveOwner(
