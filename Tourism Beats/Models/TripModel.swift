@@ -140,6 +140,65 @@ final class Trip {
         return trimmedNotes.isEmpty ? nil : trimmedNotes
     }
 
+    /// Whether the trip's date range describes exactly the days in its itinerary.
+    ///
+    /// Undated trips are always aligned because they have no range to contradict.
+    func isScheduleAligned(calendar: Calendar = .current) -> Bool {
+        guard let startDate else { return true }
+
+        let days = self.sortedDays
+        guard !days.isEmpty else { return true }
+
+        let expectedDates = Self.consecutiveDates(
+            from: startDate,
+            count: days.count,
+            calendar: calendar
+        )
+        let dayDates = days.map { $0.date.map(calendar.startOfDay(for:)) }
+
+        return dayDates == expectedDates
+            && self.endDate.map(calendar.startOfDay(for:)) == expectedDates.last
+    }
+
+    /// Renumbers days in order and, for dated trips, re-dates them consecutively
+    /// from `startDate` and moves `endDate` to the final day.
+    ///
+    /// Call after adding or removing days so the header's date range always
+    /// matches the itinerary that actually exists.
+    func alignScheduleWithDays(calendar: Calendar = .current) {
+        let days = self.sortedDays
+
+        for (index, day) in days.enumerated() {
+            day.dayNumber = index + 1
+        }
+
+        guard let startDate, !days.isEmpty else { return }
+
+        let dates = Self.consecutiveDates(
+            from: startDate,
+            count: days.count,
+            calendar: calendar
+        )
+
+        for (day, date) in zip(days, dates) {
+            day.date = date
+        }
+
+        self.startDate = dates.first ?? nil
+        self.endDate = dates.last ?? nil
+    }
+
+    private static func consecutiveDates(
+        from startDate: Date,
+        count: Int,
+        calendar: Calendar
+    ) -> [Date?] {
+        let normalizedStartDate = calendar.startOfDay(for: startDate)
+        return (0 ..< count).map { offset in
+            calendar.date(byAdding: .day, value: offset, to: normalizedStartDate)
+        }
+    }
+
     private static let dateRangeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium

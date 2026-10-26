@@ -161,14 +161,16 @@ struct TripDetailView: View {
             trip: self.trip
         )
         self.modelContext.insert(newDay)
+        self.trip.alignScheduleWithDays()
         self.persistChanges()
         self.scrollTargetDayID = newDay.persistentModelID
     }
 
     private func confirmDeleteDay() {
         guard let dayPendingDeletion else { return }
+        self.trip.days?.removeAll { $0 == dayPendingDeletion }
         self.modelContext.delete(dayPendingDeletion)
-        self.renumberDays()
+        self.trip.alignScheduleWithDays()
         self.persistChanges()
         self.dayPendingDeletion = nil
     }
@@ -193,21 +195,6 @@ struct TripDetailView: View {
     private func deleteActivity(_ activity: TripActivity) {
         self.modelContext.delete(activity)
         self.persistChanges()
-    }
-
-    private func renumberDays() {
-        let sortedDays = self.trip.sortedDays
-        for (index, day) in sortedDays.enumerated() {
-            day.dayNumber = index + 1
-
-            if let tripStartDate = self.trip.startDate {
-                day.date = Calendar.current.date(
-                    byAdding: .day,
-                    value: index,
-                    to: tripStartDate
-                )
-            }
-        }
     }
 
     private func persistChanges() {
