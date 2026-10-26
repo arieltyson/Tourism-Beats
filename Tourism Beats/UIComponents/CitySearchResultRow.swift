@@ -56,7 +56,7 @@ struct CitySearchResultRow: View {
     }
 
     private func highlightedText(_ text: String, searchText: String)
-    -> AttributedString
+        -> AttributedString
     {
         var attributed = AttributedString(text)
         guard !searchText.isEmpty else { return attributed }
@@ -97,15 +97,15 @@ private struct CountryFlagView: View {
 extension String {
     /// All ranges of `searchString` within the string.
     func ranges(of searchString: String, options: String.CompareOptions = [])
-    -> [Range<String.Index>]
+        -> [Range<String.Index>]
     {
         var result: [Range<String.Index>] = []
         var start = startIndex
         while start < endIndex,
               let r = range(
-                of: searchString,
-                options: options,
-                range: start ..< endIndex
+                  of: searchString,
+                  options: options,
+                  range: start ..< endIndex
               )
         {
             result.append(r)

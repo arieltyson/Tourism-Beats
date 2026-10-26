@@ -56,7 +56,7 @@ struct AddEditTripView: View {
         let trimmedQuery = self.trimmedCity
         guard
             !trimmedQuery.isEmpty
-                || !self.formViewModel.selectedCountryCode.isEmpty
+            || !self.formViewModel.selectedCountryCode.isEmpty
         else {
             return []
         }
@@ -71,12 +71,12 @@ struct AddEditTripView: View {
         let defaultStartDate = trip?.startDate ?? Date.now
         let defaultEndDate =
             trip?.endDate
-            ?? Calendar.current.date(
-                byAdding: .day,
-                value: 5,
-                to: defaultStartDate
-            )
-            ?? defaultStartDate
+                ?? Calendar.current.date(
+                    byAdding: .day,
+                    value: 5,
+                    to: defaultStartDate
+                )
+                ?? defaultStartDate
 
         self._formViewModel = State(
             initialValue: TripFormViewModel(countryName: trip?.country ?? "")
@@ -245,10 +245,10 @@ struct AddEditTripView: View {
             trip.country = self.trimmedCountry
             trip.startDate =
                 self.hasDates
-                ? Calendar.current.startOfDay(for: self.startDate) : nil
+                    ? Calendar.current.startOfDay(for: self.startDate) : nil
             trip.endDate =
                 self.hasDates
-                ? Calendar.current.startOfDay(for: self.endDate) : nil
+                    ? Calendar.current.startOfDay(for: self.endDate) : nil
             trip.status = self.status
             trip.notes = self.normalizedNotes
             self.synchronizeDays(for: trip)

@@ -102,7 +102,7 @@ final class TripsViewModel {
     }
 
     private static func lookupKey(cityName: String, countryName: String)
-    -> String
+        -> String
     {
         [
             self.normalizedLookupValue(cityName),
@@ -121,7 +121,7 @@ final class TripsViewModel {
     }
 
     private static func makeCityLookup(from catalogCities: [CityModel])
-    -> [String: CityModel]
+        -> [String: CityModel]
     {
         catalogCities.reduce(into: [:]) { partialResult, city in
             let key = Self.lookupKey(

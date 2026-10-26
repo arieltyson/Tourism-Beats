@@ -337,7 +337,7 @@ extension CityRestaurantService {
 
             guard normalizedName != normalizedCityName,
                   !self.excludedKeywords.contains(where: {
-                    normalizedName.localizedStandardContains($0)
+                      normalizedName.localizedStandardContains($0)
                   })
             else {
                 return nil

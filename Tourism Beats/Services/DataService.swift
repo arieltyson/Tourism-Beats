@@ -63,11 +63,11 @@ final class DataService {
         let cities = entries.map { entry in
             let country =
                 lookup[entry.countryCode]
-                ?? CountryModel(
-                    name: "Unknown",
-                    code: entry.countryCode,
-                    flag: "❓"
-                )
+                    ?? CountryModel(
+                        name: "Unknown",
+                        code: entry.countryCode,
+                        flag: "❓"
+                    )
             return CityModel(
                 id: "\(entry.name)-\(entry.countryCode)",
                 name: entry.name,

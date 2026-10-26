@@ -42,7 +42,7 @@ actor VisaService: VisaProtocol {
     }
 
     func fetchVisaRequirement(passport: String, destination: String)
-    async throws -> VisaModel
+        async throws -> VisaModel
     {
         let map = try loadAll()
         if let entry = map[

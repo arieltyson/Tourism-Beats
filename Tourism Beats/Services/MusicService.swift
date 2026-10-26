@@ -308,7 +308,7 @@ actor MusicService: MusicProtocol {
                 let exactTitleBonus = preferredTitles.contains(normalizedName) ? 400 : 0
                 let curatorBonus =
                     playlist.attributes?.curatorName?.localizedStandardContains("Apple Music") == true
-                    ? 25 : 0
+                        ? 25 : 0
                 let score = Self.matchScore(
                     playlistName: name,
                     cityTerms: searchTerms

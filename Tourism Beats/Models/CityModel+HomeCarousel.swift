@@ -13,8 +13,8 @@ extension CityModel {
 
         let decodedAssetName =
             self.imageURL.lastPathComponent.removingPercentEncoding
-            ?? self.imageURL.absoluteString.removingPercentEncoding
-            ?? self.imageURL.absoluteString
+                ?? self.imageURL.absoluteString.removingPercentEncoding
+                ?? self.imageURL.absoluteString
 
         let riskSignals = [
             "panorama",

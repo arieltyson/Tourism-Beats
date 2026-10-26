@@ -56,7 +56,7 @@ extension CityActivityService {
     private static func wikipediaLookupTitle(for activity: CityActivity) -> String? {
         if let sourcePageTitle = activity.sourcePageTitle?
             .trimmingCharacters(in: .whitespacesAndNewlines),
-           !sourcePageTitle.isEmpty
+            !sourcePageTitle.isEmpty
         {
             return sourcePageTitle
         }

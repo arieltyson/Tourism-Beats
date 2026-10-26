@@ -116,7 +116,7 @@ final class TripFormViewModel {
     }
 
     private static func deduplicatedCities(from cities: [CityModel])
-    -> [CityModel]
+        -> [CityModel]
     {
         var seenLookupKeys = Set<String>()
 

@@ -324,10 +324,10 @@ private struct SettingsResourceRow: View {
 private struct SettingsVersionFooter: View {
     private let shortVersion =
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
-        as? String ?? "Unknown"
+            as? String ?? "Unknown"
     private let buildNumber =
         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion")
-        as? String ?? "Unknown"
+            as? String ?? "Unknown"
 
     var body: some View {
         Text("Tourism Beats \(self.shortVersion) (\(self.buildNumber))")

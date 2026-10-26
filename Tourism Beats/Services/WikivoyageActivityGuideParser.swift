@@ -460,18 +460,18 @@ private extension WikivoyageActivityGuideParser {
         case let value where value.localizedStandardContains("museum"):
             return "Museum"
         case let value where value.localizedStandardContains("building")
-                || value.localizedStandardContains("architecture")
-                || value.localizedStandardContains("structure"):
+            || value.localizedStandardContains("architecture")
+            || value.localizedStandardContains("structure"):
             return "Architecture"
         case let value where value.localizedStandardContains("heritage")
-                || value.localizedStandardContains("history"):
+            || value.localizedStandardContains("history"):
             return "Heritage"
         case let value where value.localizedStandardContains("other sights"):
             return "Attraction"
         case let value where value.localizedStandardContains("hiking")
-                || value.localizedStandardContains("ski")
-                || value.localizedStandardContains("snow")
-                || value.localizedStandardContains("outdoor"):
+            || value.localizedStandardContains("ski")
+            || value.localizedStandardContains("snow")
+            || value.localizedStandardContains("outdoor"):
             return "Outdoors"
         case let value where value.localizedStandardContains("festival"):
             return "Festival"
@@ -482,8 +482,8 @@ private extension WikivoyageActivityGuideParser {
         case let value where value.localizedStandardContains("sport"):
             return "Sports"
         case let value where value.localizedStandardContains("park")
-                || value.localizedStandardContains("garden")
-                || value.localizedStandardContains("nature"):
+            || value.localizedStandardContains("garden")
+            || value.localizedStandardContains("nature"):
             return "Nature"
         default:
             let fallbackCategory = CityActivityAPIModels.categoryFromText(

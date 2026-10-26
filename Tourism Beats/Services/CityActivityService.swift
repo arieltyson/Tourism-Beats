@@ -744,7 +744,7 @@ extension CityActivityService {
         sections.filter {
             $0.tocLevel == 1
                 && ($0.line.localizedStandardContains("see")
-                        || $0.line.localizedStandardContains("do")
+                    || $0.line.localizedStandardContains("do")
                 )
         }
     }

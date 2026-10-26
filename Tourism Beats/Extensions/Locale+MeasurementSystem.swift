@@ -13,11 +13,11 @@ extension Locale {
             // Older OS fallback: avoid regex; strip non-letters cheaply.
             let scalars =
                 (self as NSLocale)
-                .object(forKey: NSLocale.Key.measurementSystem) as? String ?? ""
+                    .object(forKey: NSLocale.Key.measurementSystem) as? String ?? ""
             var letters = String.UnicodeScalarView()
             letters.reserveCapacity(scalars.count)
             for s in scalars.unicodeScalars
-            where CharacterSet.letters.contains(s)
+                where CharacterSet.letters.contains(s)
             {
                 letters.append(s)
             }

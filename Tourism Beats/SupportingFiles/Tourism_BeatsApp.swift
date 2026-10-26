@@ -93,7 +93,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, @unchecked Sendable {
 
     @discardableResult
     private func routeQuickAction(_ shortcutItem: UIApplicationShortcutItem)
-    -> Bool
+        -> Bool
     {
         guard let action = QuickAction(shortcutItem: shortcutItem) else {
             return false

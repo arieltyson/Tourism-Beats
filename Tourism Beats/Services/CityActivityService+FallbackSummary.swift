@@ -6,8 +6,8 @@ import Foundation
 extension CityActivityService {
     static func cleanedMapKitAddress(_ address: String?) -> String? {
         guard let address = address?
-                .trimmingCharacters(in: .whitespacesAndNewlines),
-              !address.isEmpty
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+            !address.isEmpty
         else {
             return nil
         }

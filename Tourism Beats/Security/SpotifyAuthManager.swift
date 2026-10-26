@@ -7,12 +7,12 @@ import UIKit
 
 @MainActor
 final class WebAuthPresenter: NSObject,
-                              ASWebAuthenticationPresentationContextProviding
+    ASWebAuthenticationPresentationContextProviding
 {
     static let shared = WebAuthPresenter()
 
     func presentationAnchor(for _: ASWebAuthenticationSession)
-    -> ASPresentationAnchor
+        -> ASPresentationAnchor
     {
         guard let scene = self.preferredWindowScene else {
             preconditionFailure(
@@ -77,8 +77,8 @@ actor SpotifyAuthManager {
     private var token: Token? = {
         guard let data = Keychain.get("spotify.token"),
               let t = try? SpotifyAuthManager.jsonDecoder.decode(
-                Token.self,
-                from: data
+                  Token.self,
+                  from: data
               )
         else { return nil }
         return t
@@ -148,12 +148,12 @@ actor SpotifyAuthManager {
                 guard err == nil,
                       let url = callback,
                       let items = URLComponents(
-                        url: url,
-                        resolvingAgainstBaseURL: false
+                          url: url,
+                          resolvingAgainstBaseURL: false
                       )?.queryItems,
                       let code = items.first(where: { $0.name == "code" })?.value,
                       let back = items.first(where: { $0.name == "state" })?
-                        .value,
+                      .value,
                       back == expectedState
                 else {
                     cont.resume(throwing: AuthError.authorizationFailed)

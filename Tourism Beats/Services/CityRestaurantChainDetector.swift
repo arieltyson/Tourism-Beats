@@ -204,8 +204,8 @@ extension CityRestaurantChainDetector {
         // Hotel restaurant pattern: "hotel x restaurant", "restaurant at hotel"
         if normalizedName.localizedStandardContains("hotel")
             && (normalizedName.localizedStandardContains("restaurant")
-                    || normalizedName.localizedStandardContains("dining")
-                    || normalizedName.localizedStandardContains("bistro")
+                || normalizedName.localizedStandardContains("dining")
+                || normalizedName.localizedStandardContains("bistro")
             )
         {
             return true

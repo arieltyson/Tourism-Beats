@@ -173,7 +173,7 @@ extension CityActivityService {
 
         if let sourcePageTitle = activity.sourcePageTitle?
             .trimmingCharacters(in: .whitespacesAndNewlines),
-           !sourcePageTitle.isEmpty
+            !sourcePageTitle.isEmpty
         {
             titles.insert(self.canonicalWikipediaTitle(sourcePageTitle))
         }
@@ -324,7 +324,7 @@ extension CityActivityService {
 
                 guard normalizedName != cityName,
                       !self.activityDemandExcludedKeywords.contains(where: {
-                        normalizedName.localizedStandardContains($0)
+                          normalizedName.localizedStandardContains($0)
                       })
                 else {
                     return nil
@@ -473,7 +473,7 @@ extension CityActivityService {
     ) -> Bool {
         if let regionName = result.regionName?
             .trimmingCharacters(in: .whitespacesAndNewlines),
-           !regionName.isEmpty
+            !regionName.isEmpty
         {
             let normalizedRegionName = CityActivityRanking.activityKey(for: regionName)
             let normalizedCountryName = CityActivityRanking.activityKey(for: city.country.name)

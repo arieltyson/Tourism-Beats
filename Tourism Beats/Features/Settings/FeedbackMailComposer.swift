@@ -25,10 +25,10 @@ struct FeedbackMailComposer {
     var contextLines: [String] {
         let shortVersion =
             Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
-            as? String ?? "Unknown"
+                as? String ?? "Unknown"
         let buildNumber =
             Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion")
-            as? String ?? "Unknown"
+                as? String ?? "Unknown"
         let systemName = UIDevice.current.systemName
         let systemVersion = UIDevice.current.systemVersion
 
@@ -58,7 +58,7 @@ struct FeedbackMailComposer {
 
         let machine = Mirror(reflecting: systemInfo.machine).children.reduce(into: "") {
             partialResult,
-            element in
+                element in
             guard let value = element.value as? Int8, value != 0 else { return }
             partialResult.append(Character(UnicodeScalar(UInt8(value))))
         }

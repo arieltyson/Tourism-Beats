@@ -101,15 +101,15 @@ final class Trip {
     var scheduleSummaryLabel: String {
         let dayLabel =
             self.dayCount == 1
-            ? "1 day"
-            : "\(self.dayCount.formatted(.number)) days"
+                ? "1 day"
+                : "\(self.dayCount.formatted(.number)) days"
 
         guard self.activityCount > 0 else { return dayLabel }
 
         let activityLabel =
             self.activityCount == 1
-            ? "1 activity"
-            : "\(self.activityCount.formatted(.number)) activities"
+                ? "1 activity"
+                : "\(self.activityCount.formatted(.number)) activities"
         return "\(dayLabel) • \(activityLabel)"
     }
 
