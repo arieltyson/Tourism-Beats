@@ -55,9 +55,12 @@ line_length:
   ignores_comments: true
   ignores_urls: true
 
+# A flat switch that maps each case to a value is the clearest form, so its
+# cases don't count toward complexity; branching logic still does.
 cyclomatic_complexity:
   warning: 15
   error: 25
+  ignores_case_statements: true
 
 # Disable rules that conflict with SwiftFormat or are too noisy.
 disabled_rules:
