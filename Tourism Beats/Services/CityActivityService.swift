@@ -103,34 +103,27 @@ actor CityActivityService: CityActivityProviding {
     }
 }
 
-// MARK: - Fetch Pipeline (Overpass → Wikivoyage → Wikipedia)
+// MARK: - Fetch Pipeline (Overpass + Wikivoyage + Apple Maps, then Wikipedia)
 
 extension CityActivityService {
     private func fetchActivities(for city: CityModel) async -> [CityActivity] {
-        var collectedActivities: [CityActivity] = []
+        // The primary sources are independent, so they load together and the
+        // slowest one sets the pace instead of their sum.
+        async let overpassActivities = self.overpassActivities(for: city)
+        async let wikivoyageActivities = self.wikivoyageActivities(for: city)
+        async let mapKitSearch = Self.multiQueryMapKitSearch(for: city)
 
-        let overpassActivities = await self.overpassActivities(for: city)
-        collectedActivities += overpassActivities
-
-        if CityActivityRanking.topActivities(
-            from: collectedActivities,
-            for: city,
-            limit: Self.desiredActivityCount
-        ).count < Self.desiredActivityCount {
-            let wikivoyageActivities = await self.wikivoyageActivities(for: city)
-            collectedActivities += wikivoyageActivities
-        }
+        var collectedActivities = await overpassActivities + wikivoyageActivities
 
         if CityActivityRanking.topActivities(
             from: collectedActivities,
             for: city,
             limit: Self.desiredActivityCount
         ).count < Self.desiredActivityCount {
-            let wikipediaActivities = await self.wikipediaFallbackActivities(for: city)
-            collectedActivities += wikipediaActivities
+            collectedActivities += await self.wikipediaFallbackActivities(for: city)
         }
 
-        let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
+        let mapKitResults = await mapKitSearch
         let mapKitActivities = Self.mapKitActivities(
             for: city,
             results: mapKitResults,

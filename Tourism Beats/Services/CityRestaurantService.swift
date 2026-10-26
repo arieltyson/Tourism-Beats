@@ -108,16 +108,18 @@ actor CityRestaurantService: CityRestaurantProviding {
 
 extension CityRestaurantService {
     private func fetchRestaurants(for city: CityModel) async throws -> [CityRestaurant] {
-        let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
+        // Every source is independent, so they load together and the slowest
+        // one sets the pace instead of their sum.
+        async let mapKitSearch = Self.multiQueryMapKitSearch(for: city)
+        async let overpassSearch = self.overpassCandidatesIfAvailable(for: city)
+        async let awardSearch = CityRestaurantWikidataService.fetchAwards(
+            for: city,
+            session: self.session
+        )
+        async let chainScan = self.detectChainsFromWiderScan(for: city)
 
-        var overpassCandidates: [RestaurantModels.OverpassRestaurant] = []
-        do {
-            overpassCandidates = try await self.fetchOverpassCandidates(for: city)
-        } catch {
-            self.logger.info(
-                "Overpass enrichment unavailable: \(error.localizedDescription, privacy: .public)"
-            )
-        }
+        let mapKitResults = await mapKitSearch
+        let overpassCandidates = await overpassSearch
 
         var candidates: [CityRestaurantCandidate]
 
@@ -136,10 +138,7 @@ extension CityRestaurantService {
             throw RestaurantModels.ServiceError.invalidResponse
         }
 
-        let wikidataMatches = await CityRestaurantWikidataService.fetchAwards(
-            for: city,
-            session: self.session
-        )
+        let wikidataMatches = await awardSearch
         if !wikidataMatches.isEmpty {
             candidates = CityRestaurantWikidataService.enrichCandidates(
                 candidates,
@@ -149,7 +148,7 @@ extension CityRestaurantService {
 
         candidates = Self.tagDuplicateLocationCounts(candidates)
 
-        let chainSignatures = await self.detectChainsFromWiderScan(for: city)
+        let chainSignatures = await chainScan
         if !chainSignatures.isEmpty {
             candidates = Self.applyChainSignatures(chainSignatures, to: candidates)
         }
@@ -159,6 +158,19 @@ extension CityRestaurantService {
             for: city,
             limit: Self.rankedRestaurantLimit
         )
+    }
+
+    private func overpassCandidatesIfAvailable(
+        for city: CityModel
+    ) async -> [RestaurantModels.OverpassRestaurant] {
+        do {
+            return try await self.fetchOverpassCandidates(for: city)
+        } catch {
+            self.logger.info(
+                "Overpass enrichment unavailable: \(error.localizedDescription, privacy: .public)"
+            )
+            return []
+        }
     }
 
     private func fetchOverpassCandidates(
