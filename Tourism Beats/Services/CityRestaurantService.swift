@@ -24,6 +24,9 @@ actor CityRestaurantService: CityRestaurantProviding {
     private let cacheLifetime: TimeInterval = 60 * 60 * 24 * 3
 
     private var memoryCache: [String: RestaurantModels.CachedPayload] = [:]
+    /// Network fetches already underway, so a prefetch and the screen that
+    /// needs the result share one fetch instead of running the pipeline twice.
+    private var inFlightFetches: [String: Task<[CityRestaurant], Never>] = [:]
 
     private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
@@ -59,6 +62,22 @@ actor CityRestaurantService: CityRestaurantProviding {
             return cached.restaurants
         }
 
+        if let inFlightFetch = self.inFlightFetches[key] {
+            return await inFlightFetch.value
+        }
+
+        let fetch = Task { await self.fetchAndCacheRestaurants(for: city, key: key, diskURL: diskURL) }
+        self.inFlightFetches[key] = fetch
+        let restaurants = await fetch.value
+        self.inFlightFetches[key] = nil
+        return restaurants
+    }
+
+    private func fetchAndCacheRestaurants(
+        for city: CityModel,
+        key: String,
+        diskURL: URL
+    ) async -> [CityRestaurant] {
         do {
             let restaurants = try await self.fetchRestaurants(for: city)
             let payload = RestaurantModels.CachedPayload(

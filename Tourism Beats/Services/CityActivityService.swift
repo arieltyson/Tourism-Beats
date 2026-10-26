@@ -26,6 +26,9 @@ actor CityActivityService: CityActivityProviding {
     private let cacheLifetime: TimeInterval = 60 * 60 * 24 * 14
 
     private var memoryCache: [String: Models.CachedPayload] = [:]
+    /// Network fetches already underway, so a prefetch and the screen that
+    /// needs the result share one fetch instead of running the pipeline twice.
+    private var inFlightFetches: [String: Task<[CityActivity], Never>] = [:]
 
     private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
@@ -65,6 +68,22 @@ actor CityActivityService: CityActivityProviding {
             return cached.activities
         }
 
+        if let inFlightFetch = self.inFlightFetches[key] {
+            return await inFlightFetch.value
+        }
+
+        let fetch = Task { await self.fetchAndCacheActivities(for: city, key: key, diskURL: diskURL) }
+        self.inFlightFetches[key] = fetch
+        let activities = await fetch.value
+        self.inFlightFetches[key] = nil
+        return activities
+    }
+
+    private func fetchAndCacheActivities(
+        for city: CityModel,
+        key: String,
+        diskURL: URL
+    ) async -> [CityActivity] {
         let activities = await self.fetchActivities(for: city)
         guard !activities.isEmpty else {
             if let stale = self.loadFromDisk(at: diskURL) {
