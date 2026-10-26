@@ -101,41 +101,62 @@ extension CityActivityRanking {
         peakPageviewCount: Int? = nil,
         signals: inout [Signal]
     ) -> Int {
-        var score = 0
+        self.scorePopularityRank(demandSignal.popularityRank, signals: &signals)
+            + self.scoreCrossQueryAppearances(demandSignal.crossQueryAppearanceCount, signals: &signals)
+            + self.scoreReviewQueryAppearances(demandSignal.reviewQueryAppearanceCount, signals: &signals)
+            + self.scorePageviews(demandSignal, peakPageviewCount: peakPageviewCount, signals: &signals)
+    }
 
-        if let rank = demandSignal.popularityRank {
-            switch rank {
-            case 1 ... 5:
-                signals.append(.popularChoice)
-                score += Signal.popularChoice.points
-            case 6 ... 10:
-                signals.append(.popularChoice)
-                score += 13
-            case 11 ... 20:
-                score += 8
-            default:
-                score += 4
-            }
-        }
-
-        if demandSignal.crossQueryAppearanceCount >= 4 {
+    private static func scorePopularityRank(_ rank: Int?, signals: inout [Signal]) -> Int {
+        switch rank {
+        case nil:
+            return 0
+        case .some(1 ... 5):
             signals.append(.popularChoice)
-            score += 14
-        } else if demandSignal.crossQueryAppearanceCount == 3 {
+            return Signal.popularChoice.points
+        case .some(6 ... 10):
             signals.append(.popularChoice)
-            score += 11
-        } else if demandSignal.crossQueryAppearanceCount == 2 {
-            score += 7
+            return 13
+        case .some(11 ... 20):
+            return 8
+        case .some:
+            return 4
         }
+    }
 
-        if demandSignal.reviewQueryAppearanceCount >= 2 {
-            signals.append(.reviewBacked)
-            score += Signal.reviewBacked.points
-        } else if demandSignal.reviewQueryAppearanceCount == 1 {
-            signals.append(.reviewBacked)
-            score += 9
+    private static func scoreCrossQueryAppearances(_ count: Int, signals: inout [Signal]) -> Int {
+        switch count {
+        case 4...:
+            signals.append(.popularChoice)
+            return 14
+        case 3:
+            signals.append(.popularChoice)
+            return 11
+        case 2:
+            return 7
+        default:
+            return 0
         }
+    }
 
+    private static func scoreReviewQueryAppearances(_ count: Int, signals: inout [Signal]) -> Int {
+        switch count {
+        case 2...:
+            signals.append(.reviewBacked)
+            return Signal.reviewBacked.points
+        case 1:
+            signals.append(.reviewBacked)
+            return 9
+        default:
+            return 0
+        }
+    }
+
+    private static func scorePageviews(
+        _ demandSignal: ActivityDemandSignal,
+        peakPageviewCount: Int?,
+        signals: inout [Signal]
+    ) -> Int {
         if let pageviewCount = demandSignal.pageviewCount,
            let peakPageviewCount,
            peakPageviewCount > 0
@@ -144,23 +165,23 @@ extension CityActivityRanking {
             if share >= 0.5 {
                 signals.append(.demonstratedDemand)
             }
-            score += Int((share * Double(self.peakPageviewDemandPoints)).rounded())
-        } else if let pageviewRank = demandSignal.pageviewRank {
-            switch pageviewRank {
-            case 1 ... 2:
-                signals.append(.demonstratedDemand)
-                score += Signal.demonstratedDemand.points
-            case 3 ... 5:
-                signals.append(.demonstratedDemand)
-                score += 10
-            case 6 ... 10:
-                score += 6
-            default:
-                score += 3
-            }
+            return Int((share * Double(self.peakPageviewDemandPoints)).rounded())
         }
 
-        return score
+        switch demandSignal.pageviewRank {
+        case nil:
+            return 0
+        case .some(1 ... 2):
+            signals.append(.demonstratedDemand)
+            return Signal.demonstratedDemand.points
+        case .some(3 ... 5):
+            signals.append(.demonstratedDemand)
+            return 10
+        case .some(6 ... 10):
+            return 6
+        case .some:
+            return 3
+        }
     }
 
     static func scoreSourceConfidence(
