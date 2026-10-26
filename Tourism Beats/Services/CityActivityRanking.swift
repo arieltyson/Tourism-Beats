@@ -75,9 +75,16 @@ enum CityActivityRanking {
         demandSignals: [String: ActivityDemandSignal] = [:],
         limit: Int = 6
     ) -> [CityActivity] {
+        let peakPageviewCount = demandSignals.values.compactMap(\.pageviewCount).max()
         let scored = self
             .consolidatedActivities(from: activities, demandSignals: demandSignals)
-            .map { self.score($0, cityCoordinate: city.coordinate) }
+            .map {
+                self.score(
+                    $0,
+                    cityCoordinate: city.coordinate,
+                    peakPageviewCount: peakPageviewCount
+                )
+            }
             .sorted { lhs, rhs in
                 if lhs.baseScore != rhs.baseScore {
                     return lhs.baseScore > rhs.baseScore

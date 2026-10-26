@@ -52,12 +52,17 @@ extension CityActivityRanking {
 
     static func score(
         _ consolidated: ConsolidatedActivity,
-        cityCoordinate: CLLocationCoordinate2D
+        cityCoordinate: CLLocationCoordinate2D,
+        peakPageviewCount: Int? = nil
     ) -> ScoredActivity {
         var signals: [Signal] = []
         var score = 0
 
-        score += self.scoreDemand(consolidated.demandSignal, signals: &signals)
+        score += self.scoreDemand(
+            consolidated.demandSignal,
+            peakPageviewCount: peakPageviewCount,
+            signals: &signals
+        )
         score += self.scoreSourceConfidence(consolidated, signals: &signals)
         score += self.scoreMetadata(consolidated, signals: &signals)
         score += self.scoreCategoryAppeal(
@@ -86,8 +91,14 @@ extension CityActivityRanking {
         )
     }
 
+    /// Pageview credit for a city's most-read place. Others earn a share in
+    /// proportion to their readership, so a place with a seventh of the views
+    /// cannot tie the leader just by sitting one rank below it.
+    static let peakPageviewDemandPoints = 24
+
     static func scoreDemand(
         _ demandSignal: ActivityDemandSignal,
+        peakPageviewCount: Int? = nil,
         signals: inout [Signal]
     ) -> Int {
         var score = 0
@@ -125,7 +136,16 @@ extension CityActivityRanking {
             score += 9
         }
 
-        if let pageviewRank = demandSignal.pageviewRank {
+        if let pageviewCount = demandSignal.pageviewCount,
+           let peakPageviewCount,
+           peakPageviewCount > 0
+        {
+            let share = Double(pageviewCount) / Double(peakPageviewCount)
+            if share >= 0.5 {
+                signals.append(.demonstratedDemand)
+            }
+            score += Int((share * Double(self.peakPageviewDemandPoints)).rounded())
+        } else if let pageviewRank = demandSignal.pageviewRank {
             switch pageviewRank {
             case 1 ... 2:
                 signals.append(.demonstratedDemand)
