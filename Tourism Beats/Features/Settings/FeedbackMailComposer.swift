@@ -56,12 +56,11 @@ struct FeedbackMailComposer {
         var systemInfo = utsname()
         uname(&systemInfo)
 
-        let machine = Mirror(reflecting: systemInfo.machine).children.reduce(into: "") {
-            partialResult,
-                element in
-            guard let value = element.value as? Int8, value != 0 else { return }
-            partialResult.append(Character(UnicodeScalar(UInt8(value))))
-        }
+        let machineBytes = Mirror(reflecting: systemInfo.machine).children
+            .compactMap { $0.value as? Int8 }
+            .prefix { $0 != 0 }
+            .map(UInt8.init(bitPattern:))
+        let machine = String(bytes: machineBytes, encoding: .ascii) ?? ""
 
         return machine.isEmpty ? UIDevice.current.model : machine
     }

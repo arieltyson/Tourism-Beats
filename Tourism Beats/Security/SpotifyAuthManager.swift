@@ -142,9 +142,7 @@ actor SpotifyAuthManager {
             let session = ASWebAuthenticationSession(
                 url: authURL,
                 callbackURLScheme: redirectURI.scheme
-            ) {
-                [manager = self, expectedVerifier, expectedState] callback, err
-                in
+            ) { [manager = self, expectedVerifier, expectedState] callback, err in
                 guard err == nil,
                       let url = callback,
                       let items = URLComponents(

@@ -301,7 +301,8 @@ actor CityFunFactService: CityFunFactProviding {
         ) ?? city.timeZoneIdentifier
 
         return CityFunFact(
-            text: "\(city.name) follows \(timeZoneName), which helps anchor trip planning across \(city.country.name) when you line up flights, meals, and music picks.",
+            text: "\(city.name) follows \(timeZoneName), which helps anchor trip planning across "
+                + "\(city.country.name) when you line up flights, meals, and music picks.",
             sourceName: "Local metadata",
             sourceURL: nil,
             isFallback: true
