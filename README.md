@@ -94,7 +94,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 - 🎵 **Trending Music** — City-specific Apple Music playlists via MusicKit
 - 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content
 - 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city
-- ✈️ **Trip Planner** — Create and manage trip itineraries with activities
+- ✈️ **Trip Planner** — Create and manage trip itineraries with activities, and fill any trip or day with suggested sights and restaurants from the city guide, grouped by area and reviewed before they are added
 - 🌤️ **Live Weather** — Real-time conditions via WeatherKit
 - 🕐 **Local Time** — Live clocks for every city
 - 🚶 **Walkability** — City walkability scores and pedestrian insights
