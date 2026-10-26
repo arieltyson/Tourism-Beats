@@ -48,187 +48,124 @@ struct WalkingStickman: View {
         phase: Double
     ) {
         let scale = self.height / 52
-        let lineW = 4.0 * scale
         let style = StrokeStyle(
-            lineWidth: lineW,
+            lineWidth: 4.0 * scale,
             lineCap: .round,
             lineJoin: .round
         )
-
-        // Segment lengths — stocky, compact proportions
-        let headR = 2.8 * scale
-        let torso = 12.0 * scale
-        let thigh = 9.0 * scale
-        let calf = 8.0 * scale
-        let upperArm = 7.0 * scale
-        let forearm = 5.5 * scale
 
         // Vertical body bob (two bobs per cycle)
         let bob = 1.0 * scale * abs(sin(phase))
 
         // Key positions
-        let cx = size.width / 2
-        let headCY = headR + 2 * scale - bob
-        let shoulderY = headCY + headR + 1.5 * scale
-        let hipY = shoulderY + torso
-        let armOriginY = shoulderY + 2 * scale
+        let headRadius = 2.8 * scale
+        let centerX = size.width / 2
+        let headCenterY = headRadius + 2 * scale - bob
+        let shoulderY = headCenterY + headRadius + 1.5 * scale
+        let hipY = shoulderY + 12.0 * scale
+        let skeleton = Skeleton(
+            hip: CGPoint(x: centerX, y: hipY),
+            shoulder: CGPoint(x: centerX, y: shoulderY + 2 * scale),
+            scale: scale
+        )
 
-        // MARK: Joint angles (degrees from vertical, positive = forward)
-
-        let rThighAng = 25 * sin(phase)
-        let lThighAng = 25 * sin(phase + .pi)
-
-        // Knee bend peaks during mid-forward-swing
-        let rKnee = 30 * max(0, cos(phase - .pi / 4))
-        let lKnee = 30 * max(0, cos(phase + .pi - .pi / 4))
-
-        // Arms oppose legs
-        let rArmAng = -22 * sin(phase)
-        let lArmAng = -22 * sin(phase + .pi)
-
-        // Elbow bends more when arm swings backward
-        let rElbow = 12 + 12 * max(0, sin(phase))
-        let lElbow = 12 + 12 * max(0, sin(phase + .pi))
-
-        let hip = CGPoint(x: cx, y: hipY)
-        let shoulder = CGPoint(x: cx, y: armOriginY)
-
-        // Determine depth order — draw far side first
+        // The right side leads on the first half of the cycle; the other
+        // side is half a cycle behind.
+        let rightSide = skeleton.limbs(phase: phase)
+        let leftSide = skeleton.limbs(phase: phase + .pi)
         let rightForward = sin(phase) > 0
-        let dimColor = self.color.opacity(0.55)
+        let (farSide, nearSide) = rightForward ? (leftSide, rightSide) : (rightSide, leftSide)
 
-        // MARK: Back limbs (far side, dimmed)
-
-        if rightForward {
-            self.drawLeg(
-                in: &ctx, hip: hip, thigh: thigh, calf: calf,
-                thighAngle: lThighAng, kneeBend: lKnee,
-                style: style, color: dimColor
-            )
-            self.drawArm(
-                in: &ctx, shoulder: shoulder,
-                upper: upperArm, fore: forearm,
-                armAngle: lArmAng, elbowBend: lElbow,
-                style: style, color: dimColor
-            )
-        } else {
-            self.drawLeg(
-                in: &ctx, hip: hip, thigh: thigh, calf: calf,
-                thighAngle: rThighAng, kneeBend: rKnee,
-                style: style, color: dimColor
-            )
-            self.drawArm(
-                in: &ctx, shoulder: shoulder,
-                upper: upperArm, fore: forearm,
-                armAngle: rArmAng, elbowBend: rElbow,
-                style: style, color: dimColor
-            )
+        // Far side first, dimmed, so the near side reads in front of it.
+        for limb in farSide {
+            self.draw(limb, in: &ctx, style: style, color: self.color.opacity(0.55))
         }
 
-        // MARK: Torso
-
         var torsoPath = Path()
-        torsoPath.move(to: CGPoint(x: cx, y: shoulderY))
-        torsoPath.addLine(to: CGPoint(x: cx, y: hipY))
+        torsoPath.move(to: CGPoint(x: centerX, y: shoulderY))
+        torsoPath.addLine(to: CGPoint(x: centerX, y: hipY))
         ctx.stroke(torsoPath, with: .color(self.color), style: style)
 
-        // MARK: Head
-
         let headRect = CGRect(
-            x: cx - headR,
-            y: headCY - headR,
-            width: headR * 2,
-            height: headR * 2
+            x: centerX - headRadius,
+            y: headCenterY - headRadius,
+            width: headRadius * 2,
+            height: headRadius * 2
         )
         ctx.fill(Circle().path(in: headRect), with: .color(self.color))
 
-        // MARK: Front limbs (near side, full color)
-
-        if rightForward {
-            self.drawLeg(
-                in: &ctx, hip: hip, thigh: thigh, calf: calf,
-                thighAngle: rThighAng, kneeBend: rKnee,
-                style: style, color: self.color
-            )
-            self.drawArm(
-                in: &ctx, shoulder: shoulder,
-                upper: upperArm, fore: forearm,
-                armAngle: rArmAng, elbowBend: rElbow,
-                style: style, color: self.color
-            )
-        } else {
-            self.drawLeg(
-                in: &ctx, hip: hip, thigh: thigh, calf: calf,
-                thighAngle: lThighAng, kneeBend: lKnee,
-                style: style, color: self.color
-            )
-            self.drawArm(
-                in: &ctx, shoulder: shoulder,
-                upper: upperArm, fore: forearm,
-                armAngle: lArmAng, elbowBend: lElbow,
-                style: style, color: self.color
-            )
+        for limb in nearSide {
+            self.draw(limb, in: &ctx, style: style, color: self.color)
         }
     }
 
-    // MARK: - Limb Drawing
-
-    private func drawLeg(
+    private func draw(
+        _ limb: Limb,
         in ctx: inout GraphicsContext,
-        hip: CGPoint,
-        thigh: CGFloat,
-        calf: CGFloat,
-        thighAngle: Double,
-        kneeBend: Double,
         style: StrokeStyle,
         color: Color
     ) {
-        let thighRad = thighAngle * .pi / 180
-        let calfRad = (thighAngle - kneeBend) * .pi / 180
+        let upperRadians = limb.angle * .pi / 180
+        let lowerRadians = (limb.angle + limb.lowerBend) * .pi / 180
 
-        let knee = CGPoint(
-            x: hip.x + thigh * sin(thighRad),
-            y: hip.y + thigh * cos(thighRad)
+        let joint = CGPoint(
+            x: limb.origin.x + limb.upperLength * sin(upperRadians),
+            y: limb.origin.y + limb.upperLength * cos(upperRadians)
         )
-        let foot = CGPoint(
-            x: knee.x + calf * sin(calfRad),
-            y: knee.y + calf * cos(calfRad)
+        let end = CGPoint(
+            x: joint.x + limb.lowerLength * sin(lowerRadians),
+            y: joint.y + limb.lowerLength * cos(lowerRadians)
         )
 
         var path = Path()
-        path.move(to: hip)
-        path.addLine(to: knee)
-        path.addLine(to: foot)
+        path.move(to: limb.origin)
+        path.addLine(to: joint)
+        path.addLine(to: end)
         ctx.stroke(path, with: .color(color), style: style)
     }
+}
 
-    private func drawArm(
-        in ctx: inout GraphicsContext,
-        shoulder: CGPoint,
-        upper: CGFloat,
-        fore: CGFloat,
-        armAngle: Double,
-        elbowBend: Double,
-        style: StrokeStyle,
-        color: Color
-    ) {
-        let armRad = armAngle * .pi / 180
-        let foreRad = (armAngle + elbowBend) * .pi / 180
+// MARK: - Skeleton
 
-        let elbow = CGPoint(
-            x: shoulder.x + upper * sin(armRad),
-            y: shoulder.y + upper * cos(armRad)
+/// Stocky, compact proportions and the walk cycle's joint angles.
+///
+/// Angles are degrees from vertical, positive forward.
+private struct Skeleton {
+    let hip: CGPoint
+    let shoulder: CGPoint
+    let scale: CGFloat
+
+    /// The leg and arm for one side of the body at `phase`.
+    func limbs(phase: Double) -> [Limb] {
+        // Knee bend peaks during mid-forward-swing; arms oppose legs, and the
+        // elbow bends more as the arm swings backward.
+        let leg = Limb(
+            origin: self.hip,
+            upperLength: 9.0 * self.scale,
+            lowerLength: 8.0 * self.scale,
+            angle: 25 * sin(phase),
+            lowerBend: -30 * max(0, cos(phase - .pi / 4))
         )
-        let hand = CGPoint(
-            x: elbow.x + fore * sin(foreRad),
-            y: elbow.y + fore * cos(foreRad)
+        let arm = Limb(
+            origin: self.shoulder,
+            upperLength: 7.0 * self.scale,
+            lowerLength: 5.5 * self.scale,
+            angle: -22 * sin(phase),
+            lowerBend: 12 + 12 * max(0, sin(phase))
         )
-
-        var armPath = Path()
-        armPath.move(to: shoulder)
-        armPath.addLine(to: elbow)
-        armPath.addLine(to: hand)
-
-        ctx.stroke(armPath, with: .color(color), style: style)
+        return [leg, arm]
     }
+}
+
+// MARK: - Limb
+
+/// Two jointed segments: a thigh and calf, or an upper arm and forearm.
+private struct Limb {
+    let origin: CGPoint
+    let upperLength: CGFloat
+    let lowerLength: CGFloat
+    let angle: Double
+    /// Added to `angle` for the lower segment: negative bends a knee back,
+    /// positive bends an elbow forward.
+    let lowerBend: Double
 }
