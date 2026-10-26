@@ -229,6 +229,10 @@ private struct TripDetailContent: View {
                 countryFlag: self.countryFlag
             )
 
+            if self.trip.isSample {
+                TripSampleNoticeCard(trip: self.trip)
+            }
+
             TripSummaryCard(trip: self.trip)
 
             if let notes = self.trip.notesSummary {
@@ -260,19 +264,9 @@ private struct TripHeroCard: View {
     @ScaledMetric(relativeTo: .largeTitle) private var cardHeight = 280.0
 
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            TripHeroBackground(cityModel: self.cityModel)
-
-            LinearGradient(
-                colors: [
-                    AppColors.imageScrimTop,
-                    AppColors.imageScrimMid,
-                    AppColors.imageScrimBottom
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-
+        // The card grows past its base height when larger text needs the room,
+        // so the status and sample badges are never pushed out of view.
+        TripHeroMinimumHeightLayout(minHeight: self.cardHeight) {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
                 TripHeroBadgeLayout(trip: self.trip)
 
@@ -304,9 +298,23 @@ private struct TripHeroCard: View {
                 TripHeroFootnoteLayout(trip: self.trip)
             }
             .padding(SpacingTokens.large)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: self.cardHeight)
+        .background {
+            ZStack {
+                TripHeroBackground(cityModel: self.cityModel)
+
+                LinearGradient(
+                    colors: [
+                        AppColors.imageScrimTop,
+                        AppColors.imageScrimMid,
+                        AppColors.imageScrimBottom
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+        }
         .clipShape(.rect(cornerRadius: 32, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 32, style: .continuous)
@@ -319,6 +327,42 @@ private struct TripHeroCard: View {
             color: AppColors.glassShadow(for: self.colorScheme),
             radius: 18,
             y: 10
+        )
+    }
+}
+
+// MARK: - TripHeroMinimumHeightLayout
+
+/// Sizes its content to at least `minHeight`, then offers the content that
+/// final height so spacers can push the badges to the top of the card.
+private struct TripHeroMinimumHeightLayout: Layout {
+    let minHeight: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache _: inout ()
+    ) -> CGSize {
+        let idealSize = subviews.first?.sizeThatFits(
+            ProposedViewSize(width: proposal.width, height: nil)
+        ) ?? .zero
+
+        return CGSize(
+            width: proposal.width ?? idealSize.width,
+            height: max(self.minHeight, idealSize.height)
+        )
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal _: ProposedViewSize,
+        subviews: Subviews,
+        cache _: inout ()
+    ) {
+        subviews.first?.place(
+            at: bounds.origin,
+            anchor: .topLeading,
+            proposal: ProposedViewSize(bounds.size)
         )
     }
 }
