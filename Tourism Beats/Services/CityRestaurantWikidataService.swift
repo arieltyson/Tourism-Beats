@@ -113,30 +113,41 @@ extension CityRestaurantWikidataService {
         latitude: Double,
         longitude: Double
     ) -> String {
+        // Grouping happens in a subquery and labels are added outside it: the
+        // label service inside a GROUP BY overflowed the endpoint's stack, so
+        // every request failed. Awarded restaurants sort first so the limit
+        // keeps them in dense cities.
         """
-        SELECT ?restaurantLabel ?lat ?lon
-               (GROUP_CONCAT(DISTINCT ?awardLabel; SEPARATOR="|") AS ?awardLabel)
-               (SAMPLE(?stars) AS ?michelinStars)
-        WHERE {
-          SERVICE wikibase:around {
-            ?restaurant wdt:P625 ?location .
-            bd:serviceParam wikibase:center "Point(\(longitude) \(latitude))"^^geo:wktLiteral .
-            bd:serviceParam wikibase:radius "15" .
+        SELECT ?restaurantLabel ?lat ?lon ?awardLabel ?michelinStars WHERE {
+          {
+            SELECT ?restaurant
+                   (SAMPLE(?latitude) AS ?lat)
+                   (SAMPLE(?longitude) AS ?lon)
+                   (GROUP_CONCAT(DISTINCT ?awardName; SEPARATOR="|") AS ?awardLabel)
+                   (SAMPLE(?stars) AS ?michelinStars)
+                   (COUNT(DISTINCT ?award) AS ?awardCount)
+            WHERE {
+              SERVICE wikibase:around {
+                ?restaurant wdt:P625 ?location .
+                bd:serviceParam wikibase:center "Point(\(longitude) \(latitude))"^^geo:wktLiteral .
+                bd:serviceParam wikibase:radius "15" .
+              }
+              ?restaurant wdt:P31/wdt:P279* wd:Q11707 .
+              BIND(geof:latitude(?location) AS ?latitude)
+              BIND(geof:longitude(?location) AS ?longitude)
+              OPTIONAL {
+                ?restaurant wdt:P166 ?award .
+                ?award rdfs:label ?awardName .
+                FILTER(LANG(?awardName) = "en")
+              }
+              OPTIONAL { ?restaurant wdt:P1132 ?stars . }
+            }
+            GROUP BY ?restaurant
+            ORDER BY DESC(?awardCount) DESC(BOUND(?michelinStars))
+            LIMIT 50
           }
-          ?restaurant wdt:P625 ?location .
-          ?restaurant wdt:P31/wdt:P279* wd:Q11707 .
-          BIND(geof:latitude(?location) AS ?lat)
-          BIND(geof:longitude(?location) AS ?lon)
-          OPTIONAL {
-            ?restaurant wdt:P166 ?award .
-            ?award rdfs:label ?awardLabel .
-            FILTER(LANG(?awardLabel) = "en")
-          }
-          OPTIONAL { ?restaurant wdt:P1132 ?stars . }
           SERVICE wikibase:label { bd:serviceParam wikibase:language "en,fr,de,es,ja,zh" . }
         }
-        GROUP BY ?restaurantLabel ?lat ?lon
-        LIMIT 50
         """
     }
 
