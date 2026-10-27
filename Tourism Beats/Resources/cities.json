@@ -106,7 +106,7 @@
   {
     "name": "Bangkok",
     "countryCode": "TH",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bangkok_Montage_2024_2.jpg/1280px-Bangkok_Montage_2024_2.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Wat_Arun_8.jpg/1280px-Wat_Arun_8.jpg",
     "latitude": 13.7563,
     "longitude": 100.5018,
     "timeZoneIdentifier": "Asia/Bangkok"
@@ -538,7 +538,7 @@
   {
     "name": "Belize City",
     "countryCode": "BZ",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Belize_City_Montage.jpeg/1280px-Belize_City_Montage.jpeg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/SWING_BRIDGE_IN_BELIZE_CITY%2C_BELIZE.jpg/1280px-SWING_BRIDGE_IN_BELIZE_CITY%2C_BELIZE.jpg",
     "latitude": 17.4995,
     "longitude": -88.1976,
     "timeZoneIdentifier": "America/Belize"
@@ -554,7 +554,7 @@
   {
     "name": "Victoria",
     "countryCode": "CA",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Victoria_Montage_2020.jpg/1280px-Victoria_Montage_2020.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Fairmont_Empress%2C_Victoria%2C_British_Columbia%2C_Canada_08.jpg/1280px-Fairmont_Empress%2C_Victoria%2C_British_Columbia%2C_Canada_08.jpg",
     "latitude": 48.4284,
     "longitude": -123.3656,
     "timeZoneIdentifier": "America/Vancouver"
@@ -1154,7 +1154,7 @@
   {
     "name": "Baku",
     "countryCode": "AZ",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Baku_Montage.jpg/1280px-Baku_Montage.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Baku_city_at_night.jpg/1280px-Baku_city_at_night.jpg",
     "latitude": 40.4093,
     "longitude": 49.8671,
     "timeZoneIdentifier": "Asia/Baku"
@@ -1490,7 +1490,7 @@
   {
     "name": "Paramaribo",
     "countryCode": "SR",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Paramaribo_city_collage.png/1280px-Paramaribo_city_collage.png",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Wiki_Loves_Monuments_2022_Presidentieel_Paleis_in_Suriname_%28cropped%29.jpg/1280px-Wiki_Loves_Monuments_2022_Presidentieel_Paleis_in_Suriname_%28cropped%29.jpg",
     "latitude": 5.852,
     "longitude": -55.2038,
     "timeZoneIdentifier": "America/Paramaribo"
@@ -1994,7 +1994,7 @@
   {
     "name": "Mandalay",
     "countryCode": "MM",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Bangkok_Montage_2024_2.jpg/1280px-Bangkok_Montage_2024_2.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/20160729_Atumashi_Mandalay_5865.jpg/1280px-20160729_Atumashi_Mandalay_5865.jpg",
     "latitude": 21.9588,
     "longitude": 96.0891,
     "timeZoneIdentifier": "Asia/Yangon"
@@ -2219,7 +2219,7 @@
   {
     "name": "Merida",
     "countryCode": "MX",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Collage_Merida_Yucatan.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Palacio_Municipal_M%C3%A9rida.jpg/1280px-Palacio_Municipal_M%C3%A9rida.jpg",
     "latitude": 20.96722222,
     "longitude": -89.62361111,
     "timeZoneIdentifier": "America/Merida"
@@ -2251,7 +2251,7 @@
   {
     "name": "Maui",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Maui_Landsat_Photo.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Makena_Beach%2C_Maui_Hawaii_%2845015180584%29.jpg/1280px-Makena_Beach%2C_Maui_Hawaii_%2845015180584%29.jpg",
     "latitude": 20.8,
     "longitude": -156.3,
     "timeZoneIdentifier": "Pacific/Honolulu"
@@ -2547,7 +2547,7 @@
   {
     "name": "Bangui",
     "countryCode": "CF",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Bangui_collage.png",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Bangui_City_Centre.jpg/1280px-Bangui_City_Centre.jpg",
     "latitude": 4.37333333,
     "longitude": 18.56277778,
     "timeZoneIdentifier": "Africa/Bangui"

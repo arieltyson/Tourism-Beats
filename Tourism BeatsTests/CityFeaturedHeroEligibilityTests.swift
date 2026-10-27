@@ -1,55 +1,57 @@
 import CoreLocation
+import Foundation
 import Testing
 @testable import Tourism_Beats
 
 // MARK: - CityFeaturedHeroEligibilityTests
 
 struct CityFeaturedHeroEligibilityTests {
-    @Test func panoramaAndSatelliteAssetsAreExcludedFromFeaturedCarousel() {
-        let panoramaCity = Self.makeCity(
-            name: "Belgrade",
-            imageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Panorama_Belgrad.jpg/1280px-Panorama_Belgrad.jpg"
-        )
-        let satelliteCity = Self.makeCity(
-            name: "Maui",
-            imageURL: "https://upload.wikimedia.org/wikipedia/commons/5/5c/Maui_Landsat_Photo.jpg"
-        )
+    @Test func citiesAreEligibleUnlessTheirRowOptsOut() {
+        let defaultCity = Self.makeCity(name: "Belgrade")
+        let optedOutCity = Self.makeCity(name: "Orimasvaru", featuredHeroEligibleOverride: false)
 
-        #expect(panoramaCity.isEligibleForFeaturedHeroCarousel == false)
-        #expect(satelliteCity.isEligibleForFeaturedHeroCarousel == false)
+        #expect(defaultCity.isEligibleForFeaturedHeroCarousel)
+        #expect(optedOutCity.isEligibleForFeaturedHeroCarousel == false)
     }
 
-    @Test func explicitOverrideCanKeepCuratedHeroEligible() {
-        let curatedCity = Self.makeCity(
-            name: "Whistler",
-            imageURL: "https://commons.wikimedia.org/wiki/Special:FilePath/Whistler%20Village%20-%20November%2018th%201pm%20-%20Mountain%20open%20%3D%20lots%20of%20happy%20faces%20%286360439503%29.jpg",
-            featuredHeroEligibleOverride: true
-        )
+    /// Hero cards fill-crop the centre of each image, which turns a multi-photo
+    /// montage or a satellite shot into an unreadable fragment. Wide panoramas
+    /// crop cleanly, so they're allowed.
+    @Test func catalogImagesAreSingleScenePhotos() throws {
+        let compositeSignals = ["montage", "collage", "landsat"]
 
-        #expect(curatedCity.isEligibleForFeaturedHeroCarousel)
+        for row in try Self.loadCityRows() {
+            let assetName = row.imageURL.lastPathComponent.removingPercentEncoding ?? row.imageURL.lastPathComponent
+            let signal = compositeSignals.first { assetName.localizedStandardContains($0) }
+
+            #expect(signal == nil, "\(row.name)|\(row.countryCode) uses a \(signal ?? "") image: \(assetName)")
+        }
     }
 
-    @Test func knownFallbackDestinationIsExcludedFromFeaturedCarousel() {
-        let fallbackCity = Self.makeCity(
-            name: "Orimasvaru",
-            imageURL: "https://upload.wikimedia.org/wikipedia/commons/8/83/Mal%C3%A9.jpg"
-        )
-
-        #expect(fallbackCity.isEligibleForFeaturedHeroCarousel == false)
-    }
 }
 
 private extension CityFeaturedHeroEligibilityTests {
+    struct CityRow: Decodable {
+        let name: String
+        let countryCode: String
+        let imageURL: URL
+    }
+
+    /// Reads the catalog the app ships; unit tests run inside the app, so its bundle is `Bundle.main`.
+    static func loadCityRows() throws -> [CityRow] {
+        let url = try #require(Bundle.main.url(forResource: "cities.json", withExtension: nil))
+        return try JSONDecoder().decode([CityRow].self, from: Data(contentsOf: url))
+    }
+
     static func makeCity(
         name: String,
-        imageURL: String,
         featuredHeroEligibleOverride: Bool? = nil
     ) -> CityModel {
         CityModel(
             id: "\(name)-test",
             name: name,
             country: CountryModel(name: "Testland", code: "TT", flag: "🏳️"),
-            imageURL: URL(string: imageURL)!,
+            imageURL: URL(string: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Test.jpg")!,
             coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
             timeZoneIdentifier: "UTC",
             featuredHeroEligibleOverride: featuredHeroEligibleOverride
