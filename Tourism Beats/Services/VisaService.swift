@@ -9,7 +9,7 @@ enum VisaError: Error {
 // MARK: - VisaService
 
 actor VisaService: VisaProtocol {
-    private let fileName = "visa_requirements_2025"
+    private let fileName = "visa_requirements_2026"
 
     // Cache a map: "PASSPORT|DEST" (uppercased) → model
     private var cache: [String: VisaModel]?

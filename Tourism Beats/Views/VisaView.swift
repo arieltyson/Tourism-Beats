@@ -160,7 +160,7 @@ private struct VisaRequirementBadge: View {
             return "house.fill"
         } else if text.localizedStandardContains("free") {
             return "checkmark.circle.fill"
-        } else if text.localizedStandardContains("banned") {
+        } else if text.localizedStandardContains("not permitted") {
             return "xmark.circle.fill"
         } else if text.localizedStandardContains("required") {
             return "doc.text.fill"

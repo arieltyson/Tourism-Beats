@@ -59,11 +59,13 @@ final class VisaViewModel {
         guard let req = self.requirement?.requirement.lowercased() else {
             return .gray
         }
-        if req.localizedStandardContains("visa required") {
+        if req.localizedStandardContains("not permitted") {
+            return .red
+        } else if req.localizedStandardContains("visa required") {
             return .orange
         } else if req.localizedStandardContains("visa-on-arrival") {
             return .yellow
-        } else if req.localizedStandardContains("eta") {
+        } else if req.localizedStandardContains("eta") || req.localizedStandardContains("e-visa") {
             return .purple
         } else if req.localizedStandardContains("visa-free") {
             return .green
