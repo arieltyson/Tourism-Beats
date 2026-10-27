@@ -253,8 +253,12 @@ private struct DiscoveryCityCard: View {
     var body: some View {
         Button(action: self.action) {
             ZStack(alignment: .bottomLeading) {
-                CachedCityImage(url: self.city.imageURL, fallbackCoordinate: self.city.coordinate)
+                // Color.clear sets the bounds so a wide fill-scaled image can't widen the card.
+                Color.clear
                     .frame(height: self.cardHeight)
+                    .overlay {
+                        CachedCityImage(url: self.city.imageURL, fallbackCoordinate: self.city.coordinate)
+                    }
                     .clipped()
 
                 LinearGradient(
