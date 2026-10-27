@@ -28,23 +28,17 @@ extension CityActivityService {
         var reviewQueryCounts: [String: Int] = [:]
         var bestResultByKey: [String: Models.MapKitActivityResult] = [:]
 
-        for query in popularityQueries {
-            await self.accumulateMapKitResults(
-                from: self.singleMapKitSearch(for: city, query: query),
-                into: &bestResultByKey,
-                appearanceCounts: &appearanceCounts,
-                reviewQueryCounts: &reviewQueryCounts,
-                countAsReviewIntent: false
-            )
-        }
+        let queries = popularityQueries + reviewIntentQueries
+        let resultsByQuery = await self.concurrentMapKitSearches(for: city, queries: queries)
 
-        for query in reviewIntentQueries {
-            await self.accumulateMapKitResults(
-                from: self.singleMapKitSearch(for: city, query: query),
+        // Fold in query order so ties resolve the same way on every load.
+        for (index, results) in resultsByQuery.enumerated() {
+            self.accumulateMapKitResults(
+                from: results,
                 into: &bestResultByKey,
                 appearanceCounts: &appearanceCounts,
                 reviewQueryCounts: &reviewQueryCounts,
-                countAsReviewIntent: true
+                countAsReviewIntent: index >= popularityQueries.count
             )
         }
 
@@ -72,6 +66,28 @@ extension CityActivityService {
             }
 
             return lhs.name < rhs.name
+        }
+    }
+
+    /// Runs every query at once and returns each query's results at its index,
+    /// so the slowest search sets the pace instead of the sum of all of them.
+    @MainActor
+    static func concurrentMapKitSearches(
+        for city: CityModel,
+        queries: [String]
+    ) async -> [[Models.MapKitActivityResult]] {
+        await withTaskGroup(of: (Int, [Models.MapKitActivityResult]).self) { group in
+            for (index, query) in queries.enumerated() {
+                group.addTask {
+                    await (index, self.singleMapKitSearch(for: city, query: query))
+                }
+            }
+
+            var resultsByQuery = Array(repeating: [Models.MapKitActivityResult](), count: queries.count)
+            for await (index, results) in group {
+                resultsByQuery[index] = results
+            }
+            return resultsByQuery
         }
     }
 

@@ -30,21 +30,18 @@ extension CityRestaurantService {
         var foodQueryCounts: [String: Int] = [:]
         var bestResultByKey: [String: RestaurantModels.MapKitRestaurantResult] = [:]
 
-        for query in popularityQueries {
-            await self.accumulateResults(
-                from: self.singleMapKitSearch(for: city, query: query),
-                into: &bestResultByKey,
-                appearanceCounts: &appearanceCounts
-            )
-        }
+        let queries = popularityQueries + foodQualityQueries
+        let resultsByQuery = await self.concurrentMapKitSearches(for: city, queries: queries)
 
-        for query in foodQualityQueries {
-            let results = await self.singleMapKitSearch(for: city, query: query)
+        // Fold in query order so ties resolve the same way on every load.
+        for (index, results) in resultsByQuery.enumerated() {
             self.accumulateResults(
                 from: results,
                 into: &bestResultByKey,
                 appearanceCounts: &appearanceCounts
             )
+            guard index >= popularityQueries.count else { continue }
+
             for result in results {
                 let key = self.coordinateKey(
                     latitude: result.latitude,
@@ -72,6 +69,28 @@ extension CityRestaurantService {
             )
         }
         .sorted { $0.popularityRank < $1.popularityRank }
+    }
+
+    /// Runs every query at once and returns each query's results at its index,
+    /// so the slowest search sets the pace instead of the sum of all of them.
+    @MainActor
+    static func concurrentMapKitSearches(
+        for city: CityModel,
+        queries: [String]
+    ) async -> [[RestaurantModels.MapKitRestaurantResult]] {
+        await withTaskGroup(of: (Int, [RestaurantModels.MapKitRestaurantResult]).self) { group in
+            for (index, query) in queries.enumerated() {
+                group.addTask {
+                    await (index, self.singleMapKitSearch(for: city, query: query))
+                }
+            }
+
+            var resultsByQuery = Array(repeating: [RestaurantModels.MapKitRestaurantResult](), count: queries.count)
+            for await (index, results) in group {
+                resultsByQuery[index] = results
+            }
+            return resultsByQuery
+        }
     }
 
     @MainActor
