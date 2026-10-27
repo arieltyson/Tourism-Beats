@@ -53,6 +53,9 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
     let acceptsReservations: Bool
     let rankingScore: Int
     let rankingHighlights: [String]
+    /// Apple Maps' identifier for the place, when it came from Apple Maps.
+    /// Optional so guides cached before it existed still decode.
+    var mapItemIdentifier: String?
 
     var displayCuisine: String {
         self.cuisine ?? "Restaurant"

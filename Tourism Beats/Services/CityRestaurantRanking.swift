@@ -46,6 +46,9 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     var hasBrandWikidata: Bool = false
     var hasOperator: Bool = false
     var duplicateLocationCount: Int = 0
+
+    /// Apple Maps' identifier for the place, when it came from Apple Maps.
+    var mapItemIdentifier: String?
 }
 
 // MARK: - CityRestaurantRanking
@@ -412,7 +415,8 @@ enum CityRestaurantRanking {
             hasOutdoorSeating: scoredCandidate.candidate.hasOutdoorSeating,
             acceptsReservations: scoredCandidate.candidate.acceptsReservations,
             rankingScore: scoredCandidate.baseScore,
-            rankingHighlights: highlights
+            rankingHighlights: highlights,
+            mapItemIdentifier: scoredCandidate.candidate.mapItemIdentifier
         )
     }
 

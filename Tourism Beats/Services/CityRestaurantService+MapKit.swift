@@ -65,7 +65,8 @@ extension CityRestaurantService {
                 longitude: result.longitude,
                 popularityRank: result.popularityRank,
                 crossQueryAppearanceCount: appearanceCounts[key, default: 1],
-                foodQueryAppearanceCount: foodQueryCounts[key, default: 0]
+                foodQueryAppearanceCount: foodQueryCounts[key, default: 0],
+                mapItemIdentifier: result.mapItemIdentifier
             )
         }
         .sorted { $0.popularityRank < $1.popularityRank }
@@ -149,7 +150,8 @@ extension CityRestaurantService {
                     ),
                     latitude: coordinate.latitude,
                     longitude: coordinate.longitude,
-                    popularityRank: index + 1
+                    popularityRank: index + 1,
+                    mapItemIdentifier: item.identifier?.rawValue
                 )
             }
         } catch {
@@ -227,7 +229,8 @@ extension CityRestaurantService {
                 isOrganic: overpassMatch?.isOrganic ?? false,
                 dietaryVarietyCount: Self.dietaryVarietyCount(for: overpassMatch),
                 hasBrandWikidata: overpassMatch?.hasBrandWikidata ?? false,
-                hasOperator: overpassMatch?.hasOperator ?? false
+                hasOperator: overpassMatch?.hasOperator ?? false,
+                mapItemIdentifier: mapItem.mapItemIdentifier
             )
         }
     }

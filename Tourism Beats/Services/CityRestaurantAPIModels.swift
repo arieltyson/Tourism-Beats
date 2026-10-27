@@ -132,6 +132,8 @@ enum CityRestaurantAPIModels {
         let popularityRank: Int
         var crossQueryAppearanceCount: Int = 1
         var foodQueryAppearanceCount: Int = 0
+        /// Apple Maps' identifier for the place, used to aim Look Around at its frontage.
+        var mapItemIdentifier: String?
     }
 
     // MARK: - Wikidata SPARQL Models
