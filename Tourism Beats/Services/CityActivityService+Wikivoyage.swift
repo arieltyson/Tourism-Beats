@@ -14,14 +14,28 @@ extension CityActivityService {
             let activitySections = Self.wikivoyageActivitySections(from: tocSections)
             guard !activitySections.isEmpty else { return [] }
 
+            // Sections download together; parsing keeps the guide's section order.
+            let wikitextBySection = try await withThrowingTaskGroup(of: (Int, String).self) { group in
+                for (position, section) in activitySections.enumerated() {
+                    group.addTask {
+                        let wikitext = try await self.wikivoyageSectionWikitext(
+                            for: guidePageTitle,
+                            sectionIndex: section.index
+                        )
+                        return (position, wikitext)
+                    }
+                }
+
+                var wikitextBySection = Array(repeating: "", count: activitySections.count)
+                for try await (position, wikitext) in group {
+                    wikitextBySection[position] = wikitext
+                }
+                return wikitextBySection
+            }
+
             var parsedActivities: [CityActivity] = []
 
-            for section in activitySections {
-                let wikitext = try await self.wikivoyageSectionWikitext(
-                    for: guidePageTitle,
-                    sectionIndex: section.index
-                )
-
+            for (section, wikitext) in zip(activitySections, wikitextBySection) {
                 parsedActivities += self.wikivoyageParser.activities(
                     from: wikitext,
                     guidePageTitle: guidePageTitle,

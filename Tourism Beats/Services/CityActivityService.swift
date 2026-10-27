@@ -112,6 +112,9 @@ extension CityActivityService {
         async let overpassActivities = self.overpassActivities(for: city)
         async let wikivoyageActivities = self.wikivoyageActivities(for: city)
         async let mapKitSearch = Self.multiQueryMapKitSearch(for: city)
+        // The fallback is a few fast Wikipedia calls, so it starts alongside the
+        // primary sources and is only used when they come up short.
+        async let wikipediaFallback = self.wikipediaFallbackActivities(for: city)
 
         var collectedActivities = await overpassActivities + wikivoyageActivities
 
@@ -120,7 +123,7 @@ extension CityActivityService {
             for: city,
             limit: Self.desiredActivityCount
         ).count < Self.desiredActivityCount {
-            collectedActivities += await self.wikipediaFallbackActivities(for: city)
+            collectedActivities += await wikipediaFallback
         }
 
         let mapKitResults = await mapKitSearch
