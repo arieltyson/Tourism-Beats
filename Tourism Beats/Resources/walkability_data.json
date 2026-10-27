@@ -372,5 +372,7 @@
   {"city": "Ankara", "countryCode": "TR", "walkScore": 64, "transitScore": 72},
   {"city": "Abu Dhabi", "countryCode": "AE", "walkScore": 39, "transitScore": 34},
   {"city": "Nouméa", "countryCode": "NC", "walkScore": 61, "transitScore": 20},
-  {"city": "San Pedro de Macorís", "countryCode": "DO", "walkScore": 45, "transitScore": 12}
+  {"city": "San Pedro de Macorís", "countryCode": "DO", "walkScore": 45, "transitScore": 12},
+  {"city": "Punta Cana", "countryCode": "DO", "walkScore": 22, "transitScore": 6},
+  {"city": "La Romana", "countryCode": "DO", "walkScore": 42, "transitScore": 10}
 ]

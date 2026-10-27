@@ -2991,5 +2991,21 @@
     "latitude": 18.45,
     "longitude": -69.3,
     "timeZoneIdentifier": "America/Santo_Domingo"
+  },
+  {
+    "name": "Punta Cana",
+    "countryCode": "DO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Punta_Cana_Beach_02.jpg/1280px-Punta_Cana_Beach_02.jpg",
+    "latitude": 18.53333333,
+    "longitude": -68.36666667,
+    "timeZoneIdentifier": "America/Santo_Domingo"
+  },
+  {
+    "name": "La Romana",
+    "countryCode": "DO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Casa_de_Campo_Marina%2C_La_Romana_22000%2C_Dominican_Republic_-_panoramio.jpg/1280px-Casa_de_Campo_Marina%2C_La_Romana_22000%2C_Dominican_Republic_-_panoramio.jpg",
+    "latitude": 18.43,
+    "longitude": -68.97,
+    "timeZoneIdentifier": "America/Santo_Domingo"
   }
 ]
