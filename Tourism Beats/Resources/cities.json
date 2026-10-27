@@ -218,7 +218,7 @@
   {
     "name": "Lima",
     "countryCode": "PE",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sanisidroskyscrapers.jpg/1280px-Sanisidroskyscrapers.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Plaza_Mayor_de_Lima-1.jpg/1280px-Plaza_Mayor_de_Lima-1.jpg",
     "latitude": -12.0464,
     "longitude": -77.0428,
     "timeZoneIdentifier": "America/Lima"
@@ -282,7 +282,7 @@
   {
     "name": "Cupertino",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Apple_park_cupertino_2019.jpg/1280px-Apple_park_cupertino_2019.jpg",
     "latitude": 37.323,
     "longitude": -122.0322,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -290,7 +290,7 @@
   {
     "name": "San Jose",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/USA-San_Jose-Downtown-1.jpg/1280px-USA-San_Jose-Downtown-1.jpg",
     "latitude": 37.3382,
     "longitude": -121.8863,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -298,7 +298,7 @@
   {
     "name": "Oakland",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Oakland_Skyline_Telephoto.jpg/1280px-Oakland_Skyline_Telephoto.jpg",
     "latitude": 37.8044,
     "longitude": -122.2712,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -306,7 +306,7 @@
   {
     "name": "South Lake Tahoe",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/South_Lake_Tahoe_SW01.jpg/1280px-South_Lake_Tahoe_SW01.jpg",
     "latitude": 38.9399,
     "longitude": -119.9772,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -314,7 +314,7 @@
   {
     "name": "Sacramento",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Sacramento%2C_CA_skyline_%28cropped%29.jpg/1280px-Sacramento%2C_CA_skyline_%28cropped%29.jpg",
     "latitude": 38.5816,
     "longitude": -121.4944,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -322,7 +322,7 @@
   {
     "name": "Santa Cruz",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Santa_Cruz_Beach_Boardwalk_2023-07-16_%281%29.jpg/1280px-Santa_Cruz_Beach_Boardwalk_2023-07-16_%281%29.jpg",
     "latitude": 36.9741,
     "longitude": -122.0308,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -330,7 +330,7 @@
   {
     "name": "Monterey",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Cannery_Row%2C_Monterey_6_2017-11-21.jpg/1280px-Cannery_Row%2C_Monterey_6_2017-11-21.jpg",
     "latitude": 36.6002,
     "longitude": -121.8947,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -338,7 +338,7 @@
   {
     "name": "Santa Barbara",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hollywood_Sign_%28Zuschnitt%29.jpg/1280px-Hollywood_Sign_%28Zuschnitt%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Santa-barbara-courthouse-tower-view1_%28cropped%29.jpg/1280px-Santa-barbara-courthouse-tower-view1_%28cropped%29.jpg",
     "latitude": 34.4208,
     "longitude": -119.6982,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -346,7 +346,7 @@
   {
     "name": "Berkeley",
     "countryCode": "US",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sather_Tower_from_Memorial_Glade.jpg/1280px-Sather_Tower_from_Memorial_Glade.jpg",
     "latitude": 37.8715,
     "longitude": -122.273,
     "timeZoneIdentifier": "America/Los_Angeles"
@@ -362,7 +362,7 @@
   {
     "name": "Burnaby",
     "countryCode": "CA",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Burnaby_Metrotown_skyline.jpg/1280px-Burnaby_Metrotown_skyline.jpg",
     "latitude": 49.2488,
     "longitude": -122.9805,
     "timeZoneIdentifier": "America/Vancouver"
@@ -370,7 +370,7 @@
   {
     "name": "Richmond",
     "countryCode": "CA",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Steveston_Harbour_from_the_cannery.jpg/1280px-Steveston_Harbour_from_the_cannery.jpg",
     "latitude": 49.1666,
     "longitude": -123.1336,
     "timeZoneIdentifier": "America/Vancouver"
@@ -378,7 +378,7 @@
   {
     "name": "Surrey",
     "countryCode": "CA",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/King_George_Hub_District%2C_Surrey_2018.jpg/1280px-King_George_Hub_District%2C_Surrey_2018.jpg",
     "latitude": 49.1913,
     "longitude": -122.849,
     "timeZoneIdentifier": "America/Vancouver"
@@ -386,7 +386,7 @@
   {
     "name": "Coquitlam",
     "countryCode": "CA",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Coquitlam_Lafarge_Lake.jpg/1280px-Coquitlam_Lafarge_Lake.jpg",
     "latitude": 49.2838,
     "longitude": -122.7932,
     "timeZoneIdentifier": "America/Vancouver"
@@ -458,7 +458,7 @@
   {
     "name": "Hong Kong",
     "countryCode": "HK",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Hong_Kong_Night_Skyline_2.jpg/1280px-Hong_Kong_Night_Skyline_2.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Vista_del_Puerto_de_Victoria_desde_Sky100%2C_Hong_Kong%2C_2013-08-09%2C_DD_10.JPG/1280px-Vista_del_Puerto_de_Victoria_desde_Sky100%2C_Hong_Kong%2C_2013-08-09%2C_DD_10.JPG",
     "latitude": 22.3193,
     "longitude": 114.1694,
     "timeZoneIdentifier": "Asia/Hong_Kong"
@@ -494,14 +494,6 @@
     "latitude": 18.4861,
     "longitude": -69.9312,
     "timeZoneIdentifier": "America/Santo_Domingo"
-  },
-  {
-    "name": "Port-Au-Prince",
-    "countryCode": "HT",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Port-au-Prince_Haiti_Temple_-_Pierre.jpg/500px-Port-au-Prince_Haiti_Temple_-_Pierre.jpg",
-    "latitude": 18.5944,
-    "longitude": -72.3074,
-    "timeZoneIdentifier": "America/Port-au-Prince"
   },
   {
     "name": "San Juan",
@@ -1042,7 +1034,7 @@
   {
     "name": "Sofia",
     "countryCode": "BG",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Russian_church_%2837591925970%29.jpg/1280px-Russian_church_%2837591925970%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/AlexanderNevskyCathedral-Sofia-6.jpg/1280px-AlexanderNevskyCathedral-Sofia-6.jpg",
     "latitude": 42.6977,
     "longitude": 23.3219,
     "timeZoneIdentifier": "Europe/Sofia"
@@ -1418,7 +1410,7 @@
   {
     "name": "Fiji",
     "countryCode": "FJ",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Suva%2C_Fiji_77.jpg/1280px-Suva%2C_Fiji_77.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Sunset_on_the_beach_Fiji.jpg/1280px-Sunset_on_the_beach_Fiji.jpg",
     "latitude": -18.1248,
     "longitude": 178.4501,
     "timeZoneIdentifier": "Pacific/Fiji"
@@ -1426,7 +1418,7 @@
   {
     "name": "Tahiti",
     "countryCode": "PF",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Papeete_-_Marina_Taina.JPG/1280px-Papeete_-_Marina_Taina.JPG",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Vague_de_Teahupoo_%28Tahiti%29_%28Ifremer_00783-89469_-_49375%29.jpg/1280px-Vague_de_Teahupoo_%28Tahiti%29_%28Ifremer_00783-89469_-_49375%29.jpg",
     "latitude": -17.6509,
     "longitude": -149.426,
     "timeZoneIdentifier": "Pacific/Tahiti"
@@ -1450,7 +1442,7 @@
   {
     "name": "Vaitape",
     "countryCode": "PF",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bora_Bora_ISS006.jpg/1280px-Bora_Bora_ISS006.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/FP-bora-vaitape-2.jpg/1280px-FP-bora-vaitape-2.jpg",
     "latitude": -16.5167,
     "longitude": -151.7415,
     "timeZoneIdentifier": "Pacific/Tahiti"
@@ -1786,7 +1778,7 @@
   {
     "name": "Zurich",
     "countryCode": "CH",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Geneva_aerial_view_2024.jpg/1280px-Geneva_aerial_view_2024.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Zurich_Grossm%C3%BCnster_at_sunset.jpg/1280px-Zurich_Grossm%C3%BCnster_at_sunset.jpg",
     "latitude": 47.3769,
     "longitude": 8.5417,
     "timeZoneIdentifier": "Europe/Zurich"
@@ -1794,7 +1786,7 @@
   {
     "name": "Munich",
     "countryCode": "DE",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Neues_Rathaus_und_Marienplatz_M%C3%BCnchen.jpg/1280px-Neues_Rathaus_und_Marienplatz_M%C3%BCnchen.jpg",
     "latitude": 48.1351,
     "longitude": 11.582,
     "timeZoneIdentifier": "Europe/Berlin"
@@ -1810,7 +1802,7 @@
   {
     "name": "Milan",
     "countryCode": "IT",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Milano%2C_Duomo_with_Milan_Cathedral_and_Galleria_Vittorio_Emanuele_II%2C_2016.jpg/1280px-Milano%2C_Duomo_with_Milan_Cathedral_and_Galleria_Vittorio_Emanuele_II%2C_2016.jpg",
     "latitude": 45.4642,
     "longitude": 9.19,
     "timeZoneIdentifier": "Europe/Rome"
@@ -1818,7 +1810,7 @@
   {
     "name": "Turin",
     "countryCode": "IT",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mole_Antonelliana_di_sera.jpg/1280px-Mole_Antonelliana_di_sera.jpg",
     "latitude": 45.0703,
     "longitude": 7.6869,
     "timeZoneIdentifier": "Europe/Rome"
@@ -1826,7 +1818,7 @@
   {
     "name": "Palermo",
     "countryCode": "IT",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cattedrale_di_Palermo._-_panoramio.jpg/1280px-Cattedrale_di_Palermo._-_panoramio.jpg",
     "latitude": 38.1157,
     "longitude": 13.3615,
     "timeZoneIdentifier": "Europe/Rome"
@@ -1834,7 +1826,7 @@
   {
     "name": "Naples",
     "countryCode": "IT",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/In_Napoli_%2847983446956%29.jpg/1280px-In_Napoli_%2847983446956%29.jpg",
     "latitude": 40.8518,
     "longitude": 14.2681,
     "timeZoneIdentifier": "Europe/Rome"
@@ -1842,7 +1834,7 @@
   {
     "name": "Cagliari",
     "countryCode": "IT",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg/1280px-Trevi_Fountain%2C_Rome%2C_Italy_2_-_May_2007.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/CagliariBastioneRemy.jpg/1280px-CagliariBastioneRemy.jpg",
     "latitude": 39.2238,
     "longitude": 9.1217,
     "timeZoneIdentifier": "Europe/Rome"
@@ -1850,7 +1842,7 @@
   {
     "name": "Marseille",
     "countryCode": "FR",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Marseille_vieux_port_et_ND_de_la_Garde.jpg/1280px-Marseille_vieux_port_et_ND_de_la_Garde.jpg",
     "latitude": 43.2965,
     "longitude": 5.3698,
     "timeZoneIdentifier": "Europe/Paris"
@@ -1858,7 +1850,7 @@
   {
     "name": "Nice",
     "countryCode": "FR",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Promenade_des_Anglais_%28Nice%29%2C_plage.jpg/1280px-Promenade_des_Anglais_%28Nice%29%2C_plage.jpg",
     "latitude": 43.7102,
     "longitude": 7.262,
     "timeZoneIdentifier": "Europe/Paris"
@@ -1866,7 +1858,7 @@
   {
     "name": "Monte Carlo",
     "countryCode": "MC",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg/1280px-La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Monaco_Monte_Carlo_1_b.jpg/1280px-Monaco_Monte_Carlo_1_b.jpg",
     "latitude": 43.7384,
     "longitude": 7.4246,
     "timeZoneIdentifier": "Europe/Monaco"
@@ -1874,7 +1866,7 @@
   {
     "name": "Cologne",
     "countryCode": "DE",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/K%C3%B6lner_Dom_und_Hohenzollernbr%C3%BCcke_Abendd%C3%A4mmerung_%289706_7_8%29.jpg/1280px-K%C3%B6lner_Dom_und_Hohenzollernbr%C3%BCcke_Abendd%C3%A4mmerung_%289706_7_8%29.jpg",
     "latitude": 50.9375,
     "longitude": 6.9603,
     "timeZoneIdentifier": "Europe/Berlin"
@@ -1882,7 +1874,7 @@
   {
     "name": "Hamburg",
     "countryCode": "DE",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Blue_Hour_in_Berlin.jpg/1280px-Blue_Hour_in_Berlin.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/HamburgSpeicherstadt.jpg/1280px-HamburgSpeicherstadt.jpg",
     "latitude": 53.5511,
     "longitude": 9.9937,
     "timeZoneIdentifier": "Europe/Berlin"
@@ -1898,7 +1890,7 @@
   {
     "name": "Mykonos",
     "countryCode": "GR",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg/1280px-Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Little_Venice%2C_Mykonos%2C_2024.jpg/1280px-Little_Venice%2C_Mykonos%2C_2024.jpg",
     "latitude": 37.4467,
     "longitude": 25.3289,
     "timeZoneIdentifier": "Europe/Athens"
@@ -1906,7 +1898,7 @@
   {
     "name": "Tirana",
     "countryCode": "AL",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg/1280px-Monastiraki_Square_and_Acropolis_in_Athens_%2844149181684%29.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Tirana_-_Skanderbeg_Square_%28Sheshi_Sk%C3%ABnderbej%29_-_by_Pudelek.jpg/1280px-Tirana_-_Skanderbeg_Square_%28Sheshi_Sk%C3%ABnderbej%29_-_by_Pudelek.jpg",
     "latitude": 41.3275,
     "longitude": 19.8187,
     "timeZoneIdentifier": "Europe/Tirane"
@@ -1978,7 +1970,7 @@
   {
     "name": "Asmara",
     "countryCode": "ER",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nairobi_skyline_from_Gem_Hotel.jpg/1280px-Nairobi_skyline_from_Gem_Hotel.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Asmara%2C_albergo_italia%2C_esterno_01.JPG/1280px-Asmara%2C_albergo_italia%2C_esterno_01.JPG",
     "latitude": 15.3229,
     "longitude": 38.9251,
     "timeZoneIdentifier": "Africa/Asmara"
@@ -1986,7 +1978,7 @@
   {
     "name": "Djibouti",
     "countryCode": "DJ",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Nairobi_skyline_from_Gem_Hotel.jpg/1280px-Nairobi_skyline_from_Gem_Hotel.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/The_People%27s_Palace%2C_Djibouti_City.jpg/1280px-The_People%27s_Palace%2C_Djibouti_City.jpg",
     "latitude": 11.5721,
     "longitude": 43.1456,
     "timeZoneIdentifier": "Africa/Djibouti"
@@ -2170,7 +2162,7 @@
   {
     "name": "Bora-Bora",
     "countryCode": "PF",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Bora_Bora_ISS006.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Borabora3.jpg/1280px-Borabora3.jpg",
     "latitude": -16.501,
     "longitude": -151.74,
     "timeZoneIdentifier": "Pacific/Tahiti"
@@ -2347,7 +2339,7 @@
   {
     "name": "Cluj-Napoca",
     "countryCode": "RO",
-    "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Panoramic%20view%20of%20Cluj-Napoca%20(day).jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Cluj_napoca_piata_unirii_%2852069735705%29.jpg/1280px-Cluj_napoca_piata_unirii_%2852069735705%29.jpg",
     "latitude": 46.76891111,
     "longitude": 23.59066111,
     "timeZoneIdentifier": "Europe/Bucharest"
@@ -2899,7 +2891,7 @@
   {
     "name": "City of Victoria",
     "countryCode": "HK",
-    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Hong_Kong_Night_Skyline_2.jpg/1280px-Hong_Kong_Night_Skyline_2.jpg",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Hong_Kong_Island_Skyline_2009.jpg/1280px-Hong_Kong_Island_Skyline_2009.jpg",
     "latitude": 22.27833333,
     "longitude": 114.17444444,
     "timeZoneIdentifier": "Asia/Hong_Kong"

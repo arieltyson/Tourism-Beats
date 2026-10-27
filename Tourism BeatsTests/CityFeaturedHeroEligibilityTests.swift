@@ -28,6 +28,21 @@ struct CityFeaturedHeroEligibilityTests {
         }
     }
 
+    /// Every city shows its own place. Only rows that are the same place under
+    /// another listing may share a photo.
+    @Test func citiesDoNotBorrowAnotherCitysImage() throws {
+        let samePlaceGroups: Set<Set<String>> = [
+            ["Jerusalem|IL", "Jerusalem|PS"],
+            ["Male|MV", "Orimasvaru|MV"]
+        ]
+
+        let citiesByImage = try Dictionary(grouping: Self.loadCityRows(), by: \.imageURL)
+        for (imageURL, rows) in citiesByImage where rows.count > 1 {
+            let keys = Set(rows.map { "\($0.name)|\($0.countryCode)" })
+
+            #expect(samePlaceGroups.contains(keys), "\(keys.sorted()) share \(imageURL.lastPathComponent)")
+        }
+    }
 }
 
 private extension CityFeaturedHeroEligibilityTests {
