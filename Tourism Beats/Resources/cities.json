@@ -2983,5 +2983,13 @@
     "latitude": -22.2758,
     "longitude": 166.458,
     "timeZoneIdentifier": "Pacific/Noumea"
+  },
+  {
+    "name": "San Pedro de Macorís",
+    "countryCode": "DO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Catedral_San_Pedro_de_Macoris_04_2019_4320.jpg/1280px-Catedral_San_Pedro_de_Macoris_04_2019_4320.jpg",
+    "latitude": 18.45,
+    "longitude": -69.3,
+    "timeZoneIdentifier": "America/Santo_Domingo"
   }
 ]
