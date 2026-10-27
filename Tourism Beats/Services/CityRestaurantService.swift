@@ -9,7 +9,7 @@ typealias RestaurantModels = CityRestaurantAPIModels
 
 actor CityRestaurantService: CityRestaurantProviding {
     static let shared = CityRestaurantService()
-    private static let cacheVersion = "v2"
+    private static let cacheVersion = "v3"
     /// The City tab shows the top six, but trip planning needs enough distinct
     /// restaurants to suggest a different meal for each day of a longer trip.
     private static let rankedRestaurantLimit = 18
