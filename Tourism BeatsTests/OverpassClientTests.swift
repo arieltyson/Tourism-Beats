@@ -81,6 +81,23 @@ struct OverpassClientTests {
         #expect(await transport.requestedHosts() == ["primary", "mirror"])
     }
 
+    @Test func cancelledQueryDoesNotStartACooldown() async throws {
+        let transport = ScriptedTransport(["primary": .stall, "mirror": .body("mirror")])
+        let availability = OverpassAvailability(cooldown: .seconds(60))
+        let client = Self.makeClient(
+            transport: transport,
+            hedgeDelay: .seconds(30),
+            availability: availability
+        )
+
+        let abandoned = Task { try await client.data(for: "node;out;") }
+        try await Task.sleep(for: .milliseconds(50))
+        abandoned.cancel()
+        _ = await abandoned.result
+
+        #expect(await availability.isAvailable())
+    }
+
     private static func makeClient(
         transport: ScriptedTransport,
         hedgeDelay: Duration,

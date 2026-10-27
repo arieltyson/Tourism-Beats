@@ -73,6 +73,11 @@ struct OverpassClient: Sendable {
 
         let result = try await self.firstResponse(for: query)
 
+        // A caller that stopped waiting says nothing about the servers' health.
+        guard !Task.isCancelled else {
+            return try result.get()
+        }
+
         switch result {
         case .success:
             await self.availability.recordSuccess()
