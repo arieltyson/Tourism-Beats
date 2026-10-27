@@ -3007,5 +3007,13 @@
     "latitude": 18.43,
     "longitude": -68.97,
     "timeZoneIdentifier": "America/Santo_Domingo"
+  },
+  {
+    "name": "Berchtesgaden",
+    "countryCode": "DE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Kehlsteinhaus_Berchtesgaden.jpg/1280px-Kehlsteinhaus_Berchtesgaden.jpg",
+    "latitude": 47.63138889,
+    "longitude": 13.00416667,
+    "timeZoneIdentifier": "Europe/Berlin"
   }
 ]
