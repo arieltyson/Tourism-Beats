@@ -80,6 +80,13 @@ struct CityContainerView: View {
             .padding(.trailing, PageIndicatorTokens.overlayTrailingPadding)
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
+        // The guide pages are lazy and sit four and five pages down, so start
+        // their fetches on arrival; the pages then join the in-flight requests.
+        // The short wait skips the Apple Maps searches when a city is backed out of.
+        .task(id: self.city.id) {
+            guard (try? await Task.sleep(for: .seconds(1))) != nil else { return }
+            await TripSuggestionsViewModel.prefetchGuides(for: self.city)
+        }
         .onChange(of: self.currentPageIndex) { oldValue, newValue in
             guard oldValue != newValue else { return }
             self.haptic.fire(.pageChange)
