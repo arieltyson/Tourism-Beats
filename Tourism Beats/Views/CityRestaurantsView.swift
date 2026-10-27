@@ -238,12 +238,9 @@ extension CityRestaurantsView {
 
         var body: some View {
             ZStack {
-                if let latitude = self.restaurant.latitude,
-                   let longitude = self.restaurant.longitude
-                {
-                    RestaurantMapSnapshot(
-                        latitude: latitude,
-                        longitude: longitude,
+                if self.restaurant.latitude != nil, self.restaurant.longitude != nil {
+                    RestaurantPreviewImage(
+                        restaurant: self.restaurant,
                         snapshotSize: CGSize(width: 180, height: 135)
                     )
                 } else {
