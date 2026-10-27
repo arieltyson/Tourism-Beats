@@ -25,6 +25,13 @@ actor CityActivityService: CityActivityProviding {
         category: "CityActivityService"
     )
     private let cacheLifetime: TimeInterval = 60 * 60 * 24 * 14
+    /// A guide built without Overpass is refetched soon, so the full ranking
+    /// replaces it once Overpass recovers.
+    private let partialCacheLifetime: TimeInterval = 60 * 30
+    /// How long Overpass may hold a guide once the other sources are in.
+    private static let overpassGrace: Duration = .seconds(3)
+    /// Longer than Overpass's own time budget, so a sole source is never cut short.
+    private static let primarySourceWait: Duration = .seconds(20)
 
     private var memoryCache: [String: Models.CachedPayload] = [:]
     /// Network fetches already underway, so a prefetch and the screen that
@@ -55,17 +62,13 @@ actor CityActivityService: CityActivityProviding {
     func activities(for city: CityModel) async -> [CityActivity] {
         let key = Self.cacheKey(for: city)
 
-        if let cached = self.memoryCache[key],
-           cached.isValid(lifetime: self.cacheLifetime)
-        {
+        if let cached = self.memoryCache[key], self.isFresh(cached) {
             return cached.activities
         }
 
         let diskURL = self.diskCacheURL(for: city)
 
-        if let cached = self.loadFromDisk(at: diskURL),
-           cached.isValid(lifetime: self.cacheLifetime)
-        {
+        if let cached = self.loadFromDisk(at: diskURL), self.isFresh(cached) {
             self.memoryCache[key] = cached
             return cached.activities
         }
@@ -86,7 +89,7 @@ actor CityActivityService: CityActivityProviding {
         key: String,
         diskURL: URL
     ) async -> [CityActivity] {
-        let activities = await self.fetchActivities(for: city)
+        let (activities, isPartial) = await self.fetchActivities(for: city)
         guard !activities.isEmpty else {
             if let stale = self.loadFromDisk(at: diskURL) {
                 self.memoryCache[key] = stale
@@ -96,7 +99,7 @@ actor CityActivityService: CityActivityProviding {
             return []
         }
 
-        let payload = Models.CachedPayload(fetchedAt: .now, activities: activities)
+        let payload = Models.CachedPayload(fetchedAt: .now, activities: activities, isPartial: isPartial)
         try? self.writeToDisk(payload, at: diskURL)
         self.memoryCache[key] = payload
         return activities
@@ -106,17 +109,29 @@ actor CityActivityService: CityActivityProviding {
 // MARK: - Fetch Pipeline (Overpass + Wikivoyage + Apple Maps, then Wikipedia)
 
 extension CityActivityService {
-    private func fetchActivities(for city: CityModel) async -> [CityActivity] {
-        // The primary sources are independent, so they load together and the
-        // slowest one sets the pace instead of their sum.
-        async let overpassActivities = self.overpassActivities(for: city)
+    private func fetchActivities(
+        for city: CityModel
+    ) async -> (activities: [CityActivity], isPartial: Bool) {
+        // The sources are independent, so they load together and the slowest
+        // one sets the pace instead of their sum.
+        let overpassSearch = Task { await self.overpassActivities(for: city) }
         async let wikivoyageActivities = self.wikivoyageActivities(for: city)
         async let mapKitSearch = Self.multiQueryMapKitSearch(for: city)
         // The fallback is a few fast Wikipedia calls, so it starts alongside the
         // primary sources and is only used when they come up short.
         async let wikipediaFallback = self.wikipediaFallbackActivities(for: city)
 
-        var collectedActivities = await overpassActivities + wikivoyageActivities
+        let wikivoyage = await wikivoyageActivities
+        let mapKitResults = await mapKitSearch
+
+        // Overpass is the slowest and least reliable source. Once the others
+        // are in, it gets a short grace period, unless it's all there is.
+        let overpassWait = wikivoyage.isEmpty && mapKitResults.isEmpty
+            ? Self.primarySourceWait
+            : Self.overpassGrace
+        let overpass = await overpassSearch.value(within: overpassWait)
+
+        var collectedActivities = (overpass ?? []) + wikivoyage
 
         if CityActivityRanking.topActivities(
             from: collectedActivities,
@@ -126,7 +141,6 @@ extension CityActivityService {
             collectedActivities += await wikipediaFallback
         }
 
-        let mapKitResults = await mapKitSearch
         let mapKitActivities = Self.mapKitActivities(
             for: city,
             results: mapKitResults,
@@ -146,7 +160,8 @@ extension CityActivityService {
             limit: Self.rankedActivityLimit
         )
 
-        return await self.enrichFallbackActivitiesIfNeeded(rankedActivities, for: city)
+        let activities = await self.enrichFallbackActivitiesIfNeeded(rankedActivities, for: city)
+        return (activities, isPartial: overpass == nil)
     }
 
     private func overpassActivities(for city: CityModel) async -> [CityActivity] {
@@ -236,6 +251,12 @@ extension CityActivityService {
 // MARK: - Disk Cache
 
 extension CityActivityService {
+    private func isFresh(_ payload: Models.CachedPayload) -> Bool {
+        payload.isValid(
+            lifetime: payload.isPartial == true ? self.partialCacheLifetime : self.cacheLifetime
+        )
+    }
+
     private func loadFromDisk(at url: URL) -> Models.CachedPayload? {
         guard let data = try? Data(contentsOf: url) else { return nil }
         return try? self.decoder.decode(Models.CachedPayload.self, from: data)

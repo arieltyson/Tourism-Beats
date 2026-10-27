@@ -113,6 +113,9 @@ enum CityRestaurantAPIModels {
     struct CachedPayload: Codable, Sendable {
         let fetchedAt: Date
         let restaurants: [CityRestaurant]
+        /// Set when a slow enrichment source was skipped. Optional so payloads
+        /// cached before this field existed still decode.
+        var isPartial: Bool?
 
         func isValid(lifetime: TimeInterval) -> Bool {
             self.fetchedAt.addingTimeInterval(lifetime) > .now

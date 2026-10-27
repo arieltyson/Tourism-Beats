@@ -21,6 +21,13 @@ actor CityRestaurantService: CityRestaurantProviding {
         category: "CityRestaurantService"
     )
     private let cacheLifetime: TimeInterval = 60 * 60 * 24 * 3
+    /// A guide built without some enrichment is refetched soon, so the full
+    /// ranking replaces it once the slow sources recover.
+    private let partialCacheLifetime: TimeInterval = 60 * 30
+    /// How long enrichment may hold a guide once Apple Maps has answered.
+    private static let enrichmentGrace: Duration = .seconds(3)
+    /// Longer than Overpass's own time budget, so a primary source is never cut short.
+    private static let primarySourceWait: Duration = .seconds(20)
 
     private var memoryCache: [String: RestaurantModels.CachedPayload] = [:]
     /// Network fetches already underway, so a prefetch and the screen that
@@ -47,17 +54,13 @@ actor CityRestaurantService: CityRestaurantProviding {
     func restaurants(for city: CityModel) async -> [CityRestaurant] {
         let key = Self.cacheKey(for: city)
 
-        if let cached = self.memoryCache[key],
-           cached.isValid(lifetime: self.cacheLifetime)
-        {
+        if let cached = self.memoryCache[key], self.isFresh(cached) {
             return cached.restaurants
         }
 
         let diskURL = self.diskCacheURL(for: city)
 
-        if let cached = self.loadFromDisk(at: diskURL),
-           cached.isValid(lifetime: self.cacheLifetime)
-        {
+        if let cached = self.loadFromDisk(at: diskURL), self.isFresh(cached) {
             self.memoryCache[key] = cached
             return cached.restaurants
         }
@@ -79,10 +82,11 @@ actor CityRestaurantService: CityRestaurantProviding {
         diskURL: URL
     ) async -> [CityRestaurant] {
         do {
-            let restaurants = try await self.fetchRestaurants(for: city)
+            let (restaurants, isPartial) = try await self.fetchRestaurants(for: city)
             let payload = RestaurantModels.CachedPayload(
                 fetchedAt: .now,
-                restaurants: restaurants
+                restaurants: restaurants,
+                isPartial: isPartial
             )
             try? self.writeToDisk(payload, at: diskURL)
             self.memoryCache[key] = payload
@@ -105,20 +109,29 @@ actor CityRestaurantService: CityRestaurantProviding {
 // MARK: - Fetch Pipeline
 
 extension CityRestaurantService {
-    private func fetchRestaurants(for city: CityModel) async throws -> [CityRestaurant] {
-        // Every source is independent, so they load together and the slowest
-        // one sets the pace instead of their sum.
-        async let mapKitSearch = Self.multiQueryMapKitSearch(for: city)
-        async let overpassSearch = self.overpassCandidatesIfAvailable(for: city)
-        async let awardSearch = CityRestaurantWikidataService.fetchAwards(
-            for: city,
-            session: self.session
-        )
-        async let chainScan = self.detectChainsFromWiderScan(for: city)
+    private func fetchRestaurants(
+        for city: CityModel
+    ) async throws -> (restaurants: [CityRestaurant], isPartial: Bool) {
+        // Every source starts at once. Apple Maps is the primary source and the
+        // rest only enrich it, so once it answers they share a short grace
+        // period instead of their full time budgets. Without Apple Maps,
+        // Overpass becomes the primary source and is waited for in full.
+        let overpassSearch = Task { await self.overpassCandidatesIfAvailable(for: city) }
+        let awardSearch = Task { [session = self.session] in
+            await CityRestaurantWikidataService.fetchAwards(for: city, session: session)
+        }
+        let chainScan = Task { await self.detectChainsFromWiderScan(for: city) }
 
-        let mapKitResults = await mapKitSearch
-        let overpassCandidates = await overpassSearch
+        let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
+        let wait = mapKitResults.isEmpty ? Self.primarySourceWait : Self.enrichmentGrace
 
+        async let overpassResult = overpassSearch.value(within: wait)
+        async let awardResult = awardSearch.value(within: wait)
+        async let chainResult = chainScan.value(within: wait)
+        let (overpass, awards, chains) = await (overpassResult, awardResult, chainResult)
+        let isPartial = overpass == nil || awards == nil || chains == nil
+
+        let overpassCandidates = overpass ?? []
         var candidates: [CityRestaurantCandidate]
 
         if !mapKitResults.isEmpty {
@@ -136,7 +149,7 @@ extension CityRestaurantService {
             throw RestaurantModels.ServiceError.invalidResponse
         }
 
-        let wikidataMatches = await awardSearch
+        let wikidataMatches = awards ?? []
         if !wikidataMatches.isEmpty {
             candidates = CityRestaurantWikidataService.enrichCandidates(
                 candidates,
@@ -146,16 +159,17 @@ extension CityRestaurantService {
 
         candidates = Self.tagDuplicateLocationCounts(candidates)
 
-        let chainSignatures = await chainScan
+        let chainSignatures = chains ?? []
         if !chainSignatures.isEmpty {
             candidates = Self.applyChainSignatures(chainSignatures, to: candidates)
         }
 
-        return CityRestaurantRanking.topRestaurants(
+        let restaurants = CityRestaurantRanking.topRestaurants(
             from: candidates,
             for: city,
             limit: Self.rankedRestaurantLimit
         )
+        return (restaurants, isPartial)
     }
 
     private func overpassCandidatesIfAvailable(
@@ -197,6 +211,12 @@ extension CityRestaurantService {
 // MARK: - Disk Cache
 
 extension CityRestaurantService {
+    private func isFresh(_ payload: RestaurantModels.CachedPayload) -> Bool {
+        payload.isValid(
+            lifetime: payload.isPartial == true ? self.partialCacheLifetime : self.cacheLifetime
+        )
+    }
+
     private func loadFromDisk(at url: URL) -> RestaurantModels.CachedPayload? {
         guard let data = try? Data(contentsOf: url) else { return nil }
         return try? self.decoder.decode(RestaurantModels.CachedPayload.self, from: data)

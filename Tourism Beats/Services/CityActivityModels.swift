@@ -224,6 +224,9 @@ enum CityActivityAPIModels {
     struct CachedPayload: Codable, Sendable {
         let fetchedAt: Date
         let activities: [CityActivity]
+        /// Set when Overpass was skipped for being slow. Optional so payloads
+        /// cached before this field existed still decode.
+        var isPartial: Bool?
 
         func isValid(lifetime: TimeInterval) -> Bool {
             self.fetchedAt.addingTimeInterval(lifetime) > .now
