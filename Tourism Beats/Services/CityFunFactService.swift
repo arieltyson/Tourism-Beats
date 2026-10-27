@@ -6,6 +6,8 @@ import OSLog
 
 actor CityFunFactService: CityFunFactProviding {
     static let shared = CityFunFactService()
+    /// Bumped when stored facts change shape; v2 keeps sentences whole rather than clipping them.
+    private static let cacheVersion = "v2"
 
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -209,10 +211,12 @@ actor CityFunFactService: CityFunFactProviding {
             locale: .current
         )
 
-        return normalized
+        let identifier = normalized
             .split { !$0.isLetter && !$0.isNumber }
             .map(String.init)
             .joined(separator: "_")
+
+        return "\(Self.cacheVersion)_\(identifier)"
     }
 
     private static func validate(response: URLResponse) throws {
@@ -248,7 +252,8 @@ actor CityFunFactService: CityFunFactProviding {
                 return true
             }
 
-            results.append(Self.clampedSentence(sentence))
+            // Kept whole: the card previews long facts and offers the rest.
+            results.append(sentence)
             return results.count < 4
         }
 
@@ -273,17 +278,6 @@ actor CityFunFactService: CityFunFactProviding {
         if lowered.contains("listen") { return false }
 
         return true
-    }
-
-    private static func clampedSentence(_ sentence: String) -> String {
-        guard sentence.count > 180 else { return sentence }
-
-        let truncated = sentence.prefix(180)
-        if let lastSpace = truncated.lastIndex(of: " ") {
-            return String(truncated[..<lastSpace]) + "…"
-        }
-
-        return String(truncated) + "…"
     }
 
     private static func wikipediaURL(for title: String) -> URL? {

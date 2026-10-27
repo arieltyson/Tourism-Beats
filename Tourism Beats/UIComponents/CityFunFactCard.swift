@@ -5,6 +5,7 @@ import SwiftUI
 private enum CityFunFactLayout {
     static let minimumCardHeight: CGFloat = 196
     static let compactFactLineLimit = 4
+    static let accessibilityFactLineLimit = 12
 }
 
 // MARK: - CityFunFactCard
@@ -201,6 +202,16 @@ private struct CityFunFactContent: View {
 
     let fact: CityFunFact
 
+    @State private var visibleTextHeight: CGFloat = .zero
+    @State private var fullTextHeight: CGFloat = .zero
+    @State private var isShowingFullFact = false
+
+    /// The card previews a fixed number of lines; anything longer is offered
+    /// in full through More, which only appears when text is actually cut off.
+    private var isTruncated: Bool {
+        self.fullTextHeight.rounded() > self.visibleTextHeight.rounded()
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
             Text(self.fact.text)
@@ -208,17 +219,38 @@ private struct CityFunFactContent: View {
                 .foregroundStyle(AppColors.label)
                 .lineLimit(
                     self.dynamicTypeSize.isAccessibilitySize
-                        ? 12
+                        ? CityFunFactLayout.accessibilityFactLineLimit
                         : CityFunFactLayout.compactFactLineLimit,
                     reservesSpace: !self.dynamicTypeSize.isAccessibilitySize
                 )
                 .fixedSize(horizontal: false, vertical: self.dynamicTypeSize.isAccessibilitySize)
+                .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
+                    self.visibleTextHeight = height
+                }
+                .background(alignment: .top) {
+                    // The same text unconstrained, laid out at the same width,
+                    // gives the height the fact needs in full.
+                    Text(self.fact.text)
+                        .font(TypographyTokens.body)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .hidden()
+                        .accessibilityHidden(true)
+                        .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
+                            self.fullTextHeight = height
+                        }
+                }
 
             Spacer(minLength: 0)
 
-            CityFunFactFooter(fact: self.fact)
+            CityFunFactFooter(
+                fact: self.fact,
+                onShowFullFact: self.isTruncated ? { self.isShowingFullFact = true } : nil
+            )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .sheet(isPresented: self.$isShowingFullFact) {
+            CityFunFactSheet(fact: self.fact)
+        }
     }
 }
 
@@ -226,6 +258,8 @@ private struct CityFunFactContent: View {
 
 private struct CityFunFactFooter: View {
     let fact: CityFunFact
+    /// Present only when the fact is cut off in the card.
+    let onShowFullFact: (() -> Void)?
 
     var body: some View {
         ViewThatFits(in: .horizontal) {
@@ -235,13 +269,37 @@ private struct CityFunFactFooter: View {
                 Spacer(minLength: 0)
 
                 CityFunFactFallbackBadge(fact: self.fact)
+
+                if let onShowFullFact {
+                    CityFunFactMoreButton(action: onShowFullFact)
+                }
             }
 
             VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
                 CityFunFactSourceLabel(fact: self.fact)
                 CityFunFactFallbackBadge(fact: self.fact)
+
+                if let onShowFullFact {
+                    CityFunFactMoreButton(action: onShowFullFact)
+                }
             }
         }
+    }
+}
+
+// MARK: - CityFunFactMoreButton
+
+private struct CityFunFactMoreButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button("More", action: self.action)
+            .font(TypographyTokens.footnote)
+            .bold()
+            .foregroundStyle(AppColors.gold)
+            .buttonStyle(.borderless)
+            .accessibilityLabel("Read the whole fact")
+            .accessibilityInputLabels(["More", "Read More", "Whole Fact"])
     }
 }
 
@@ -330,7 +388,7 @@ private struct CityFunFactUnavailableState: View {
                 .foregroundStyle(AppColors.label)
                 .lineLimit(
                     self.dynamicTypeSize.isAccessibilitySize
-                        ? 12
+                        ? CityFunFactLayout.accessibilityFactLineLimit
                         : CityFunFactLayout.compactFactLineLimit,
                     reservesSpace: !self.dynamicTypeSize.isAccessibilitySize
                 )
