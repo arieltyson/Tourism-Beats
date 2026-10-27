@@ -76,9 +76,7 @@ private struct GlassSpotifyCardArtwork: View {
                 AsyncImage(url: url, transaction: .init(animation: .smooth)) { phase in
                     switch phase {
                     case let .success(image):
-                        image
-                            .resizable()
-                            .scaledToFill()
+                        FilledImage(image: image)
                     case .failure:
                         GlassSpotifyCardArtworkPlaceholder()
                     default:

@@ -24,9 +24,7 @@ struct MusicArtworkCard: View {
                         case .empty:
                             MusicArtworkLoadingView()
                         case let .success(image):
-                            image
-                                .resizable()
-                                .scaledToFill()
+                            FilledImage(image: image)
                         case .failure:
                             MusicArtworkPlaceholderView()
                         @unknown default:

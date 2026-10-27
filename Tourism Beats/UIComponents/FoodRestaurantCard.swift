@@ -186,9 +186,7 @@ private struct FoodRestaurantMealPhotoPreview: View {
                         ProgressView()
                     }
             case let .success(image):
-                image
-                    .resizable()
-                    .scaledToFill()
+                FilledImage(image: image)
             case .failure:
                 Rectangle()
                     .fill(.ultraThinMaterial)

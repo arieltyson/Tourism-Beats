@@ -283,9 +283,7 @@ extension CityActivitiesView.ActivityCard {
                         case .empty:
                             Self.loadingPlaceholder
                         case let .success(image):
-                            image
-                                .resizable()
-                                .scaledToFill()
+                            FilledImage(image: image)
                         case .failure:
                             Self.placeholder
                         @unknown default:

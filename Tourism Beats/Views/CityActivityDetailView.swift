@@ -324,9 +324,7 @@ extension CityActivityDetailView.Hero {
                             case .empty:
                                 Self.placeholder
                             case let .success(image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
+                                FilledImage(image: image)
                             case .failure:
                                 Self.placeholder
                             @unknown default:

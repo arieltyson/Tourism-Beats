@@ -66,17 +66,13 @@ struct CachedCityImage: View {
     private func scaledImage(_ image: Image) -> some View {
         switch self.contentMode {
         case .fill:
-            image
-                .resizable()
-                .scaledToFill()
+            FilledImage(image: image)
         case .fit:
             image
                 .resizable()
                 .scaledToFit()
         @unknown default:
-            image
-                .resizable()
-                .scaledToFill()
+            FilledImage(image: image)
         }
     }
 }

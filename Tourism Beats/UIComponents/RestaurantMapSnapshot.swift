@@ -15,9 +15,7 @@ struct RestaurantMapSnapshot: View {
             AppColors.surfaceSecondary.opacity(0.6)
 
             if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+                FilledImage(image: Image(uiImage: image))
             }
         }
         .animation(.smooth(duration: 0.4), value: self.image != nil)
