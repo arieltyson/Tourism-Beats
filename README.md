@@ -9,7 +9,7 @@
 
 ## Project Description 🎨
 
-Tourism Beats is a native iOS application that offers an immersive experience exploring 250 cities worldwide. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management rounds out the experience.
+Tourism Beats is a native iOS application that offers an immersive experience exploring 370+ cities worldwide. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management rounds out the experience.
 
 ## Technologies Used 💻
 
@@ -45,7 +45,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 
 ### Data Sources
 
-- [x] **Static visa requirements JSON** — Offline visa lookup for 6,900+ passport-destination pairs
+- [x] **Static visa requirements JSON** — Offline visa lookup for all 39,601 passport-destination pairs (Passport Index data, February 2026)
 - [x] **Static safety advisories JSON** — Offline country safety data with advisory levels
 
 </div>
