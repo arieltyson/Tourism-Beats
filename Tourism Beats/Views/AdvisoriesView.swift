@@ -39,7 +39,7 @@ struct AdvisoriesView: View {
                 AdvisoryCard {
                     SectionHeader(
                         title: "Safety Advisory",
-                        subtitle: "Global Peace Index 2024"
+                        subtitle: "Global Peace Index 2026"
                     )
                     .padding(.bottom, 2)
 

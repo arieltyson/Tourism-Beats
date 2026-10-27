@@ -27,7 +27,7 @@ actor SafetyService: SafetyProtocol {
 
         guard
             let url = Bundle.main.url(
-                forResource: "gpi_data_2024",
+                forResource: "gpi_data_2026",
                 withExtension: "json"
             )
         else { throw SafetyError.fileNotFound }
