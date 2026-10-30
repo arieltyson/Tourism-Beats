@@ -447,5 +447,15 @@
   {"city": "Aix-en-Provence", "countryCode": "FR", "walkScore": 88, "transitScore": 55},
   {"city": "Antibes", "countryCode": "FR", "walkScore": 80, "transitScore": 45},
   {"city": "Carcassonne", "countryCode": "FR", "walkScore": 70, "transitScore": 30},
-  {"city": "Èze", "countryCode": "FR", "walkScore": 55, "transitScore": 15}
+  {"city": "Èze", "countryCode": "FR", "walkScore": 55, "transitScore": 15},
+  {"city": "Bordeaux", "countryCode": "FR", "walkScore": 88, "transitScore": 75},
+  {"city": "Reims", "countryCode": "FR", "walkScore": 82, "transitScore": 60},
+  {"city": "Beaune", "countryCode": "FR", "walkScore": 80, "transitScore": 30},
+  {"city": "Colmar", "countryCode": "FR", "walkScore": 85, "transitScore": 45},
+  {"city": "Siena", "countryCode": "IT", "walkScore": 85, "transitScore": 40},
+  {"city": "Verona", "countryCode": "IT", "walkScore": 88, "transitScore": 60},
+  {"city": "Logroño", "countryCode": "ES", "walkScore": 85, "transitScore": 50},
+  {"city": "Jerez de la Frontera", "countryCode": "ES", "walkScore": 75, "transitScore": 40},
+  {"city": "Tokaj", "countryCode": "HU", "walkScore": 65, "transitScore": 20},
+  {"city": "Sighnaghi", "countryCode": "GE", "walkScore": 65, "transitScore": 15}
 ]

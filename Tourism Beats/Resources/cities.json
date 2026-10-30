@@ -3591,5 +3591,85 @@
     "latitude": 43.72777778,
     "longitude": 7.36111111,
     "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Bordeaux",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Bordeaux_place_de_la_bourse_with_tram.JPG/1280px-Bordeaux_place_de_la_bourse_with_tram.JPG",
+    "latitude": 44.83777778,
+    "longitude": -0.57944444,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Reims",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Cathedral_of_Reims_%2817%29.jpg/1280px-Cathedral_of_Reims_%2817%29.jpg",
+    "latitude": 49.26527778,
+    "longitude": 4.02861111,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Beaune",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Beaune_-_H%C3%B4tel-Dieu_-_Cour_-_02.jpg/1280px-Beaune_-_H%C3%B4tel-Dieu_-_Cour_-_02.jpg",
+    "latitude": 47.02416667,
+    "longitude": 4.83888889,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Colmar",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/View_of_%C3%89glise_Saint-Martin_%2843833049001%29.jpg/1280px-View_of_%C3%89glise_Saint-Martin_%2843833049001%29.jpg",
+    "latitude": 48.08111111,
+    "longitude": 7.355,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Siena",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg/1280px-Siena_Cattedrale_nuova_Vista_su_la_Piazza_del_Campo_2.jpg",
+    "latitude": 43.31833333,
+    "longitude": 11.33138889,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Verona",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Verona_cityscape_sunny.jpg/1280px-Verona_cityscape_sunny.jpg",
+    "latitude": 45.43861111,
+    "longitude": 10.99277778,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "Logroño",
+    "countryCode": "ES",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Old_Town_Plaza_-_Logrono_-_La_Rioja_-_Spain_%2814576256386%29_edited.jpg/1280px-Old_Town_Plaza_-_Logrono_-_La_Rioja_-_Spain_%2814576256386%29_edited.jpg",
+    "latitude": 42.47,
+    "longitude": -2.44555556,
+    "timeZoneIdentifier": "Europe/Madrid"
+  },
+  {
+    "name": "Jerez de la Frontera",
+    "countryCode": "ES",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/CATEDRAL_DE_JEREZ_DE_LA_FRONTERA.jpg/1280px-CATEDRAL_DE_JEREZ_DE_LA_FRONTERA.jpg",
+    "latitude": 36.7,
+    "longitude": -6.11666667,
+    "timeZoneIdentifier": "Europe/Madrid"
+  },
+  {
+    "name": "Tokaj",
+    "countryCode": "HU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Vineyard_near_Tokaj%2C_Hungary.jpg/1280px-Vineyard_near_Tokaj%2C_Hungary.jpg",
+    "latitude": 48.12,
+    "longitude": 21.41,
+    "timeZoneIdentifier": "Europe/Budapest"
+  },
+  {
+    "name": "Sighnaghi",
+    "countryCode": "GE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sighnagi_2009.jpg/1280px-Sighnagi_2009.jpg",
+    "latitude": 41.61861111,
+    "longitude": 45.92166667,
+    "timeZoneIdentifier": "Asia/Tbilisi"
   }
 ]
