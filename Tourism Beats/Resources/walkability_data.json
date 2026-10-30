@@ -467,5 +467,8 @@
   {"city": "Maceió", "countryCode": "BR", "walkScore": 62, "transitScore": 40},
   {"city": "Veracruz", "countryCode": "PA", "walkScore": 35, "transitScore": 15},
   {"city": "Culebra", "countryCode": "CR", "walkScore": 25, "transitScore": 5},
-  {"city": "Sarteneja", "countryCode": "BZ", "walkScore": 55, "transitScore": 5}
+  {"city": "Sarteneja", "countryCode": "BZ", "walkScore": 55, "transitScore": 5},
+  {"city": "Avalon", "countryCode": "US", "walkScore": 80, "transitScore": 25},
+  {"city": "Carmel-by-the-Sea", "countryCode": "US", "walkScore": 75, "transitScore": 15},
+  {"city": "Gstaad", "countryCode": "CH", "walkScore": 75, "transitScore": 55}
 ]

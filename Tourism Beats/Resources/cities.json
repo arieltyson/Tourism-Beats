@@ -3751,5 +3751,29 @@
     "latitude": 18.35439043,
     "longitude": -88.14549561,
     "timeZoneIdentifier": "America/Belize"
+  },
+  {
+    "name": "Avalon",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Avalon_Catalina_Island_California_by_Don_Ramey_Logan.jpg/1280px-Avalon_Catalina_Island_California_by_Don_Ramey_Logan.jpg",
+    "latitude": 33.34083333,
+    "longitude": -118.32777778,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Carmel-by-the-Sea",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Carmel_Mission_Church.jpg/1280px-Carmel_Mission_Church.jpg",
+    "latitude": 36.55527778,
+    "longitude": -121.92333333,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Gstaad",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/GstaadPanoramaVillage.jpg/1280px-GstaadPanoramaVillage.jpg",
+    "latitude": 46.46666667,
+    "longitude": 7.28333333,
+    "timeZoneIdentifier": "Europe/Zurich"
   }
 ]
