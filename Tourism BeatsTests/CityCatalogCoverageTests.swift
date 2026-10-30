@@ -196,7 +196,9 @@ struct CityCatalogCoverageTests {
         "TL": "Dili",
         "TO": "Nuku'alofa",
         "TV": "Funafuti",
-        "VU": "Port Vila"
+        "VU": "Port Vila",
+        "CK": "Avarua",
+        "NU": "Alofi"
     ]
 
     private static let additionalCapitalCityByCountryCode: [String: String] = [

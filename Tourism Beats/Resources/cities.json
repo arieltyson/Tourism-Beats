@@ -3535,5 +3535,21 @@
     "latitude": 6.36666667,
     "longitude": 2.41666667,
     "timeZoneIdentifier": "Africa/Porto-Novo"
+  },
+  {
+    "name": "Avarua",
+    "countryCode": "CK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Para_O_Tane_Palace%2C_Rarotonga%2C_Cook_Islands.jpg/1280px-Para_O_Tane_Palace%2C_Rarotonga%2C_Cook_Islands.jpg",
+    "latitude": -21.207,
+    "longitude": -159.771,
+    "timeZoneIdentifier": "Pacific/Rarotonga"
+  },
+  {
+    "name": "Alofi",
+    "countryCode": "NU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Sunset_at_bottom_of_Amanau_sea_track.jpg/1280px-Sunset_at_bottom_of_Amanau_sea_track.jpg",
+    "latitude": -19.056,
+    "longitude": -169.921,
+    "timeZoneIdentifier": "Pacific/Niue"
   }
 ]

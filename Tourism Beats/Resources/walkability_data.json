@@ -440,5 +440,7 @@
   {"city": "Lobamba", "countryCode": "SZ", "walkScore": 28, "transitScore": 8},
   {"city": "Putrajaya", "countryCode": "MY", "walkScore": 38, "transitScore": 45},
   {"city": "The Hague", "countryCode": "NL", "walkScore": 88, "transitScore": 82},
-  {"city": "Cotonou", "countryCode": "BJ", "walkScore": 50, "transitScore": 15}
+  {"city": "Cotonou", "countryCode": "BJ", "walkScore": 50, "transitScore": 15},
+  {"city": "Avarua", "countryCode": "CK", "walkScore": 48, "transitScore": 12},
+  {"city": "Alofi", "countryCode": "NU", "walkScore": 30, "transitScore": 3}
 ]

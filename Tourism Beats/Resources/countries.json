@@ -225,6 +225,11 @@
     "flag": "🇨🇬"
   },
   {
+    "name": "Cook Islands",
+    "code": "CK",
+    "flag": "🇨🇰"
+  },
+  {
     "name": "Costa Rica",
     "code": "CR",
     "flag": "🇨🇷"
@@ -708,6 +713,11 @@
     "name": "Nigeria",
     "code": "NG",
     "flag": "🇳🇬"
+  },
+  {
+    "name": "Niue",
+    "code": "NU",
+    "flag": "🇳🇺"
   },
   {
     "name": "North Korea",
