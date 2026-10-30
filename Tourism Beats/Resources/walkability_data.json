@@ -425,5 +425,8 @@
   {"city": "Revelstoke", "countryCode": "CA", "walkScore": 45, "transitScore": 8},
   {"city": "Guangzhou", "countryCode": "CN", "walkScore": 75, "transitScore": 88},
   {"city": "Tainan", "countryCode": "TW", "walkScore": 65, "transitScore": 30},
-  {"city": "Jeonju", "countryCode": "KR", "walkScore": 70, "transitScore": 45}
+  {"city": "Jeonju", "countryCode": "KR", "walkScore": 70, "transitScore": 45},
+  {"city": "Huế", "countryCode": "VN", "walkScore": 62, "transitScore": 12},
+  {"city": "Ipoh", "countryCode": "MY", "walkScore": 50, "transitScore": 15},
+  {"city": "Melaka", "countryCode": "MY", "walkScore": 60, "transitScore": 15}
 ]

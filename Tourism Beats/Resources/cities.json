@@ -3415,5 +3415,29 @@
     "latitude": 35.82388889,
     "longitude": 127.1475,
     "timeZoneIdentifier": "Asia/Seoul"
+  },
+  {
+    "name": "Huế",
+    "countryCode": "VN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Meridian_Gate%2C_Hue_%28I%29.jpg/1280px-Meridian_Gate%2C_Hue_%28I%29.jpg",
+    "latitude": 16.46388889,
+    "longitude": 107.58666667,
+    "timeZoneIdentifier": "Asia/Ho_Chi_Minh"
+  },
+  {
+    "name": "Ipoh",
+    "countryCode": "MY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Ipoh_railway_station_2024%2C_Perak_Malaysia_07.jpg/1280px-Ipoh_railway_station_2024%2C_Perak_Malaysia_07.jpg",
+    "latitude": 4.5975,
+    "longitude": 101.0901,
+    "timeZoneIdentifier": "Asia/Kuala_Lumpur"
+  },
+  {
+    "name": "Melaka",
+    "countryCode": "MY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Malacca_River_Melaka.jpg/1280px-Malacca_River_Melaka.jpg",
+    "latitude": 2.18888889,
+    "longitude": 102.25111111,
+    "timeZoneIdentifier": "Asia/Kuala_Lumpur"
   }
 ]
