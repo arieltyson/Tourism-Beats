@@ -3367,5 +3367,29 @@
     "latitude": 38.5725,
     "longitude": -109.54972222,
     "timeZoneIdentifier": "America/Denver"
+  },
+  {
+    "name": "Squamish",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Stawamus_Chief_from_Chief_Overlook_Panorama_Trail_Sea_to_Sky_Gondola_Squamish_dllu.jpg/1280px-Stawamus_Chief_from_Chief_Overlook_Panorama_Trail_Sea_to_Sky_Gondola_Squamish_dllu.jpg",
+    "latitude": 49.70172222,
+    "longitude": -123.15875,
+    "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Canmore",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Canmore_from_Lady_MacDonald_Teahouse.jpg/1280px-Canmore_from_Lady_MacDonald_Teahouse.jpg",
+    "latitude": 51.08799806,
+    "longitude": -115.34777611,
+    "timeZoneIdentifier": "America/Edmonton"
+  },
+  {
+    "name": "Revelstoke",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/54/Mount_Begbie_seen_from_Mt_Revelstoke_ski_area.jpg",
+    "latitude": 50.9981,
+    "longitude": -118.196,
+    "timeZoneIdentifier": "America/Vancouver"
   }
 ]

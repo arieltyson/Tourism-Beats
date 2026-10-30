@@ -419,5 +419,8 @@
   {"city": "Pokhara", "countryCode": "NP", "walkScore": 55, "transitScore": 15},
   {"city": "Huaraz", "countryCode": "PE", "walkScore": 62, "transitScore": 18},
   {"city": "Sedona", "countryCode": "US", "walkScore": 25, "transitScore": 5},
-  {"city": "Moab", "countryCode": "US", "walkScore": 45, "transitScore": 3}
+  {"city": "Moab", "countryCode": "US", "walkScore": 45, "transitScore": 3},
+  {"city": "Squamish", "countryCode": "CA", "walkScore": 40, "transitScore": 15},
+  {"city": "Canmore", "countryCode": "CA", "walkScore": 50, "transitScore": 20},
+  {"city": "Revelstoke", "countryCode": "CA", "walkScore": 45, "transitScore": 8}
 ]
