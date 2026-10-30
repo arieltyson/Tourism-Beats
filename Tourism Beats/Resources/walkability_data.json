@@ -415,5 +415,7 @@
   {"city": "El Chaltén", "countryCode": "AR", "walkScore": 60, "transitScore": 3},
   {"city": "Bariloche", "countryCode": "AR", "walkScore": 60, "transitScore": 30},
   {"city": "Ushuaia", "countryCode": "AR", "walkScore": 62, "transitScore": 20},
-  {"city": "Puerto Natales", "countryCode": "CL", "walkScore": 60, "transitScore": 10}
+  {"city": "Puerto Natales", "countryCode": "CL", "walkScore": 60, "transitScore": 10},
+  {"city": "Pokhara", "countryCode": "NP", "walkScore": 55, "transitScore": 15},
+  {"city": "Huaraz", "countryCode": "PE", "walkScore": 62, "transitScore": 18}
 ]

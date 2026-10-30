@@ -3335,5 +3335,21 @@
     "latitude": -51.7263,
     "longitude": -72.5062,
     "timeZoneIdentifier": "America/Punta_Arenas"
+  },
+  {
+    "name": "Pokhara",
+    "countryCode": "NP",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Pokhara_Valley.jpg/1280px-Pokhara_Valley.jpg",
+    "latitude": 28.20972222,
+    "longitude": 83.98527778,
+    "timeZoneIdentifier": "Asia/Kathmandu"
+  },
+  {
+    "name": "Huaraz",
+    "countryCode": "PE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG/1280px-Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG",
+    "latitude": -9.52777778,
+    "longitude": -77.52777778,
+    "timeZoneIdentifier": "America/Lima"
   }
 ]
