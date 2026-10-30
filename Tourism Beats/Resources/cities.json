@@ -3439,5 +3439,29 @@
     "latitude": 2.18888889,
     "longitude": 102.25111111,
     "timeZoneIdentifier": "Asia/Kuala_Lumpur"
+  },
+  {
+    "name": "Lahore",
+    "countryCode": "PK",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Lahore_Fort_view_from_Baradari.jpg/1280px-Lahore_Fort_view_from_Baradari.jpg",
+    "latitude": 31.54972222,
+    "longitude": 74.34361111,
+    "timeZoneIdentifier": "Asia/Karachi"
+  },
+  {
+    "name": "Lucknow",
+    "countryCode": "IN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Rumi_Darwaza_-_The_Breathtaking_Architecture_01.jpg/1280px-Rumi_Darwaza_-_The_Breathtaking_Architecture_01.jpg",
+    "latitude": 26.847,
+    "longitude": 80.947,
+    "timeZoneIdentifier": "Asia/Kolkata"
+  },
+  {
+    "name": "Amritsar",
+    "countryCode": "IN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Golden_Temple_Amritsar_Gurudwara_%28cropped%29.jpg/1280px-Golden_Temple_Amritsar_Gurudwara_%28cropped%29.jpg",
+    "latitude": 31.626917,
+    "longitude": 74.87704,
+    "timeZoneIdentifier": "Asia/Kolkata"
   }
 ]

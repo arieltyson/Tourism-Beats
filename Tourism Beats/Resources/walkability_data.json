@@ -428,5 +428,8 @@
   {"city": "Jeonju", "countryCode": "KR", "walkScore": 70, "transitScore": 45},
   {"city": "Huế", "countryCode": "VN", "walkScore": 62, "transitScore": 12},
   {"city": "Ipoh", "countryCode": "MY", "walkScore": 50, "transitScore": 15},
-  {"city": "Melaka", "countryCode": "MY", "walkScore": 60, "transitScore": 15}
+  {"city": "Melaka", "countryCode": "MY", "walkScore": 60, "transitScore": 15},
+  {"city": "Lahore", "countryCode": "PK", "walkScore": 55, "transitScore": 40},
+  {"city": "Lucknow", "countryCode": "IN", "walkScore": 52, "transitScore": 35},
+  {"city": "Amritsar", "countryCode": "IN", "walkScore": 55, "transitScore": 25}
 ]
