@@ -411,5 +411,9 @@
   {"city": "Ponta Delgada", "countryCode": "PT", "walkScore": 72, "transitScore": 25},
   {"city": "Cannes", "countryCode": "FR", "walkScore": 85, "transitScore": 55},
   {"city": "Wānaka", "countryCode": "NZ", "walkScore": 55, "transitScore": 8},
-  {"city": "Cairns", "countryCode": "AU", "walkScore": 55, "transitScore": 30}
+  {"city": "Cairns", "countryCode": "AU", "walkScore": 55, "transitScore": 30},
+  {"city": "El Chaltén", "countryCode": "AR", "walkScore": 60, "transitScore": 3},
+  {"city": "Bariloche", "countryCode": "AR", "walkScore": 60, "transitScore": 30},
+  {"city": "Ushuaia", "countryCode": "AR", "walkScore": 62, "transitScore": 20},
+  {"city": "Puerto Natales", "countryCode": "CL", "walkScore": 60, "transitScore": 10}
 ]

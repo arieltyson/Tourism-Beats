@@ -3303,5 +3303,37 @@
     "latitude": -16.92555556,
     "longitude": 145.77527778,
     "timeZoneIdentifier": "Australia/Brisbane"
+  },
+  {
+    "name": "El Chaltén",
+    "countryCode": "AR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/El_Chalt%C3%A9n.jpg/1280px-El_Chalt%C3%A9n.jpg",
+    "latitude": -49.331408,
+    "longitude": -72.886129,
+    "timeZoneIdentifier": "America/Argentina/Rio_Gallegos"
+  },
+  {
+    "name": "Bariloche",
+    "countryCode": "AR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Llao_Llao_Peninsula.jpg/1280px-Llao_Llao_Peninsula.jpg",
+    "latitude": -41.13333333,
+    "longitude": -71.31,
+    "timeZoneIdentifier": "America/Argentina/Salta"
+  },
+  {
+    "name": "Ushuaia",
+    "countryCode": "AR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Ushuaia_aerial_panorama.jpg/1280px-Ushuaia_aerial_panorama.jpg",
+    "latitude": -54.80722222,
+    "longitude": -68.30805556,
+    "timeZoneIdentifier": "America/Argentina/Ushuaia"
+  },
+  {
+    "name": "Puerto Natales",
+    "countryCode": "CL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Puerto_Natales_01.jpg/1280px-Puerto_Natales_01.jpg",
+    "latitude": -51.7263,
+    "longitude": -72.5062,
+    "timeZoneIdentifier": "America/Punta_Arenas"
   }
 ]
