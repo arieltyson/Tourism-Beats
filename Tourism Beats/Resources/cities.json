@@ -3463,5 +3463,29 @@
     "latitude": 31.626917,
     "longitude": 74.87704,
     "timeZoneIdentifier": "Asia/Kolkata"
+  },
+  {
+    "name": "Bologna",
+    "countryCode": "IT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Torri_di_Bologna%2C_Bologna.jpg/1280px-Torri_di_Bologna%2C_Bologna.jpg",
+    "latitude": 44.49388889,
+    "longitude": 11.34277778,
+    "timeZoneIdentifier": "Europe/Rome"
+  },
+  {
+    "name": "San Sebastián",
+    "countryCode": "ES",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/San_Sebastian_Bahia_de_La_Concha_06_2012_2495.jpg/1280px-San_Sebastian_Bahia_de_La_Concha_06_2012_2495.jpg",
+    "latitude": 43.3183,
+    "longitude": -1.9812,
+    "timeZoneIdentifier": "Europe/Madrid"
+  },
+  {
+    "name": "Gaziantep",
+    "countryCode": "TR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/AntepKale2_%28cropped%29.jpg/1280px-AntepKale2_%28cropped%29.jpg",
+    "latitude": 37.06277778,
+    "longitude": 37.37916667,
+    "timeZoneIdentifier": "Europe/Istanbul"
   }
 ]
