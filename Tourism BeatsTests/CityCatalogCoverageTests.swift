@@ -216,7 +216,11 @@ struct CityCatalogCoverageTests {
         "LK": "Sri Jayawardenepura Kotte",
         "CH": "Bern",
         "TR": "Ankara",
-        "AE": "Abu Dhabi"
+        "AE": "Abu Dhabi",
+        "SZ": "Lobamba",
+        "MY": "Putrajaya",
+        "NL": "The Hague",
+        "BJ": "Cotonou"
     ]
 
     private static func loadCityKeys() throws -> Set<String> {

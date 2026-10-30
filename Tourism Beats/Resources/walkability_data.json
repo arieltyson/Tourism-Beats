@@ -436,5 +436,9 @@
   {"city": "San Sebastián", "countryCode": "ES", "walkScore": 88, "transitScore": 65},
   {"city": "Gaziantep", "countryCode": "TR", "walkScore": 62, "transitScore": 40},
   {"city": "Puebla", "countryCode": "MX", "walkScore": 68, "transitScore": 35},
-  {"city": "Salvador", "countryCode": "BR", "walkScore": 60, "transitScore": 45}
+  {"city": "Salvador", "countryCode": "BR", "walkScore": 60, "transitScore": 45},
+  {"city": "Lobamba", "countryCode": "SZ", "walkScore": 28, "transitScore": 8},
+  {"city": "Putrajaya", "countryCode": "MY", "walkScore": 38, "transitScore": 45},
+  {"city": "The Hague", "countryCode": "NL", "walkScore": 88, "transitScore": 82},
+  {"city": "Cotonou", "countryCode": "BJ", "walkScore": 50, "transitScore": 15}
 ]

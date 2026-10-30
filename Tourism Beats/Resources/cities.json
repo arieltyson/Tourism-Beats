@@ -3503,5 +3503,37 @@
     "latitude": -12.98305556,
     "longitude": -38.49277778,
     "timeZoneIdentifier": "America/Bahia"
+  },
+  {
+    "name": "Lobamba",
+    "countryCode": "SZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Parliament_building_of_Eswatini%2C_Lobamba.jpg/1280px-Parliament_building_of_Eswatini%2C_Lobamba.jpg",
+    "latitude": -26.44648,
+    "longitude": 31.206411,
+    "timeZoneIdentifier": "Africa/Mbabane"
+  },
+  {
+    "name": "Putrajaya",
+    "countryCode": "MY",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Putra_Mosque_being_reflected_in_the_lake_%28crop%29.jpg/1280px-Putra_Mosque_being_reflected_in_the_lake_%28crop%29.jpg",
+    "latitude": 2.9264,
+    "longitude": 101.6964,
+    "timeZoneIdentifier": "Asia/Kuala_Lumpur"
+  },
+  {
+    "name": "The Hague",
+    "countryCode": "NL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Den_Haag%2C_het_Binnenhof_diverse_RM_met_de_Hofvijver_op_de_voorgrond_foto8_2015-08-05_18.56.jpg/1280px-Den_Haag%2C_het_Binnenhof_diverse_RM_met_de_Hofvijver_op_de_voorgrond_foto8_2015-08-05_18.56.jpg",
+    "latitude": 52.0799,
+    "longitude": 4.3113,
+    "timeZoneIdentifier": "Europe/Amsterdam"
+  },
+  {
+    "name": "Cotonou",
+    "countryCode": "BJ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Monument_de_l%27Amazone_au_Benin.jpg/1280px-Monument_de_l%27Amazone_au_Benin.jpg",
+    "latitude": 6.36666667,
+    "longitude": 2.41666667,
+    "timeZoneIdentifier": "Africa/Porto-Novo"
   }
 ]
