@@ -1,7 +1,7 @@
 // WorldView.swift
 // Tourism Beats
 //
-// Map-based city exploration with a search bar floating within
+// Map-based city exploration with a search field floating within
 // thumb reach, following Apple Human Interface Guidelines.
 
 import MapKit
@@ -26,56 +26,71 @@ struct WorldView: View {
 
     // MARK: Search state
 
-    @State private var isSearchPresented = false
-    @State private var hidesSearchBar = false
-    @State private var searchBarHeight: CGFloat = 0
+    @State private var searchViewModel: CitySearchViewModel
+    @State private var isSearching = false
+    @FocusState private var isSearchFocused: Bool
+    @State private var searchFieldHeight: CGFloat = 0
 
     private let cities: [CityModel]
 
     init(onCitySelected: @escaping (CityModel) -> Void) {
         self.onCitySelected = onCitySelected
-        self.cities = (try? DataService().loadCities()) ?? []
+        let cities = (try? DataService().loadCities()) ?? []
+        self.cities = cities
+        self._searchViewModel = State(initialValue: CitySearchViewModel(cities: cities))
     }
 
     var body: some View {
-        MapView(
-            selectedCity: self.$selectedCity,
-            showAlert: self.$showAlert,
-            region: self.$region,
-            lastRegion: self.$lastRegion,
-            cities: self.cities,
-            bottomOverlayHeight: self.searchBarHeight,
-            onCitySelected: { _ in }
-        )
-        .ignoresSafeArea()
-        .safeAreaInset(edge: .bottom) {
-            MapSearchBar {
-                self.setSearchPresented(true)
+        ZStack {
+            MapView(
+                selectedCity: self.$selectedCity,
+                showAlert: self.$showAlert,
+                region: self.$region,
+                lastRegion: self.$lastRegion,
+                cities: self.cities,
+                bottomOverlayHeight: self.searchFieldHeight,
+                onCitySelected: { _ in }
+            )
+            .ignoresSafeArea()
+
+            // Results appear over the map in place, rather than on a new
+            // screen, so the field never waits for a presentation to focus.
+            if self.isSearching {
+                Rectangle()
+                    .fill(.background)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+
+                CitySearchResultsView(viewModel: self.searchViewModel) { city in
+                    self.endSearch()
+                    self.navigateToCity(city)
+                }
+                .transition(.opacity)
             }
-            // The search screen's own field takes its place while open.
-            .opacity(self.hidesSearchBar ? 0 : 1)
+        }
+        .safeAreaInset(edge: .bottom) {
+            MapSearchField(
+                text: self.$searchViewModel.query,
+                isFocused: self.$isSearchFocused,
+                isSearching: self.isSearching,
+                onClose: self.endSearch
+            )
             .padding(.horizontal, SpacingTokens.medium)
             .padding(.bottom, SpacingTokens.xSmall)
             .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
-                self.searchBarHeight = height
+                self.searchFieldHeight = height
             }
         }
         .navigationTitle("Explore")
         // MapKit blurs the map beneath any navigation bar, so the map
-        // screen goes without one and floats its search bar instead.
+        // screen goes without one and floats its search field instead.
         .toolbar(.hidden, for: .navigationBar)
-        .fullScreenCover(isPresented: self.$isSearchPresented) {
-            CitySearchView(cities: self.cities) { city in
-                self.setSearchPresented(false)
-                self.navigateToCity(city)
-            }
-        }
-        .onChange(of: self.isSearchPresented) { _, isPresented in
-            if isPresented {
-                self.hidesSearchBar = true
-            } else {
+        // Focusing the field starts a search; scrolling the results away
+        // only lowers the keyboard, leaving the search open.
+        .onChange(of: self.isSearchFocused) { _, isFocused in
+            if isFocused, !self.isSearching {
                 withAnimation(.smooth) {
-                    self.hidesSearchBar = false
+                    self.isSearching = true
                 }
             }
         }
@@ -113,16 +128,11 @@ struct WorldView: View {
 
     // MARK: - Search
 
-    /// Opens or closes search without a presentation animation. The field
-    /// can only take focus once its screen is fully presented, so an animated
-    /// presentation showed an idle field that jumped when the keyboard rose.
-    /// The search screen fades itself in and out over the map instead, and a
-    /// chosen city's page pushes in as search closes.
-    private func setSearchPresented(_ isPresented: Bool) {
-        var transaction = Transaction()
-        transaction.disablesAnimations = true
-        withTransaction(transaction) {
-            self.isSearchPresented = isPresented
+    private func endSearch() {
+        self.isSearchFocused = false
+        withAnimation(.smooth) {
+            self.isSearching = false
+            self.searchViewModel.query = ""
         }
     }
 
