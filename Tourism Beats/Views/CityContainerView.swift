@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CityContainerView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     let city: CityModel
@@ -91,25 +90,11 @@ struct CityContainerView: View {
             guard oldValue != newValue else { return }
             self.haptic.fire(.pageChange)
         }
-        .navigationBarBackButtonHidden(true)
+        // The system back button keeps the swipe back to the map, which a
+        // custom one disables.
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    self.dismiss()
-                } label: {
-                    Image(systemName: "chevron.backward.circle.fill")
-                        .font(.title2)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(
-                            AppColors.onImagePrimary,
-                            AppColors.imageBadgeFill
-                        )
-                }
-                .accessibilityLabel("Back to map")
-            }
-
             ToolbarItem(placement: .principal) {
                 Text(self.city.country.flag)
                     .font(.largeTitle)
