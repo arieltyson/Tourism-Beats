@@ -8,6 +8,9 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
     let coordinate: CLLocationCoordinate2D
     let timeZoneIdentifier: String
     let featuredHeroEligibleOverride: Bool?
+    /// Other names people search for the city by, such as its region or
+    /// island ("Kashmir" for Srinagar, "Santorini" for Fira).
+    let searchAliases: [String]
 
     init(
         id: String,
@@ -16,7 +19,8 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
         imageURL: URL,
         coordinate: CLLocationCoordinate2D,
         timeZoneIdentifier: String,
-        featuredHeroEligibleOverride: Bool? = nil
+        featuredHeroEligibleOverride: Bool? = nil,
+        searchAliases: [String] = []
     ) {
         self.id = id
         self.name = name
@@ -25,6 +29,7 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
         self.coordinate = coordinate
         self.timeZoneIdentifier = timeZoneIdentifier
         self.featuredHeroEligibleOverride = featuredHeroEligibleOverride
+        self.searchAliases = searchAliases
     }
 
     var timeZone: TimeZone {

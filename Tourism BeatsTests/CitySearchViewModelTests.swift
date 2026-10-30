@@ -107,6 +107,20 @@ struct CitySearchViewModelTests {
         #expect(!viewModel.hasNoResults)
     }
 
+    @Test(arguments: [("Kashmir", "srinagar"), ("catalina", "avalon"), ("Santorni", "fira")])
+    func aliasesFindTheirCity(query: String, expectedID: String) {
+        let viewModel = CitySearchViewModel(cities: [
+            Self.city("Srinagar", country: "India", aliases: ["Kashmir"]),
+            Self.city("Avalon", country: "United States", aliases: ["Santa Catalina Island", "Catalina"]),
+            Self.city("Fira", country: "Greece", aliases: ["Santorini"]),
+            Self.city("Kashmir Lodge Town", country: "Nowhere")
+        ])
+
+        viewModel.query = query
+
+        #expect(viewModel.results.first?.id == expectedID)
+    }
+
     @Test func shortQueriesAreNotCorrected() {
         let viewModel = CitySearchViewModel(cities: [Self.city("Rome", country: "Italy")])
 
@@ -124,14 +138,15 @@ struct CitySearchViewModelTests {
         #expect(!viewModel.hasNoResults)
     }
 
-    private static func city(_ name: String, country: String) -> CityModel {
+    private static func city(_ name: String, country: String, aliases: [String] = []) -> CityModel {
         CityModel(
             id: name.lowercased().replacing(" ", with: "-"),
             name: name,
             country: CountryModel(name: country, code: "XX", flag: ""),
             imageURL: URL.documentsDirectory,
             coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
-            timeZoneIdentifier: "UTC"
+            timeZoneIdentifier: "UTC",
+            searchAliases: aliases
         )
     }
 }

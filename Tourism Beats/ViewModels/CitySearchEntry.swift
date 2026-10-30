@@ -2,9 +2,9 @@ import Foundation
 
 // MARK: - CitySearchEntry
 
-/// A city prepared for search: its city and country names folded to plain
-/// lowercase words, so "sao paulo" finds São Paulo and "cluj napoca" finds
-/// Cluj-Napoca.
+/// A city prepared for search: its city and country names, and any other
+/// names it goes by, folded to plain lowercase words, so "sao paulo" finds
+/// São Paulo, "cluj napoca" finds Cluj-Napoca, and "kashmir" finds Srinagar.
 struct CitySearchEntry {
     /// How well a city matches, best first.
     enum Rank: Int, Comparable {
@@ -20,7 +20,8 @@ struct CitySearchEntry {
     }
 
     let city: CityModel
-    private let name: String
+    /// The city's name followed by its aliases, which match just as well.
+    private let names: [String]
     private let country: String
     /// The name from each word onward: "san fernando" gives "san fernando"
     /// and "fernando", so typing the start of any word matches.
@@ -29,9 +30,9 @@ struct CitySearchEntry {
 
     init(city: CityModel) {
         self.city = city
-        self.name = Self.normalized(city.name)
+        self.names = ([city.name] + city.searchAliases).map(Self.normalized)
         self.country = Self.normalized(city.country.name)
-        self.nameWordStarts = Self.wordStarts(of: self.name)
+        self.nameWordStarts = self.names.flatMap(Self.wordStarts(of:))
         self.countryWordStarts = Self.wordStarts(of: self.country)
     }
 
@@ -44,13 +45,13 @@ struct CitySearchEntry {
 
     /// How this city matches a normalized query, or `nil` if it doesn't.
     func rank(for query: String) -> Rank? {
-        if self.name.hasPrefix(query) {
+        if self.names.contains(where: { $0.hasPrefix(query) }) {
             .namePrefix
         } else if self.nameWordStarts.contains(where: { $0.hasPrefix(query) }) {
             .nameWordPrefix
         } else if self.countryWordStarts.contains(where: { $0.hasPrefix(query) }) {
             .countryWordPrefix
-        } else if self.name.contains(query) {
+        } else if self.names.contains(where: { $0.contains(query) }) {
             .nameContains
         } else if self.country.contains(query) {
             .countryContains

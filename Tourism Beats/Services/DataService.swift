@@ -19,6 +19,7 @@ private struct CityJSON: Decodable {
     let longitude: CLLocationDegrees
     let timeZoneIdentifier: String
     let featuredHeroEligible: Bool?
+    let searchAliases: [String]?
 }
 
 // MARK: - DataService
@@ -78,7 +79,8 @@ final class DataService {
                     longitude: entry.longitude
                 ),
                 timeZoneIdentifier: entry.timeZoneIdentifier,
-                featuredHeroEligibleOverride: entry.featuredHeroEligible
+                featuredHeroEligibleOverride: entry.featuredHeroEligible,
+                searchAliases: entry.searchAliases ?? []
             )
         }
         Self.cachedCities = cities
