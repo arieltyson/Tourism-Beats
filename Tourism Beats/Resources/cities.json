@@ -2230,7 +2230,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Santorini_Fira3_tango7174.jpg",
     "latitude": 36.42,
     "longitude": 25.43166667,
-    "timeZoneIdentifier": "Europe/Athens"
+    "timeZoneIdentifier": "Europe/Athens",
+    "searchAliases": ["Santorini"]
   },
   {
     "name": "Honolulu",
@@ -2894,7 +2895,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Hong_Kong_Island_Skyline_2009.jpg/1280px-Hong_Kong_Island_Skyline_2009.jpg",
     "latitude": 22.27833333,
     "longitude": 114.17444444,
-    "timeZoneIdentifier": "Asia/Hong_Kong"
+    "timeZoneIdentifier": "Asia/Hong_Kong",
+    "searchAliases": ["Hong Kong"]
   },
   {
     "name": "Monaco",
@@ -3134,7 +3136,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Cartagena%2C_Colombia_%285049256137%29.jpg/1280px-Cartagena%2C_Colombia_%285049256137%29.jpg",
     "latitude": 10.42361111,
     "longitude": -75.52527778,
-    "timeZoneIdentifier": "America/Bogota"
+    "timeZoneIdentifier": "America/Bogota",
+    "searchAliases": ["Cartagena de Indias"]
   },
   {
     "name": "Oaxaca",
@@ -3270,7 +3273,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Funchal%2C_Jardins_da_Quinta_Vigia_%28lookout%29.jpg/1280px-Funchal%2C_Jardins_da_Quinta_Vigia_%28lookout%29.jpg",
     "latitude": 32.65,
     "longitude": -16.91666667,
-    "timeZoneIdentifier": "Atlantic/Madeira"
+    "timeZoneIdentifier": "Atlantic/Madeira",
+    "searchAliases": ["Madeira"]
   },
   {
     "name": "Ponta Delgada",
@@ -3278,7 +3282,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Portas_da_Cidade%2C_Ponta_Delgada%2C_isla_de_San_Miguel%2C_Azores%2C_Portugal%2C_2020-07-29%2C_DD_123-125_HDR.jpg/1280px-Portas_da_Cidade%2C_Ponta_Delgada%2C_isla_de_San_Miguel%2C_Azores%2C_Portugal%2C_2020-07-29%2C_DD_123-125_HDR.jpg",
     "latitude": 37.74,
     "longitude": -25.67,
-    "timeZoneIdentifier": "Atlantic/Azores"
+    "timeZoneIdentifier": "Atlantic/Azores",
+    "searchAliases": ["Azores", "São Miguel"]
   },
   {
     "name": "Cannes",
@@ -3606,7 +3611,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Cathedral_of_Reims_%2817%29.jpg/1280px-Cathedral_of_Reims_%2817%29.jpg",
     "latitude": 49.26527778,
     "longitude": 4.02861111,
-    "timeZoneIdentifier": "Europe/Paris"
+    "timeZoneIdentifier": "Europe/Paris",
+    "searchAliases": ["Champagne"]
   },
   {
     "name": "Beaune",
@@ -3614,7 +3620,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Beaune_-_H%C3%B4tel-Dieu_-_Cour_-_02.jpg/1280px-Beaune_-_H%C3%B4tel-Dieu_-_Cour_-_02.jpg",
     "latitude": 47.02416667,
     "longitude": 4.83888889,
-    "timeZoneIdentifier": "Europe/Paris"
+    "timeZoneIdentifier": "Europe/Paris",
+    "searchAliases": ["Burgundy"]
   },
   {
     "name": "Colmar",
@@ -3646,7 +3653,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Old_Town_Plaza_-_Logrono_-_La_Rioja_-_Spain_%2814576256386%29_edited.jpg/1280px-Old_Town_Plaza_-_Logrono_-_La_Rioja_-_Spain_%2814576256386%29_edited.jpg",
     "latitude": 42.47,
     "longitude": -2.44555556,
-    "timeZoneIdentifier": "Europe/Madrid"
+    "timeZoneIdentifier": "Europe/Madrid",
+    "searchAliases": ["Rioja"]
   },
   {
     "name": "Jerez de la Frontera",
@@ -3670,7 +3678,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Sighnagi_2009.jpg/1280px-Sighnagi_2009.jpg",
     "latitude": 41.61861111,
     "longitude": 45.92166667,
-    "timeZoneIdentifier": "Asia/Tbilisi"
+    "timeZoneIdentifier": "Asia/Tbilisi",
+    "searchAliases": ["Kakheti"]
   },
   {
     "name": "Napa",
@@ -3678,7 +3687,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Autumn_vineyard_in_Napa_Valley.jpg/1280px-Autumn_vineyard_in_Napa_Valley.jpg",
     "latitude": 38.3,
     "longitude": -122.3,
-    "timeZoneIdentifier": "America/Los_Angeles"
+    "timeZoneIdentifier": "America/Los_Angeles",
+    "searchAliases": ["Napa Valley"]
   },
   {
     "name": "Niagara-on-the-Lake",
@@ -3702,7 +3712,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Jonkershoek.jpg/1280px-Jonkershoek.jpg",
     "latitude": -33.93666667,
     "longitude": 18.86138889,
-    "timeZoneIdentifier": "Africa/Johannesburg"
+    "timeZoneIdentifier": "Africa/Johannesburg",
+    "searchAliases": ["Cape Winelands"]
   },
   {
     "name": "Margaret River",
@@ -3718,7 +3729,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/The_vineyards_of_Marlborough%2C_New_Zealand%3B_May_2014.jpg/1280px-The_vineyards_of_Marlborough%2C_New_Zealand%3B_May_2014.jpg",
     "latitude": -41.51666667,
     "longitude": 173.95,
-    "timeZoneIdentifier": "Pacific/Auckland"
+    "timeZoneIdentifier": "Pacific/Auckland",
+    "searchAliases": ["Marlborough"]
   },
   {
     "name": "Maceió",
@@ -3742,7 +3754,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Bahia_Culebra_-_panoramio_%281%29.jpg/1280px-Bahia_Culebra_-_panoramio_%281%29.jpg",
     "latitude": 10.61666667,
     "longitude": -85.65805556,
-    "timeZoneIdentifier": "America/Costa_Rica"
+    "timeZoneIdentifier": "America/Costa_Rica",
+    "searchAliases": ["Bahía Culebra", "Papagayo"]
   },
   {
     "name": "Sarteneja",
@@ -3758,7 +3771,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Avalon_Catalina_Island_California_by_Don_Ramey_Logan.jpg/1280px-Avalon_Catalina_Island_California_by_Don_Ramey_Logan.jpg",
     "latitude": 33.34083333,
     "longitude": -118.32777778,
-    "timeZoneIdentifier": "America/Los_Angeles"
+    "timeZoneIdentifier": "America/Los_Angeles",
+    "searchAliases": ["Catalina", "Santa Catalina Island"]
   },
   {
     "name": "Carmel-by-the-Sea",
@@ -3798,7 +3812,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Empty_shikara_on_Dal_Lake%2C_Srinagar%2C_India_2013-08-23_%28flickr_9967093983%29.jpg/1280px-Empty_shikara_on_Dal_Lake%2C_Srinagar%2C_India_2013-08-23_%28flickr_9967093983%29.jpg",
     "latitude": 34.09111111,
     "longitude": 74.80611111,
-    "timeZoneIdentifier": "Asia/Kolkata"
+    "timeZoneIdentifier": "Asia/Kolkata",
+    "searchAliases": ["Kashmir", "Dal Lake"]
   },
   {
     "name": "Chail",
@@ -3806,7 +3821,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Panorama_from_Chail.jpg/1280px-Panorama_from_Chail.jpg",
     "latitude": 30.9697,
     "longitude": 77.1975,
-    "timeZoneIdentifier": "Asia/Kolkata"
+    "timeZoneIdentifier": "Asia/Kolkata",
+    "searchAliases": ["Himachal Pradesh"]
   },
   {
     "name": "Bellevue",
@@ -3838,7 +3854,8 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Yukon_River_at_Whitehorse_-b.jpg/1280px-Yukon_River_at_Whitehorse_-b.jpg",
     "latitude": 60.71722222,
     "longitude": -135.05583333,
-    "timeZoneIdentifier": "America/Whitehorse"
+    "timeZoneIdentifier": "America/Whitehorse",
+    "searchAliases": ["Yukon"]
   },
   {
     "name": "Iqaluit",
@@ -3846,6 +3863,7 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Iqaluit%2C_Nunavut.jpg/1280px-Iqaluit%2C_Nunavut.jpg",
     "latitude": 63.74944444,
     "longitude": -68.52166667,
-    "timeZoneIdentifier": "America/Iqaluit"
+    "timeZoneIdentifier": "America/Iqaluit",
+    "searchAliases": ["Nunavut"]
   }
 ]
