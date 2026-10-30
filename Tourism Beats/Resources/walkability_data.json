@@ -470,5 +470,9 @@
   {"city": "Sarteneja", "countryCode": "BZ", "walkScore": 55, "transitScore": 5},
   {"city": "Avalon", "countryCode": "US", "walkScore": 80, "transitScore": 25},
   {"city": "Carmel-by-the-Sea", "countryCode": "US", "walkScore": 75, "transitScore": 15},
-  {"city": "Gstaad", "countryCode": "CH", "walkScore": 75, "transitScore": 55}
+  {"city": "Gstaad", "countryCode": "CH", "walkScore": 75, "transitScore": 55},
+  {"city": "Dar es Salaam", "countryCode": "TZ", "walkScore": 48, "transitScore": 30},
+  {"city": "Arusha", "countryCode": "TZ", "walkScore": 50, "transitScore": 20},
+  {"city": "Srinagar", "countryCode": "IN", "walkScore": 55, "transitScore": 25},
+  {"city": "Chail", "countryCode": "IN", "walkScore": 50, "transitScore": 10}
 ]

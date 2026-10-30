@@ -3775,5 +3775,37 @@
     "latitude": 46.46666667,
     "longitude": 7.28333333,
     "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Dar es Salaam",
+    "countryCode": "TZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/8c/St_Joseph%27s_Catholic_Cathedral_%2834895613805%29.jpg",
+    "latitude": -6.81611111,
+    "longitude": 39.28027778,
+    "timeZoneIdentifier": "Africa/Dar_es_Salaam"
+  },
+  {
+    "name": "Arusha",
+    "countryCode": "TZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Arusha_City_view.jpg/1280px-Arusha_City_view.jpg",
+    "latitude": -3.36666667,
+    "longitude": 36.68333333,
+    "timeZoneIdentifier": "Africa/Dar_es_Salaam"
+  },
+  {
+    "name": "Srinagar",
+    "countryCode": "IN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Empty_shikara_on_Dal_Lake%2C_Srinagar%2C_India_2013-08-23_%28flickr_9967093983%29.jpg/1280px-Empty_shikara_on_Dal_Lake%2C_Srinagar%2C_India_2013-08-23_%28flickr_9967093983%29.jpg",
+    "latitude": 34.09111111,
+    "longitude": 74.80611111,
+    "timeZoneIdentifier": "Asia/Kolkata"
+  },
+  {
+    "name": "Chail",
+    "countryCode": "IN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Panorama_from_Chail.jpg/1280px-Panorama_from_Chail.jpg",
+    "latitude": 30.9697,
+    "longitude": 77.1975,
+    "timeZoneIdentifier": "Asia/Kolkata"
   }
 ]
