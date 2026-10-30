@@ -54,6 +54,74 @@ struct CitySearchViewModelTests {
         viewModel.query = "Atlantis"
 
         #expect(viewModel.results.isEmpty)
+        #expect(viewModel.hasNoResults)
+    }
+
+    @Test func citiesStartingWithTheQueryComeFirst() {
+        let viewModel = CitySearchViewModel(cities: [
+            Self.city("Lima", country: "Peru"),
+            Self.city("Panama City", country: "Panama"),
+            Self.city("Madrid", country: "Spain"),
+            Self.city("Manila", country: "Philippines")
+        ])
+
+        viewModel.query = "ma"
+
+        #expect(viewModel.results.map(\.id) == ["madrid", "manila", "lima", "panama-city"])
+    }
+
+    @Test func anyWordInTheNameCanStartTheMatch() {
+        let viewModel = CitySearchViewModel(cities: [
+            Self.city("Fernandina", country: "Chile"),
+            Self.city("San Fernando", country: "Trinidad and Tobago")
+        ])
+
+        viewModel.query = "fern"
+
+        #expect(viewModel.results.map(\.id) == ["fernandina", "san-fernando"])
+    }
+
+    @Test func punctuationInNamesIsIgnored() {
+        let viewModel = CitySearchViewModel(cities: [Self.city("Cluj-Napoca", country: "Romania")])
+
+        viewModel.query = "cluj napoca"
+
+        #expect(viewModel.results.map(\.id) == ["cluj-napoca"])
+    }
+
+    @Test(arguments: [
+        ("Maldova", "chisinau"),
+        ("Prais", "paris"),
+        ("Barcelonna", "barcelona")
+    ])
+    func misspellingsFindTheClosestCity(query: String, expectedID: String) {
+        let viewModel = CitySearchViewModel(cities: [
+            Self.city("Chisinau", country: "Moldova"),
+            Self.city("Paris", country: "France"),
+            Self.city("Barcelona", country: "Spain")
+        ])
+
+        viewModel.query = query
+
+        #expect(viewModel.results.map(\.id) == [expectedID])
+        #expect(!viewModel.hasNoResults)
+    }
+
+    @Test func shortQueriesAreNotCorrected() {
+        let viewModel = CitySearchViewModel(cities: [Self.city("Rome", country: "Italy")])
+
+        viewModel.query = "rme"
+
+        #expect(viewModel.results.isEmpty)
+        #expect(viewModel.hasNoResults)
+    }
+
+    @Test func emptyQueryIsNeverReportedAsNoResults() {
+        let viewModel = CitySearchViewModel(cities: [])
+
+        viewModel.query = " "
+
+        #expect(!viewModel.hasNoResults)
     }
 
     private static func city(_ name: String, country: String) -> CityModel {
