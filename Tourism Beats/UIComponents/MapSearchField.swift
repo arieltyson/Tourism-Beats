@@ -22,6 +22,7 @@ struct MapSearchField: View {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.secondary)
                         .accessibilityHidden(true)
+                        .allowsHitTesting(false)
 
                     TextField("Search cities or countries", text: self.$text)
                         .focused(self.isFocused)
@@ -40,7 +41,18 @@ struct MapSearchField: View {
                 }
                 .padding(.horizontal, SpacingTokens.medium)
                 .frame(minHeight: SpacingTokens.minimumTapTarget)
-                .contentShape(.capsule)
+                // The text field only covers its line of text, so taps on the
+                // icon, the padding, or above and below the text fall through
+                // to this, and the whole capsule focuses on the first tap.
+                .background {
+                    Button {
+                        self.isFocused.wrappedValue = true
+                    } label: {
+                        Color.clear.contentShape(.capsule)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityHidden(true)
+                }
                 .glassEffect(.regular.interactive(), in: .capsule)
                 .glassEffectID("field", in: self.glassNamespace)
 
