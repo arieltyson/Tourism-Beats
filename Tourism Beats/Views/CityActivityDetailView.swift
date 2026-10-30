@@ -199,12 +199,6 @@ extension CityActivityDetailView {
                         .font(TypographyTokens.cardLabel)
                         .foregroundStyle(AppColors.secondaryLabel)
                 }
-
-                if self.enrichedSummary != nil {
-                    Text("Source: Wikipedia")
-                        .font(TypographyTokens.footnote)
-                        .foregroundStyle(AppColors.secondaryLabel)
-                }
             }
             .padding(SpacingTokens.medium)
             .frame(maxWidth: .infinity, alignment: .leading)
