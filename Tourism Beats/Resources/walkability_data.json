@@ -434,5 +434,7 @@
   {"city": "Amritsar", "countryCode": "IN", "walkScore": 55, "transitScore": 25},
   {"city": "Bologna", "countryCode": "IT", "walkScore": 90, "transitScore": 70},
   {"city": "San Sebastián", "countryCode": "ES", "walkScore": 88, "transitScore": 65},
-  {"city": "Gaziantep", "countryCode": "TR", "walkScore": 62, "transitScore": 40}
+  {"city": "Gaziantep", "countryCode": "TR", "walkScore": 62, "transitScore": 40},
+  {"city": "Puebla", "countryCode": "MX", "walkScore": 68, "transitScore": 35},
+  {"city": "Salvador", "countryCode": "BR", "walkScore": 60, "transitScore": 45}
 ]

@@ -3487,5 +3487,21 @@
     "latitude": 37.06277778,
     "longitude": 37.37916667,
     "timeZoneIdentifier": "Europe/Istanbul"
+  },
+  {
+    "name": "Puebla",
+    "countryCode": "MX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Catedral_de_Puebla%2C_M%C3%A9xico%2C_2013-10-11%2C_DD_13.JPG/1280px-Catedral_de_Puebla%2C_M%C3%A9xico%2C_2013-10-11%2C_DD_13.JPG",
+    "latitude": 19.05138889,
+    "longitude": -98.21777778,
+    "timeZoneIdentifier": "America/Mexico_City"
+  },
+  {
+    "name": "Salvador",
+    "countryCode": "BR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Salvador_BA_%28cropped%29_2.jpg/1280px-Salvador_BA_%28cropped%29_2.jpg",
+    "latitude": -12.98305556,
+    "longitude": -38.49277778,
+    "timeZoneIdentifier": "America/Bahia"
   }
 ]
