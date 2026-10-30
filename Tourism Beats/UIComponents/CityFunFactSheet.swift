@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - CityFunFactSheet
 
-/// The whole of a fun fact the card could only preview, with its source.
+/// The whole of a fun fact the card could only preview.
 ///
 /// Opens at half height, which fits most facts, and can be pulled up for the
 /// longest ones; the text scrolls and can be selected to copy.
@@ -14,23 +14,11 @@ struct CityFunFactSheet: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: SpacingTokens.medium) {
-                    Text(self.fact.text)
-                        .font(TypographyTokens.body)
-                        .foregroundStyle(AppColors.label)
-                        .textSelection(.enabled)
-
-                    if let sourceURL = self.fact.sourceURL {
-                        Link("Source: \(self.fact.sourceName)", destination: sourceURL)
-                            .font(TypographyTokens.footnote)
-                            .foregroundStyle(AppColors.secondaryLabel)
-                    } else {
-                        Text("Source: \(self.fact.sourceName)")
-                            .font(TypographyTokens.footnote)
-                            .foregroundStyle(AppColors.secondaryLabel)
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                Text(self.fact.text)
+                    .font(TypographyTokens.body)
+                    .foregroundStyle(AppColors.label)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(SpacingTokens.medium)
             }
             .navigationTitle("Fun Fact")

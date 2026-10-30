@@ -242,47 +242,14 @@ private struct CityFunFactContent: View {
 
             Spacer(minLength: 0)
 
-            CityFunFactFooter(
-                fact: self.fact,
-                onShowFullFact: self.isTruncated ? { self.isShowingFullFact = true } : nil
-            )
+            if self.isTruncated {
+                CityFunFactMoreButton { self.isShowingFullFact = true }
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .sheet(isPresented: self.$isShowingFullFact) {
             CityFunFactSheet(fact: self.fact)
-        }
-    }
-}
-
-// MARK: - CityFunFactFooter
-
-private struct CityFunFactFooter: View {
-    let fact: CityFunFact
-    /// Present only when the fact is cut off in the card.
-    let onShowFullFact: (() -> Void)?
-
-    var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(spacing: SpacingTokens.xSmall) {
-                CityFunFactSourceLabel(fact: self.fact)
-
-                Spacer(minLength: 0)
-
-                CityFunFactFallbackBadge(fact: self.fact)
-
-                if let onShowFullFact {
-                    CityFunFactMoreButton(action: onShowFullFact)
-                }
-            }
-
-            VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-                CityFunFactSourceLabel(fact: self.fact)
-                CityFunFactFallbackBadge(fact: self.fact)
-
-                if let onShowFullFact {
-                    CityFunFactMoreButton(action: onShowFullFact)
-                }
-            }
         }
     }
 }
@@ -300,49 +267,6 @@ private struct CityFunFactMoreButton: View {
             .buttonStyle(.borderless)
             .accessibilityLabel("Read the whole fact")
             .accessibilityInputLabels(["More", "Read More", "Whole Fact"])
-    }
-}
-
-// MARK: - CityFunFactSourceLabel
-
-private struct CityFunFactSourceLabel: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    let fact: CityFunFact
-
-    var body: some View {
-        if let sourceURL = self.fact.sourceURL {
-            Link("Source: \(self.fact.sourceName)", destination: sourceURL)
-                .font(TypographyTokens.footnote)
-                .foregroundStyle(AppColors.secondaryLabel)
-                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
-                .truncationMode(.tail)
-        } else {
-            Text("Source: \(self.fact.sourceName)")
-                .font(TypographyTokens.footnote)
-                .foregroundStyle(AppColors.secondaryLabel)
-                .lineLimit(self.dynamicTypeSize.isAccessibilitySize ? 2 : 1)
-                .truncationMode(.tail)
-        }
-    }
-}
-
-// MARK: - CityFunFactFallbackBadge
-
-private struct CityFunFactFallbackBadge: View {
-    let fact: CityFunFact
-
-    var body: some View {
-        if self.fact.isFallback {
-            Text("Offline fallback")
-                .font(TypographyTokens.footnote)
-                .bold()
-                .foregroundStyle(AppColors.secondaryLabel)
-                .padding(.horizontal, SpacingTokens.xSmall)
-                .padding(.vertical, 2)
-                .background(AppColors.surfaceSecondary.opacity(0.88), in: Capsule())
-                .lineLimit(1)
-        }
     }
 }
 
