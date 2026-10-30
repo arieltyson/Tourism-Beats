@@ -474,5 +474,8 @@
   {"city": "Dar es Salaam", "countryCode": "TZ", "walkScore": 48, "transitScore": 30},
   {"city": "Arusha", "countryCode": "TZ", "walkScore": 50, "transitScore": 20},
   {"city": "Srinagar", "countryCode": "IN", "walkScore": 55, "transitScore": 25},
-  {"city": "Chail", "countryCode": "IN", "walkScore": 50, "transitScore": 10}
+  {"city": "Chail", "countryCode": "IN", "walkScore": 50, "transitScore": 10},
+  {"city": "Bellevue", "countryCode": "US", "walkScore": 52, "transitScore": 45},
+  {"city": "Redmond", "countryCode": "US", "walkScore": 45, "transitScore": 40},
+  {"city": "Sammamish", "countryCode": "US", "walkScore": 15, "transitScore": 10}
 ]

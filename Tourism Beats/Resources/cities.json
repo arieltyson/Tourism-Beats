@@ -3807,5 +3807,29 @@
     "latitude": 30.9697,
     "longitude": 77.1975,
     "timeZoneIdentifier": "Asia/Kolkata"
+  },
+  {
+    "name": "Bellevue",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Bellevue_Downtown_Aerial%2C_May_2025.jpg/1280px-Bellevue_Downtown_Aerial%2C_May_2025.jpg",
+    "latitude": 47.61444444,
+    "longitude": -122.1925,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Redmond",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Redmond_aerial%2C_April_2023.png/1280px-Redmond_aerial%2C_April_2023.png",
+    "latitude": 47.66944444,
+    "longitude": -122.12388889,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Sammamish",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Lake_Sammamish_State_Park_aerial%2C_April_2023.png/1280px-Lake_Sammamish_State_Park_aerial%2C_April_2023.png",
+    "latitude": 47.6089,
+    "longitude": -122.042,
+    "timeZoneIdentifier": "America/Los_Angeles"
   }
 ]
