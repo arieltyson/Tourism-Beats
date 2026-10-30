@@ -394,5 +394,7 @@
   {"city": "Oaxaca", "countryCode": "MX", "walkScore": 70, "transitScore": 28},
   {"city": "Austin", "countryCode": "US", "walkScore": 41, "transitScore": 34},
   {"city": "Philadelphia", "countryCode": "US", "walkScore": 79, "transitScore": 67},
-  {"city": "Marrakech", "countryCode": "MA", "walkScore": 62, "transitScore": 30}
+  {"city": "Marrakech", "countryCode": "MA", "walkScore": 62, "transitScore": 30},
+  {"city": "Brisbane", "countryCode": "AU", "walkScore": 55, "transitScore": 50},
+  {"city": "Queenstown", "countryCode": "NZ", "walkScore": 55, "transitScore": 20}
 ]

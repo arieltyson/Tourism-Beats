@@ -3167,5 +3167,21 @@
     "latitude": 31.62947,
     "longitude": -7.98108,
     "timeZoneIdentifier": "Africa/Casablanca"
+  },
+  {
+    "name": "Brisbane",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Brisbane_CBD_seen_from_Kangaroo_Point%2C_2024%2C_01_%282%29.jpg/1280px-Brisbane_CBD_seen_from_Kangaroo_Point%2C_2024%2C_01_%282%29.jpg",
+    "latitude": -27.46777778,
+    "longitude": 153.02777778,
+    "timeZoneIdentifier": "Australia/Brisbane"
+  },
+  {
+    "name": "Queenstown",
+    "countryCode": "NZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Queenstown_1_%288168013172%29.jpg/1280px-Queenstown_1_%288168013172%29.jpg",
+    "latitude": -45.03111111,
+    "longitude": 168.6625,
+    "timeZoneIdentifier": "Pacific/Auckland"
   }
 ]
