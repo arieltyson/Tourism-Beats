@@ -19,19 +19,6 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
                 "Accessibility Unknown"
             }
         }
-
-        var detailLabel: String {
-            switch self {
-            case .yes:
-                "Wheelchair access listed"
-            case .limited:
-                "Limited wheelchair access listed"
-            case .no:
-                "No wheelchair access listed"
-            case .unknown:
-                "Accessibility not listed"
-            }
-        }
     }
 
     let id: String

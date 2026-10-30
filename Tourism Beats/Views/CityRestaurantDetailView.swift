@@ -11,7 +11,6 @@ struct CityRestaurantDetailView: View {
             VStack(alignment: .leading, spacing: SpacingTokens.large) {
                 Self.Hero(restaurant: self.restaurant, city: self.city)
                 Self.RecommendationCard(restaurant: self.restaurant)
-                Self.VisitCard(restaurant: self.restaurant)
                 Self.LinkCard(restaurant: self.restaurant)
             }
             .padding(.horizontal, SpacingTokens.medium)
@@ -83,16 +82,6 @@ extension CityRestaurantDetailView {
                 Text(self.restaurant.summary)
                     .font(TypographyTokens.body)
                     .foregroundStyle(AppColors.label)
-
-                if !self.restaurant.rankingHighlights.isEmpty {
-                    VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                        ForEach(self.restaurant.rankingHighlights, id: \.self) { highlight in
-                            Label(highlight, systemImage: "checkmark.circle.fill")
-                                .font(TypographyTokens.cardLabel)
-                                .foregroundStyle(AppColors.secondaryLabel)
-                        }
-                    }
-                }
             }
             .padding(SpacingTokens.medium)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -111,67 +100,6 @@ extension CityRestaurantDetailView {
                         radius: 16,
                         y: 10
                     )
-            }
-        }
-    }
-
-    private struct VisitCard: View {
-        let restaurant: CityRestaurant
-
-        @Environment(\.colorScheme) private var scheme
-
-        private var rows: [(label: String, value: String)] {
-            var result: [(String, String)] = []
-            if let cuisine = self.restaurant.cuisine { result.append(("Cuisine", cuisine)) }
-            if let hours = self.restaurant.hours { result.append(("Hours", hours)) }
-            if let address = self.restaurant.address { result.append(("Location", address)) }
-            if let phone = self.restaurant.phoneNumber { result.append(("Phone", phone)) }
-            if self.restaurant.wheelchairAccessibility != .unknown {
-                result.append(("Accessibility", self.restaurant.wheelchairAccessibility.detailLabel))
-            }
-            if let dietary = self.restaurant.dietarySummary { result.append(("Dietary", dietary)) }
-            if self.restaurant.hasOutdoorSeating { result.append(("Outdoor Seating", "Available")) }
-            if self.restaurant.acceptsReservations { result.append(("Reservations", "Accepted")) }
-            return result
-        }
-
-        var body: some View {
-            if !self.rows.isEmpty {
-                VStack(alignment: .leading, spacing: SpacingTokens.small) {
-                    Text("Plan Your Visit")
-                        .font(TypographyTokens.sectionHeader)
-                        .bold()
-                        .foregroundStyle(AppColors.label)
-
-                    ForEach(Array(self.rows.enumerated()), id: \.offset) { index, row in
-                        if index > 0 { Divider() }
-
-                        LabeledContent(row.label) {
-                            Text(row.value)
-                                .multilineTextAlignment(.trailing)
-                        }
-                    }
-                }
-                .font(TypographyTokens.body)
-                .foregroundStyle(AppColors.label)
-                .padding(SpacingTokens.medium)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background {
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                .strokeBorder(
-                                    AppColors.glassBorder(for: self.scheme),
-                                    lineWidth: 1
-                                )
-                        }
-                        .shadow(
-                            color: AppColors.glassShadow(for: self.scheme),
-                            radius: 16,
-                            y: 10
-                        )
-                }
             }
         }
     }
