@@ -383,5 +383,9 @@
   {"city": "Lyon", "countryCode": "FR", "walkScore": 87, "transitScore": 80},
   {"city": "Kraków", "countryCode": "PL", "walkScore": 80, "transitScore": 70},
   {"city": "Salzburg", "countryCode": "AT", "walkScore": 82, "transitScore": 68},
-  {"city": "Zermatt", "countryCode": "CH", "walkScore": 78, "transitScore": 40}
+  {"city": "Zermatt", "countryCode": "CH", "walkScore": 78, "transitScore": 40},
+  {"city": "Chiang Mai", "countryCode": "TH", "walkScore": 58, "transitScore": 20},
+  {"city": "Phuket", "countryCode": "TH", "walkScore": 48, "transitScore": 15},
+  {"city": "Busan", "countryCode": "KR", "walkScore": 78, "transitScore": 82},
+  {"city": "Siem Reap", "countryCode": "KH", "walkScore": 45, "transitScore": 10}
 ]

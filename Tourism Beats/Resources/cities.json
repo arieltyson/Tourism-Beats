@@ -3079,5 +3079,37 @@
     "latitude": 46.0193,
     "longitude": 7.7461,
     "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Chiang Mai",
+    "countryCode": "TH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/0020-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%87%E0%B8%AB%E0%B9%8C%E0%B8%A7%E0%B8%A3%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3.jpg/1280px-0020-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%87%E0%B8%AB%E0%B9%8C%E0%B8%A7%E0%B8%A3%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3.jpg",
+    "latitude": 18.78888889,
+    "longitude": 98.98333333,
+    "timeZoneIdentifier": "Asia/Bangkok"
+  },
+  {
+    "name": "Phuket",
+    "countryCode": "TH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Soi_Rommanee%2C_Phuket_Town.jpg/1280px-Soi_Rommanee%2C_Phuket_Town.jpg",
+    "latitude": 7.88805556,
+    "longitude": 98.3975,
+    "timeZoneIdentifier": "Asia/Bangkok"
+  },
+  {
+    "name": "Busan",
+    "countryCode": "KR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Busan_City_Haeundae_District_%2801%29.jpg/1280px-Busan_City_Haeundae_District_%2801%29.jpg",
+    "latitude": 35.18,
+    "longitude": 129.075,
+    "timeZoneIdentifier": "Asia/Seoul"
+  },
+  {
+    "name": "Siem Reap",
+    "countryCode": "KH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Angkor_Wat.jpg/1280px-Angkor_Wat.jpg",
+    "latitude": 13.36222222,
+    "longitude": 103.85972222,
+    "timeZoneIdentifier": "Asia/Phnom_Penh"
   }
 ]
