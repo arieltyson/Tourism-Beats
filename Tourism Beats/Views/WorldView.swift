@@ -1,8 +1,8 @@
 // WorldView.swift
 // Tourism Beats
 //
-// Map-based city exploration with native searchable
-// interface following Apple Human Interface Guidelines.
+// Map-based city exploration with a search bar floating within
+// thumb reach, following Apple Human Interface Guidelines.
 
 import MapKit
 import SwiftUI
@@ -26,8 +26,9 @@ struct WorldView: View {
 
     // MARK: Search state
 
-    @State private var searchText = ""
-    @State private var searchIndex: [SearchIndexRow] = []
+    @State private var isSearchPresented = false
+    @State private var searchBarHeight: CGFloat = 0
+    @Namespace private var searchTransition
 
     private let cities: [CityModel]
 
@@ -43,23 +44,37 @@ struct WorldView: View {
             region: self.$region,
             lastRegion: self.$lastRegion,
             cities: self.cities,
+            bottomOverlayHeight: self.searchBarHeight,
             onCitySelected: { _ in }
         )
         .ignoresSafeArea()
+        .safeAreaInset(edge: .bottom) {
+            MapSearchBar {
+                self.isSearchPresented = true
+            }
+            .matchedTransitionSource(id: Self.searchTransitionID, in: self.searchTransition)
+            .padding(.horizontal, SpacingTokens.medium)
+            .padding(.bottom, SpacingTokens.xSmall)
+            .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
+                self.searchBarHeight = height
+            }
+        }
         .navigationTitle("Explore")
-        .navigationBarTitleDisplayMode(.inline)
-        .searchable(
-            text: self.$searchText,
-            placement: .toolbar,
-            prompt: "Search cities or countries"
-        )
-        .searchSuggestions {
-            self.searchSuggestionsContent
+        // MapKit blurs the map beneath any navigation bar, so the map
+        // screen goes without one and floats its search bar instead.
+        .toolbar(.hidden, for: .navigationBar)
+        .fullScreenCover(isPresented: self.$isSearchPresented) {
+            CitySearchView(cities: self.cities) { city in
+                self.isSearchPresented = false
+                self.navigateToCity(city)
+            }
+            .navigationTransition(
+                .zoom(sourceID: Self.searchTransitionID, in: self.searchTransition)
+            )
         }
         .onAppear {
             self.zoomOutOnReturn()
             self.resetState()
-            self.buildSearchIndexIfNeeded()
         }
         .onDisappear {
             self.resetState()
@@ -89,50 +104,13 @@ struct WorldView: View {
         }
     }
 
-    private var filteredCities: [CityModel] {
-        let query = self.searchText
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+    // MARK: - Search
 
-        guard !query.isEmpty else {
-            return Array(self.cities.prefix(10))
-        }
-
-        var nameMatches: [CityModel] = []
-        var countryMatches: [CityModel] = []
-
-        for row in self.searchIndex {
-            if row.city.name.localizedStandardContains(query) {
-                nameMatches.append(row.city)
-            } else if row.city.country.name.localizedStandardContains(query) {
-                countryMatches.append(row.city)
-            }
-        }
-
-        return nameMatches + countryMatches
-    }
-
-    // MARK: - Search Suggestions
-
-    @ViewBuilder
-    private var searchSuggestionsContent: some View {
-        let results = self.filteredCities
-        ForEach(results, id: \.id) { city in
-            Button {
-                self.navigateToCity(city)
-            } label: {
-                CitySearchResultRow(
-                    city: city,
-                    searchText: self.searchText
-                )
-            }
-            .buttonStyle(.plain)
-        }
-    }
+    private static let searchTransitionID = "search"
 
     // MARK: - Navigation
 
     private func navigateToCity(_ city: CityModel) {
-        self.searchText = ""
         self.lastVisitedCoordinate = city.coordinate
         self.region = MKCoordinateRegion(
             center: city.coordinate,
@@ -156,7 +134,6 @@ struct WorldView: View {
         self.selectedCity = nil
         self.showAlert = false
         self.lastRegion = nil
-        self.searchText = ""
         self.alertTimeoutTask?.cancel()
     }
 
@@ -178,16 +155,5 @@ struct WorldView: View {
         } else {
             self.alertTimeoutTask?.cancel()
         }
-    }
-
-    // MARK: - Search Index
-
-    private struct SearchIndexRow {
-        let city: CityModel
-    }
-
-    private func buildSearchIndexIfNeeded() {
-        guard self.searchIndex.isEmpty else { return }
-        self.searchIndex = self.cities.map { SearchIndexRow(city: $0) }
     }
 }
