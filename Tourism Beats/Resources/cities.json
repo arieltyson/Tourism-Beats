@@ -3391,5 +3391,29 @@
     "latitude": 50.9981,
     "longitude": -118.196,
     "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Guangzhou",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Canton_Tower_20241027.jpg/1280px-Canton_Tower_20241027.jpg",
+    "latitude": 23.13,
+    "longitude": 113.26,
+    "timeZoneIdentifier": "Asia/Shanghai"
+  },
+  {
+    "name": "Tainan",
+    "countryCode": "TW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Tainan_Taiwan_Fort-Provintia-01.jpg/1280px-Tainan_Taiwan_Fort-Provintia-01.jpg",
+    "latitude": 22.99,
+    "longitude": 120.185,
+    "timeZoneIdentifier": "Asia/Taipei"
+  },
+  {
+    "name": "Jeonju",
+    "countryCode": "KR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Jeonju_Hanok_Maeul_01.jpg/1280px-Jeonju_Hanok_Maeul_01.jpg",
+    "latitude": 35.82388889,
+    "longitude": 127.1475,
+    "timeZoneIdentifier": "Asia/Seoul"
   }
 ]

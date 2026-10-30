@@ -422,5 +422,8 @@
   {"city": "Moab", "countryCode": "US", "walkScore": 45, "transitScore": 3},
   {"city": "Squamish", "countryCode": "CA", "walkScore": 40, "transitScore": 15},
   {"city": "Canmore", "countryCode": "CA", "walkScore": 50, "transitScore": 20},
-  {"city": "Revelstoke", "countryCode": "CA", "walkScore": 45, "transitScore": 8}
+  {"city": "Revelstoke", "countryCode": "CA", "walkScore": 45, "transitScore": 8},
+  {"city": "Guangzhou", "countryCode": "CN", "walkScore": 75, "transitScore": 88},
+  {"city": "Tainan", "countryCode": "TW", "walkScore": 65, "transitScore": 30},
+  {"city": "Jeonju", "countryCode": "KR", "walkScore": 70, "transitScore": 45}
 ]
