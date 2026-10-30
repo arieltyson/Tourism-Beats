@@ -3015,5 +3015,69 @@
     "latitude": 47.63138889,
     "longitude": 13.00416667,
     "timeZoneIdentifier": "Europe/Berlin"
+  },
+  {
+    "name": "Porto",
+    "countryCode": "PT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Puente_Don_Luis_I%2C_Oporto%2C_Portugal%2C_2012-05-09%2C_DD_13.JPG/1280px-Puente_Don_Luis_I%2C_Oporto%2C_Portugal%2C_2012-05-09%2C_DD_13.JPG",
+    "latitude": 41.15,
+    "longitude": -8.61083333,
+    "timeZoneIdentifier": "Europe/Lisbon"
+  },
+  {
+    "name": "Dubrovnik",
+    "countryCode": "HR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/The_walls_of_the_fortress_and_View_of_the_old_city._panorama.jpg/1280px-The_walls_of_the_fortress_and_View_of_the_old_city._panorama.jpg",
+    "latitude": 42.64027778,
+    "longitude": 18.10833333,
+    "timeZoneIdentifier": "Europe/Zagreb"
+  },
+  {
+    "name": "Seville",
+    "countryCode": "ES",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Sevilla_Cathedral_-_Southeast.jpg/1280px-Sevilla_Cathedral_-_Southeast.jpg",
+    "latitude": 37.38861111,
+    "longitude": -5.995,
+    "timeZoneIdentifier": "Europe/Madrid"
+  },
+  {
+    "name": "Liverpool",
+    "countryCode": "GB",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Pier_Head%2C_Liverpool_-_geograph.org.uk_-_3059094.jpg/1280px-Pier_Head%2C_Liverpool_-_geograph.org.uk_-_3059094.jpg",
+    "latitude": 53.40722222,
+    "longitude": -2.99166667,
+    "timeZoneIdentifier": "Europe/London"
+  },
+  {
+    "name": "Lyon",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Fourviere_Lyon.jpg/1280px-Fourviere_Lyon.jpg",
+    "latitude": 45.7675,
+    "longitude": 4.835,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Kraków",
+    "countryCode": "PL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Krakow_Rynek_Glowny_panorama_2.jpg/1280px-Krakow_Rynek_Glowny_panorama_2.jpg",
+    "latitude": 50.06138889,
+    "longitude": 19.93722222,
+    "timeZoneIdentifier": "Europe/Warsaw"
+  },
+  {
+    "name": "Salzburg",
+    "countryCode": "AT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Salzburg_%2848489551981%29.jpg/1280px-Salzburg_%2848489551981%29.jpg",
+    "latitude": 47.8,
+    "longitude": 13.045,
+    "timeZoneIdentifier": "Europe/Vienna"
+  },
+  {
+    "name": "Zermatt",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/1_zermatt_evening_2022.jpg/1280px-1_zermatt_evening_2022.jpg",
+    "latitude": 46.0193,
+    "longitude": 7.7461,
+    "timeZoneIdentifier": "Europe/Zurich"
   }
 ]

@@ -375,5 +375,13 @@
   {"city": "San Pedro de Macorís", "countryCode": "DO", "walkScore": 45, "transitScore": 12},
   {"city": "Punta Cana", "countryCode": "DO", "walkScore": 22, "transitScore": 6},
   {"city": "La Romana", "countryCode": "DO", "walkScore": 42, "transitScore": 10},
-  {"city": "Berchtesgaden", "countryCode": "DE", "walkScore": 60, "transitScore": 38}
+  {"city": "Berchtesgaden", "countryCode": "DE", "walkScore": 60, "transitScore": 38},
+  {"city": "Porto", "countryCode": "PT", "walkScore": 82, "transitScore": 68},
+  {"city": "Dubrovnik", "countryCode": "HR", "walkScore": 75, "transitScore": 40},
+  {"city": "Seville", "countryCode": "ES", "walkScore": 86, "transitScore": 60},
+  {"city": "Liverpool", "countryCode": "GB", "walkScore": 80, "transitScore": 65},
+  {"city": "Lyon", "countryCode": "FR", "walkScore": 87, "transitScore": 80},
+  {"city": "Kraków", "countryCode": "PL", "walkScore": 80, "transitScore": 70},
+  {"city": "Salzburg", "countryCode": "AT", "walkScore": 82, "transitScore": 68},
+  {"city": "Zermatt", "countryCode": "CH", "walkScore": 78, "transitScore": 40}
 ]
