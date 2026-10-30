@@ -387,5 +387,11 @@
   {"city": "Chiang Mai", "countryCode": "TH", "walkScore": 58, "transitScore": 20},
   {"city": "Phuket", "countryCode": "TH", "walkScore": 48, "transitScore": 15},
   {"city": "Busan", "countryCode": "KR", "walkScore": 78, "transitScore": 82},
-  {"city": "Siem Reap", "countryCode": "KH", "walkScore": 45, "transitScore": 10}
+  {"city": "Siem Reap", "countryCode": "KH", "walkScore": 45, "transitScore": 10},
+  {"city": "São Paulo", "countryCode": "BR", "walkScore": 70, "transitScore": 75},
+  {"city": "Cusco", "countryCode": "PE", "walkScore": 72, "transitScore": 30},
+  {"city": "Cartagena", "countryCode": "CO", "walkScore": 70, "transitScore": 35},
+  {"city": "Oaxaca", "countryCode": "MX", "walkScore": 70, "transitScore": 28},
+  {"city": "Austin", "countryCode": "US", "walkScore": 41, "transitScore": 34},
+  {"city": "Philadelphia", "countryCode": "US", "walkScore": 79, "transitScore": 67}
 ]

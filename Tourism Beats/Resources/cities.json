@@ -3111,5 +3111,53 @@
     "latitude": 13.36222222,
     "longitude": 103.85972222,
     "timeZoneIdentifier": "Asia/Phnom_Penh"
+  },
+  {
+    "name": "São Paulo",
+    "countryCode": "BR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Vista_a%C3%A9rea_de_la_Avenida_Paulista_de_S%C3%A3o_Paulo_02.jpg/1280px-Vista_a%C3%A9rea_de_la_Avenida_Paulista_de_S%C3%A3o_Paulo_02.jpg",
+    "latitude": -23.55039444,
+    "longitude": -46.63394722,
+    "timeZoneIdentifier": "America/Sao_Paulo"
+  },
+  {
+    "name": "Cusco",
+    "countryCode": "PE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Catedral_de_la_ciudad_del_Cusco.jpg/1280px-Catedral_de_la_ciudad_del_Cusco.jpg",
+    "latitude": -13.51694444,
+    "longitude": -71.97861111,
+    "timeZoneIdentifier": "America/Lima"
+  },
+  {
+    "name": "Cartagena",
+    "countryCode": "CO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Cartagena%2C_Colombia_%285049256137%29.jpg/1280px-Cartagena%2C_Colombia_%285049256137%29.jpg",
+    "latitude": 10.42361111,
+    "longitude": -75.52527778,
+    "timeZoneIdentifier": "America/Bogota"
+  },
+  {
+    "name": "Oaxaca",
+    "countryCode": "MX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Templo_de_Santo_Domingo_de_Guzm%C3%A1n-_2023.jpg/1280px-Templo_de_Santo_Domingo_de_Guzm%C3%A1n-_2023.jpg",
+    "latitude": 17.06055556,
+    "longitude": -96.72527778,
+    "timeZoneIdentifier": "America/Mexico_City"
+  },
+  {
+    "name": "Austin",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Skyline_of_Austin%2C_Texas_%28cropped%29.jpg/1280px-Skyline_of_Austin%2C_Texas_%28cropped%29.jpg",
+    "latitude": 30.26722222,
+    "longitude": -97.74305556,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Philadelphia",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Philadelphia_skyline_20240528_%28cropped_2-1%29.jpg/1280px-Philadelphia_skyline_20240528_%28cropped_2-1%29.jpg",
+    "latitude": 39.95277778,
+    "longitude": -75.16361111,
+    "timeZoneIdentifier": "America/New_York"
   }
 ]
