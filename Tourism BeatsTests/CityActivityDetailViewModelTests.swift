@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import Testing
 @testable import Tourism_Beats
@@ -40,7 +41,14 @@ struct CityActivityDetailViewModelTests {
 
         let viewModel = CityActivityDetailViewModel(
             activity: activity,
-            cityName: "Bratislava",
+            city: CityModel(
+                id: "bratislava-sk",
+                name: "Bratislava",
+                country: CountryModel(name: "Slovakia", code: "SK", flag: "🇸🇰"),
+                imageURL: URL.documentsDirectory,
+                coordinate: CLLocationCoordinate2D(latitude: 48.1486, longitude: 17.1077),
+                timeZoneIdentifier: "Europe/Bratislava"
+            ),
             service: StubWikipediaSummaryService(summary: summary)
         )
 
@@ -58,7 +66,7 @@ struct CityActivityDetailViewModelTests {
 private struct StubWikipediaSummaryService: WikipediaSummaryProviding {
     let summary: WikipediaSummary?
 
-    func summary(for _: String, near _: String) async -> WikipediaSummary? {
+    func summary(for _: String, near _: WikipediaLookupContext) async -> WikipediaSummary? {
         self.summary
     }
 }

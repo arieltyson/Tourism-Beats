@@ -117,7 +117,7 @@ struct CityActivityServiceEnrichmentTests {
 private struct StubWikipediaSummaryProvider: WikipediaSummaryProviding {
     let summariesByTitle: [String: WikipediaSummary]
 
-    func summary(for title: String, near _: String) async -> WikipediaSummary? {
+    func summary(for title: String, near _: WikipediaLookupContext) async -> WikipediaSummary? {
         self.summariesByTitle[title]
     }
 }

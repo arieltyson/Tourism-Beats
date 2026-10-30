@@ -4,15 +4,18 @@
 // Fetches article summaries from the Wikipedia REST API.
 // Used to enrich activity detail views with descriptions,
 // images, and article links when the initial pipeline
-// produced only a generic fallback summary.
+// produced only a generic fallback summary. Articles are
+// matched by title, so each one must also be located in
+// the city before it is used.
 
+import CoreLocation
 import Foundation
 import OSLog
 
 // MARK: - WikipediaSummaryProviding
 
 protocol WikipediaSummaryProviding: Sendable {
-    func summary(for title: String, near cityName: String) async -> WikipediaSummary?
+    func summary(for title: String, near context: WikipediaLookupContext) async -> WikipediaSummary?
 }
 
 // MARK: - WikipediaSummary
@@ -24,6 +27,34 @@ struct WikipediaSummary: Sendable {
     let thumbnailURL: URL?
     let originalImageURL: URL?
     let articleURL: URL?
+    /// The article subject's coordinates, when it is a place.
+    let latitude: Double?
+    let longitude: Double?
+
+    init(
+        title: String,
+        description: String?,
+        extract: String,
+        thumbnailURL: URL?,
+        originalImageURL: URL?,
+        articleURL: URL?,
+        latitude: Double? = nil,
+        longitude: Double? = nil
+    ) {
+        self.title = title
+        self.description = description
+        self.extract = extract
+        self.thumbnailURL = thumbnailURL
+        self.originalImageURL = originalImageURL
+        self.articleURL = articleURL
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+
+    var location: CLLocation? {
+        guard let latitude, let longitude else { return nil }
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
 }
 
 // MARK: - WikipediaSummaryService
@@ -42,27 +73,27 @@ actor WikipediaSummaryService: WikipediaSummaryProviding {
         self.session = session
     }
 
-    func summary(for title: String, near cityName: String) async -> WikipediaSummary? {
-        let key = "\(title)|\(cityName)".lowercased()
+    func summary(for title: String, near context: WikipediaLookupContext) async -> WikipediaSummary? {
+        let key = "\(title.lowercased())|\(context.cacheKey)"
 
         if let cached = self.cache[key] {
             return cached
         }
 
-        let result = await self.resolve(title: title, cityName: cityName)
+        let result = await self.resolve(title: title, context: context)
         self.cache[key] = result
         return result
     }
 
     // MARK: - Resolution Pipeline
 
-    /// Attempts to find a useful (non-disambiguation) Wikipedia article.
-    /// Tries, in order:
+    /// Attempts to find a useful (non-disambiguation) Wikipedia article
+    /// about the place in this city. Tries, in order:
     /// 1. The exact title
     /// 2. "Title (cityName)" — common Wikipedia disambiguation pattern
     /// 3. "Title, cityName" — alternate naming convention
-    private func resolve(title: String, cityName: String) async -> WikipediaSummary? {
-        let candidates = Self.buildCandidates(title: title, cityName: cityName)
+    private func resolve(title: String, context: WikipediaLookupContext) async -> WikipediaSummary? {
+        let candidates = Self.buildCandidates(title: title, cityName: context.cityName)
 
         for candidate in candidates {
             do {
@@ -80,7 +111,17 @@ actor WikipediaSummaryService: WikipediaSummaryProviding {
                     continue
                 }
 
-                return self.mapResponse(response)
+                let summary = self.mapResponse(response)
+
+                // Many places share a name; only use an article about this one.
+                guard WikipediaArticleLocationVerifier.isArticle(summary, about: context) else {
+                    self.logger.info(
+                        "Skipping '\(candidate, privacy: .public)': not in \(context.cityName, privacy: .public)"
+                    )
+                    continue
+                }
+
+                return summary
             } catch {
                 self.logger.debug("No Wikipedia article for '\(candidate, privacy: .public)': \(error)")
                 continue
@@ -149,7 +190,9 @@ actor WikipediaSummaryService: WikipediaSummaryProviding {
             extract: response.extract ?? "",
             thumbnailURL: response.thumbnail.flatMap { URL(string: $0.source) },
             originalImageURL: response.originalimage.flatMap { URL(string: $0.source) },
-            articleURL: articleURL
+            articleURL: articleURL,
+            latitude: response.coordinates?.lat,
+            longitude: response.coordinates?.lon
         )
     }
 }
@@ -165,6 +208,12 @@ private extension WikipediaSummaryService {
         let thumbnail: ImageRef?
         let originalimage: ImageRef?
         let content_urls: ContentURLs?
+        let coordinates: Coordinates?
+    }
+
+    struct Coordinates: Decodable {
+        let lat: Double
+        let lon: Double
     }
 
     struct ImageRef: Decodable {

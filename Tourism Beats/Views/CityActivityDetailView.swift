@@ -12,7 +12,7 @@ struct CityActivityDetailView: View {
         self.city = city
         self.activity = activity
         _viewModel = State(
-            initialValue: CityActivityDetailViewModel(activity: activity, cityName: city.name)
+            initialValue: CityActivityDetailViewModel(activity: activity, city: city)
         )
     }
 

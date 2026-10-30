@@ -17,17 +17,17 @@ final class CityActivityDetailViewModel {
     private(set) var isLoading = false
 
     @ObservationIgnored private let activity: CityActivity
-    @ObservationIgnored private let cityName: String
+    @ObservationIgnored private let lookupContext: WikipediaLookupContext
     @ObservationIgnored private let service: WikipediaSummaryProviding
     @ObservationIgnored private var hasLoaded = false
 
     init(
         activity: CityActivity,
-        cityName: String,
+        city: CityModel,
         service: WikipediaSummaryProviding = WikipediaSummaryService.shared
     ) {
         self.activity = activity
-        self.cityName = cityName
+        self.lookupContext = WikipediaLookupContext(city: city, activity: activity)
         self.service = service
     }
 
@@ -59,7 +59,7 @@ final class CityActivityDetailViewModel {
         self.isLoading = true
         defer { self.isLoading = false }
 
-        guard let wiki = await self.service.summary(for: title, near: self.cityName) else { return }
+        guard let wiki = await self.service.summary(for: title, near: self.lookupContext) else { return }
 
         if self.needsEnrichment, !wiki.extract.isEmpty {
             self.enrichedSummary = wiki.extract

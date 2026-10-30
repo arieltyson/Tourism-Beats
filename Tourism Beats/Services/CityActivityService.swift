@@ -9,7 +9,7 @@ typealias Models = CityActivityAPIModels
 
 actor CityActivityService: CityActivityProviding {
     static let shared = CityActivityService()
-    private static let cacheVersion = "v6"
+    private static let cacheVersion = "v7"
     private static let desiredActivityCount = 6
     /// The City tab shows the top six, but trip planning needs a deeper pool so
     /// longer itineraries can be filled without repeating places.

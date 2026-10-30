@@ -20,32 +20,31 @@ extension CityActivityService {
         )
         guard !lookupTitlesByIndex.isEmpty else { return activities }
 
-        let distinctTitles = Array(Set(lookupTitlesByIndex.values)).sorted()
-        let cityName = city.name
         let summaryService = self.wikipediaSummaryService
-        var summariesByTitle: [String: WikipediaSummary] = [:]
+        var summariesByIndex: [Int: WikipediaSummary] = [:]
 
-        await withTaskGroup(of: (String, WikipediaSummary?).self) { group in
-            for title in distinctTitles {
+        // Each lookup carries the activity's own location, so two activities
+        // sharing a title are each checked against where they actually are.
+        await withTaskGroup(of: (Int, WikipediaSummary?).self) { group in
+            for (index, title) in lookupTitlesByIndex {
+                let context = WikipediaLookupContext(city: city, activity: activities[index])
                 group.addTask {
-                    let summary = await summaryService.summary(for: title, near: cityName)
-                    return (title, summary)
+                    let summary = await summaryService.summary(for: title, near: context)
+                    return (index, summary)
                 }
             }
 
-            for await (title, summary) in group {
+            for await (index, summary) in group {
                 if let summary {
-                    summariesByTitle[title] = summary
+                    summariesByIndex[index] = summary
                 }
             }
         }
 
-        guard !summariesByTitle.isEmpty else { return activities }
+        guard !summariesByIndex.isEmpty else { return activities }
 
         return activities.enumerated().map { index, activity in
-            guard let lookupTitle = lookupTitlesByIndex[index],
-                  let summary = summariesByTitle[lookupTitle]
-            else {
+            guard let summary = summariesByIndex[index] else {
                 return activity
             }
 
