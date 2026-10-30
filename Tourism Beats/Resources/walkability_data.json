@@ -457,5 +457,8 @@
   {"city": "Logroño", "countryCode": "ES", "walkScore": 85, "transitScore": 50},
   {"city": "Jerez de la Frontera", "countryCode": "ES", "walkScore": 75, "transitScore": 40},
   {"city": "Tokaj", "countryCode": "HU", "walkScore": 65, "transitScore": 20},
-  {"city": "Sighnaghi", "countryCode": "GE", "walkScore": 65, "transitScore": 15}
+  {"city": "Sighnaghi", "countryCode": "GE", "walkScore": 65, "transitScore": 15},
+  {"city": "Napa", "countryCode": "US", "walkScore": 45, "transitScore": 25},
+  {"city": "Niagara-on-the-Lake", "countryCode": "CA", "walkScore": 60, "transitScore": 15},
+  {"city": "Mendoza", "countryCode": "AR", "walkScore": 70, "transitScore": 45}
 ]

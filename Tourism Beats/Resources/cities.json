@@ -3671,5 +3671,29 @@
     "latitude": 41.61861111,
     "longitude": 45.92166667,
     "timeZoneIdentifier": "Asia/Tbilisi"
+  },
+  {
+    "name": "Napa",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Autumn_vineyard_in_Napa_Valley.jpg/1280px-Autumn_vineyard_in_Napa_Valley.jpg",
+    "latitude": 38.3,
+    "longitude": -122.3,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Niagara-on-the-Lake",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Queen_St_and_Clock_Tower%2C_Niagara-on-the-Lake_20170418_1.jpg/1280px-Queen_St_and_Clock_Tower%2C_Niagara-on-the-Lake_20170418_1.jpg",
+    "latitude": 43.25527778,
+    "longitude": -79.07166667,
+    "timeZoneIdentifier": "America/Toronto"
+  },
+  {
+    "name": "Mendoza",
+    "countryCode": "AR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Vineyard_in_Mendoza%2C_Argentina.jpg/1280px-Vineyard_in_Mendoza%2C_Argentina.jpg",
+    "latitude": -32.88972222,
+    "longitude": -68.84444444,
+    "timeZoneIdentifier": "America/Argentina/Mendoza"
   }
 ]
