@@ -149,19 +149,32 @@ final class MusicViewModel: ObservableObject {
             self.songTitle = result.title
             self.artistName = result.artistName
             self.songImage = result.artworkURL
-        } catch let error as MusicService.MusicServiceError {
-            switch error {
-            case .storefrontNotAvailable:
-                songTitle = "Music Not Available"
-                artistName =
-                    "Apple Music charts are not available in \(city.country.name)."
-            default:
-                songTitle = "Could Not Load Song"
-                artistName = "An unexpected error occurred."
-            }
+        } catch where Self.isCancellation(error) {
+            // The page was scrolled away or closed mid-load. That isn't a
+            // failure: load again the next time the page appears.
+            self.hasLoadedData = false
+        } catch MusicService.MusicServiceError.storefrontNotAvailable {
+            self.songTitle = "Music Not Available"
+            self.artistName = "Apple Music charts are not available in \(self.city.country.name)."
         } catch {
             self.songTitle = "Could Not Load Song"
-            self.artistName = error.localizedDescription
+            self.artistName = "Check your connection and try again."
+        }
+    }
+
+    /// Whether an error only means the load was interrupted, including when
+    /// the service wraps the underlying network error.
+    private static func isCancellation(_ error: Error) -> Bool {
+        switch error {
+        case is CancellationError:
+            true
+        case let urlError as URLError:
+            urlError.code == .cancelled
+        case let MusicService.MusicServiceError.networkError(underlying),
+             let MusicService.MusicServiceError.tokenGenerationError(underlying):
+            self.isCancellation(underlying)
+        default:
+            false
         }
     }
 
