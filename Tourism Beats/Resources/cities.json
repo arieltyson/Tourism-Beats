@@ -3831,5 +3831,21 @@
     "latitude": 47.6089,
     "longitude": -122.042,
     "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Whitehorse",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Yukon_River_at_Whitehorse_-b.jpg/1280px-Yukon_River_at_Whitehorse_-b.jpg",
+    "latitude": 60.71722222,
+    "longitude": -135.05583333,
+    "timeZoneIdentifier": "America/Whitehorse"
+  },
+  {
+    "name": "Iqaluit",
+    "countryCode": "CA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Iqaluit%2C_Nunavut.jpg/1280px-Iqaluit%2C_Nunavut.jpg",
+    "latitude": 63.74944444,
+    "longitude": -68.52166667,
+    "timeZoneIdentifier": "America/Iqaluit"
   }
 ]
