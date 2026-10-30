@@ -442,5 +442,10 @@
   {"city": "The Hague", "countryCode": "NL", "walkScore": 88, "transitScore": 82},
   {"city": "Cotonou", "countryCode": "BJ", "walkScore": 50, "transitScore": 15},
   {"city": "Avarua", "countryCode": "CK", "walkScore": 48, "transitScore": 12},
-  {"city": "Alofi", "countryCode": "NU", "walkScore": 30, "transitScore": 3}
+  {"city": "Alofi", "countryCode": "NU", "walkScore": 30, "transitScore": 3},
+  {"city": "Avignon", "countryCode": "FR", "walkScore": 85, "transitScore": 50},
+  {"city": "Aix-en-Provence", "countryCode": "FR", "walkScore": 88, "transitScore": 55},
+  {"city": "Antibes", "countryCode": "FR", "walkScore": 80, "transitScore": 45},
+  {"city": "Carcassonne", "countryCode": "FR", "walkScore": 70, "transitScore": 30},
+  {"city": "Èze", "countryCode": "FR", "walkScore": 55, "transitScore": 15}
 ]

@@ -3551,5 +3551,45 @@
     "latitude": -19.056,
     "longitude": -169.921,
     "timeZoneIdentifier": "Pacific/Niue"
+  },
+  {
+    "name": "Avignon",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Vue_a%C3%A9rienne_2_JP_Campomar.jpg/1280px-Vue_a%C3%A9rienne_2_JP_Campomar.jpg",
+    "latitude": 43.94861111,
+    "longitude": 4.80833333,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Aix-en-Provence",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Aix_en_Provence_-_panoramio_%281%29.jpg/1280px-Aix_en_Provence_-_panoramio_%281%29.jpg",
+    "latitude": 43.52777778,
+    "longitude": 5.44555556,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Antibes",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Antibesbordmer.JPG",
+    "latitude": 43.58,
+    "longitude": 7.12305556,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Carcassonne",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/1_carcassonne_aerial_2016.jpg/1280px-1_carcassonne_aerial_2016.jpg",
+    "latitude": 43.21583333,
+    "longitude": 2.35138889,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Èze",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/%C3%88ze_Alpes_Maritimes_France_%28261171069%29.jpeg/1280px-%C3%88ze_Alpes_Maritimes_France_%28261171069%29.jpeg",
+    "latitude": 43.72777778,
+    "longitude": 7.36111111,
+    "timeZoneIdentifier": "Europe/Paris"
   }
 ]
