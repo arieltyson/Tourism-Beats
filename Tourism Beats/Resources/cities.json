@@ -3351,5 +3351,21 @@
     "latitude": -9.52777778,
     "longitude": -77.52777778,
     "timeZoneIdentifier": "America/Lima"
+  },
+  {
+    "name": "Sedona",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Cathedral_Rock_-_Sedona_AZ-1.jpg/1280px-Cathedral_Rock_-_Sedona_AZ-1.jpg",
+    "latitude": 34.86,
+    "longitude": -111.78916667,
+    "timeZoneIdentifier": "America/Phoenix"
+  },
+  {
+    "name": "Moab",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Delicate_Arch%2C_Arches_National_Park%2C_Moab%2C_Utah_%289101941980%29.jpg/1280px-Delicate_Arch%2C_Arches_National_Park%2C_Moab%2C_Utah_%289101941980%29.jpg",
+    "latitude": 38.5725,
+    "longitude": -109.54972222,
+    "timeZoneIdentifier": "America/Denver"
   }
 ]

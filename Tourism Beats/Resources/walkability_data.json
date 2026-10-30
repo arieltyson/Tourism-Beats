@@ -417,5 +417,7 @@
   {"city": "Ushuaia", "countryCode": "AR", "walkScore": 62, "transitScore": 20},
   {"city": "Puerto Natales", "countryCode": "CL", "walkScore": 60, "transitScore": 10},
   {"city": "Pokhara", "countryCode": "NP", "walkScore": 55, "transitScore": 15},
-  {"city": "Huaraz", "countryCode": "PE", "walkScore": 62, "transitScore": 18}
+  {"city": "Huaraz", "countryCode": "PE", "walkScore": 62, "transitScore": 18},
+  {"city": "Sedona", "countryCode": "US", "walkScore": 25, "transitScore": 5},
+  {"city": "Moab", "countryCode": "US", "walkScore": 45, "transitScore": 3}
 ]
