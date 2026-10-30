@@ -230,9 +230,7 @@ extension CityActivityDetailView {
         @Environment(\.colorScheme) private var scheme
 
         private var hasLinks: Bool {
-            self.activity.officialURL != nil
-                || self.activity.sourceURL != nil
-                || self.articleURL != nil
+            self.activity.officialURL != nil || self.articleURL != nil
         }
 
         var body: some View {
@@ -260,17 +258,6 @@ extension CityActivityDetailView {
                                 title: "Wikipedia",
                                 subtitle: self.activity.name,
                                 systemImage: "book.pages.fill"
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    }
-
-                    if let sourceURL = self.activity.sourceURL {
-                        Link(destination: sourceURL) {
-                            Self.LinkLabel(
-                                title: "Guide Source",
-                                subtitle: self.activity.sourceName,
-                                systemImage: "globe.europe.africa.fill"
                             )
                         }
                         .buttonStyle(.plain)
