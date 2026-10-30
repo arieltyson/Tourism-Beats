@@ -3695,5 +3695,29 @@
     "latitude": -32.88972222,
     "longitude": -68.84444444,
     "timeZoneIdentifier": "America/Argentina/Mendoza"
+  },
+  {
+    "name": "Stellenbosch",
+    "countryCode": "ZA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Jonkershoek.jpg/1280px-Jonkershoek.jpg",
+    "latitude": -33.93666667,
+    "longitude": 18.86138889,
+    "timeZoneIdentifier": "Africa/Johannesburg"
+  },
+  {
+    "name": "Margaret River",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/2016_Margaret_River_Australia._Watershed_vineyard.jpg/1280px-2016_Margaret_River_Australia._Watershed_vineyard.jpg",
+    "latitude": -33.955,
+    "longitude": 115.075,
+    "timeZoneIdentifier": "Australia/Perth"
+  },
+  {
+    "name": "Blenheim",
+    "countryCode": "NZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/The_vineyards_of_Marlborough%2C_New_Zealand%3B_May_2014.jpg/1280px-The_vineyards_of_Marlborough%2C_New_Zealand%3B_May_2014.jpg",
+    "latitude": -41.51666667,
+    "longitude": 173.95,
+    "timeZoneIdentifier": "Pacific/Auckland"
   }
 ]
