@@ -39,6 +39,9 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     var wikidataAwardCount: Int = 0
     var isMichelinRecognized: Bool = false
 
+    /// Recommended in the city's Wikivoyage guide by its editors.
+    var isGuideRecommended: Bool = false
+
     // Pillar 3: OSM metadata richness (higher = more community-curated data)
     var metadataRichnessScore: Int = 0
 
@@ -72,6 +75,7 @@ enum CityRestaurantRanking {
         case crossQueryPopular
         case foodQualityEndorsed
         case awardWinning
+        case guideRecommended
         case notable
         case metadataRich
         case establishedPresence
@@ -88,6 +92,8 @@ enum CityRestaurantRanking {
                 12
             case .awardWinning:
                 14
+            case .guideRecommended:
+                12
             case .notable:
                 10
             case .metadataRich:
@@ -111,6 +117,8 @@ enum CityRestaurantRanking {
                 "Great Food"
             case .awardWinning:
                 "Award-Winning"
+            case .guideRecommended:
+                "Guide Pick"
             case .notable:
                 "Notable"
             case .metadataRich:
@@ -134,6 +142,8 @@ enum CityRestaurantRanking {
                 "strong food quality reputation across review categories"
             case .awardWinning:
                 "recognized culinary awards and distinctions"
+            case .guideRecommended:
+                "a recommendation from travel guide editors"
             case .notable:
                 "strong recognition and acclaim"
             case .metadataRich:
@@ -157,6 +167,8 @@ enum CityRestaurantRanking {
         static let michelin: Double = 40
         static let otherAward: Double = 20
         static let notable: Double = 10
+        /// Editors' picks are curated but less selective than awards.
+        static let guideRecommended: Double = 25
         /// Each sign of a well-documented place; enough only to break ties.
         static let tiebreaker: Double = 1
         /// Chain penalties were sized for the old 60-point scale.
@@ -247,6 +259,11 @@ enum CityRestaurantRanking {
             score += Weight.notable
         }
 
+        // Independent of awards: a place can be both a Michelin pick and a guide pick.
+        if candidate.isGuideRecommended {
+            score += Weight.guideRecommended
+        }
+
         score += self.tiebreakers(for: candidate, distanceFromCenter: distanceFromCenter)
         score += Double(self.chainPenalty(for: candidate)) * Weight.chainPenaltyScale
 
@@ -314,6 +331,9 @@ enum CityRestaurantRanking {
             signals.append(.awardWinning)
         } else if candidate.isNotable {
             signals.append(.notable)
+        }
+        if candidate.isGuideRecommended {
+            signals.append(.guideRecommended)
         }
         if candidate.metadataRichnessScore >= Threshold.richMetadata {
             signals.append(.metadataRich)

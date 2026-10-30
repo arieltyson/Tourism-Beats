@@ -9,7 +9,7 @@ typealias RestaurantModels = CityRestaurantAPIModels
 
 actor CityRestaurantService: CityRestaurantProviding {
     static let shared = CityRestaurantService()
-    private static let cacheVersion = "v5"
+    private static let cacheVersion = "v6"
     /// The City tab shows the top six, but trip planning needs enough distinct
     /// restaurants to suggest a different meal for each day of a longer trip.
     private static let rankedRestaurantLimit = 18
@@ -120,6 +120,7 @@ extension CityRestaurantService {
         let awardSearch = Task { [session = self.session] in
             await CityRestaurantWikidataService.fetchAwards(for: city, session: session)
         }
+        let guideSearch = Task { await CityRestaurantWikivoyageService.fetchEatListings(for: city) }
         let chainScan = Task { await self.detectChainsFromWiderScan(for: city) }
 
         let mapKitResults = await Self.multiQueryMapKitSearch(for: city)
@@ -128,8 +129,9 @@ extension CityRestaurantService {
         async let overpassResult = overpassSearch.value(within: wait)
         async let awardResult = awardSearch.value(within: wait)
         async let chainResult = chainScan.value(within: wait)
-        let (overpass, awards, chains) = await (overpassResult, awardResult, chainResult)
-        let isPartial = overpass == nil || awards == nil || chains == nil
+        async let guideResult = guideSearch.value(within: wait)
+        let (overpass, awards, chains, guideListings) = await (overpassResult, awardResult, chainResult, guideResult)
+        let isPartial = overpass == nil || awards == nil || chains == nil || guideListings == nil
 
         let overpassCandidates = overpass ?? []
         var candidates: [CityRestaurantCandidate]
@@ -156,6 +158,11 @@ extension CityRestaurantService {
                 with: wikidataMatches
             )
         }
+
+        candidates = CityRestaurantWikivoyageService.markRecommendations(
+            in: candidates,
+            from: guideListings ?? []
+        )
 
         candidates = Self.tagDuplicateLocationCounts(candidates)
 
