@@ -79,6 +79,61 @@ struct CityRestaurantRankingTests {
         #expect(!rankedRestaurants.map(\.name).contains("Canal Pasta"))
     }
 
+    /// A place Apple Maps keeps near the top of its searches is the best free
+    /// stand-in for a highly rated, widely reviewed restaurant, and must not
+    /// lose to a lesser one that is merely better documented.
+    @Test func consistentlyTopRankedRestaurantBeatsBetterDocumentedOne() {
+        let loved = self.candidate(id: "loved", name: "Quiet Kitchen", popularityRank: 2)
+            .with { $0.appleMapsConsensus = 0.8 }
+        let documented = self.candidate(
+            id: "documented",
+            name: "Busy Corner",
+            cuisine: "Bistro",
+            websiteURL: URL(string: "https://corner.example.com"),
+            latitude: 49.2827,
+            longitude: -123.1207,
+            isNotable: true,
+            popularityRank: 9
+        )
+        .with {
+            $0.appleMapsConsensus = 0.2
+            $0.metadataRichnessScore = 30
+        }
+
+        let ranked = CityRestaurantRanking.topRestaurants(from: [documented, loved], for: self.city, limit: 2)
+
+        #expect(ranked.map(\.name) == ["Quiet Kitchen", "Busy Corner"])
+    }
+
+    @Test func michelinRecognitionLiftsAnEquallyLovedRestaurant() {
+        let starred = self.candidate(id: "starred", name: "Étoile", popularityRank: 4)
+            .with {
+                $0.appleMapsConsensus = 0.5
+                $0.isMichelinRecognized = true
+            }
+        let unstarred = self.candidate(id: "unstarred", name: "Plain Plate", popularityRank: 3)
+            .with { $0.appleMapsConsensus = 0.55 }
+
+        let ranked = CityRestaurantRanking.topRestaurants(from: [unstarred, starred], for: self.city, limit: 2)
+
+        #expect(ranked.first?.name == "Étoile")
+        #expect(ranked.first?.rankingHighlights.contains("Award-Winning") == true)
+    }
+
+    @Test func expertRecognitionAloneDoesNotOutrankTheCrowdsFavourite() {
+        let crowdFavourite = self.candidate(id: "favourite", name: "Night Market Grill", popularityRank: 1)
+            .with { $0.appleMapsConsensus = 0.9 }
+        let obscureStar = self.candidate(id: "obscure", name: "Hidden Salon", popularityRank: 20)
+            .with {
+                $0.appleMapsConsensus = 0.1
+                $0.isMichelinRecognized = true
+            }
+
+        let ranked = CityRestaurantRanking.topRestaurants(from: [obscureStar, crowdFavourite], for: self.city, limit: 2)
+
+        #expect(ranked.first?.name == "Night Market Grill")
+    }
+
     @Test func mapsURLUsesGoogleMapsWithCoordinates() throws {
         let restaurant = CityRestaurant(
             id: "maps",
@@ -167,5 +222,15 @@ struct CityRestaurantRankingTests {
             brand: nil,
             popularityRank: popularityRank
         )
+    }
+}
+
+// MARK: - Test Helpers
+
+private extension CityRestaurantCandidate {
+    func with(_ change: (inout CityRestaurantCandidate) -> Void) -> CityRestaurantCandidate {
+        var copy = self
+        change(&copy)
+        return copy
     }
 }

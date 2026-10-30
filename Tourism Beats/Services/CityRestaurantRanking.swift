@@ -30,6 +30,11 @@ struct CityRestaurantCandidate: Sendable, Hashable {
     // Food quality: How many food-quality-specific MapKit queries returned this
     var foodQueryAppearanceCount: Int = 0
 
+    /// Where the place sits across every Apple Maps search, fused to 0...1.
+    /// The strongest free evidence of high ratings from many reviewers; see
+    /// `RestaurantRankFusion`.
+    var appleMapsConsensus: Double = 0
+
     // Pillar 2: Wikidata award/recognition data
     var wikidataAwardCount: Int = 0
     var isMichelinRecognized: Bool = false
@@ -56,7 +61,7 @@ struct CityRestaurantCandidate: Sendable, Hashable {
 enum CityRestaurantRanking {
     struct ScoredCandidate: Sendable {
         let candidate: CityRestaurantCandidate
-        let baseScore: Int
+        let baseScore: Double
         let topSignals: [Signal]
         let distanceFromCenter: CLLocationDistance?
         let primaryCuisineKey: String?
@@ -143,6 +148,34 @@ enum CityRestaurantRanking {
         }
     }
 
+    /// Points each kind of evidence is worth. Apple Maps' consensus (0...1)
+    /// is scaled to 100, so a restaurant at the top of every search outranks
+    /// any amount of expert recognition alone, while recognition still lifts
+    /// a well-reviewed place above an equally reviewed one.
+    enum Weight {
+        static let appleMapsConsensus: Double = 100
+        static let michelin: Double = 40
+        static let otherAward: Double = 20
+        static let notable: Double = 10
+        /// Each sign of a well-documented place; enough only to break ties.
+        static let tiebreaker: Double = 1
+        /// Chain penalties were sized for the old 60-point scale.
+        static let chainPenaltyScale: Double = 2
+        /// Nudges toward a varied selection without overriding the evidence.
+        static let newCuisine: Double = 4
+        static let repeatedCuisine: Double = 3
+    }
+
+    enum Threshold {
+        static let popularRank = 10
+        static let highlyRatedConsensus = 0.4
+        static let crossQueryAppearances = 3
+        static let foodQueryAppearances = 2
+        static let richMetadata = 20
+        static let centralDistance: CLLocationDistance = 1_500
+        static let nearbyDistance: CLLocationDistance = 4_000
+    }
+
     static func topRestaurants(
         from candidates: [CityRestaurantCandidate],
         for city: CityModel,
@@ -172,27 +205,16 @@ enum CityRestaurantRanking {
         _ candidate: CityRestaurantCandidate,
         cityCoordinate: CLLocationCoordinate2D
     ) -> ScoredCandidate {
-        var signals: [Signal] = []
-        var score = 0
-
-        score += self.scorePopularity(candidate, signals: &signals)
-        score += self.scoreCrossQuery(candidate, signals: &signals)
-        score += self.scoreFoodQuality(candidate, signals: &signals)
-        score += self.scoreAwards(candidate, signals: &signals)
-        score += self.scoreMetadata(candidate, signals: &signals)
-        score += self.scorePresence(candidate, signals: &signals)
-
         let distanceFromCenter = self.distance(
             from: cityCoordinate,
             latitude: candidate.latitude,
             longitude: candidate.longitude
         )
-        score += self.scoreLocation(distanceFromCenter, signals: &signals)
-        score += self.scorePenalties(candidate)
+        let signals = self.signals(for: candidate, distanceFromCenter: distanceFromCenter)
 
         return ScoredCandidate(
             candidate: candidate,
-            baseScore: score,
+            baseScore: self.evidenceScore(for: candidate, distanceFromCenter: distanceFromCenter),
             topSignals: signals.sorted { lhs, rhs in
                 if lhs.points != rhs.points { return lhs.points > rhs.points }
                 return lhs.badgeText < rhs.badgeText
@@ -202,143 +224,111 @@ enum CityRestaurantRanking {
         )
     }
 
-    // MARK: - Scoring Helpers
+    // MARK: - Evidence Score
 
-    private static func scorePopularity(
-        _ candidate: CityRestaurantCandidate,
-        signals: inout [Signal]
-    ) -> Int {
-        guard let rank = candidate.popularityRank else { return 0 }
-        switch rank {
-        case 1 ... 5:
-            signals.append(.popularChoice)
-            return 15
-        case 6 ... 10:
-            signals.append(.popularChoice)
-            return 10
-        case 11 ... 20:
-            return 6
-        default:
-            return 3
-        }
-    }
+    /// How strongly the evidence says a restaurant is excellent.
+    ///
+    /// Apple Maps' consensus is the backbone, since its ordering reflects
+    /// ratings and review volume. Expert recognition adds to it as
+    /// independent evidence. What only shows a place is well documented (a
+    /// website, a cuisine tag, rich map data, a central address) merely breaks
+    /// ties, so it can never lift a mediocre restaurant past a loved one.
+    static func evidenceScore(
+        for candidate: CityRestaurantCandidate,
+        distanceFromCenter: CLLocationDistance?
+    ) -> Double {
+        var score = Weight.appleMapsConsensus * self.appleMapsConsensus(for: candidate)
 
-    private static func scoreCrossQuery(
-        _ candidate: CityRestaurantCandidate,
-        signals: inout [Signal]
-    ) -> Int {
-        if candidate.crossQueryAppearanceCount >= 3 {
-            signals.append(.crossQueryPopular)
-            return Signal.crossQueryPopular.points
-        } else if candidate.crossQueryAppearanceCount == 2 {
-            return 6
-        }
-        return 0
-    }
-
-    private static func scoreFoodQuality(
-        _ candidate: CityRestaurantCandidate,
-        signals: inout [Signal]
-    ) -> Int {
-        var score = 0
-
-        // Appeared in food-quality-specific MapKit queries
-        if candidate.foodQueryAppearanceCount >= 2 {
-            signals.append(.foodQualityEndorsed)
-            score += Signal.foodQualityEndorsed.points
-        } else if candidate.foodQueryAppearanceCount == 1 {
-            score += 5
-        }
-
-        // OSM food quality indicators
-        if candidate.hasOSMStarRating { score += 6 }
-        if candidate.isOrganic { score += 2 }
-        if candidate.dietaryVarietyCount >= 3 { score += 3 } else if candidate.dietaryVarietyCount >= 2 { score += 1 }
-
-        return score
-    }
-
-    private static func scoreAwards(
-        _ candidate: CityRestaurantCandidate,
-        signals: inout [Signal]
-    ) -> Int {
         if candidate.isMichelinRecognized {
-            signals.append(.awardWinning)
-            return Signal.awardWinning.points
+            score += Weight.michelin
         } else if candidate.wikidataAwardCount > 0 {
-            signals.append(.awardWinning)
-            return 8
+            score += Weight.otherAward
+        } else if candidate.isNotable {
+            score += Weight.notable
         }
 
-        if candidate.isNotable {
-            signals.append(.notable)
-            return Signal.notable.points
-        }
+        score += self.tiebreakers(for: candidate, distanceFromCenter: distanceFromCenter)
+        score += Double(self.chainPenalty(for: candidate)) * Weight.chainPenaltyScale
 
-        return 0
+        return score
     }
 
-    private static func scoreMetadata(
-        _ candidate: CityRestaurantCandidate,
-        signals: inout [Signal]
-    ) -> Int {
-        if candidate.metadataRichnessScore >= 20 {
-            signals.append(.metadataRich)
-            return Signal.metadataRich.points
-        } else if candidate.metadataRichnessScore >= 12 {
-            return 3
-        } else if candidate.metadataRichnessScore >= 6 {
-            return 1
+    /// The fused Apple Maps consensus, or, for a restaurant known only by its
+    /// best position, the consensus of that one appearance.
+    static func appleMapsConsensus(for candidate: CityRestaurantCandidate) -> Double {
+        if candidate.appleMapsConsensus > 0 {
+            return candidate.appleMapsConsensus
         }
-        return 0
+        return candidate.popularityRank.map(RestaurantRankFusion.consensus(forSinglePosition:)) ?? 0
     }
 
-    private static func scorePresence(
-        _ candidate: CityRestaurantCandidate,
-        signals: inout [Signal]
-    ) -> Int {
-        var score = 0
+    private static func tiebreakers(
+        for candidate: CityRestaurantCandidate,
+        distanceFromCenter: CLLocationDistance?
+    ) -> Double {
+        var score: Double = 0
 
-        if candidate.websiteURL != nil {
-            signals.append(.establishedPresence)
-            score += Signal.establishedPresence.points
-        }
-
-        if candidate.cuisine?.isEmpty == false {
-            signals.append(.cuisine)
-            score += Signal.cuisine.points
+        if candidate.websiteURL != nil { score += Weight.tiebreaker }
+        if candidate.cuisine?.isEmpty == false { score += Weight.tiebreaker }
+        if candidate.hasOSMStarRating { score += Weight.tiebreaker }
+        if candidate.metadataRichnessScore >= Threshold.richMetadata { score += Weight.tiebreaker }
+        if let distanceFromCenter, distanceFromCenter < Threshold.centralDistance {
+            score += Weight.tiebreaker
         }
 
         return score
     }
 
-    private static func scoreLocation(
-        _ distanceFromCenter: CLLocationDistance?,
-        signals: inout [Signal]
-    ) -> Int {
-        guard let distanceFromCenter else { return 0 }
-
-        if distanceFromCenter < 1_500 {
-            signals.append(.centralLocation)
-            return 3
-        } else if distanceFromCenter < 4_000 {
-            signals.append(.centralLocation)
-            return 2
-        } else if distanceFromCenter < 8_000 {
-            return 1
-        }
-        return 0
-    }
-
-    private static func scorePenalties(_ candidate: CityRestaurantCandidate) -> Int {
-        let chainConfidence = CityRestaurantChainDetector.confidence(
+    private static func chainPenalty(for candidate: CityRestaurantCandidate) -> Int {
+        CityRestaurantChainDetector.confidence(
             name: candidate.name,
             brand: candidate.brand,
             hasBrandWikidata: candidate.hasBrandWikidata,
             hasOperator: candidate.hasOperator,
             duplicateLocationCount: candidate.duplicateLocationCount
-        )
-        return chainConfidence.penalty
+        ).penalty
+    }
+
+    // MARK: - Highlights
+
+    /// The reasons shown on a restaurant's page. They explain the ranking but
+    /// don't drive it.
+    private static func signals(
+        for candidate: CityRestaurantCandidate,
+        distanceFromCenter: CLLocationDistance?
+    ) -> [Signal] {
+        var signals: [Signal] = []
+
+        if let rank = candidate.popularityRank, rank <= Threshold.popularRank {
+            signals.append(.popularChoice)
+        }
+        if self.appleMapsConsensus(for: candidate) >= Threshold.highlyRatedConsensus
+            || candidate.crossQueryAppearanceCount >= Threshold.crossQueryAppearances
+        {
+            signals.append(.crossQueryPopular)
+        }
+        if candidate.foodQueryAppearanceCount >= Threshold.foodQueryAppearances {
+            signals.append(.foodQualityEndorsed)
+        }
+        if candidate.isMichelinRecognized || candidate.wikidataAwardCount > 0 {
+            signals.append(.awardWinning)
+        } else if candidate.isNotable {
+            signals.append(.notable)
+        }
+        if candidate.metadataRichnessScore >= Threshold.richMetadata {
+            signals.append(.metadataRich)
+        }
+        if candidate.websiteURL != nil {
+            signals.append(.establishedPresence)
+        }
+        if candidate.cuisine?.isEmpty == false {
+            signals.append(.cuisine)
+        }
+        if let distanceFromCenter, distanceFromCenter < Threshold.nearbyDistance {
+            signals.append(.centralLocation)
+        }
+
+        return signals
     }
 
     private static func selectDiverseRestaurants(
@@ -376,14 +366,14 @@ enum CityRestaurantRanking {
     private static func selectionScore(
         for candidate: ScoredCandidate,
         seenCuisineKeys: Set<String>
-    ) -> Int {
-        var adjustedScore = candidate.baseScore
-
-        if let primaryCuisineKey = candidate.primaryCuisineKey {
-            adjustedScore += seenCuisineKeys.contains(primaryCuisineKey) ? -2 : 3
+    ) -> Double {
+        guard let primaryCuisineKey = candidate.primaryCuisineKey else {
+            return candidate.baseScore
         }
 
-        return adjustedScore
+        return candidate.baseScore + (seenCuisineKeys.contains(primaryCuisineKey)
+            ? -Weight.repeatedCuisine
+            : Weight.newCuisine)
     }
 
     private static func mapToRestaurant(
@@ -414,7 +404,7 @@ enum CityRestaurantRanking {
             offersVeganOptions: scoredCandidate.candidate.offersVeganOptions,
             hasOutdoorSeating: scoredCandidate.candidate.hasOutdoorSeating,
             acceptsReservations: scoredCandidate.candidate.acceptsReservations,
-            rankingScore: scoredCandidate.baseScore,
+            rankingScore: Int(scoredCandidate.baseScore.rounded()),
             rankingHighlights: highlights,
             mapItemIdentifier: scoredCandidate.candidate.mapItemIdentifier
         )

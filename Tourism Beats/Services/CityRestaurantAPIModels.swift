@@ -132,6 +132,9 @@ enum CityRestaurantAPIModels {
         let popularityRank: Int
         var crossQueryAppearanceCount: Int = 1
         var foodQueryAppearanceCount: Int = 0
+        /// Where the place sits across all searches, fused to 0...1; see
+        /// `RestaurantRankFusion`.
+        var appleMapsConsensus: Double = 0
         /// Apple Maps' identifier for the place, used to aim Look Around at its frontage.
         var mapItemIdentifier: String?
     }

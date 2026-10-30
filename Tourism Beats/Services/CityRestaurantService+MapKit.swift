@@ -6,48 +6,45 @@ import OSLog
 // MARK: - MapKit Search (Multi-Query Cross-Referencing)
 
 extension CityRestaurantService {
-    /// Pillar 1: Run multiple natural language queries against MapKit and
-    /// track how many independent queries return each restaurant.
-    /// Restaurants appearing across multiple queries are demonstrably popular.
+    /// Pillar 1: Runs several Apple Maps searches and fuses where each
+    /// restaurant appears across them into one consensus score (see
+    /// `RestaurantRankFusion`), alongside how many searches returned it.
     @MainActor
     static func multiQueryMapKitSearch(
         for city: CityModel
     ) async -> [RestaurantModels.MapKitRestaurantResult] {
-        let popularityQueries = [
-            "restaurants",
-            "best restaurants",
-            "popular restaurants",
-            "top rated restaurants"
-        ]
-
-        let foodQualityQueries = [
-            "best food \(city.name)",
-            "fine dining",
-            "authentic local cuisine"
-        ]
+        let queries = RestaurantRankFusion.queries(forCityNamed: city.name)
 
         var appearanceCounts: [String: Int] = [:]
         var foodQueryCounts: [String: Int] = [:]
+        var fusedTotals: [String: Double] = [:]
         var bestResultByKey: [String: RestaurantModels.MapKitRestaurantResult] = [:]
 
-        let queries = popularityQueries + foodQualityQueries
-        let resultsByQuery = await self.concurrentMapKitSearches(for: city, queries: queries)
+        let resultsByQuery = await self.concurrentMapKitSearches(
+            for: city,
+            queries: queries.map(\.text)
+        )
 
         // Fold in query order so ties resolve the same way on every load.
-        for (index, results) in resultsByQuery.enumerated() {
+        for (query, results) in zip(queries, resultsByQuery) {
             self.accumulateResults(
                 from: results,
                 into: &bestResultByKey,
                 appearanceCounts: &appearanceCounts
             )
-            guard index >= popularityQueries.count else { continue }
 
             for result in results {
                 let key = self.coordinateKey(
                     latitude: result.latitude,
                     longitude: result.longitude
                 )
-                foodQueryCounts[key, default: 0] += 1
+                fusedTotals[key, default: 0] += RestaurantRankFusion.contribution(
+                    position: result.popularityRank,
+                    weight: query.weight
+                )
+                if query.isFoodQuality {
+                    foodQueryCounts[key, default: 0] += 1
+                }
             }
         }
 
@@ -66,6 +63,7 @@ extension CityRestaurantService {
                 popularityRank: result.popularityRank,
                 crossQueryAppearanceCount: appearanceCounts[key, default: 1],
                 foodQueryAppearanceCount: foodQueryCounts[key, default: 0],
+                appleMapsConsensus: RestaurantRankFusion.normalized(fusedTotals[key, default: 0]),
                 mapItemIdentifier: result.mapItemIdentifier
             )
         }
@@ -238,6 +236,7 @@ extension CityRestaurantService {
                 popularityRank: mapItem.popularityRank,
                 crossQueryAppearanceCount: mapItem.crossQueryAppearanceCount,
                 foodQueryAppearanceCount: mapItem.foodQueryAppearanceCount,
+                appleMapsConsensus: mapItem.appleMapsConsensus,
                 metadataRichnessScore: metadataScore,
                 hasOSMStarRating: overpassMatch?.hasStarRating ?? false,
                 isOrganic: overpassMatch?.isOrganic ?? false,
