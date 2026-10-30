@@ -16,7 +16,7 @@ struct CityActivitiesView: View {
         VStack(spacing: SpacingTokens.medium) {
             Self.HeroCard(city: self.city)
 
-            Group {
+            VStack(spacing: 0) {
                 if self.viewModel.isLoading, self.viewModel.activities.isEmpty {
                     Self.LoadingState()
                 } else if self.viewModel.activities.isEmpty {
@@ -37,13 +37,12 @@ struct CityActivitiesView: View {
                 }
             }
             .padding(.horizontal, SpacingTokens.xSmall)
-
-            Spacer(minLength: 0)
+            .frame(maxHeight: .infinity, alignment: .top)
         }
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.top, SpacingTokens.small)
-        .padding(.bottom, SpacingTokens.xxLarge)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .scrollsAtAccessibilitySizes()
         .background(Color.clear.ignoresSafeArea())
         .safeAreaPadding(.bottom, SpacingTokens.medium)
         .task(id: self.city.id) {
@@ -109,7 +108,6 @@ extension CityActivitiesView {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(AppColors.surfaceSecondary.opacity(0.6))
                 .frame(maxWidth: .infinity)
-                .aspectRatio(4 / 3, contentMode: .fit)
                 .phaseAnimator([false, true]) { content, phase in
                     content
                         .opacity(phase ? 0.4 : 0.8)
@@ -121,21 +119,8 @@ extension CityActivitiesView {
 
     private struct LoadingState: View {
         var body: some View {
-            Grid(horizontalSpacing: SpacingTokens.small, verticalSpacing: SpacingTokens.small) {
-                GridRow {
-                    PlaceholderCard()
-                    PlaceholderCard()
-                }
-
-                GridRow {
-                    PlaceholderCard()
-                    PlaceholderCard()
-                }
-
-                GridRow {
-                    PlaceholderCard()
-                    PlaceholderCard()
-                }
+            FillingCardGrid { _ in
+                PlaceholderCard()
             }
             .accessibilityHidden(true)
         }
@@ -165,51 +150,23 @@ extension CityActivitiesView {
         let activities: [CityActivity]
 
         var body: some View {
-            Grid(horizontalSpacing: SpacingTokens.small, verticalSpacing: SpacingTokens.small) {
-                GridRow {
-                    CityActivitiesView.CardSlot(city: self.city, activity: self.activity(at: 0))
-                    CityActivitiesView.CardSlot(city: self.city, activity: self.activity(at: 1))
-                }
-
-                GridRow {
-                    CityActivitiesView.CardSlot(city: self.city, activity: self.activity(at: 2))
-                    CityActivitiesView.CardSlot(city: self.city, activity: self.activity(at: 3))
-                }
-
-                GridRow {
-                    CityActivitiesView.CardSlot(city: self.city, activity: self.activity(at: 4))
-                    CityActivitiesView.CardSlot(city: self.city, activity: self.activity(at: 5))
-                }
+            FillingCardGrid(itemCount: self.activities.count) { index in
+                CityActivitiesView.CardSlot(city: self.city, activity: self.activities[index])
             }
-        }
-
-        private func activity(at index: Int) -> CityActivity? {
-            guard self.activities.indices.contains(index) else { return nil }
-            return self.activities[index]
         }
     }
 
     private struct CardSlot: View {
         let city: CityModel
-        let activity: CityActivity?
+        let activity: CityActivity
 
         var body: some View {
-            Group {
-                if let activity {
-                    NavigationLink(
-                        value: CityActivityRoute(city: self.city, activity: activity)
-                    ) {
-                        ActivityCard(activity: activity)
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    Rectangle()
-                        .fill(.clear)
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(4 / 3, contentMode: .fit)
-                        .accessibilityHidden(true)
-                }
+            NavigationLink(
+                value: CityActivityRoute(city: self.city, activity: self.activity)
+            ) {
+                ActivityCard(activity: self.activity)
             }
+            .buttonStyle(.plain)
         }
     }
 
@@ -220,7 +177,6 @@ extension CityActivitiesView {
 
         var body: some View {
             Color.clear
-                .aspectRatio(4 / 3, contentMode: .fit)
                 .overlay {
                     Self.ActivityArtwork(activity: self.activity)
                 }

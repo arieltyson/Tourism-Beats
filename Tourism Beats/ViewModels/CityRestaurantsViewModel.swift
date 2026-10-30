@@ -32,7 +32,8 @@ final class CityRestaurantsViewModel {
     private func load() async {
         self.isLoading = true
         let fetchedRestaurants = await self.service.restaurants(for: self.city)
-        self.restaurants = Array(fetchedRestaurants.prefix(6))
+        // Every ranked result is kept; the page shows as many as fit the screen.
+        self.restaurants = fetchedRestaurants
         self.statusMessage = self.restaurants.isEmpty
             ? "No restaurant guide is available for \(self.city.name) right now."
             : nil

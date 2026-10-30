@@ -32,7 +32,8 @@ final class CityActivitiesViewModel {
     private func load() async {
         self.isLoading = true
         let fetchedActivities = await self.service.activities(for: self.city)
-        self.activities = Array(fetchedActivities.prefix(6))
+        // Every ranked result is kept; the page shows as many as fit the screen.
+        self.activities = fetchedActivities
         self.statusMessage = self.activities.isEmpty
             ? "No activity guide is available for \(self.city.name) right now."
             : nil

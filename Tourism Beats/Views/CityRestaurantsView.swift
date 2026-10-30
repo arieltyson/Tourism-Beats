@@ -16,7 +16,7 @@ struct CityRestaurantsView: View {
         VStack(spacing: SpacingTokens.medium) {
             Self.HeroCard(city: self.city)
 
-            Group {
+            VStack(spacing: 0) {
                 if self.viewModel.isLoading, self.viewModel.restaurants.isEmpty {
                     Self.LoadingState()
                 } else if self.viewModel.restaurants.isEmpty {
@@ -32,13 +32,12 @@ struct CityRestaurantsView: View {
                 }
             }
             .padding(.horizontal, SpacingTokens.xSmall)
-
-            Spacer(minLength: 0)
+            .frame(maxHeight: .infinity, alignment: .top)
         }
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.top, SpacingTokens.small)
-        .padding(.bottom, SpacingTokens.xxLarge)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .scrollsAtAccessibilitySizes()
         .background(Color.clear.ignoresSafeArea())
         .safeAreaPadding(.bottom, SpacingTokens.medium)
         .task(id: self.city.id) {
@@ -104,7 +103,6 @@ extension CityRestaurantsView {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(AppColors.surfaceSecondary.opacity(0.6))
                 .frame(maxWidth: .infinity)
-                .aspectRatio(4 / 3, contentMode: .fit)
                 .phaseAnimator([false, true]) { content, phase in
                     content
                         .opacity(phase ? 0.4 : 0.8)
@@ -116,21 +114,8 @@ extension CityRestaurantsView {
 
     private struct LoadingState: View {
         var body: some View {
-            Grid(horizontalSpacing: SpacingTokens.small, verticalSpacing: SpacingTokens.small) {
-                GridRow {
-                    PlaceholderCard()
-                    PlaceholderCard()
-                }
-
-                GridRow {
-                    PlaceholderCard()
-                    PlaceholderCard()
-                }
-
-                GridRow {
-                    PlaceholderCard()
-                    PlaceholderCard()
-                }
+            FillingCardGrid { _ in
+                PlaceholderCard()
             }
             .accessibilityHidden(true)
         }
@@ -157,76 +142,28 @@ extension CityRestaurantsView {
         let restaurants: [CityRestaurant]
 
         var body: some View {
-            Grid(horizontalSpacing: SpacingTokens.small, verticalSpacing: SpacingTokens.small) {
-                GridRow {
-                    CityRestaurantsView.CardSlot(
-                        city: self.city,
-                        restaurant: self.restaurant(at: 0),
-                        rank: 1
-                    )
-                    CityRestaurantsView.CardSlot(
-                        city: self.city,
-                        restaurant: self.restaurant(at: 1),
-                        rank: 2
-                    )
-                }
-
-                GridRow {
-                    CityRestaurantsView.CardSlot(
-                        city: self.city,
-                        restaurant: self.restaurant(at: 2),
-                        rank: 3
-                    )
-                    CityRestaurantsView.CardSlot(
-                        city: self.city,
-                        restaurant: self.restaurant(at: 3),
-                        rank: 4
-                    )
-                }
-
-                GridRow {
-                    CityRestaurantsView.CardSlot(
-                        city: self.city,
-                        restaurant: self.restaurant(at: 4),
-                        rank: 5
-                    )
-                    CityRestaurantsView.CardSlot(
-                        city: self.city,
-                        restaurant: self.restaurant(at: 5),
-                        rank: 6
-                    )
-                }
+            FillingCardGrid(itemCount: self.restaurants.count) { index in
+                CityRestaurantsView.CardSlot(
+                    city: self.city,
+                    restaurant: self.restaurants[index],
+                    rank: index + 1
+                )
             }
-        }
-
-        private func restaurant(at index: Int) -> CityRestaurant? {
-            guard self.restaurants.indices.contains(index) else { return nil }
-            return self.restaurants[index]
         }
     }
 
     private struct CardSlot: View {
         let city: CityModel
-        let restaurant: CityRestaurant?
+        let restaurant: CityRestaurant
         let rank: Int
 
         var body: some View {
-            Group {
-                if let restaurant {
-                    NavigationLink(
-                        value: CityRestaurantRoute(city: self.city, restaurant: restaurant)
-                    ) {
-                        RestaurantCard(restaurant: restaurant, rank: self.rank)
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    Rectangle()
-                        .fill(.clear)
-                        .frame(maxWidth: .infinity)
-                        .aspectRatio(4 / 3, contentMode: .fit)
-                        .accessibilityHidden(true)
-                }
+            NavigationLink(
+                value: CityRestaurantRoute(city: self.city, restaurant: self.restaurant)
+            ) {
+                RestaurantCard(restaurant: self.restaurant, rank: self.rank)
             }
+            .buttonStyle(.plain)
         }
     }
 
@@ -294,7 +231,6 @@ extension CityRestaurantsView {
                 radius: 16,
                 y: 10
             )
-            .aspectRatio(4 / 3, contentMode: .fit)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
                 "\(self.rank, format: .number). \(self.restaurant.name), \(self.restaurant.displayCuisine)"
