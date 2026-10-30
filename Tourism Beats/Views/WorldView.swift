@@ -27,8 +27,8 @@ struct WorldView: View {
     // MARK: Search state
 
     @State private var isSearchPresented = false
+    @State private var hidesSearchBar = false
     @State private var searchBarHeight: CGFloat = 0
-    @Namespace private var searchTransition
 
     private let cities: [CityModel]
 
@@ -50,9 +50,10 @@ struct WorldView: View {
         .ignoresSafeArea()
         .safeAreaInset(edge: .bottom) {
             MapSearchBar {
-                self.isSearchPresented = true
+                self.setSearchPresented(true)
             }
-            .matchedTransitionSource(id: Self.searchTransitionID, in: self.searchTransition)
+            // The search screen's own field takes its place while open.
+            .opacity(self.hidesSearchBar ? 0 : 1)
             .padding(.horizontal, SpacingTokens.medium)
             .padding(.bottom, SpacingTokens.xSmall)
             .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
@@ -65,12 +66,18 @@ struct WorldView: View {
         .toolbar(.hidden, for: .navigationBar)
         .fullScreenCover(isPresented: self.$isSearchPresented) {
             CitySearchView(cities: self.cities) { city in
-                self.isSearchPresented = false
+                self.setSearchPresented(false)
                 self.navigateToCity(city)
             }
-            .navigationTransition(
-                .zoom(sourceID: Self.searchTransitionID, in: self.searchTransition)
-            )
+        }
+        .onChange(of: self.isSearchPresented) { _, isPresented in
+            if isPresented {
+                self.hidesSearchBar = true
+            } else {
+                withAnimation(.smooth) {
+                    self.hidesSearchBar = false
+                }
+            }
         }
         .onAppear {
             self.zoomOutOnReturn()
@@ -106,7 +113,18 @@ struct WorldView: View {
 
     // MARK: - Search
 
-    private static let searchTransitionID = "search"
+    /// Opens or closes search without a presentation animation. The field
+    /// can only take focus once its screen is fully presented, so an animated
+    /// presentation showed an idle field that jumped when the keyboard rose.
+    /// The search screen fades itself in and out over the map instead, and a
+    /// chosen city's page pushes in as search closes.
+    private func setSearchPresented(_ isPresented: Bool) {
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        withTransaction(transaction) {
+            self.isSearchPresented = isPresented
+        }
+    }
 
     // MARK: - Navigation
 

@@ -8,6 +8,9 @@ import SwiftUI
 
 // MARK: - CitySearchView
 
+/// Presented without a presentation animation (see `WorldView`), so the field
+/// is focused from the first frame; the screen fades itself in over the map
+/// as the keyboard rises, and fades out again when search is cancelled.
 struct CitySearchView: View {
     let onCitySelected: (CityModel) -> Void
 
@@ -15,9 +18,7 @@ struct CitySearchView: View {
 
     @State private var viewModel: CitySearchViewModel
     @State private var isSearchActive = false
-
-    /// The field ignores activation until the cover has finished presenting.
-    private static let activationDelay: Duration = .milliseconds(400)
+    @State private var isShowing = false
 
     init(cities: [CityModel], onCitySelected: @escaping (CityModel) -> Void) {
         self.onCitySelected = onCitySelected
@@ -51,6 +52,8 @@ struct CitySearchView: View {
                     ContentUnavailableView.search(text: self.viewModel.query)
                 }
             }
+            .opacity(self.isShowing ? 1 : 0)
+            .containerBackground(.clear, for: .navigation)
             .searchable(
                 text: self.$viewModel.query,
                 isPresented: self.$isSearchActive,
@@ -59,23 +62,37 @@ struct CitySearchView: View {
             )
             .toolbar {
                 DefaultToolbarItem(kind: .search, placement: .bottomBar)
-
-                // Shown only while the field is inactive; the active
-                // field supplies its own close button.
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Close", systemImage: "xmark") {
-                        self.dismiss()
-                    }
+            }
+            // Fades out with the screen, so the idle field doesn't linger
+            // over the tab bar once search is cancelled.
+            .toolbarVisibility(self.isShowing ? .visible : .hidden, for: .bottomBar)
+            .onAppear {
+                self.isSearchActive = true
+                withAnimation(.smooth) {
+                    self.isShowing = true
                 }
             }
-            .task {
-                try? await Task.sleep(for: Self.activationDelay)
-                self.isSearchActive = true
-            }
         }
-        // Cancelling the active field closes the screen too.
+        .presentationBackground {
+            Rectangle()
+                .fill(.background)
+                .opacity(self.isShowing ? 1 : 0)
+        }
+        // The field's own close button cancels search, which closes the screen.
         .onChange(of: self.isSearchActive) { wasActive, isActive in
             if wasActive, !isActive {
+                self.close()
+            }
+        }
+    }
+
+    private func close() {
+        withAnimation(.smooth) {
+            self.isShowing = false
+        } completion: {
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
                 self.dismiss()
             }
         }
