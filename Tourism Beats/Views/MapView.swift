@@ -3,12 +3,15 @@ import SwiftUI
 
 // MARK: - MapView
 
-struct MapView: UIViewRepresentable {
+struct MapView: UIViewControllerRepresentable {
     @Binding var selectedCity: CityModel?
     @Binding var showAlert: Bool
     @Binding var region: MKCoordinateRegion
     @Binding var lastRegion: MKCoordinateRegion?
     let cities: [CityModel]
+    /// Height of controls floating over the bottom of the map. It extends
+    /// the map's safe area, so MapKit keeps its logo and legal link above them.
+    let bottomOverlayHeight: CGFloat
     let onCitySelected: (CityModel) -> Void
 
     // Build a name → city dictionary once for fast selection.
@@ -20,6 +23,7 @@ struct MapView: UIViewRepresentable {
         region: Binding<MKCoordinateRegion>,
         lastRegion: Binding<MKCoordinateRegion?>,
         cities: [CityModel],
+        bottomOverlayHeight: CGFloat = 0,
         onCitySelected: @escaping (CityModel) -> Void
     ) {
         _selectedCity = selectedCity
@@ -27,14 +31,16 @@ struct MapView: UIViewRepresentable {
         _region = region
         _lastRegion = lastRegion
         self.cities = cities
+        self.bottomOverlayHeight = bottomOverlayHeight
         self.onCitySelected = onCitySelected
         self.cityByName = cities.reduce(into: [:]) { partialResult, city in
             partialResult[Self.annotationTitle(for: city)] = city
         }
     }
 
-    func makeUIView(context: Context) -> MKMapView {
-        let mapView = MKMapView()
+    func makeUIViewController(context: Context) -> MapContainerViewController {
+        let controller = MapContainerViewController()
+        let mapView = controller.mapView
         mapView.delegate = context.coordinator
         mapView.preferredConfiguration = MKStandardMapConfiguration(emphasisStyle: .muted)
         mapView.overrideUserInterfaceStyle = .dark
@@ -49,10 +55,16 @@ struct MapView: UIViewRepresentable {
             pin.coordinate = city.coordinate
             mapView.addAnnotation(pin)
         }
-        return mapView
+        return controller
     }
 
-    func updateUIView(_ uiView: MKMapView, context _: Context) {
+    func updateUIViewController(_ controller: MapContainerViewController, context _: Context) {
+        if controller.additionalSafeAreaInsets.bottom != self.bottomOverlayHeight {
+            controller.additionalSafeAreaInsets.bottom = self.bottomOverlayHeight
+        }
+
+        let uiView = controller.mapView
+
         if !uiView.region.isApproximatelyEqual(to: self.region) {
             uiView.setRegion(self.region, animated: true)
         }
