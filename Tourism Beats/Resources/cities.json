@@ -3719,5 +3719,37 @@
     "latitude": -41.51666667,
     "longitude": 173.95,
     "timeZoneIdentifier": "Pacific/Auckland"
+  },
+  {
+    "name": "Maceió",
+    "countryCode": "BR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Praia_de_Ipioca_-_Macei%C3%B3_-_Alagoas_%2811394603505%29.jpg/1280px-Praia_de_Ipioca_-_Macei%C3%B3_-_Alagoas_%2811394603505%29.jpg",
+    "latitude": -9.66583333,
+    "longitude": -35.735,
+    "timeZoneIdentifier": "America/Maceio"
+  },
+  {
+    "name": "Veracruz",
+    "countryCode": "PA",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Playa_de_Kobbe_La_Mochila.jpg/1280px-Playa_de_Kobbe_La_Mochila.jpg",
+    "latitude": 8.89111,
+    "longitude": -79.6236,
+    "timeZoneIdentifier": "America/Panama"
+  },
+  {
+    "name": "Culebra",
+    "countryCode": "CR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Bahia_Culebra_-_panoramio_%281%29.jpg/1280px-Bahia_Culebra_-_panoramio_%281%29.jpg",
+    "latitude": 10.61666667,
+    "longitude": -85.65805556,
+    "timeZoneIdentifier": "America/Costa_Rica"
+  },
+  {
+    "name": "Sarteneja",
+    "countryCode": "BZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Sarteneja%2C_Belize%2C_Central_America.jpg/1280px-Sarteneja%2C_Belize%2C_Central_America.jpg",
+    "latitude": 18.35439043,
+    "longitude": -88.14549561,
+    "timeZoneIdentifier": "America/Belize"
   }
 ]

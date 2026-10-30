@@ -463,5 +463,9 @@
   {"city": "Mendoza", "countryCode": "AR", "walkScore": 70, "transitScore": 45},
   {"city": "Stellenbosch", "countryCode": "ZA", "walkScore": 65, "transitScore": 25},
   {"city": "Margaret River", "countryCode": "AU", "walkScore": 50, "transitScore": 10},
-  {"city": "Blenheim", "countryCode": "NZ", "walkScore": 55, "transitScore": 15}
+  {"city": "Blenheim", "countryCode": "NZ", "walkScore": 55, "transitScore": 15},
+  {"city": "Maceió", "countryCode": "BR", "walkScore": 62, "transitScore": 40},
+  {"city": "Veracruz", "countryCode": "PA", "walkScore": 35, "transitScore": 15},
+  {"city": "Culebra", "countryCode": "CR", "walkScore": 25, "transitScore": 5},
+  {"city": "Sarteneja", "countryCode": "BZ", "walkScore": 55, "transitScore": 5}
 ]
