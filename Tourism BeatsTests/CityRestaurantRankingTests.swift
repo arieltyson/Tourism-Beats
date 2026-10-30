@@ -47,7 +47,8 @@ struct CityRestaurantRankingTests {
                     latitude: 49.2824,
                     longitude: -123.1183,
                     popularityRank: 1
-                ),
+                )
+                .with { $0.appleMapsConsensus = 0.6 },
                 self.candidate(
                     id: "pasta-2",
                     name: "Canal Pasta",
@@ -57,7 +58,8 @@ struct CityRestaurantRankingTests {
                     latitude: 49.2825,
                     longitude: -123.1182,
                     popularityRank: 2
-                ),
+                )
+                .with { $0.appleMapsConsensus = 0.55 },
                 self.candidate(
                     id: "sushi-1",
                     name: "Kumo Sushi",
@@ -68,6 +70,7 @@ struct CityRestaurantRankingTests {
                     longitude: -123.1181,
                     popularityRank: 3
                 )
+                .with { $0.appleMapsConsensus = 0.5 }
             ],
             for: self.city,
             limit: 2
@@ -132,6 +135,43 @@ struct CityRestaurantRankingTests {
         let ranked = CityRestaurantRanking.topRestaurants(from: [obscureStar, crowdFavourite], for: self.city, limit: 2)
 
         #expect(ranked.first?.name == "Night Market Grill")
+    }
+
+    @Test func restaurantsWithoutEvidenceOfQualityAreLeftOut() {
+        let loved = self.candidate(id: "loved", name: "Lantern House", popularityRank: 1)
+            .with { $0.appleMapsConsensus = 0.7 }
+        let barelySeen = self.candidate(id: "barely", name: "Side Street Diner", popularityRank: 24)
+            .with { $0.appleMapsConsensus = 0.12 }
+        let guidePick = self.candidate(id: "pick", name: "Old Port Tavern", popularityRank: 30)
+            .with {
+                $0.appleMapsConsensus = 0.02
+                $0.isGuideRecommended = true
+            }
+
+        let ranked = CityRestaurantRanking.topRestaurants(
+            from: [barelySeen, guidePick, loved],
+            for: self.city,
+            limit: 6
+        )
+
+        #expect(Set(ranked.map(\.name)) == ["Lantern House", "Old Port Tavern"])
+    }
+
+    @Test func aCityWithoutEvidenceStillShowsItsBestRestaurants() {
+        let mapDataOnly = ["Fjord Café", "Harbour Kitchen"].map {
+            self.candidate(id: $0, name: $0, cuisine: "Nordic")
+        }
+
+        let ranked = CityRestaurantRanking.topRestaurants(from: mapDataOnly, for: self.city, limit: 6)
+
+        #expect(ranked.count == 2)
+    }
+
+    @Test(arguments: [(0.12, 0.4, true), (0.12, 0.6, false), (0.08, 0.2, false)])
+    func consensusMustBeMeaningfulAndCloseEnoughToTheBest(consensus: Double, strongest: Double, qualifies: Bool) {
+        let candidate = self.candidate(id: "c", name: "Candidate").with { $0.appleMapsConsensus = consensus }
+
+        #expect(CityRestaurantRanking.hasQualityEvidence(candidate, strongestConsensus: strongest) == qualifies)
     }
 
     @Test func mapsURLUsesGoogleMapsWithCoordinates() throws {

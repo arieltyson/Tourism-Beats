@@ -180,6 +180,13 @@ enum CityRestaurantRanking {
 
     enum Threshold {
         static let popularRank = 10
+        /// The least Apple Maps consensus that counts as evidence on its own,
+        /// about a top placement in one rating-focused search.
+        static let minimumConsensus = 0.1
+        /// The least consensus, relative to the city's strongest, that counts
+        /// as evidence. Small towns get fewer, weaker results, so a fixed bar
+        /// alone would empty them.
+        static let minimumRelativeConsensus = 0.25
         static let highlyRatedConsensus = 0.4
         static let crossQueryAppearances = 3
         static let foodQueryAppearances = 2
@@ -210,7 +217,38 @@ enum CityRestaurantRanking {
                     < (rhs.distanceFromCenter ?? .greatestFiniteMagnitude)
             }
 
-        return self.selectDiverseRestaurants(from: scored, for: city, limit: limit)
+        return self.selectDiverseRestaurants(
+            from: self.withQualityEvidence(scored),
+            for: city,
+            limit: limit
+        )
+    }
+
+    // MARK: - Quality Floor
+
+    /// Only restaurants with real evidence of quality: expert recognition, an
+    /// editors' pick, or a solid place in Apple Maps' searches. A city where
+    /// nothing qualifies, as when only map data is available, keeps its best
+    /// candidates rather than showing nothing.
+    static func withQualityEvidence(_ scored: [ScoredCandidate]) -> [ScoredCandidate] {
+        let strongestConsensus = scored.map { self.appleMapsConsensus(for: $0.candidate) }.max() ?? 0
+        let evidenced = scored.filter {
+            self.hasQualityEvidence($0.candidate, strongestConsensus: strongestConsensus)
+        }
+        return evidenced.isEmpty ? scored : evidenced
+    }
+
+    static func hasQualityEvidence(
+        _ candidate: CityRestaurantCandidate,
+        strongestConsensus: Double
+    ) -> Bool {
+        if candidate.isMichelinRecognized || candidate.wikidataAwardCount > 0 || candidate.isGuideRecommended {
+            return true
+        }
+
+        let consensus = self.appleMapsConsensus(for: candidate)
+        return consensus >= Threshold.minimumConsensus
+            && consensus >= strongestConsensus * Threshold.minimumRelativeConsensus
     }
 
     static func score(
