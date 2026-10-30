@@ -51,10 +51,7 @@ struct HomeView: View {
                     .frame(height: 20)
 
                 // Explore CTA
-                DiscoveryCTACard(
-                    cityCount: self.viewModel.allCityCount,
-                    scheme: self.scheme
-                ) {
+                DiscoveryCTACard(scheme: self.scheme) {
                     self.haptic.fire(.searchOpen)
                     self.onExplore()
                 }
@@ -317,22 +314,15 @@ private struct DiscoveryCityCard: View {
 // MARK: - DiscoveryCTACard
 
 private struct DiscoveryCTACard: View {
-    let cityCount: Int
     let scheme: ColorScheme
     let action: () -> Void
 
     var body: some View {
         Button(action: self.action) {
             HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Explore all destinations")
-                        .font(.system(.headline, design: .rounded))
-                        .foregroundStyle(AppColors.onImagePrimary)
-
-                    Text("\(self.cityCount) cities worldwide")
-                        .font(.caption)
-                        .foregroundStyle(AppColors.onImageSecondary)
-                }
+                Text("Explore all destinations")
+                    .font(.system(.headline, design: .rounded))
+                    .foregroundStyle(AppColors.onImagePrimary)
 
                 Spacer()
 
@@ -362,7 +352,7 @@ private struct DiscoveryCTACard: View {
             .contentShape(.rect(cornerRadius: 16, style: .continuous))
         }
         .buttonStyle(.cardPress)
-        .accessibilityLabel("Explore all destinations. \(self.cityCount) cities worldwide.")
+        .accessibilityLabel("Explore all destinations")
         .accessibilityHint("Opens the search tab to explore destinations")
     }
 }

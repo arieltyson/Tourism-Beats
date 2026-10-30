@@ -5,7 +5,6 @@ import Foundation
 @MainActor @Observable
 final class HomeViewModel {
     private(set) var featuredCities: [CityModel] = []
-    private(set) var allCityCount: Int = 0
     private(set) var isLoaded = false
 
     private let timeFormatter: DateFormatter = {
@@ -17,7 +16,6 @@ final class HomeViewModel {
     func loadCities() {
         guard !self.isLoaded else { return }
         guard let cities = try? DataService().loadCities() else { return }
-        self.allCityCount = cities.count
         let featuredPool = cities.filter(\.isEligibleForFeaturedHeroCarousel)
         let source = featuredPool.count >= 6 ? featuredPool : cities
         self.featuredCities = Array(source.shuffled().prefix(6))
