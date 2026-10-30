@@ -136,9 +136,15 @@ extension CityRestaurantService {
 
             let search = MKLocalSearch(request: request)
             let response = try await search.start()
+            let cityCenter = CLLocation(
+                latitude: city.coordinate.latitude,
+                longitude: city.coordinate.longitude
+            )
 
             return response.mapItems.enumerated().compactMap { index, item in
-                guard let name = item.name, !name.isEmpty else { return nil }
+                guard let name = item.name, !name.isEmpty,
+                      self.isWithinCity(item.location, center: cityCenter)
+                else { return nil }
 
                 let coordinate = item.location.coordinate
                 return RestaurantModels.MapKitRestaurantResult(
@@ -157,6 +163,14 @@ extension CityRestaurantService {
         } catch {
             return []
         }
+    }
+
+    /// MapKit treats the search region as a hint, so a sparse city can get
+    /// results from elsewhere. This matches the widest OpenStreetMap search.
+    static let maximumMapKitDistanceFromCityCenter: CLLocationDistance = 15_000
+
+    static func isWithinCity(_ location: CLLocation, center: CLLocation) -> Bool {
+        location.distance(from: center) <= self.maximumMapKitDistanceFromCityCenter
     }
 
     static func coordinateKey(latitude: Double, longitude: Double) -> String {
