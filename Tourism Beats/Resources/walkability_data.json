@@ -396,5 +396,12 @@
   {"city": "Philadelphia", "countryCode": "US", "walkScore": 79, "transitScore": 67},
   {"city": "Marrakech", "countryCode": "MA", "walkScore": 62, "transitScore": 30},
   {"city": "Brisbane", "countryCode": "AU", "walkScore": 55, "transitScore": 50},
-  {"city": "Queenstown", "countryCode": "NZ", "walkScore": 55, "transitScore": 20}
+  {"city": "Queenstown", "countryCode": "NZ", "walkScore": 55, "transitScore": 20},
+  {"city": "Interlaken", "countryCode": "CH", "walkScore": 80, "transitScore": 60},
+  {"city": "Grindelwald", "countryCode": "CH", "walkScore": 65, "transitScore": 55},
+  {"city": "Lauterbrunnen", "countryCode": "CH", "walkScore": 65, "transitScore": 60},
+  {"city": "Chamonix", "countryCode": "FR", "walkScore": 75, "transitScore": 50},
+  {"city": "Annecy", "countryCode": "FR", "walkScore": 82, "transitScore": 50},
+  {"city": "Innsbruck", "countryCode": "AT", "walkScore": 85, "transitScore": 75},
+  {"city": "Bled", "countryCode": "SI", "walkScore": 65, "transitScore": 25}
 ]

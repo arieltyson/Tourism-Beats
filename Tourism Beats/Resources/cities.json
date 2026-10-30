@@ -3183,5 +3183,61 @@
     "latitude": -45.03111111,
     "longitude": 168.6625,
     "timeZoneIdentifier": "Pacific/Auckland"
+  },
+  {
+    "name": "Interlaken",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Goldswil-Viadukt_Panorama_mit_Interlaken_im_Hintergrund_2.jpg/1280px-Goldswil-Viadukt_Panorama_mit_Interlaken_im_Hintergrund_2.jpg",
+    "latitude": 46.68715,
+    "longitude": 7.86487,
+    "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Grindelwald",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Grindelwald_View_02.jpg/1280px-Grindelwald_View_02.jpg",
+    "latitude": 46.62555556,
+    "longitude": 8.03333333,
+    "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Lauterbrunnen",
+    "countryCode": "CH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/1_lauterbrunnen_valley_wengen_2022.jpg/1280px-1_lauterbrunnen_valley_wengen_2022.jpg",
+    "latitude": 46.59972222,
+    "longitude": 7.90861111,
+    "timeZoneIdentifier": "Europe/Zurich"
+  },
+  {
+    "name": "Chamonix",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Chamonix_valley_from_la_Fl%C3%A9g%C3%A8re%2C2010_07.JPG/1280px-Chamonix_valley_from_la_Fl%C3%A9g%C3%A8re%2C2010_07.JPG",
+    "latitude": 45.92222222,
+    "longitude": 6.86888889,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Annecy",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Annecy_-_palais_de_l%27Isle_-_2026-10-05_20-52-34_001.jpg/1280px-Annecy_-_palais_de_l%27Isle_-_2026-10-05_20-52-34_001.jpg",
+    "latitude": 45.89916667,
+    "longitude": 6.12944444,
+    "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Innsbruck",
+    "countryCode": "AT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Innsbruck_and_River.jpg/1280px-Innsbruck_and_River.jpg",
+    "latitude": 47.26833333,
+    "longitude": 11.39333333,
+    "timeZoneIdentifier": "Europe/Vienna"
+  },
+  {
+    "name": "Bled",
+    "countryCode": "SI",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Lake_Bled_from_the_Mountain.jpg/1280px-Lake_Bled_from_the_Mountain.jpg",
+    "latitude": 46.36833333,
+    "longitude": 14.11472222,
+    "timeZoneIdentifier": "Europe/Ljubljana"
   }
 ]
