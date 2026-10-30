@@ -3287,5 +3287,21 @@
     "latitude": 43.5525,
     "longitude": 7.02138889,
     "timeZoneIdentifier": "Europe/Paris"
+  },
+  {
+    "name": "Wānaka",
+    "countryCode": "NZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Lake_Wanaka_Tree.jpg/1280px-Lake_Wanaka_Tree.jpg",
+    "latitude": -44.708056,
+    "longitude": 169.123889,
+    "timeZoneIdentifier": "Pacific/Auckland"
+  },
+  {
+    "name": "Cairns",
+    "countryCode": "AU",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Esplanade_Lagoon%2C_Cairns%2C_2025%2C_12.jpg/1280px-Esplanade_Lagoon%2C_Cairns%2C_2025%2C_12.jpg",
+    "latitude": -16.92555556,
+    "longitude": 145.77527778,
+    "timeZoneIdentifier": "Australia/Brisbane"
   }
 ]

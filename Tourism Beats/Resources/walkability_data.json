@@ -409,5 +409,7 @@
   {"city": "Kotor", "countryCode": "ME", "walkScore": 75, "transitScore": 25},
   {"city": "Funchal", "countryCode": "PT", "walkScore": 70, "transitScore": 40},
   {"city": "Ponta Delgada", "countryCode": "PT", "walkScore": 72, "transitScore": 25},
-  {"city": "Cannes", "countryCode": "FR", "walkScore": 85, "transitScore": 55}
+  {"city": "Cannes", "countryCode": "FR", "walkScore": 85, "transitScore": 55},
+  {"city": "Wānaka", "countryCode": "NZ", "walkScore": 55, "transitScore": 8},
+  {"city": "Cairns", "countryCode": "AU", "walkScore": 55, "transitScore": 30}
 ]
