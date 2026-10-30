@@ -3239,5 +3239,53 @@
     "latitude": 46.36833333,
     "longitude": 14.11472222,
     "timeZoneIdentifier": "Europe/Ljubljana"
+  },
+  {
+    "name": "Bergen",
+    "countryCode": "NO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Bergen_panorama_at_night_-_panoramio_%281%29.jpg/1280px-Bergen_panorama_at_night_-_panoramio_%281%29.jpg",
+    "latitude": 60.3925,
+    "longitude": 5.32333333,
+    "timeZoneIdentifier": "Europe/Oslo"
+  },
+  {
+    "name": "Tromsø",
+    "countryCode": "NO",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Troms%C3%B8_sentrum_%285835702754%29.jpg/1280px-Troms%C3%B8_sentrum_%285835702754%29.jpg",
+    "latitude": 69.65166667,
+    "longitude": 18.95555556,
+    "timeZoneIdentifier": "Europe/Oslo"
+  },
+  {
+    "name": "Kotor",
+    "countryCode": "ME",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/20090719_Crkva_Gospa_od_Zdravlja_Kotor_Bay_Montenegro.jpg/1280px-20090719_Crkva_Gospa_od_Zdravlja_Kotor_Bay_Montenegro.jpg",
+    "latitude": 42.42539,
+    "longitude": 18.771191,
+    "timeZoneIdentifier": "Europe/Podgorica"
+  },
+  {
+    "name": "Funchal",
+    "countryCode": "PT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Funchal%2C_Jardins_da_Quinta_Vigia_%28lookout%29.jpg/1280px-Funchal%2C_Jardins_da_Quinta_Vigia_%28lookout%29.jpg",
+    "latitude": 32.65,
+    "longitude": -16.91666667,
+    "timeZoneIdentifier": "Atlantic/Madeira"
+  },
+  {
+    "name": "Ponta Delgada",
+    "countryCode": "PT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Portas_da_Cidade%2C_Ponta_Delgada%2C_isla_de_San_Miguel%2C_Azores%2C_Portugal%2C_2020-07-29%2C_DD_123-125_HDR.jpg/1280px-Portas_da_Cidade%2C_Ponta_Delgada%2C_isla_de_San_Miguel%2C_Azores%2C_Portugal%2C_2020-07-29%2C_DD_123-125_HDR.jpg",
+    "latitude": 37.74,
+    "longitude": -25.67,
+    "timeZoneIdentifier": "Atlantic/Azores"
+  },
+  {
+    "name": "Cannes",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Cannes_from_Suquet_Tower_03.jpg/1280px-Cannes_from_Suquet_Tower_03.jpg",
+    "latitude": 43.5525,
+    "longitude": 7.02138889,
+    "timeZoneIdentifier": "Europe/Paris"
   }
 ]

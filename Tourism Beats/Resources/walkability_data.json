@@ -403,5 +403,11 @@
   {"city": "Chamonix", "countryCode": "FR", "walkScore": 75, "transitScore": 50},
   {"city": "Annecy", "countryCode": "FR", "walkScore": 82, "transitScore": 50},
   {"city": "Innsbruck", "countryCode": "AT", "walkScore": 85, "transitScore": 75},
-  {"city": "Bled", "countryCode": "SI", "walkScore": 65, "transitScore": 25}
+  {"city": "Bled", "countryCode": "SI", "walkScore": 65, "transitScore": 25},
+  {"city": "Bergen", "countryCode": "NO", "walkScore": 82, "transitScore": 65},
+  {"city": "Tromsø", "countryCode": "NO", "walkScore": 70, "transitScore": 45},
+  {"city": "Kotor", "countryCode": "ME", "walkScore": 75, "transitScore": 25},
+  {"city": "Funchal", "countryCode": "PT", "walkScore": 70, "transitScore": 40},
+  {"city": "Ponta Delgada", "countryCode": "PT", "walkScore": 72, "transitScore": 25},
+  {"city": "Cannes", "countryCode": "FR", "walkScore": 85, "transitScore": 55}
 ]
