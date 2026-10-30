@@ -42,7 +42,15 @@ struct CitySearchView: View {
                 }
                 .padding(.horizontal, SpacingTokens.medium)
             }
+            // A few results sit just above the field rather than stranded
+            // at the top; a full list still scrolls from the top as usual.
+            .defaultScrollAnchor(.bottom, for: .alignment)
             .scrollDismissesKeyboard(.immediately)
+            .overlay {
+                if self.viewModel.hasNoResults {
+                    ContentUnavailableView.search(text: self.viewModel.query)
+                }
+            }
             .searchable(
                 text: self.$viewModel.query,
                 isPresented: self.$isSearchActive,
