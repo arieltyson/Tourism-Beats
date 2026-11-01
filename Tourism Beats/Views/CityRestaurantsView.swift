@@ -145,8 +145,7 @@ extension CityRestaurantsView {
             FillingCardGrid(itemCount: self.restaurants.count) { index in
                 CityRestaurantsView.CardSlot(
                     city: self.city,
-                    restaurant: self.restaurants[index],
-                    rank: index + 1
+                    restaurant: self.restaurants[index]
                 )
             }
         }
@@ -155,13 +154,12 @@ extension CityRestaurantsView {
     private struct CardSlot: View {
         let city: CityModel
         let restaurant: CityRestaurant
-        let rank: Int
 
         var body: some View {
             NavigationLink(
                 value: CityRestaurantRoute(city: self.city, restaurant: self.restaurant)
             ) {
-                RestaurantCard(restaurant: self.restaurant, rank: self.rank)
+                RestaurantCard(restaurant: self.restaurant)
             }
             .buttonStyle(.plain)
         }
@@ -169,7 +167,6 @@ extension CityRestaurantsView {
 
     struct RestaurantCard: View {
         let restaurant: CityRestaurant
-        let rank: Int
 
         @Environment(\.colorScheme) private var scheme
 
@@ -184,10 +181,9 @@ extension CityRestaurantsView {
                     Self.backgroundGradient(for: self.restaurant)
                 }
 
+                // Only the bottom darkens, behind the cuisine and name.
                 LinearGradient(
                     stops: [
-                        .init(color: AppColors.imageScrimMid, location: 0.0),
-                        .init(color: .clear, location: 0.35),
                         .init(color: .clear, location: 0.5),
                         .init(color: AppColors.imageScrimBottom, location: 1.0)
                     ],
@@ -196,8 +192,6 @@ extension CityRestaurantsView {
                 )
 
                 VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-                    Self.RankBadge(rank: self.rank)
-
                     Spacer(minLength: 0)
 
                     VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
@@ -232,7 +226,7 @@ extension CityRestaurantsView {
             )
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
-                "\(self.rank, format: .number). \(self.restaurant.name), \(self.restaurant.displayCuisine)"
+                "\(self.restaurant.name), \(self.restaurant.displayCuisine)"
             )
             .accessibilityHint("Opens the restaurant details")
         }
@@ -260,20 +254,6 @@ extension CityRestaurantsView {
 }
 
 extension CityRestaurantsView.RestaurantCard {
-    private struct RankBadge: View {
-        let rank: Int
-
-        var body: some View {
-            Text("\(self.rank, format: .number)")
-                .font(TypographyTokens.footnote.monospacedDigit())
-                .bold()
-                .foregroundStyle(AppColors.onImagePrimary)
-                .padding(.horizontal, SpacingTokens.xSmall)
-                .padding(.vertical, SpacingTokens.xxSmall)
-                .background(AppColors.coral, in: Capsule())
-        }
-    }
-
     /// The cuisine as a quiet line above the name.
     private struct CuisineLabel: View {
         let cuisine: String

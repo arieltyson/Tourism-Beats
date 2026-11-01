@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - RestaurantPreviewImage
 
 /// A street-level Look Around view of the restaurant where Apple has imagery,
-/// and a tilted satellite view with the restaurant marked everywhere else.
+/// and a tilted satellite view centred on it everywhere else.
 ///
 /// Both are requested together so places without Look Around coverage don't
 /// wait for that answer before their map starts loading.
@@ -49,8 +49,7 @@ struct RestaurantPreviewImage: View {
                 latitude: latitude,
                 longitude: longitude,
                 size: size,
-                scale: scale,
-                marksLocation: true
+                scale: scale
             )
         }
 
