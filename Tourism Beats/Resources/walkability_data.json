@@ -490,5 +490,8 @@
   {"city": "Sonoma", "countryCode": "US", "walkScore": 50, "transitScore": 15},
   {"city": "Fresno", "countryCode": "US", "walkScore": 48, "transitScore": 32},
   {"city": "Bakersfield", "countryCode": "US", "walkScore": 40, "transitScore": 25},
-  {"city": "San Luis Obispo", "countryCode": "US", "walkScore": 55, "transitScore": 25}
+  {"city": "San Luis Obispo", "countryCode": "US", "walkScore": 55, "transitScore": 25},
+  {"city": "Santa Monica", "countryCode": "US", "walkScore": 83, "transitScore": 58},
+  {"city": "Long Beach", "countryCode": "US", "walkScore": 70, "transitScore": 50},
+  {"city": "Palm Springs", "countryCode": "US", "walkScore": 45, "transitScore": 25}
 ]

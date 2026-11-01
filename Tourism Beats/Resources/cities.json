@@ -3953,5 +3953,29 @@
     "latitude": 35.2742,
     "longitude": -120.6631,
     "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Santa Monica",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Santa_Monica_Beach_with_pier_2.JPG/1280px-Santa_Monica_Beach_with_pier_2.JPG",
+    "latitude": 34.0219,
+    "longitude": -118.4814,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Long Beach",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Long-Beach-skyline-at-dusk_%2821611595655%29.jpg/1280px-Long-Beach-skyline-at-dusk_%2821611595655%29.jpg",
+    "latitude": 33.7683,
+    "longitude": -118.1956,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Palm Springs",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Palm_Springs_from_the_Museum_Trail.jpg/1280px-Palm_Springs_from_the_Museum_Trail.jpg",
+    "latitude": 33.8303,
+    "longitude": -116.5453,
+    "timeZoneIdentifier": "America/Los_Angeles"
   }
 ]
