@@ -9,13 +9,14 @@ typealias RestaurantModels = CityRestaurantAPIModels
 
 actor CityRestaurantService: CityRestaurantProviding {
     static let shared = CityRestaurantService()
-    private static let cacheVersion = "v7"
+    private static let cacheVersion = "v8"
     /// The City tab shows the top six, but trip planning needs enough distinct
     /// restaurants to suggest a different meal for each day of a longer trip.
     private static let rankedRestaurantLimit = 18
 
     let session: URLSession
     let overpassClient: OverpassClient
+    let cuisineClassifier: any RestaurantCuisineClassifying
     let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier ?? "TourismBeats",
         category: "CityRestaurantService"
@@ -28,6 +29,9 @@ actor CityRestaurantService: CityRestaurantProviding {
     private static let enrichmentGrace: Duration = .seconds(3)
     /// Longer than Overpass's own time budget, so a primary source is never cut short.
     private static let primarySourceWait: Duration = .seconds(20)
+    /// How long a guide waits for on-device cuisine labels before showing
+    /// without them; labels that arrive later are saved for the next visit.
+    private static let cuisineLabellingGrace: Duration = .seconds(6)
 
     private var memoryCache: [String: RestaurantModels.CachedPayload] = [:]
     /// Network fetches already underway, so a prefetch and the screen that
@@ -46,9 +50,13 @@ actor CityRestaurantService: CityRestaurantProviding {
         return encoder
     }()
 
-    init(session: URLSession = .shared) {
+    init(
+        session: URLSession = .shared,
+        cuisineClassifier: any RestaurantCuisineClassifying = OnDeviceRestaurantCuisineClassifier()
+    ) {
         self.session = session
         self.overpassClient = OverpassClient(session: session)
+        self.cuisineClassifier = cuisineClassifier
     }
 
     func restaurants(for city: CityModel) async -> [CityRestaurant] {
@@ -82,7 +90,8 @@ actor CityRestaurantService: CityRestaurantProviding {
         diskURL: URL
     ) async -> [CityRestaurant] {
         do {
-            let (restaurants, isPartial) = try await self.fetchRestaurants(for: city)
+            let (rankedRestaurants, isPartial) = try await self.fetchRestaurants(for: city)
+            let restaurants = await self.labelCuisines(of: rankedRestaurants, in: city, key: key, diskURL: diskURL)
             let payload = RestaurantModels.CachedPayload(
                 fetchedAt: .now,
                 restaurants: restaurants,
@@ -103,6 +112,52 @@ actor CityRestaurantService: CityRestaurantProviding {
 
             return []
         }
+    }
+}
+
+// MARK: - Cuisine Labels
+
+extension CityRestaurantService {
+    /// Fills in missing cuisines, waiting briefly for the on-device model.
+    /// When it needs longer, the guide is returned as it is and the labels are
+    /// saved to the cache once they arrive.
+    private func labelCuisines(
+        of restaurants: [CityRestaurant],
+        in city: CityModel,
+        key: String,
+        diskURL: URL
+    ) async -> [CityRestaurant] {
+        guard RestaurantCuisineLabeler.hasUnlabelled(restaurants) else { return restaurants }
+
+        let classifier = self.cuisineClassifier
+        let labelling = Task {
+            await RestaurantCuisineLabeler.label(restaurants, in: city, using: classifier)
+        }
+        // Waiting through a second task lets the deadline give up on the wait
+        // without cancelling the labelling itself.
+        let wait = Task { await labelling.value }
+
+        if let labelled = await wait.value(within: Self.cuisineLabellingGrace) {
+            return labelled
+        }
+
+        Task {
+            let labelled = await labelling.value
+            await self.storeLateCuisineLabels(labelled, key: key, diskURL: diskURL)
+        }
+        return restaurants
+    }
+
+    private func storeLateCuisineLabels(_ restaurants: [CityRestaurant], key: String, diskURL: URL) {
+        guard let cached = self.memoryCache[key] else { return }
+
+        let payload = RestaurantModels.CachedPayload(
+            fetchedAt: cached.fetchedAt,
+            restaurants: restaurants,
+            isPartial: cached.isPartial
+        )
+        try? self.writeToDisk(payload, at: diskURL)
+        self.memoryCache[key] = payload
     }
 }
 

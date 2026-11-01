@@ -23,7 +23,9 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
 
     let id: String
     let name: String
-    let cuisine: String?
+    /// One concise label from `RestaurantCuisineVocabulary`, filled in after
+    /// ranking by `RestaurantCuisineLabeler` when the map data had none.
+    var cuisine: String?
     let summary: String
     let address: String?
     let hours: String?
