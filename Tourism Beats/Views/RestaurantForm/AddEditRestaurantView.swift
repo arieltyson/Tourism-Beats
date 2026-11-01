@@ -31,6 +31,7 @@ struct AddEditRestaurantView: View {
     @State private var isImportingMealPhotos: Bool = false
     @State private var hasCommittedChanges: Bool = false
     @State private var isDeleteConfirmationPresented: Bool = false
+    @State private var navigationPath: [RestaurantFormRoute] = []
     @FocusState private var focusedField: RestaurantFormField?
 
     private var isEditing: Bool {
@@ -68,7 +69,7 @@ struct AddEditRestaurantView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: self.$navigationPath) {
             Form {
                 RestaurantFormIdentitySection(
                     name: self.$name,
@@ -78,7 +79,7 @@ struct AddEditRestaurantView: View {
                     focusedField: self.$focusedField
                 )
                 RestaurantFormDetailsSection(
-                    cuisine: self.$cuisine,
+                    cuisine: self.cuisine,
                     bestDish: self.$bestDish,
                     focusedField: self.$focusedField
                 )
@@ -111,6 +112,16 @@ struct AddEditRestaurantView: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            .onChange(of: self.navigationPath) {
+                // Leaving for a list ends editing, so the keyboard stays down on return.
+                self.focusedField = nil
+            }
+            .navigationDestination(for: RestaurantFormRoute.self) { route in
+                switch route {
+                case .cuisine:
+                    RestaurantCuisinePickerView(cuisine: self.$cuisine)
+                }
+            }
             .navigationTitle(self.isEditing ? "Edit Restaurant" : "Add Restaurant")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

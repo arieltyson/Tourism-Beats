@@ -4,21 +4,17 @@ import SwiftUI
 
 /// Cuisine and the dish worth ordering.
 struct RestaurantFormDetailsSection: View {
-    @Binding var cuisine: RestaurantCuisine?
+    let cuisine: RestaurantCuisine?
     @Binding var bestDish: String
     var focusedField: FocusState<RestaurantFormField?>.Binding
 
     var body: some View {
         Section("Details") {
-            Picker("Cuisine", selection: self.$cuisine) {
-                Text("None")
-                    .tag(nil as RestaurantCuisine?)
-
-                ForEach(RestaurantCuisine.allCases) { cuisine in
-                    Text(cuisine.label)
-                        .tag(cuisine as RestaurantCuisine?)
-                }
-            }
+            RestaurantFormChoiceLink(
+                title: "Cuisine",
+                value: self.cuisine?.label ?? "None",
+                route: .cuisine
+            )
 
             TextField("Best Dish (optional)", text: self.$bestDish)
                 .focused(self.focusedField, equals: .bestDish)
