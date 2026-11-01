@@ -137,7 +137,7 @@ extension CityRestaurantService {
             id: "restaurant-\(restaurant.elementType ?? "osm")-\(restaurant.elementIdentifier ?? restaurant.name.hashValue)",
             name: restaurant.name,
             cuisine: restaurant.cuisine
-                ?? CuisineInferrer.infer(from: restaurant.name),
+                ?? RestaurantCuisineVocabulary.label(for: CuisineInferrer.infer(from: restaurant.name)),
             address: restaurant.address,
             hours: restaurant.openingHours,
             phoneNumber: restaurant.phoneNumber,
@@ -276,24 +276,7 @@ extension CityRestaurantService {
     }
 
     static func normalizedCuisine(from value: String?) -> String? {
-        guard let value else { return nil }
-
-        let cuisines = value
-            .split(separator: ";")
-            .map { cuisine in
-                cuisine
-                    .replacingOccurrences(of: "_", with: " ")
-                    .split(separator: " ")
-                    .map { word in
-                        word.prefix(1).uppercased() + word.dropFirst().lowercased()
-                    }
-                    .joined(separator: " ")
-                    .trimmingCharacters(in: .whitespacesAndNewlines)
-            }
-            .filter { !$0.isEmpty }
-
-        guard !cuisines.isEmpty else { return nil }
-        return cuisines.prefix(2).joined(separator: " • ")
+        RestaurantCuisineVocabulary.label(for: value)
     }
 
     static func normalizedURL(primary: String?, fallback: String?) -> URL? {

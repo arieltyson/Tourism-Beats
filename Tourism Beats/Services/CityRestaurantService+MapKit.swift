@@ -209,7 +209,8 @@ extension CityRestaurantService {
             let metadataScore = overpassMatch.map { self.metadataScore(for: $0) } ?? 0
 
             let cuisine = overpassMatch?.cuisine
-                ?? CuisineInferrer.infer(from: mapItem.name)
+                ?? self.nearbyCuisine(for: mapItem, in: overpass)
+                ?? RestaurantCuisineVocabulary.label(for: CuisineInferrer.infer(from: mapItem.name))
 
             return CityRestaurantCandidate(
                 id: "mapkit-\(coordinateKey)",
@@ -246,6 +247,33 @@ extension CityRestaurantService {
                 mapItemIdentifier: mapItem.mapItemIdentifier
             )
         }
+    }
+
+    /// How close an OpenStreetMap place must be to share its cuisine with an
+    /// Apple Maps result whose name it doesn't match, such as "Allegria" for
+    /// "Ristorante Allegria": close enough to be the same storefront.
+    static let sameStorefrontDistance: CLLocationDistance = 25
+
+    /// The cuisine of the nearest tagged OpenStreetMap place at the same
+    /// storefront, for results whose names are written differently there.
+    static func nearbyCuisine(
+        for mapKitResult: RestaurantModels.MapKitRestaurantResult,
+        in overpassResults: [RestaurantModels.OverpassRestaurant]
+    ) -> String? {
+        let location = CLLocation(latitude: mapKitResult.latitude, longitude: mapKitResult.longitude)
+
+        return overpassResults
+            .compactMap { overpassItem -> (distance: CLLocationDistance, cuisine: String)? in
+                guard let cuisine = overpassItem.cuisine,
+                      let latitude = overpassItem.latitude,
+                      let longitude = overpassItem.longitude
+                else { return nil }
+
+                let distance = location.distance(from: CLLocation(latitude: latitude, longitude: longitude))
+                return distance <= self.sameStorefrontDistance ? (distance, cuisine) : nil
+            }
+            .min { $0.distance < $1.distance }?
+            .cuisine
     }
 
     static func findOverpassMatch(

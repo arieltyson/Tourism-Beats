@@ -20,7 +20,11 @@ enum CuisineInferrer {
             }
         }
 
-        return nil
+        // A cuisine named outright ("The French Laundry"), matched as a whole
+        // word so "Indiana" or "Germantown" don't count. Checked last, so a
+        // more specific dish or style wins.
+        let words = Set(normalized.split { !$0.isLetter }.map(String.init))
+        return self.namedCuisines.first { words.contains($0.key) }?.value
     }
 
     /// Checks if a keyword appears as a whole word (not a substring of another word).
@@ -243,5 +247,16 @@ extension CuisineInferrer {
         Rule(cuisine: "Cafe", keywords: [
             "cafe", "coffee", "espresso"
         ])
+    ]
+
+    /// Cuisines a restaurant's name can state outright, by their lowercased name.
+    private static let namedCuisines: KeyValuePairs<String, String> = [
+        "american": "American", "brazilian": "Brazilian", "caribbean": "Caribbean",
+        "chinese": "Chinese", "ethiopian": "Ethiopian", "french": "French",
+        "german": "German", "greek": "Greek", "indian": "Indian", "italian": "Italian",
+        "japanese": "Japanese", "korean": "Korean", "lebanese": "Lebanese",
+        "mexican": "Mexican", "moroccan": "Moroccan", "peruvian": "Peruvian",
+        "persian": "Persian", "portuguese": "Portuguese", "spanish": "Spanish",
+        "thai": "Thai", "turkish": "Turkish", "vietnamese": "Vietnamese"
     ]
 }
