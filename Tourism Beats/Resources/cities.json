@@ -3977,5 +3977,13 @@
     "latitude": 33.8303,
     "longitude": -116.5453,
     "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Monterrey",
+    "countryCode": "MX",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/View_of_Monterrey_%282015%29.jpg/1280px-View_of_Monterrey_%282015%29.jpg",
+    "latitude": 25.6844,
+    "longitude": -100.3181,
+    "timeZoneIdentifier": "America/Monterrey"
   }
 ]

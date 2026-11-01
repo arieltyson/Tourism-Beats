@@ -493,5 +493,6 @@
   {"city": "San Luis Obispo", "countryCode": "US", "walkScore": 55, "transitScore": 25},
   {"city": "Santa Monica", "countryCode": "US", "walkScore": 83, "transitScore": 58},
   {"city": "Long Beach", "countryCode": "US", "walkScore": 70, "transitScore": 50},
-  {"city": "Palm Springs", "countryCode": "US", "walkScore": 45, "transitScore": 25}
+  {"city": "Palm Springs", "countryCode": "US", "walkScore": 45, "transitScore": 25},
+  {"city": "Monterrey", "countryCode": "MX", "walkScore": 55, "transitScore": 45}
 ]
