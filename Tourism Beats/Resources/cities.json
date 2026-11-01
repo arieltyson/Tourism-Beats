@@ -3985,5 +3985,13 @@
     "latitude": 25.6844,
     "longitude": -100.3181,
     "timeZoneIdentifier": "America/Monterrey"
+  },
+  {
+    "name": "Cayenne",
+    "countryCode": "GF",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Cayenne_place_des_palmistes_rue_de_Remire_2013.jpg/1280px-Cayenne_place_des_palmistes_rue_de_Remire_2013.jpg",
+    "latitude": 4.9372,
+    "longitude": -52.326,
+    "timeZoneIdentifier": "America/Cayenne"
   }
 ]
