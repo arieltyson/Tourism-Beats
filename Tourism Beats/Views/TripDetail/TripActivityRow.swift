@@ -20,49 +20,49 @@ struct TripActivityRow: View {
             .foregroundStyle(self.activity.activityStatus.color)
             .accessibilityInputLabels(["Update Status", "Mark \(self.activity.activityStatus.next.label)"])
 
-            Button {
-                self.onEdit()
-            } label: {
-                VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                    HStack(spacing: SpacingTokens.xSmall) {
-                        Label(
-                            self.activity.type.label,
-                            systemImage: self.activity.type.systemImage
-                        )
-                        .font(TypographyTokens.footnote)
-                        .foregroundStyle(self.activity.type.color)
+            VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                Button {
+                    self.onEdit()
+                } label: {
+                    VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                        HStack(spacing: SpacingTokens.xSmall) {
+                            Label(
+                                self.activity.type.label,
+                                systemImage: self.activity.type.systemImage
+                            )
+                            .font(TypographyTokens.footnote)
+                            .foregroundStyle(self.activity.type.color)
 
-                        if let timeLabel = self.activity.timeLabel {
-                            Text(timeLabel)
-                                .font(TypographyTokens.footnote.monospacedDigit())
+                            if let timeLabel = self.activity.timeLabel {
+                                Text(timeLabel)
+                                    .font(TypographyTokens.footnote.monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+
+                        Text(self.activity.name)
+                            .font(TypographyTokens.cardLabel)
+                            .foregroundStyle(.primary)
+                            .multilineTextAlignment(.leading)
+
+                        if let notes = self.activity.notes, !notes.isEmpty {
+                            Text(notes)
+                                .font(TypographyTokens.caption)
                                 .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.leading)
                         }
                     }
-
-                    Text(self.activity.name)
-                        .font(TypographyTokens.cardLabel)
-                        .foregroundStyle(.primary)
-                        .multilineTextAlignment(.leading)
-
-                    if let location = self.activity.location, !location.isEmpty {
-                        Label(location, systemImage: "mappin.and.ellipse")
-                            .font(TypographyTokens.caption)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    if let notes = self.activity.notes, !notes.isEmpty {
-                        Text(notes)
-                            .font(TypographyTokens.caption)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.leading)
-                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .buttonStyle(.plain)
+                .accessibilityLabel(self.activitySummary)
+                .accessibilityHint("Edits this activity")
+                .accessibilityInputLabels(["Edit \(self.activity.name)", self.activity.name])
+
+                if let mapsURL = self.activity.mapsURL {
+                    TripActivityMapLink(location: self.activity.location, url: mapsURL)
+                }
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel(self.activitySummary)
-            .accessibilityHint("Edits this activity")
-            .accessibilityInputLabels(["Edit \(self.activity.name)", self.activity.name])
 
             Menu("Activity Actions", systemImage: "ellipsis.circle") {
                 Button("Edit Activity", systemImage: "pencil") {
@@ -96,7 +96,6 @@ struct TripActivityRow: View {
             self.activity.name,
             self.activity.type.label,
             self.activity.timeLabel,
-            self.activity.location,
             self.activity.activityStatus.label
         ]
         .compactMap { value in

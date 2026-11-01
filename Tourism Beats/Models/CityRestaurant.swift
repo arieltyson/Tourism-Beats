@@ -62,21 +62,6 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
     }
 
     var mapsURL: URL? {
-        let query = [self.name, self.address]
-            .compactMap { value in
-                guard let value else { return nil }
-                let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                return trimmed.isEmpty ? nil : trimmed
-            }
-            .joined(separator: ", ")
-
-        guard !query.isEmpty else { return nil }
-
-        var components = URLComponents(string: "https://www.google.com/maps/search/")
-        components?.queryItems = [
-            URLQueryItem(name: "api", value: "1"),
-            URLQueryItem(name: "query", value: query)
-        ]
-        return components?.url
+        GoogleMapsLink.searchURL(for: [self.name, self.address])
     }
 }
