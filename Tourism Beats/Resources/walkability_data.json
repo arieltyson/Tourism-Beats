@@ -487,5 +487,8 @@
   {"city": "Sausalito", "countryCode": "US", "walkScore": 55, "transitScore": 30},
   {"city": "Corte Madera", "countryCode": "US", "walkScore": 40, "transitScore": 30},
   {"city": "Santa Rosa", "countryCode": "US", "walkScore": 45, "transitScore": 28},
-  {"city": "Sonoma", "countryCode": "US", "walkScore": 50, "transitScore": 15}
+  {"city": "Sonoma", "countryCode": "US", "walkScore": 50, "transitScore": 15},
+  {"city": "Fresno", "countryCode": "US", "walkScore": 48, "transitScore": 32},
+  {"city": "Bakersfield", "countryCode": "US", "walkScore": 40, "transitScore": 25},
+  {"city": "San Luis Obispo", "countryCode": "US", "walkScore": 55, "transitScore": 25}
 ]

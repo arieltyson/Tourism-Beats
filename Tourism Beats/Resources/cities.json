@@ -3929,5 +3929,29 @@
     "latitude": 38.2919,
     "longitude": -122.4578,
     "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Fresno",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Fresno_California.jpg/1280px-Fresno_California.jpg",
+    "latitude": 36.75,
+    "longitude": -119.7667,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Bakersfield",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/2009-0726-CA-Bakersfield-FoxTheater_%28cropped%29.jpg/1280px-2009-0726-CA-Bakersfield-FoxTheater_%28cropped%29.jpg",
+    "latitude": 35.3733,
+    "longitude": -119.0189,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "San Luis Obispo",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Mission_San_Luis_Obispo_%28cropped%29.jpg/1280px-Mission_San_Luis_Obispo_%28cropped%29.jpg",
+    "latitude": 35.2742,
+    "longitude": -120.6631,
+    "timeZoneIdentifier": "America/Los_Angeles"
   }
 ]
