@@ -11,7 +11,6 @@ final class TripsViewModel {
     var searchText: String = ""
     var selectedStatusFilter: TripStatus?
     var isAddTripSheetPresented: Bool = false
-    var tripToEdit: Trip?
 
     private let catalogCitiesByLookupKey: [String: CityModel]
     private let countryFlagsByNormalizedName: [String: String]

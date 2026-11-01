@@ -5,7 +5,6 @@ import SwiftUI
 struct TripSectionView: View {
     let section: TripsViewModel.TripSection
     let viewModel: TripsViewModel
-    let onEditTrip: (Trip) -> Void
     let onDeleteTrip: (Trip) -> Void
 
     var body: some View {
@@ -41,11 +40,6 @@ struct TripSectionView: View {
                     Button("Delete", systemImage: "trash", role: .destructive) {
                         self.onDeleteTrip(trip)
                     }
-
-                    Button("Edit", systemImage: "pencil") {
-                        self.onEditTrip(trip)
-                    }
-                    .tint(AppColors.info)
                 }
             }
         }

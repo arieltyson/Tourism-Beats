@@ -119,20 +119,17 @@ struct TripDetailView: View {
                 AddEditActivityView(day: day, activity: activity)
             }
         }
-        .confirmationDialog(
-            "Delete Trip",
-            isPresented: self.$isTripDeleteConfirmationPresented,
-            titleVisibility: .visible
+        .alert(
+            "Delete “\(self.trip.name)”?",
+            isPresented: self.$isTripDeleteConfirmationPresented
         ) {
-            Button("Delete Trip", role: .destructive) {
+            Button("Delete", role: .destructive) {
                 self.confirmDeleteTrip()
             }
 
-            Button("Cancel", role: .cancel) {
-                self.isTripDeleteConfirmationPresented = false
-            }
+            Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Deleting this trip also removes its days and activities.")
+            Text("Its days and activities will be deleted too.")
         }
         .alert(
             "Delete Day",

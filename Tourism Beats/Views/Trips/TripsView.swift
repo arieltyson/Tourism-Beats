@@ -7,7 +7,6 @@ struct TripsView: View {
     @Query(sort: \Trip.dateCreated, order: .reverse)
     private var trips: [Trip]
 
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var modelContext
 
     @State private var viewModel = TripsViewModel()
@@ -20,12 +19,6 @@ struct TripsView: View {
 
     private var sections: [TripsViewModel.TripSection] {
         self.viewModel.filteredSections(from: self.presentedTrips)
-    }
-
-    private var visibleTripCount: Int {
-        self.sections.reduce(0) { partialResult, section in
-            partialResult + section.trips.count
-        }
     }
 
     private var shouldOfferSampleTrips: Bool {
@@ -53,9 +46,6 @@ struct TripsView: View {
                 TripsContent(
                     sections: self.sections,
                     viewModel: self.viewModel,
-                    onEditTrip: { trip in
-                        self.viewModel.tripToEdit = trip
-                    },
                     onDeleteTrip: { trip in
                         self.tripPendingDeletion = trip
                     }
@@ -79,28 +69,26 @@ struct TripsView: View {
                 Button("Add Trip", systemImage: "plus") {
                     self.viewModel.isAddTripSheetPresented = true
                 }
+                .accessibilityInputLabels(["Add Trip", "Create Trip", "New Trip"])
             }
         }
         .sheet(isPresented: self.$viewModel.isAddTripSheetPresented) {
             AddEditTripView()
         }
-        .sheet(item: self.$viewModel.tripToEdit) { trip in
-            AddEditTripView(trip: trip)
-        }
-        .confirmationDialog(
-            "Delete Trip",
+        .alert(
+            self.tripPendingDeletion.map { "Delete “\($0.name)”?" } ?? "Delete Trip?",
             isPresented: self.tripDeleteDialogPresented,
-            titleVisibility: .visible
-        ) {
-            Button("Delete Trip", role: .destructive) {
+            presenting: self.tripPendingDeletion
+        ) { _ in
+            Button("Delete", role: .destructive) {
                 self.confirmDeleteTrip()
             }
 
             Button("Cancel", role: .cancel) {
                 self.tripPendingDeletion = nil
             }
-        } message: {
-            Text("Deleting a trip also removes its days and activities.")
+        } message: { _ in
+            Text("Its days and activities will be deleted too.")
         }
         .alert(
             "Couldn't Complete Request",
@@ -109,22 +97,6 @@ struct TripsView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(self.errorMessage ?? "Please try again.")
-        }
-        .overlay(alignment: .bottomTrailing) {
-            if self.visibleTripCount > 0 {
-                Button("Create Trip", systemImage: "plus") {
-                    self.viewModel.isAddTripSheetPresented = true
-                }
-                .labelStyle(.iconOnly)
-                .padding(SpacingTokens.medium)
-                .background(AppGradients.hero(for: self.colorScheme), in: Circle())
-                .foregroundStyle(AppColors.onImagePrimary)
-                .shadow(color: .black.opacity(0.22), radius: 12, y: 8)
-                .padding(.trailing, SpacingTokens.medium)
-                .padding(.bottom, SpacingTokens.medium)
-                .accessibilityLabel("Create trip")
-                .accessibilityInputLabels(["Create Trip", "Add Trip"])
-            }
         }
     }
 

@@ -5,7 +5,6 @@ import SwiftUI
 struct TripsContent: View {
     let sections: [TripsViewModel.TripSection]
     let viewModel: TripsViewModel
-    let onEditTrip: (Trip) -> Void
     let onDeleteTrip: (Trip) -> Void
 
     var body: some View {
@@ -14,7 +13,6 @@ struct TripsContent: View {
                 TripSectionView(
                     section: section,
                     viewModel: self.viewModel,
-                    onEditTrip: self.onEditTrip,
                     onDeleteTrip: self.onDeleteTrip
                 )
             }
