@@ -495,5 +495,7 @@
   {"city": "Long Beach", "countryCode": "US", "walkScore": 70, "transitScore": 50},
   {"city": "Palm Springs", "countryCode": "US", "walkScore": 45, "transitScore": 25},
   {"city": "Monterrey", "countryCode": "MX", "walkScore": 55, "transitScore": 45},
-  {"city": "Cayenne", "countryCode": "GF", "walkScore": 60, "transitScore": 25}
+  {"city": "Cayenne", "countryCode": "GF", "walkScore": 60, "transitScore": 25},
+  {"city": "Tunapuna", "countryCode": "TT", "walkScore": 55, "transitScore": 40},
+  {"city": "Crown Point", "countryCode": "TT", "walkScore": 40, "transitScore": 15}
 ]

@@ -3993,5 +3993,21 @@
     "latitude": 4.9372,
     "longitude": -52.326,
     "timeZoneIdentifier": "America/Cayenne"
+  },
+  {
+    "name": "Tunapuna",
+    "countryCode": "TT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/TnT_Tunapuna_%2B_Trincity.jpg/1280px-TnT_Tunapuna_%2B_Trincity.jpg",
+    "latitude": 10.6333,
+    "longitude": -61.3833,
+    "timeZoneIdentifier": "America/Port_of_Spain"
+  },
+  {
+    "name": "Crown Point",
+    "countryCode": "TT",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Pigeon_Point_Beach_Tobago_Jetti-pier.jpg/1280px-Pigeon_Point_Beach_Tobago_Jetti-pier.jpg",
+    "latitude": 11.15,
+    "longitude": -60.835,
+    "timeZoneIdentifier": "America/Port_of_Spain"
   }
 ]
