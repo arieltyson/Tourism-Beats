@@ -3865,5 +3865,37 @@
     "longitude": -68.52166667,
     "timeZoneIdentifier": "America/Iqaluit",
     "searchAliases": ["Nunavut"]
+  },
+  {
+    "name": "Palo Alto",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Ramona_Street_Architectural_District%2C_261_Hamilton_St.%2C_Palo_Alto%2C_CA_5-27-2012_2-20-25_PM.JPG/1280px-Ramona_Street_Architectural_District%2C_261_Hamilton_St.%2C_Palo_Alto%2C_CA_5-27-2012_2-20-25_PM.JPG",
+    "latitude": 37.4444,
+    "longitude": -122.16,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Sunnyvale",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Historic_Murphy_Avenue%2C_Sunnyvale_%28May_2025%29_%28cropped%29.jpg/1280px-Historic_Murphy_Avenue%2C_Sunnyvale_%28May_2025%29_%28cropped%29.jpg",
+    "latitude": 37.3711,
+    "longitude": -122.0375,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Mountain View",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Castro_Street_in_Mountain_View.jpg/1280px-Castro_Street_in_Mountain_View.jpg",
+    "latitude": 37.3861,
+    "longitude": -122.0839,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Daly City",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Daly_City_little_boxes_aerial.jpg/1280px-Daly_City_little_boxes_aerial.jpg",
+    "latitude": 37.6864,
+    "longitude": -122.4683,
+    "timeZoneIdentifier": "America/Los_Angeles"
   }
 ]

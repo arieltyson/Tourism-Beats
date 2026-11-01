@@ -479,5 +479,9 @@
   {"city": "Redmond", "countryCode": "US", "walkScore": 45, "transitScore": 40},
   {"city": "Sammamish", "countryCode": "US", "walkScore": 15, "transitScore": 10},
   {"city": "Whitehorse", "countryCode": "CA", "walkScore": 55, "transitScore": 30},
-  {"city": "Iqaluit", "countryCode": "CA", "walkScore": 50, "transitScore": 5}
+  {"city": "Iqaluit", "countryCode": "CA", "walkScore": 50, "transitScore": 5},
+  {"city": "Palo Alto", "countryCode": "US", "walkScore": 59, "transitScore": 40},
+  {"city": "Sunnyvale", "countryCode": "US", "walkScore": 55, "transitScore": 37},
+  {"city": "Mountain View", "countryCode": "US", "walkScore": 59, "transitScore": 45},
+  {"city": "Daly City", "countryCode": "US", "walkScore": 60, "transitScore": 55}
 ]
