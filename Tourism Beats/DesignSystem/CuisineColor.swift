@@ -175,6 +175,10 @@ enum CuisineColor {
         "pastry": bakeryAndCafe,
         "patisserie": bakeryAndCafe,
         "ice cream": bakeryAndCafe,
+        "coffee": bakeryAndCafe,
+        "tea & matcha": bakeryAndCafe,
+        "bubble tea": bakeryAndCafe,
+        "juice & smoothies": mediterranean,
 
         // Special categories
         "pizza": european,

@@ -286,7 +286,7 @@ private struct FoodRestaurantCuisineRow: View {
 
     var body: some View {
         HStack(spacing: SpacingTokens.xxSmall) {
-            Image(systemName: "fork.knife")
+            Image(systemName: self.cuisine.category.systemImage)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
 
