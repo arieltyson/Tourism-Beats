@@ -6,7 +6,6 @@ struct TripDetailContent: View {
     let trip: Trip
     let cityModel: CityModel?
     let countryFlag: String
-    let onAddDay: () -> Void
     let onSuggest: ((TripSuggestionsViewModel.Scope) -> Void)?
     let onAddActivity: (TripDay) -> Void
     let onEditActivity: (TripActivity) -> Void
@@ -32,15 +31,8 @@ struct TripDetailContent: View {
                 TripNotesCard(notes: notes)
             }
 
-            if self.trip.activityCount == 0, let onSuggest {
-                TripSuggestionPromptCard(trip: self.trip) {
-                    onSuggest(.trip)
-                }
-            }
-
             TripItinerarySection(
                 trip: self.trip,
-                onAddDay: self.onAddDay,
                 onSuggest: self.onSuggest,
                 onAddActivity: self.onAddActivity,
                 onEditActivity: self.onEditActivity,

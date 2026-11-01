@@ -24,6 +24,9 @@ struct AddEditTripView: View {
     @State private var status: TripStatus
     @State private var notes: String
     @State private var saveErrorMessage: String?
+    @State private var catalog = TripsViewModel()
+    @State private var suggestsPlan: Bool = false
+    @State private var planRequest: TripPlanRequest?
 
     private var isEditing: Bool {
         self.trip != nil
@@ -63,6 +66,12 @@ struct AddEditTripView: View {
 
         let suggestions = self.formViewModel.matchingCities(for: trimmedQuery)
         return Array(suggestions.prefix(8))
+    }
+
+    /// The catalog city a new trip is headed to, which a plan can be suggested for.
+    private var plannableCity: CityModel? {
+        guard !self.isEditing else { return nil }
+        return self.catalog.cityModel(named: self.trimmedCity, in: self.trimmedCountry)
     }
 
     init(trip: Trip? = nil) {
@@ -117,6 +126,10 @@ struct AddEditTripView: View {
                     endDate: self.$endDate
                 )
 
+                if let plannableCity {
+                    TripPlanSection(suggestsPlan: self.$suggestsPlan, cityName: plannableCity.name)
+                }
+
                 TripStatusSection(status: self.$status)
 
                 TripNotesSection(notes: self.$notes)
@@ -143,6 +156,23 @@ struct AddEditTripView: View {
             SearchableCountryPicker(
                 selectedCode: self.$formViewModel.selectedCountryCode
             )
+        }
+        .sheet(item: self.$planRequest, onDismiss: { self.dismiss() }) { request in
+            TripSuggestionsView(
+                trip: request.trip,
+                city: request.city,
+                scope: .trip,
+                onApplied: { addedCount in
+                    guard addedCount > 0 else { return }
+                    AccessibilityAnnouncer.announceActivitiesAdded(count: addedCount)
+                }
+            )
+        }
+        .task(id: self.suggestsPlan ? self.plannableCity?.id : nil) {
+            // Warm the city's guides while the form is filled in, so the plan
+            // is ready sooner once the trip is added.
+            guard self.suggestsPlan, let plannableCity = self.plannableCity else { return }
+            await TripSuggestionsViewModel.prefetchGuides(for: plannableCity)
         }
         .interactiveDismissDisabled(self.hasUnsavedChanges)
         .onChange(of: self.formViewModel.selectedCountryCode) { _, _ in
@@ -232,7 +262,13 @@ struct AddEditTripView: View {
                 try TripSeedService.registerUserCreatedTrip(in: self.modelContext)
             }
 
-            self.dismiss()
+            // A new trip planned from the start opens its suggestions next;
+            // the form closes once they're reviewed.
+            if self.suggestsPlan, let city = self.plannableCity {
+                self.planRequest = TripPlanRequest(trip: savedTrip, city: city)
+            } else {
+                self.dismiss()
+            }
         } catch {
             self.saveErrorMessage = error.localizedDescription
         }

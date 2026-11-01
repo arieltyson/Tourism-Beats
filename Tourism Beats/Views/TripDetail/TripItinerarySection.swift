@@ -4,7 +4,6 @@ import SwiftUI
 
 struct TripItinerarySection: View {
     let trip: Trip
-    let onAddDay: () -> Void
     let onSuggest: ((TripSuggestionsViewModel.Scope) -> Void)?
     let onAddActivity: (TripDay) -> Void
     let onEditActivity: (TripActivity) -> Void
@@ -14,12 +13,10 @@ struct TripItinerarySection: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.medium) {
-            TripItineraryHeader(
-                onAddDay: self.onAddDay,
-                onSuggest: self.onSuggest.map { onSuggest in
-                    { onSuggest(.trip) }
-                }
-            )
+            Text("Itinerary")
+                .font(TypographyTokens.songTitle)
+                .bold()
+                .accessibilityAddTraits(.isHeader)
 
             ForEach(self.trip.sortedDays) { day in
                 TripDayCard(

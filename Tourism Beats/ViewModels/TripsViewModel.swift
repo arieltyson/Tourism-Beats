@@ -70,8 +70,13 @@ final class TripsViewModel {
     }
 
     func cityModel(for trip: Trip) -> CityModel? {
+        self.cityModel(named: trip.city, in: trip.country)
+    }
+
+    /// The catalog city with this name in this country, if the app knows it.
+    func cityModel(named cityName: String, in countryName: String) -> CityModel? {
         self.catalogCitiesByLookupKey[
-            Self.lookupKey(cityName: trip.city, countryName: trip.country)
+            Self.lookupKey(cityName: cityName, countryName: countryName)
         ]
     }
 

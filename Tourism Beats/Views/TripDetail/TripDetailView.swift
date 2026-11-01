@@ -27,7 +27,6 @@ struct TripDetailView: View {
                     trip: self.trip,
                     cityModel: self.cityModel,
                     countryFlag: self.viewModel.countryFlag(for: self.trip),
-                    onAddDay: self.addDay,
                     onSuggest: self.cityModel.map { city in
                         { scope in
                             self.suggestionRequest = TripSuggestionRequest(city: city, scope: scope)
@@ -75,7 +74,7 @@ struct TripDetailView: View {
 
                 Menu {
                     if let cityModel = self.cityModel {
-                        Button("Suggest Activities", systemImage: "sparkles") {
+                        Button("Suggest a Plan", systemImage: "sparkles") {
                             self.suggestionRequest = TripSuggestionRequest(city: cityModel, scope: .trip)
                         }
                     }

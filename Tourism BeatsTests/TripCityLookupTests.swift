@@ -31,6 +31,19 @@ struct TripCityLookupTests {
         #expect(viewModel.countryFlag(for: trip) == "🇭🇹")
     }
 
+    @Test func cityLookupByNameIgnoresCaseAccentsAndSpacing() {
+        let canada = CountryModel(name: "Canada", code: "CA", flag: "🇨🇦")
+        let quebec = Self.makeCity(
+            name: "Québec City",
+            country: canada,
+            imageURLString: "https://example.com/quebec.jpg"
+        )
+        let viewModel = TripsViewModel(catalogCities: [quebec], countries: [canada])
+
+        #expect(viewModel.cityModel(named: " quebec city ", in: "CANADA")?.id == quebec.id)
+        #expect(viewModel.cityModel(named: "Quebec City", in: "France") == nil)
+    }
+
     @Test func tripFormViewModelDeduplicatesCitySuggestions() {
         let haiti = CountryModel(name: "Haiti", code: "HT", flag: "🇭🇹")
         let portAuPrincePrimary = Self.makeCity(
