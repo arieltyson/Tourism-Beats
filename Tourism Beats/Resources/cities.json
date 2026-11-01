@@ -3897,5 +3897,37 @@
     "latitude": 37.6864,
     "longitude": -122.4683,
     "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Sausalito",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sausalito.jpg/1280px-Sausalito.jpg",
+    "latitude": 37.8592,
+    "longitude": -122.4853,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Corte Madera",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Corte_Madera_Sunrise_over_Salt_Marsh_Nikon_S550_-_panoramio.jpg/1280px-Corte_Madera_Sunrise_over_Salt_Marsh_Nikon_S550_-_panoramio.jpg",
+    "latitude": 37.9256,
+    "longitude": -122.5275,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Santa Rosa",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/A_Santa_Rosa_Railway_Station_1302.jpg/1280px-A_Santa_Rosa_Railway_Station_1302.jpg",
+    "latitude": 38.4486,
+    "longitude": -122.7047,
+    "timeZoneIdentifier": "America/Los_Angeles"
+  },
+  {
+    "name": "Sonoma",
+    "countryCode": "US",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Sonoma_Plaza_-_September_2022_-_Sarah_Stierch_01.jpg/1280px-Sonoma_Plaza_-_September_2022_-_Sarah_Stierch_01.jpg",
+    "latitude": 38.2919,
+    "longitude": -122.4578,
+    "timeZoneIdentifier": "America/Los_Angeles"
   }
 ]

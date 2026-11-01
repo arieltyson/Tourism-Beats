@@ -483,5 +483,9 @@
   {"city": "Palo Alto", "countryCode": "US", "walkScore": 59, "transitScore": 40},
   {"city": "Sunnyvale", "countryCode": "US", "walkScore": 55, "transitScore": 37},
   {"city": "Mountain View", "countryCode": "US", "walkScore": 59, "transitScore": 45},
-  {"city": "Daly City", "countryCode": "US", "walkScore": 60, "transitScore": 55}
+  {"city": "Daly City", "countryCode": "US", "walkScore": 60, "transitScore": 55},
+  {"city": "Sausalito", "countryCode": "US", "walkScore": 55, "transitScore": 30},
+  {"city": "Corte Madera", "countryCode": "US", "walkScore": 40, "transitScore": 30},
+  {"city": "Santa Rosa", "countryCode": "US", "walkScore": 45, "transitScore": 28},
+  {"city": "Sonoma", "countryCode": "US", "walkScore": 50, "transitScore": 15}
 ]
