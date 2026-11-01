@@ -8,6 +8,7 @@ struct RestaurantFormLinksSection: View {
     @Binding var menuURLString: String
     let locationValidationMessage: String?
     let menuValidationMessage: String?
+    var focusedField: FocusState<RestaurantFormField?>.Binding
 
     var body: some View {
         Section {
@@ -16,6 +17,11 @@ struct RestaurantFormLinksSection: View {
                 .keyboardType(.URL)
                 .textContentType(.URL)
                 .autocorrectionDisabled()
+                .focused(self.focusedField, equals: .locationLink)
+                .submitLabel(.next)
+                .onSubmit {
+                    self.focusedField.wrappedValue = .menuLink
+                }
 
             if let locationValidationMessage {
                 Text(locationValidationMessage)
@@ -28,6 +34,8 @@ struct RestaurantFormLinksSection: View {
                 .keyboardType(.URL)
                 .textContentType(.URL)
                 .autocorrectionDisabled()
+                .focused(self.focusedField, equals: .menuLink)
+                .submitLabel(.done)
 
             if let menuValidationMessage {
                 Text(menuValidationMessage)

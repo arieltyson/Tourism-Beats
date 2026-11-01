@@ -8,6 +8,7 @@ struct RestaurantFormIdentitySection: View {
     @Binding var city: String
     @Binding var country: String
     let existingCities: [String]
+    var focusedField: FocusState<RestaurantFormField?>.Binding
 
     @State private var showCitySuggestions = false
 
@@ -16,6 +17,8 @@ struct RestaurantFormIdentitySection: View {
             TextField("Restaurant Name", text: self.$name)
                 .textContentType(.organizationName)
                 .autocorrectionDisabled()
+                .focused(self.focusedField, equals: .name)
+                .submitLabel(.done)
 
             VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
                 TextField("City", text: self.$city)

@@ -31,6 +31,7 @@ struct AddEditRestaurantView: View {
     @State private var isImportingMealPhotos: Bool = false
     @State private var hasCommittedChanges: Bool = false
     @State private var isDeleteConfirmationPresented: Bool = false
+    @FocusState private var focusedField: RestaurantFormField?
 
     private var isEditing: Bool {
         self.restaurant != nil
@@ -73,9 +74,14 @@ struct AddEditRestaurantView: View {
                     name: self.$name,
                     city: self.$city,
                     country: self.$country,
-                    existingCities: self.existingCities
+                    existingCities: self.existingCities,
+                    focusedField: self.$focusedField
                 )
-                RestaurantFormDetailsSection(cuisine: self.$cuisine, bestDish: self.$bestDish)
+                RestaurantFormDetailsSection(
+                    cuisine: self.$cuisine,
+                    bestDish: self.$bestDish,
+                    focusedField: self.$focusedField
+                )
                 RestaurantFormMealPhotosSection(
                     selectedPhotoItems: self.$selectedPhotoItems,
                     isImporting: self.isImportingMealPhotos,
@@ -92,10 +98,11 @@ struct AddEditRestaurantView: View {
                     locationURLString: self.$locationURLString,
                     menuURLString: self.$menuURLString,
                     locationValidationMessage: self.locationURLValidationMessage,
-                    menuValidationMessage: self.menuURLValidationMessage
+                    menuValidationMessage: self.menuURLValidationMessage,
+                    focusedField: self.$focusedField
                 )
                 RestaurantFormStatusSection(status: self.$status)
-                RestaurantFormNotesSection(notes: self.$notes)
+                RestaurantFormNotesSection(notes: self.$notes, focusedField: self.$focusedField)
 
                 if self.isEditing {
                     RestaurantFormDangerZoneSection {
@@ -103,6 +110,7 @@ struct AddEditRestaurantView: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle(self.isEditing ? "Edit Restaurant" : "Add Restaurant")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -117,6 +125,14 @@ struct AddEditRestaurantView: View {
                         self.save()
                     }
                     .disabled(!self.canSave)
+                }
+
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+
+                    Button("Hide Keyboard", systemImage: "keyboard.chevron.compact.down") {
+                        self.focusedField = nil
+                    }
                 }
             }
         }

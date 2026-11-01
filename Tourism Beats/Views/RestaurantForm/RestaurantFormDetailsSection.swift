@@ -6,6 +6,7 @@ import SwiftUI
 struct RestaurantFormDetailsSection: View {
     @Binding var cuisine: RestaurantCuisine?
     @Binding var bestDish: String
+    var focusedField: FocusState<RestaurantFormField?>.Binding
 
     var body: some View {
         Section("Details") {
@@ -20,6 +21,8 @@ struct RestaurantFormDetailsSection: View {
             }
 
             TextField("Best Dish (optional)", text: self.$bestDish)
+                .focused(self.focusedField, equals: .bestDish)
+                .submitLabel(.done)
         }
     }
 }
