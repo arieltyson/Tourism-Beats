@@ -196,26 +196,25 @@ extension CityRestaurantsView {
                 )
 
                 VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-                    HStack(alignment: .top, spacing: SpacingTokens.xSmall) {
-                        Self.RankBadge(rank: self.rank)
-
-                        Spacer(minLength: 0)
-
-                        if let cuisine = self.restaurant.cuisine {
-                            Self.CuisineBadge(cuisine: cuisine)
-                        }
-                    }
+                    Self.RankBadge(rank: self.rank)
 
                     Spacer(minLength: 0)
 
-                    Text(self.restaurant.name)
-                        .font(TypographyTokens.cardLabel)
-                        .bold()
-                        .foregroundStyle(AppColors.onImagePrimary)
-                        .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(2)
+                    VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                        if let cuisine = self.restaurant.cuisine {
+                            Self.CuisineLabel(cuisine: cuisine)
+                        }
+
+                        Text(self.restaurant.name)
+                            .font(TypographyTokens.cardLabel)
+                            .bold()
+                            .foregroundStyle(AppColors.onImagePrimary)
+                            .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(2)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(SpacingTokens.medium)
             }
             .clipShape(.rect(cornerRadius: 24, style: .continuous))
@@ -275,30 +274,18 @@ extension CityRestaurantsView.RestaurantCard {
         }
     }
 
-    private struct CuisineBadge: View {
+    /// The cuisine as a quiet line above the name.
+    private struct CuisineLabel: View {
         let cuisine: String
 
-        /// Shows only the primary cuisine (before any "•" separator) to prevent truncation.
-        private var primaryCuisine: String {
-            self.cuisine
-                .components(separatedBy: "\u{2022}")
-                .first?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                ?? self.cuisine
-        }
-
         var body: some View {
-            Text(self.primaryCuisine)
+            Text(self.cuisine)
                 .font(TypographyTokens.footnote)
                 .bold()
-                .foregroundStyle(AppColors.onImagePrimary)
+                .textCase(.uppercase)
+                .foregroundStyle(AppColors.onImageSecondary)
+                .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
                 .lineLimit(1)
-                .padding(.horizontal, SpacingTokens.xSmall)
-                .padding(.vertical, SpacingTokens.xxSmall)
-                .background(
-                    CuisineColor.color(for: self.cuisine).opacity(0.85),
-                    in: Capsule()
-                )
         }
     }
 }

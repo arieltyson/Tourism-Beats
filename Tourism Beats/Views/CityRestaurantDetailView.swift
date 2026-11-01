@@ -204,13 +204,11 @@ extension CityRestaurantDetailView.Hero {
                     Text(cuisine)
                         .font(TypographyTokens.footnote)
                         .bold()
+                        .textCase(.uppercase)
                         .foregroundStyle(AppColors.onImagePrimary)
                         .padding(.horizontal, SpacingTokens.small)
                         .padding(.vertical, SpacingTokens.xxSmall)
-                        .background(
-                            CuisineColor.color(for: cuisine).opacity(0.85),
-                            in: Capsule()
-                        )
+                        .background(AppColors.imageBadgeFill, in: Capsule())
                         .padding(SpacingTokens.medium)
                 }
             }
