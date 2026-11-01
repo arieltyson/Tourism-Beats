@@ -4,5 +4,7 @@ import Foundation
 
 /// The lists the restaurant form pushes to choose a value from.
 enum RestaurantFormRoute: Hashable {
+    case city
+    case country
     case cuisine
 }

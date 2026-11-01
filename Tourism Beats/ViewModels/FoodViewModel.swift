@@ -12,7 +12,9 @@ final class FoodViewModel {
     var restaurantToEdit: Restaurant?
 
     private let catalogCitiesByNormalizedName: [String: [CityModel]]
-    private let catalogCityNames: [String]
+    private let catalogPlaces: [RestaurantPlace]
+    private let countries: [CountryModel]
+    private let flagsByNormalizedCountryName: [String: String]
 
     init(dataService: DataService = DataService()) {
         let catalogCities = (try? dataService.loadCities()) ?? []
@@ -20,7 +22,22 @@ final class FoodViewModel {
             grouping: catalogCities,
             by: { FoodJournalCityGroup.normalizedLookupValue($0.name) }
         )
-        self.catalogCityNames = catalogCities.map(\.name)
+        self.catalogPlaces = catalogCities
+            .map {
+                RestaurantPlace(
+                    city: $0.name,
+                    country: $0.country.name,
+                    flag: $0.country.flag,
+                    searchAliases: $0.searchAliases
+                )
+            }
+            .sorted { $0.city.localizedStandardCompare($1.city) == .orderedAscending }
+        self.countries = ((try? dataService.loadCountries()) ?? [])
+            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        self.flagsByNormalizedCountryName = Dictionary(
+            self.countries.map { (FoodJournalCityGroup.normalizedLookupValue($0.name), $0.flag) },
+            uniquingKeysWith: { first, _ in first }
+        )
     }
 
     func cityGroups(from restaurants: [Restaurant]) -> [FoodJournalCityGroup] {
@@ -45,14 +62,44 @@ final class FoodViewModel {
             }
     }
 
-    func existingCities(from restaurants: [Restaurant]) -> [String] {
-        let restaurantCities = restaurants
-            .map(\.city)
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
+    /// The cities and countries the restaurant form offers, with the journal's
+    /// own places first in the order the restaurants are given.
+    ///
+    /// A journal place that is a catalog city replaces that city in the
+    /// catalog list, so choosing it again keeps the journal's spelling (for
+    /// example "United States" rather than "United States of America") and the
+    /// restaurant joins the same city group.
+    func placeOptions(from restaurants: [Restaurant]) -> RestaurantPlaceOptions {
+        var seenIdentifiers = Set<String>()
+        var coveredCatalogCityIdentifiers = Set<String>()
 
-        return Array(Set(restaurantCities + self.catalogCityNames))
-            .sorted { $0.localizedCompare($1) == .orderedAscending }
+        let journalPlaces: [RestaurantPlace] = restaurants.compactMap { restaurant in
+            let city = restaurant.city.trimmingCharacters(in: .whitespacesAndNewlines)
+            let country = restaurant.country.trimmingCharacters(in: .whitespacesAndNewlines)
+            let place = RestaurantPlace(city: city, country: country)
+            guard !city.isEmpty, seenIdentifiers.insert(place.id).inserted else { return nil }
+
+            let catalogCity = self.resolveCity(cityName: city, countryName: country)
+            if let catalogCity {
+                coveredCatalogCityIdentifiers.insert(
+                    RestaurantPlace(city: catalogCity.name, country: catalogCity.country.name).id
+                )
+            }
+
+            return RestaurantPlace(
+                city: city,
+                country: country,
+                flag: catalogCity?.country.flag
+                    ?? self.flagsByNormalizedCountryName[FoodJournalCityGroup.normalizedLookupValue(country)],
+                searchAliases: catalogCity?.searchAliases ?? []
+            )
+        }
+
+        return RestaurantPlaceOptions(
+            journalPlaces: journalPlaces,
+            catalogPlaces: self.catalogPlaces.filter { !coveredCatalogCityIdentifiers.contains($0.id) },
+            countries: self.countries
+        )
     }
 
     private func groupKey(for restaurant: Restaurant) -> String {

@@ -2,15 +2,12 @@ import SwiftUI
 
 // MARK: - RestaurantFormIdentitySection
 
-/// The restaurant's name and where it is, with suggestions from cities already in the journal.
+/// The restaurant's name and where it is. City and country open searchable lists.
 struct RestaurantFormIdentitySection: View {
     @Binding var name: String
-    @Binding var city: String
-    @Binding var country: String
-    let existingCities: [String]
+    let city: String
+    let country: String
     var focusedField: FocusState<RestaurantFormField?>.Binding
-
-    @State private var showCitySuggestions = false
 
     var body: some View {
         Section("Restaurant") {
@@ -20,35 +17,8 @@ struct RestaurantFormIdentitySection: View {
                 .focused(self.focusedField, equals: .name)
                 .submitLabel(.done)
 
-            VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-                TextField("City", text: self.$city)
-                    .textContentType(.addressCity)
-                    .autocorrectionDisabled()
-                    .onChange(of: self.city) { _, newValue in
-                        let normalizedValue = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
-                        self.showCitySuggestions = !normalizedValue.isEmpty
-                            && !self.matchingCities.isEmpty
-                            && !self.matchingCities.contains(where: {
-                                $0.caseInsensitiveCompare(normalizedValue) == .orderedSame
-                            })
-                    }
-
-                if self.showCitySuggestions {
-                    RestaurantFormCitySuggestions(
-                        suggestions: Array(self.matchingCities.prefix(5)),
-                        city: self.$city,
-                        isPresented: self.$showCitySuggestions
-                    )
-                }
-            }
-
-            TextField("Country", text: self.$country)
-                .textContentType(.countryName)
-                .autocorrectionDisabled()
+            RestaurantFormChoiceLink(title: "City", value: self.city, route: .city)
+            RestaurantFormChoiceLink(title: "Country", value: self.country, route: .country)
         }
-    }
-
-    private var matchingCities: [String] {
-        self.existingCities.filter { $0.localizedStandardContains(self.city) }
     }
 }

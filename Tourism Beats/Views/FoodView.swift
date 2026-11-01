@@ -64,13 +64,13 @@ struct FoodView: View {
         }
         .sheet(isPresented: self.$viewModel.isAddSheetPresented) {
             AddEditRestaurantView(
-                existingCities: self.viewModel.existingCities(from: self.restaurants)
+                placeOptions: self.viewModel.placeOptions(from: self.restaurants)
             )
         }
         .sheet(item: self.$viewModel.restaurantToEdit) { restaurant in
             AddEditRestaurantView(
                 restaurant: restaurant,
-                existingCities: self.viewModel.existingCities(from: self.restaurants)
+                placeOptions: self.viewModel.placeOptions(from: self.restaurants)
             )
         }
     }

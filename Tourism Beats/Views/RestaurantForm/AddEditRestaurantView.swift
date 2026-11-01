@@ -11,7 +11,7 @@ struct AddEditRestaurantView: View {
 
     private let restaurant: Restaurant?
     private let restaurantIdentifier: UUID
-    let existingCities: [String]
+    let placeOptions: RestaurantPlaceOptions
 
     @State private var name: String
     @State private var city: String
@@ -51,10 +51,10 @@ struct AddEditRestaurantView: View {
         }
     }
 
-    init(restaurant: Restaurant? = nil, existingCities: [String] = []) {
+    init(restaurant: Restaurant? = nil, placeOptions: RestaurantPlaceOptions = .empty) {
         self.restaurant = restaurant
         self.restaurantIdentifier = restaurant?.restaurantIdentifier ?? UUID()
-        self.existingCities = existingCities
+        self.placeOptions = placeOptions
         self._name = State(initialValue: restaurant?.name ?? "")
         self._city = State(initialValue: restaurant?.city ?? "")
         self._country = State(initialValue: restaurant?.country ?? "")
@@ -73,9 +73,8 @@ struct AddEditRestaurantView: View {
             Form {
                 RestaurantFormIdentitySection(
                     name: self.$name,
-                    city: self.$city,
-                    country: self.$country,
-                    existingCities: self.existingCities,
+                    city: self.city,
+                    country: self.country,
                     focusedField: self.$focusedField
                 )
                 RestaurantFormDetailsSection(
@@ -118,6 +117,14 @@ struct AddEditRestaurantView: View {
             }
             .navigationDestination(for: RestaurantFormRoute.self) { route in
                 switch route {
+                case .city:
+                    RestaurantCityPickerView(
+                        city: self.$city,
+                        country: self.$country,
+                        options: self.placeOptions
+                    )
+                case .country:
+                    RestaurantCountryPickerView(country: self.$country, options: self.placeOptions)
                 case .cuisine:
                     RestaurantCuisinePickerView(cuisine: self.$cuisine)
                 }
