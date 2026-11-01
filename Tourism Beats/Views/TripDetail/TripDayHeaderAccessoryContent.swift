@@ -12,7 +12,9 @@ struct TripDayHeaderAccessoryContent: View {
     var body: some View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: SpacingTokens.xSmall) {
-                TripDayHeaderCounts(day: self.day)
+                if self.day.activityCount > 0 {
+                    TripDayHeaderCounts(day: self.day)
+                }
                 TripDayHeaderMenu(
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
@@ -22,7 +24,9 @@ struct TripDayHeaderAccessoryContent: View {
             }
 
             VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
-                TripDayHeaderCounts(day: self.day)
+                if self.day.activityCount > 0 {
+                    TripDayHeaderCounts(day: self.day)
+                }
                 TripDayHeaderMenu(
                     canDelete: self.canDelete,
                     onAddActivity: self.onAddActivity,
