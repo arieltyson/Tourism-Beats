@@ -18,20 +18,24 @@ struct TripCitySuggestionsSection: View {
                             spacing: SpacingTokens.xxSmall
                         ) {
                             Text(city.name)
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(Color.primary)
 
                             Text("\(city.country.flag) \(city.country.name)")
                                 .font(TypographyTokens.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Color.secondary)
                         }
 
                         Spacer()
 
                         Image(systemName: "arrow.up.left")
                             .foregroundStyle(AppColors.coral)
+                            .accessibilityHidden(true)
                     }
+                    // The whole row is the target, not only its text and arrow.
+                    .contentShape(.rect)
                 }
-                .buttonStyle(.plain)
+                .accessibilityLabel("\(city.name), \(city.country.name)")
+                .accessibilityHint("Uses this city for the trip")
             }
         } header: {
             Text("Suggested Cities")
