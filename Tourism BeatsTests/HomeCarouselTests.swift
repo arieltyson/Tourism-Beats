@@ -37,26 +37,42 @@ struct HomeCarouselTests {
         #expect(deck.deal(5).isEmpty)
     }
 
-    @Test func theCarouselOpensWithNeighboursOnBothSides() {
+    @Test func theCarouselOpensWithCitiesDealtOnBothSides() {
         let viewModel = HomeViewModel()
         viewModel.load(cities: Self.cities(count: 50))
 
-        #expect(viewModel.items.count == HomeViewModel.batchSize)
-        #expect(viewModel.initialItemID == HomeViewModel.leadingCardCount)
+        let positions = viewModel.citiesByPosition.keys
+        #expect(positions.min() == -HomeViewModel.dealtRadius)
+        #expect(positions.max() == HomeViewModel.dealtRadius)
         #expect(viewModel.featuredCityCount == 50)
     }
 
-    @Test func swipingTowardTheEndDealsMoreCardsWithFreshIdentities() {
+    @Test func swipingEitherWayKeepsDealingNewCities() {
         let viewModel = HomeViewModel()
-        viewModel.load(cities: Self.cities(count: 5))
-        let firstBatch = viewModel.items
+        viewModel.load(cities: Self.cities(count: 100))
 
-        viewModel.cardDidAppear(firstBatch[1])
-        #expect(viewModel.items.count == HomeViewModel.batchSize)
+        viewModel.dealCities(around: -20)
+        viewModel.dealCities(around: 20)
 
-        viewModel.cardDidAppear(firstBatch[firstBatch.count - HomeViewModel.prefetchDistance + 1])
-        #expect(viewModel.items.count == HomeViewModel.batchSize * 2)
-        #expect(Set(viewModel.items.map(\.id)).count == viewModel.items.count)
+        let positions = viewModel.citiesByPosition.keys
+        #expect(positions.min() == -20 - HomeViewModel.dealtRadius)
+        #expect(positions.max() == 20 + HomeViewModel.dealtRadius)
+        #expect(Set(positions).count == viewModel.citiesByPosition.count)
+
+        let cities = viewModel.citiesByPosition.values.map(\.id)
+        #expect(Set(cities).count == cities.count, "No city repeats before the deck runs out")
+    }
+
+    @Test func visibleCardsSpanTheCentreAndItsNeighbours() {
+        let viewModel = HomeViewModel()
+        viewModel.load(cities: Self.cities(count: 50))
+
+        let resting = viewModel.visibleItems(around: 0).map(\.id)
+        let moving = viewModel.visibleItems(around: 0.5).map(\.id)
+
+        #expect(resting == Array(-HomeViewModel.visibleRadius ... HomeViewModel.visibleRadius))
+        // Between two cards, the one leaving and the one arriving are both drawn.
+        #expect(moving == Array(-HomeViewModel.visibleRadius ... HomeViewModel.visibleRadius + 1))
     }
 
     @Test func citiesThatOptOutAreNotFeatured() {
@@ -64,7 +80,7 @@ struct HomeCarouselTests {
         let hidden = Self.city(index: 0, featured: false)
         viewModel.load(cities: [hidden] + Self.cities(count: 3, startingAt: 1))
 
-        #expect(!viewModel.items.contains { $0.city.id == hidden.id })
+        #expect(!viewModel.citiesByPosition.values.contains { $0.id == hidden.id })
     }
 
     // MARK: Fixtures

@@ -1,36 +1,34 @@
+import CoreGraphics
 import Foundation
 
 // MARK: - HomeViewModel
 
-/// Feeds the home carousel an endless run of featured cities, dealt from a
-/// shuffled deck of every eligible city so each swipe brings somewhere new.
+/// Feeds the home carousel an endless run of featured cities in both
+/// directions, dealt from a shuffled deck of every eligible city so each
+/// swipe, left or right, brings somewhere new.
+///
+/// Cards are numbered by position, negative to the left of the first one, and
+/// dealt only as a swipe nears them, so there is no first or last card.
 @MainActor @Observable
 final class HomeViewModel {
-    /// Cards dealt at a time.
-    static let batchSize = 12
-    /// Cards dealt ahead of the first visible one, so the carousel opens with
-    /// neighbours on both sides.
-    static let leadingCardCount = 2
-    /// How close to the last card a swipe gets before more are dealt.
-    static let prefetchDistance = 4
+    /// How many cards either side of the centre are drawn.
+    static let visibleRadius = 2
+    /// How many cards either side of the centre are kept dealt, a little past
+    /// the visible ones so a fast swipe never reaches an empty slot.
+    static let dealtRadius = 6
 
-    private(set) var items: [HomeCarouselItem] = []
+    private(set) var citiesByPosition: [Int: CityModel] = [:]
     private(set) var isLoaded = false
 
     private var deck = HomeCityDeck(cities: [])
+    private var lowestDealtPosition = 0
+    private var highestDealtPosition = -1
 
     private let timeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
         return formatter
     }()
-
-    /// The card the carousel opens on.
-    var initialItemID: HomeCarouselItem.ID? {
-        self.items.indices.contains(Self.leadingCardCount)
-            ? self.items[Self.leadingCardCount].id
-            : self.items.first?.id
-    }
 
     /// How many different cities the carousel can show.
     var featuredCityCount: Int { self.deck.cityCount }
@@ -44,29 +42,47 @@ final class HomeViewModel {
     func load(cities: [CityModel]) {
         let featuredPool = cities.filter(\.isEligibleForFeaturedHeroCarousel)
         self.deck = HomeCityDeck(cities: featuredPool.isEmpty ? cities : featuredPool)
-        self.items = []
-        self.dealMore()
-        self.isLoaded = !self.items.isEmpty
+        self.citiesByPosition = [:]
+        self.lowestDealtPosition = 0
+        self.highestDealtPosition = -1
+        self.dealCities(around: 0)
+        self.isLoaded = !self.citiesByPosition.isEmpty
     }
 
-    /// Deals more cards once a swipe nears the end of the ones already dealt.
-    func cardDidAppear(_ item: HomeCarouselItem) {
-        guard let lastID = self.items.last?.id, lastID - item.id < Self.prefetchDistance else { return }
-        self.dealMore()
-    }
-
-    func localTime(for city: CityModel) -> String {
-        self.timeFormatter.timeZone = city.timeZone
-        return self.timeFormatter.string(from: Date())
-    }
-
-    private func dealMore() {
-        let nextID = (self.items.last?.id ?? -1) + 1
-        let cities = self.deck.deal(Self.batchSize)
-        self.items.append(
-            contentsOf: cities.enumerated().map { offset, city in
-                HomeCarouselItem(id: nextID + offset, city: city)
+    /// Deals cities for every position within reach of `position`, on
+    /// whichever side the carousel is heading.
+    func dealCities(around position: Int) {
+        let highest = position + Self.dealtRadius
+        if highest > self.highestDealtPosition {
+            let cities = self.deck.deal(highest - self.highestDealtPosition)
+            for (offset, city) in cities.enumerated() {
+                self.citiesByPosition[self.highestDealtPosition + 1 + offset] = city
             }
-        )
+            self.highestDealtPosition = highest
+        }
+
+        let lowest = position - Self.dealtRadius
+        if lowest < self.lowestDealtPosition {
+            let cities = self.deck.deal(self.lowestDealtPosition - lowest)
+            for (offset, city) in cities.enumerated() {
+                self.citiesByPosition[self.lowestDealtPosition - 1 - offset] = city
+            }
+            self.lowestDealtPosition = lowest
+        }
+    }
+
+    /// The cards to draw for a carousel resting or moving at `position`,
+    /// where a whole number is a card in the centre.
+    func visibleItems(around position: CGFloat) -> [HomeCarouselItem] {
+        let low = Int((position - CGFloat(Self.visibleRadius)).rounded(.down))
+        let high = Int((position + CGFloat(Self.visibleRadius)).rounded(.up))
+        return (low ... high).compactMap { index in
+            self.citiesByPosition[index].map { HomeCarouselItem(id: index, city: $0) }
+        }
+    }
+
+    func localTime(for city: CityModel, at date: Date = .now) -> String {
+        self.timeFormatter.timeZone = city.timeZone
+        return self.timeFormatter.string(from: date)
     }
 }

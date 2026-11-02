@@ -30,17 +30,11 @@ struct HomeView: View {
 
                 // Featured city cards
                 if self.viewModel.isLoaded {
-                    TimelineView(.periodic(from: .now, by: 60)) { _ in
+                    TimelineView(.periodic(from: .now, by: 60)) { context in
                         HomeFeaturedCitiesCarousel(
-                            items: self.viewModel.items,
-                            initialItemID: self.viewModel.initialItemID,
+                            viewModel: self.viewModel,
+                            date: context.date,
                             scheme: self.scheme,
-                            localTime: { city in
-                                self.viewModel.localTime(for: city)
-                            },
-                            onCardAppear: { item in
-                                self.viewModel.cardDidAppear(item)
-                            },
                             onSelectCity: { city in
                                 self.haptic.fire(.citySelect)
                                 self.onCitySelected(city)
@@ -85,83 +79,152 @@ struct HomeView: View {
 
 // MARK: - HomeFeaturedCitiesCarousel
 
-/// An endless row of city cards that snaps one card at a time. Cards sit side
-/// by side and never overlap; as one leaves the centre it eases back, dims,
-/// and turns slightly away, so the motion follows the finger without flipping.
+/// An endless, overlapping row of city cards that turns in both directions.
+///
+/// The centre card sits in front; its neighbours tuck behind it, smaller,
+/// dimmer, and turned so their inner edges lean back, which keeps them from
+/// flaring over the centre as they move. Cards further out slide in behind
+/// and fade, so a swipe never shows a card jumping or popping into place.
 private struct HomeFeaturedCitiesCarousel: View {
-    let items: [HomeCarouselItem]
+    let viewModel: HomeViewModel
+    /// The minute shown on each card's clock.
+    let date: Date
     let scheme: ColorScheme
-    let localTime: (CityModel) -> String
-    let onCardAppear: (HomeCarouselItem) -> Void
     let onSelectCity: (CityModel) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var centeredItemID: HomeCarouselItem.ID?
 
-    /// How far the neighbouring cards show past the centred one.
-    private static let peekInset = SpacingTokens.xxLarge + SpacingTokens.large
-    /// How much smaller, dimmer, and turned a card is one position from centre.
-    private static let neighbourScaleReduction = 0.1
-    private static let neighbourOpacityReduction = 0.45
-    private static let neighbourTiltDegrees = 12.0
-    private static let tiltPerspective = 0.5
+    /// Where the carousel rests or is being dragged; a whole number puts that
+    /// card in the centre.
+    @State private var position: CGFloat = 0
+    @State private var dragStartPosition: CGFloat?
 
-    init(
-        items: [HomeCarouselItem],
-        initialItemID: HomeCarouselItem.ID?,
-        scheme: ColorScheme,
-        localTime: @escaping (CityModel) -> String,
-        onCardAppear: @escaping (HomeCarouselItem) -> Void,
-        onSelectCity: @escaping (CityModel) -> Void
-    ) {
-        self.items = items
-        self.scheme = scheme
-        self.localTime = localTime
-        self.onCardAppear = onCardAppear
-        self.onSelectCity = onSelectCity
-        self._centeredItemID = State(initialValue: initialItemID)
+    static let cardWidth: CGFloat = 220
+    /// How far apart neighbouring cards sit, so each overlaps the next.
+    private static let cardSpacing = cardWidth * 0.6
+    /// How far a fling carries past where the finger lifted, in cards.
+    private static let flingCarry: CGFloat = 0.25
+    /// The most cards one fling moves.
+    private static let maximumFlingDistance: CGFloat = 3
+
+    private var centredPosition: Int {
+        Int(self.position.rounded())
     }
 
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: SpacingTokens.small) {
-                ForEach(self.items) { item in
-                    DiscoveryCityCard(
-                        city: item.city,
-                        localTime: self.localTime(item.city),
-                        scheme: self.scheme
-                    ) {
+        ZStack {
+            ForEach(self.viewModel.visibleItems(around: self.position)) { item in
+                let offset = CGFloat(item.id) - self.position
+
+                HomeCarouselCard(
+                    city: item.city,
+                    localTime: self.viewModel.localTime(for: item.city, at: self.date),
+                    scheme: self.scheme,
+                    offset: offset,
+                    cardSpacing: Self.cardSpacing,
+                    tiltsWithDepth: !self.reduceMotion
+                ) {
+                    if item.id == self.centredPosition {
                         self.onSelectCity(item.city)
+                    } else {
+                        self.settle(at: CGFloat(item.id))
                     }
-                    .containerRelativeFrame(.horizontal)
-                    .scrollTransition(.interactive, axis: .horizontal) { content, phase in
-                        let distance = min(abs(phase.value), 1)
-                        return content
-                            .scaleEffect(1 - distance * Self.neighbourScaleReduction)
-                            .opacity(1 - distance * Self.neighbourOpacityReduction)
-                            .rotation3DEffect(
-                                .degrees(self.reduceMotion ? 0 : -phase.value * Self.neighbourTiltDegrees),
-                                axis: (x: 0, y: 1, z: 0),
-                                perspective: Self.tiltPerspective
-                            )
-                    }
-                    .onAppear {
-                        self.onCardAppear(item)
+                }
+                .frame(width: Self.cardWidth)
+                .accessibilityHidden(item.id != self.centredPosition)
+                .accessibilityAdjustableAction { direction in
+                    switch direction {
+                    case .increment:
+                        self.settle(at: CGFloat(self.centredPosition + 1))
+                    case .decrement:
+                        self.settle(at: CGFloat(self.centredPosition - 1))
+                    @unknown default:
+                        break
                     }
                 }
             }
-            .scrollTargetLayout()
         }
-        .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
-        .scrollPosition(id: self.$centeredItemID, anchor: .center)
-        .scrollIndicators(.hidden)
-        .scrollClipDisabled()
-        .safeAreaPadding(.horizontal, Self.peekInset)
-        // A horizontal scroll view takes all the height it's offered; keep it
-        // to the cards' own height so the header and carousel stay centred.
-        .fixedSize(horizontal: false, vertical: true)
-        .sensoryFeedback(.selection, trigger: self.centeredItemID)
-        .accessibilityLabel("Featured cities")
+        .frame(maxWidth: .infinity)
+        .contentShape(.rect)
+        .highPriorityGesture(self.dragGesture)
+        .onChange(of: self.centredPosition) { _, newPosition in
+            self.viewModel.dealCities(around: newPosition)
+        }
+        .sensoryFeedback(.selection, trigger: self.centredPosition)
+    }
+
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: SpacingTokens.medium)
+            .onChanged { value in
+                let start = self.dragStartPosition ?? self.position
+                self.dragStartPosition = start
+                self.position = start - value.translation.width / Self.cardSpacing
+            }
+            .onEnded { value in
+                let start = self.dragStartPosition ?? self.position
+                self.dragStartPosition = nil
+
+                let projected = start - value.predictedEndTranslation.width / Self.cardSpacing
+                let carried = self.position + (projected - self.position) * Self.flingCarry
+                let target = min(
+                    max(carried.rounded(), start.rounded() - Self.maximumFlingDistance),
+                    start.rounded() + Self.maximumFlingDistance
+                )
+                self.settle(at: target)
+            }
+    }
+
+    private func settle(at target: CGFloat) {
+        withAnimation(AnimationTokens.carouselSettle) {
+            self.position = target
+        }
+    }
+}
+
+// MARK: - HomeCarouselCard
+
+/// A city card placed at `offset` cards from the carousel's centre.
+private struct HomeCarouselCard: View {
+    let city: CityModel
+    let localTime: String
+    let scheme: ColorScheme
+    let offset: CGFloat
+    let cardSpacing: CGFloat
+    let tiltsWithDepth: Bool
+    let action: () -> Void
+
+    /// How much smaller, dimmer, and turned a card is one place from centre.
+    private static let scaleStep = 0.12
+    private static let dimmingStep = 0.12
+    private static let tiltDegrees = 24.0
+    private static let tiltPerspective = 0.45
+    /// Beyond the nearest neighbours, cards tuck closer and fade away.
+    private static let farSpacingRatio = 0.45
+
+    var body: some View {
+        let distance = abs(self.offset)
+        let direction: CGFloat = self.offset < 0 ? -1 : 1
+        let nearDistance = min(distance, 1)
+        let farDistance = max(distance - 1, 0)
+
+        DiscoveryCityCard(
+            city: self.city,
+            localTime: self.localTime,
+            scheme: self.scheme,
+            action: self.action
+        )
+        .brightness(-nearDistance * Self.dimmingStep)
+        .scaleEffect(1 - min(distance, 2) * Self.scaleStep)
+        .rotation3DEffect(
+            // A neighbour turns with its inner edge leaning back, behind the centre card.
+            .degrees(self.tiltsWithDepth ? -direction * nearDistance * Self.tiltDegrees : 0),
+            axis: (x: 0, y: 1, z: 0),
+            perspective: Self.tiltPerspective
+        )
+        .offset(x: direction * (nearDistance + farDistance * Self.farSpacingRatio) * self.cardSpacing)
+        .opacity(1 - min(farDistance, 1))
+        .zIndex(-Double(distance))
+        .allowsHitTesting(distance < 1.5)
     }
 }
 

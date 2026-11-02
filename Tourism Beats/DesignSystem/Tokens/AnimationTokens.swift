@@ -21,6 +21,9 @@ enum AnimationTokens {
     /// Deliberate transition for content appearing or disappearing.
     static let entrance: Animation = .spring(response: 0.6, dampingFraction: 0.85)
 
+    /// A carousel settling on a card after a swipe: unhurried, with no bounce.
+    static let carouselSettle: Animation = .spring(response: 0.5, dampingFraction: 0.9)
+
     /// Press feedback for interactive controls.
     static let press: Animation = .spring(response: 0.25, dampingFraction: 0.7)
 
