@@ -11,6 +11,8 @@ struct FlightCountdownWidgetView: View {
                 FlightCountdownFace(flight: flight, date: entry.date, style: family == .systemSmall ? .small : .medium)
             } else {
                 VStack(alignment: .leading, spacing: FlightCountdownStyle.spacing) {
+                    FlightPathGlyph(progress: FlightPathGlyphTokens.restingProgress)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     Spacer(minLength: 0)
                     Text(entry.isUnavailable ? "Open to Update" : "Your Next Takeoff")
                         .font(.headline)

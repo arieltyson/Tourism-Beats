@@ -24,6 +24,9 @@ enum AnimationTokens {
     /// A carousel settling on a card after a swipe: unhurried, with no bounce.
     static let carouselSettle: Animation = .spring(response: 0.5, dampingFraction: 0.9)
 
+    /// A plane crossing its route: unhurried, easing in and out like a flight.
+    static let journey: Animation = .easeInOut(duration: 1.6)
+
     /// Press feedback for interactive controls.
     static let press: Animation = .spring(response: 0.25, dampingFraction: 0.7)
 

@@ -52,4 +52,19 @@ struct FlightProgressTests {
         #expect(decoded.spokenName == "Air Canada 308")
         #expect(decoded.destinationName == "Montréal")
     }
+
+    @Test func pathGlyphPlaneRidesTheArcFromEndToEnd() {
+        let size = CGSize(width: 250, height: 100)
+        let start = FlightPathArc(size: size, progress: 0)
+        let middle = FlightPathArc(size: size, progress: 0.5)
+        let end = FlightPathArc(size: size, progress: 1)
+        #expect(start.plane == start.origin)
+        #expect(end.plane == end.destination)
+        #expect(middle.plane.x == size.width / 2)
+        #expect(middle.plane.y < middle.origin.y)
+        #expect(abs(middle.heading.radians) < 0.000_1)
+        #expect(start.heading.radians < 0)
+        #expect(end.heading.radians > 0)
+        #expect(FlightPathArc(size: size, progress: 2).plane == end.plane)
+    }
 }

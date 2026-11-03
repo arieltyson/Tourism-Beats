@@ -22,6 +22,9 @@ enum FlightCountdownTokens {
     static let swatchRingWidth: CGFloat = 2
     static let swatchRingInset: CGFloat = 4
 
+    /// The route drawing on the empty screen, scaled with Dynamic Type.
+    static let emptyGlyphHeight: CGFloat = 64
+
     // MARK: - Photos
 
     /// The longer side of a stored card photo, enough for the largest widget.
