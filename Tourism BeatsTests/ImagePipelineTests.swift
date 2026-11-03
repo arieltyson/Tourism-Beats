@@ -84,4 +84,22 @@ struct ImagePipelineTests {
             try ImageDecoder.decode(Data("not an image".utf8), maxPixelSize: 256)
         }
     }
+
+    @Test func wikimediaOriginalsGiveWayToSizedThumbnails() throws {
+        let thumbnail = try #require(URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Tower.jpg/320px-Tower.jpg"))
+        let original = try #require(URL(string: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Tower.jpg"))
+        let width = ImageLoadingTokens.wikimediaDisplayWidth
+
+        let large = WikimediaImageURL.preferred(thumbnail: thumbnail, original: original, originalWidth: 6_000)
+        #expect(large?.lastPathComponent == "\(width)px-Tower.jpg")
+        #expect(large?.deletingLastPathComponent() == thumbnail.deletingLastPathComponent())
+
+        #expect(WikimediaImageURL.preferred(thumbnail: thumbnail, original: original, originalWidth: 900) == original)
+
+        let drawing = try #require(URL(string: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Map.svg"))
+        let drawingThumb = try #require(URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Map.svg/320px-Map.svg.png"))
+        #expect(WikimediaImageURL.preferred(thumbnail: drawingThumb, original: drawing, originalWidth: 512) == drawingThumb)
+
+        #expect(WikimediaImageURL.resized(original, to: width) == nil)
+    }
 }

@@ -159,13 +159,11 @@ extension CityActivityService {
     ) -> CityActivity {
         let result = Models.categoryFromPOI(poi: poi)
 
-        let imageURL: URL? = if let source = page?.original?.source {
-            URL(string: source)
-        } else if let source = page?.thumbnail?.source {
-            URL(string: source)
-        } else {
-            nil
-        }
+        let imageURL = WikimediaImageURL.preferred(
+            thumbnail: page?.thumbnail.flatMap { URL(string: $0.source) },
+            original: page?.original.flatMap { URL(string: $0.source) },
+            originalWidth: page?.original?.width
+        )
 
         let summary = if let extract = page?.extract, !extract.isEmpty {
             Self.cleanExtract(extract)

@@ -26,6 +26,9 @@ struct WikipediaSummary: Sendable {
     let extract: String
     let thumbnailURL: URL?
     let originalImageURL: URL?
+    /// The original's width in pixels, which decides whether a smaller
+    /// thumbnail can stand in for it.
+    let originalImageWidth: Int?
     let articleURL: URL?
     /// The article subject's coordinates, when it is a place.
     let latitude: Double?
@@ -37,6 +40,7 @@ struct WikipediaSummary: Sendable {
         extract: String,
         thumbnailURL: URL?,
         originalImageURL: URL?,
+        originalImageWidth: Int? = nil,
         articleURL: URL?,
         latitude: Double? = nil,
         longitude: Double? = nil
@@ -46,9 +50,15 @@ struct WikipediaSummary: Sendable {
         self.extract = extract
         self.thumbnailURL = thumbnailURL
         self.originalImageURL = originalImageURL
+        self.originalImageWidth = originalImageWidth
         self.articleURL = articleURL
         self.latitude = latitude
         self.longitude = longitude
+    }
+
+    /// The article's image at a size worth downloading for display.
+    var displayImageURL: URL? {
+        WikimediaImageURL.preferred(thumbnail: thumbnailURL, original: originalImageURL, originalWidth: originalImageWidth)
     }
 
     var location: CLLocation? {
@@ -190,6 +200,7 @@ actor WikipediaSummaryService: WikipediaSummaryProviding {
             extract: response.extract ?? "",
             thumbnailURL: response.thumbnail.flatMap { URL(string: $0.source) },
             originalImageURL: response.originalimage.flatMap { URL(string: $0.source) },
+            originalImageWidth: response.originalimage?.width,
             articleURL: articleURL,
             latitude: response.coordinates?.lat,
             longitude: response.coordinates?.lon

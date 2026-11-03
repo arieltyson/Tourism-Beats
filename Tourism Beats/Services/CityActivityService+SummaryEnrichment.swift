@@ -74,7 +74,7 @@ extension CityActivityService {
         } else {
             activity.summary
         }
-        let resolvedImageURL = activity.imageURL ?? summary.originalImageURL ?? summary.thumbnailURL
+        let resolvedImageURL = activity.imageURL ?? summary.displayImageURL
         let resolvedSourceURL = activity.sourceURL ?? summary.articleURL
         let resolvedPageTitle = if let sourcePageTitle = activity.sourcePageTitle,
                                    !sourcePageTitle.isEmpty

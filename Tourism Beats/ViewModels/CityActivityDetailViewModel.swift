@@ -68,7 +68,7 @@ final class CityActivityDetailViewModel {
         self.enrichedDescription = wiki.description
 
         if self.activity.imageURL == nil {
-            self.enrichedImageURL = wiki.originalImageURL ?? wiki.thumbnailURL
+            self.enrichedImageURL = wiki.displayImageURL
         }
 
         self.articleURL = wiki.articleURL

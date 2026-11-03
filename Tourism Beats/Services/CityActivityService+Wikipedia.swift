@@ -42,7 +42,7 @@ extension CityActivityService {
             URLQueryItem(name: "explaintext", value: "1"),
             URLQueryItem(name: "exlimit", value: "\(titles.count)"),
             URLQueryItem(name: "piprop", value: "original|thumbnail"),
-            URLQueryItem(name: "pithumbsize", value: "800"),
+            URLQueryItem(name: "pithumbsize", value: "\(ImageLoadingTokens.wikimediaDisplayWidth)"),
             URLQueryItem(name: "format", value: "json"),
             URLQueryItem(name: "formatversion", value: "2")
         ]
@@ -89,13 +89,11 @@ extension CityActivityService {
     static func mapPageToActivity(page: Models.WikiPageDetail) -> CityActivity {
         let result = Models.categoryFromText(title: page.title, extract: page.extract ?? "")
 
-        let imageURL: URL? = if let source = page.original?.source {
-            URL(string: source)
-        } else if let source = page.thumbnail?.source {
-            URL(string: source)
-        } else {
-            nil
-        }
+        let imageURL = WikimediaImageURL.preferred(
+            thumbnail: page.thumbnail.flatMap { URL(string: $0.source) },
+            original: page.original.flatMap { URL(string: $0.source) },
+            originalWidth: page.original?.width
+        )
 
         let encodedTitle = page.title
             .replacingOccurrences(of: " ", with: "_")
