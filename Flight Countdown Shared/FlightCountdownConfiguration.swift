@@ -7,4 +7,6 @@ enum FlightCountdownConfiguration {
     static let secondsPerMinute: TimeInterval = 60
     static let secondsPerHour: TimeInterval = 3_600
     static let secondsPerDay: TimeInterval = 86_400
+    /// The densest screen an iPhone has, for sizing images to points.
+    static let maximumDisplayScale: CGFloat = 3
 }

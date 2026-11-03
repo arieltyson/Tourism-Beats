@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 import Observation
 
@@ -11,6 +12,12 @@ final class FlightCountdownFormViewModel {
     /// The departure as an absolute moment, shown in ``timeZone``.
     var departure: Date
     private(set) var timeZoneIdentifier: String
+    var cardTheme: FlightCardTheme
+    /// The card photo: the saved one, or one just chosen.
+    private(set) var photo: CGImage?
+    private(set) var photoChange: FlightPhotoChange = .unchanged
+    private(set) var isPreparingPhoto = false
+    var photoErrorMessage: String?
     let isEditing: Bool
 
     /// Digits only, as long as an airline's longest flight number.
@@ -28,6 +35,7 @@ final class FlightCountdownFormViewModel {
 
     init(
         flight: CountdownFlight? = nil,
+        photo: CGImage? = nil,
         airlines: AirlineDirectory = .bundled,
         airports: AirportDirectory = .bundled,
         now: Date = .now
@@ -38,6 +46,8 @@ final class FlightCountdownFormViewModel {
         timeZoneIdentifier = flight?.timeZoneIdentifier ?? TimeZone.current.identifier
         departure = flight?.departure ?? Self.suggestedDeparture(after: now)
         storedFlightNumber = Self.digits(in: flight?.flightNumber ?? "")
+        cardTheme = flight?.cardTheme ?? .twilight
+        self.photo = photo
         if let flight {
             airline = flight.airlineCode.isEmpty ? nil
                 : airlines.airline(code: flight.airlineCode) ?? .unlisted(code: flight.airlineCode)
@@ -53,6 +63,7 @@ final class FlightCountdownFormViewModel {
     var timeZoneLabel: String { FlightTimeZoneOption(timeZone: timeZone, at: departure).summary }
 
     var hasChanges: Bool {
+        if case .replace = photoChange { return true }
         guard let initialFlight else {
             return airline != nil || !flightNumber.isEmpty || origin != nil || destination != nil
         }
@@ -63,6 +74,7 @@ final class FlightCountdownFormViewModel {
         airline != nil && !flightNumber.isEmpty
             && origin != nil && destination != nil && origin?.code != destination?.code
             && TimeZone(identifier: timeZoneIdentifier) != nil
+            && (cardTheme != .photo || photo != nil) && !isPreparingPhoto
     }
 
     /// Explains whose clock the departure time is on.
@@ -85,6 +97,7 @@ final class FlightCountdownFormViewModel {
             destinationCity: destination.flatMap(Self.city),
             departure: departure,
             timeZoneIdentifier: timeZoneIdentifier,
+            cardTheme: cardTheme,
             countdownStartedAt: countdownStartedAt
         )
     }
@@ -101,6 +114,20 @@ final class FlightCountdownFormViewModel {
 
     func select(destination: Airport) {
         self.destination = destination
+    }
+
+    /// Prepares a library photo and makes it the card's background.
+    func usePhoto(_ data: Data) async {
+        isPreparingPhoto = true
+        defer { isPreparingPhoto = false }
+        do {
+            let prepared = try await FlightPhotoProcessor.prepare(data)
+            photo = prepared.image
+            photoChange = .replace(prepared)
+            cardTheme = .photo
+        } catch {
+            photoErrorMessage = error.localizedDescription
+        }
     }
 
     /// Moves the departure into another time zone, keeping the time on the

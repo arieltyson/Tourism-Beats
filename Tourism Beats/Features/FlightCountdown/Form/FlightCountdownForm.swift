@@ -14,7 +14,9 @@ struct FlightCountdownForm: View {
     init(model: FlightCountdownViewModel, flight: CountdownFlight? = nil) {
         self.model = model
         originalFlight = flight
-        _form = State(initialValue: FlightCountdownFormViewModel(flight: flight))
+        _form = State(initialValue: FlightCountdownFormViewModel(
+            flight: flight, photo: flight.flatMap { model.photos[$0.id] }
+        ))
     }
 
     var body: some View {
@@ -56,6 +58,15 @@ struct FlightCountdownForm: View {
                     Text("Departure")
                 } footer: {
                     Text(form.departureFooter)
+                }
+                Section("Card") {
+                    FlightCountdownCard(flight: form.flight, date: .now, photo: form.photo)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
+                        .accessibilityLabel("Card preview")
+                    FlightCardDesignPicker(form: form)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                 }
                 if originalFlight != nil {
                     Section {
@@ -102,6 +113,13 @@ struct FlightCountdownForm: View {
             } message: {
                 Text(errorMessage ?? String(localized: "Please try again."))
             }
+            .alert("Couldn’t Use This Photo", isPresented: Binding(
+                get: { form.photoErrorMessage != nil }, set: { if !$0 { form.photoErrorMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) { form.photoErrorMessage = nil }
+            } message: {
+                Text(form.photoErrorMessage ?? String(localized: "Try another photo."))
+            }
         }
         .interactiveDismissDisabled(form.hasChanges || model.isSaving)
     }
@@ -109,7 +127,7 @@ struct FlightCountdownForm: View {
     private func save() {
         isEditingNumber = false
         Task {
-            if await model.save(form.flight) { dismiss() } else { takeError() }
+            if await model.save(form.flight, photo: form.photoChange) { dismiss() } else { takeError() }
         }
     }
 

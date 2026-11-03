@@ -31,7 +31,7 @@ struct FlightCountdownView: View {
                 } else {
                     TimelineView(.periodic(from: .now, by: FlightCountdownConfiguration.secondsPerMinute)) { context in
                         if let flight = CountdownFlight.next(in: model.flights, after: context.date) {
-                            FlightCountdownHero(flight: flight, date: context.date)
+                            FlightCountdownCard(flight: flight, date: context.date, photo: model.photos[flight.id])
                         }
                     }
                     VStack(spacing: SpacingTokens.small) {

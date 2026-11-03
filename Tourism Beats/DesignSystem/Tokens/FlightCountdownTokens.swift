@@ -8,4 +8,21 @@ enum FlightCountdownTokens {
 
     /// The most digits an airline uses for a flight number.
     static let maximumFlightNumberLength = 4
+
+    // MARK: - Card
+
+    static let cardCornerRadius: CGFloat = 28
+    /// Scaled with Dynamic Type so the card keeps a widget's proportions.
+    static let cardMinimumHeight: CGFloat = 200
+    /// A background choice, at least as large as the smallest tap target.
+    static let swatchSize: CGFloat = 44
+    /// The ring around the chosen background and the gap inside it.
+    static let swatchRingWidth: CGFloat = 2
+    static let swatchRingInset: CGFloat = 4
+
+    // MARK: - Photos
+
+    /// The longer side of a stored card photo, enough for the largest widget.
+    static let photoPixelSize = 1_200
+    static let photoCompressionQuality: Double = 0.8
 }

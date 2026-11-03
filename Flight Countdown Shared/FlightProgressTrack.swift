@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// How far along the wait is, drawn as a plane on its route.
 struct FlightProgressTrack: View {
     @Environment(\.layoutDirection) private var layoutDirection
     let progress: Double
@@ -7,6 +8,7 @@ struct FlightProgressTrack: View {
     var body: some View {
         FlightProgressLayout(progress: progress, rightToLeft: layoutDirection == .rightToLeft) {
             Capsule().fill(.white)
+            Capsule().fill(.white.opacity(FlightCountdownStyle.remainingTrackOpacity))
             Circle().fill(.white)
                 .frame(width: FlightProgressTokens.endpointDiameter, height: FlightProgressTokens.endpointDiameter)
             Circle().fill(.white)
@@ -14,8 +16,6 @@ struct FlightProgressTrack: View {
             Image(systemName: "airplane")
                 .font(.body)
                 .rotationEffect(.degrees(layoutDirection == .rightToLeft ? 180 : 0))
-                .padding(FlightProgressTokens.symbolInset)
-                .background(FlightCountdownStyle.night, in: .capsule)
         }
         .accessibilityHidden(true)
     }

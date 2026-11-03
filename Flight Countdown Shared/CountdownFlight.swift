@@ -18,6 +18,7 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
     var destinationCity: String?
     var departure: Date
     var timeZoneIdentifier: String
+    var cardTheme: FlightCardTheme = .twilight
     var countdownStartedAt: Date? = Date.now
 
     func countdownProgress(at date: Date) -> Double {
@@ -39,6 +40,9 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
         guard let airlineName else { return designator }
         return "\(airlineName) \(flightNumber)"
     }
+
+    /// Where the flight leaves from, by city when it's known.
+    var originName: String { originCity ?? origin }
 
     /// Where the flight lands, by city when it's known.
     var destinationName: String { destinationCity ?? destination }
@@ -70,7 +74,7 @@ extension CountdownFlight {
     private enum CodingKeys: String, CodingKey {
         case id, airlineCode, airlineName, flightNumber
         case origin, originCity, destination, destinationCity
-        case departure, timeZoneIdentifier, countdownStartedAt
+        case departure, timeZoneIdentifier, cardTheme, countdownStartedAt
     }
 
     /// Flights saved before the airline was chosen separately stored the whole
@@ -92,6 +96,7 @@ extension CountdownFlight {
         destinationCity = try container.decodeIfPresent(String.self, forKey: .destinationCity)
         departure = try container.decode(Date.self, forKey: .departure)
         timeZoneIdentifier = try container.decode(String.self, forKey: .timeZoneIdentifier)
+        cardTheme = try container.decodeIfPresent(FlightCardTheme.self, forKey: .cardTheme) ?? .twilight
         countdownStartedAt = try container.decodeIfPresent(Date.self, forKey: .countdownStartedAt)
     }
 }

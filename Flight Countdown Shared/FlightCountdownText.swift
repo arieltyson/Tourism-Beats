@@ -12,4 +12,20 @@ enum FlightCountdownText {
             width: abbreviated ? .abbreviated : .wide, maximumUnitCount: 2
         ))
     }
+
+    /// The single largest whole unit left, such as "47 days", "5 hours", or
+    /// "12 minutes", with its value and unit marked so they can be styled
+    /// apart in any language.
+    static func headline(until departure: Date, from date: Date) -> AttributedString {
+        let interval = departure.timeIntervalSince(date)
+        guard interval > 0 else { return AttributedString(localized: "Departed") }
+        let unit: Duration.UnitsFormatStyle.Unit = switch interval {
+        case FlightCountdownConfiguration.secondsPerDay...: .days
+        case FlightCountdownConfiguration.secondsPerHour...: .hours
+        default: .minutes
+        }
+        return Duration.seconds(max(FlightCountdownConfiguration.secondsPerMinute, interval)).formatted(
+            .units(allowed: [unit], width: .wide, maximumUnitCount: 1, fractionalPart: .hide(rounded: .down)).attributed
+        )
+    }
 }
