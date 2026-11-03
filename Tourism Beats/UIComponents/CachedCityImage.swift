@@ -3,7 +3,8 @@ import SwiftUI
 
 /// Loads a remote city image with a smooth loading transition, placeholder, and failure state.
 ///
-/// Uses `AsyncImage` backed by the shared `URLCache` for automatic disk and memory caching.
+/// Loads through ``ImagePipeline``: decoded images stay in memory and the
+/// downloads in the shared `URLCache` on disk, so a city seen once appears at once.
 /// The view fills whatever bounds its parent establishes, which keeps framing
 /// and cropping consistent across cards and hero images.
 ///
@@ -25,12 +26,12 @@ struct CachedCityImage: View {
     }
 
     var body: some View {
-        AsyncImage(url: self.url, transaction: .init(animation: .smooth)) { phase in
+        PipelineImage(url: self.url) { phase in
             switch phase {
             case .empty:
                 self.placeholder
                     .overlay {
-                        ProgressView()
+                        DelayedProgressView()
                             .tint(.white)
                     }
             case let .success(image):

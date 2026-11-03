@@ -19,7 +19,7 @@ struct MusicArtworkCard: View {
             .aspectRatio(1, contentMode: .fit)
             .overlay {
                 if let artworkURL {
-                    AsyncImage(url: artworkURL, transaction: .init(animation: .smooth)) { phase in
+                    PipelineImage(url: artworkURL) { phase in
                         switch phase {
                         case .empty:
                             MusicArtworkLoadingView()
@@ -61,7 +61,7 @@ private struct MusicArtworkLoadingView: View {
         Rectangle()
             .fill(.ultraThinMaterial)
             .overlay {
-                ProgressView()
+                DelayedProgressView()
                     .tint(.white)
             }
     }

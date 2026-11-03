@@ -297,10 +297,7 @@ extension CityActivityDetailView.Hero {
                 .aspectRatio(4 / 3, contentMode: .fit)
                 .overlay {
                     if let imageURL {
-                        AsyncImage(
-                            url: imageURL,
-                            transaction: .init(animation: .smooth)
-                        ) { phase in
+                        PipelineImage(url: imageURL) { phase in
                             switch phase {
                             case .empty:
                                 Self.placeholder

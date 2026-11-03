@@ -174,16 +174,13 @@ private struct FoodRestaurantMealPhotoPreview: View {
 
     @ViewBuilder
     private var photoContent: some View {
-        AsyncImage(
-            url: RestaurantMealPhotoStore.fileURL(for: self.mealPhoto.relativePath),
-            transaction: .init(animation: .smooth)
-        ) { phase in
+        PipelineImage(url: RestaurantMealPhotoStore.fileURL(for: self.mealPhoto.relativePath)) { phase in
             switch phase {
             case .empty:
                 Rectangle()
                     .fill(.ultraThinMaterial)
                     .overlay {
-                        ProgressView()
+                        DelayedProgressView()
                     }
             case let .success(image):
                 FilledImage(image: image)

@@ -8,13 +8,13 @@ struct EditableMealPhotoThumbnail: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            AsyncImage(url: self.fileURL, transaction: .init(animation: .smooth)) { phase in
+            PipelineImage(url: self.fileURL) { phase in
                 switch phase {
                 case .empty:
                     Rectangle()
                         .fill(.ultraThinMaterial)
                         .overlay {
-                            ProgressView()
+                            DelayedProgressView()
                         }
                 case let .success(image):
                     FilledImage(image: image)

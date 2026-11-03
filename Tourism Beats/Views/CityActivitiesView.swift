@@ -231,10 +231,7 @@ extension CityActivitiesView.ActivityCard {
         var body: some View {
             Group {
                 if let imageURL = self.activity.imageURL {
-                    AsyncImage(
-                        url: imageURL,
-                        transaction: .init(animation: .smooth)
-                    ) { phase in
+                    PipelineImage(url: imageURL) { phase in
                         switch phase {
                         case .empty:
                             Self.loadingPlaceholder
@@ -296,15 +293,17 @@ extension CityActivitiesView.ActivityCard {
         }
 
         private static var loadingBadge: some View {
-            ZStack {
-                Circle()
-                    .fill(.ultraThinMaterial)
+            DelayedReveal {
+                ZStack {
+                    Circle()
+                        .fill(.ultraThinMaterial)
 
-                ProgressView()
-                    .controlSize(.small)
-                    .tint(AppColors.onImagePrimary)
+                    ProgressView()
+                        .controlSize(.small)
+                        .tint(AppColors.onImagePrimary)
+                }
+                .frame(width: 34, height: 34)
             }
-            .frame(width: 34, height: 34)
         }
     }
 }

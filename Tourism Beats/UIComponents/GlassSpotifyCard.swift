@@ -73,7 +73,7 @@ private struct GlassSpotifyCardArtwork: View {
     var body: some View {
         Group {
             if let url {
-                AsyncImage(url: url, transaction: .init(animation: .smooth)) { phase in
+                PipelineImage(url: url) { phase in
                     switch phase {
                     case let .success(image):
                         FilledImage(image: image)
@@ -83,7 +83,7 @@ private struct GlassSpotifyCardArtwork: View {
                         Rectangle()
                             .fill(.ultraThinMaterial)
                             .overlay {
-                                ProgressView()
+                                DelayedProgressView()
                                     .controlSize(.small)
                                     .tint(.primary)
                             }
