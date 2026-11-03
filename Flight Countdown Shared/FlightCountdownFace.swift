@@ -18,6 +18,7 @@ struct FlightCountdownFace: View {
                 .font(.headline)
             Text(flight.flightNumber)
                 .font(.subheadline)
+                .lineLimit(1)
             if !compact {
                 Text(flight.departureLabel)
                     .font(.caption)
@@ -27,6 +28,6 @@ struct FlightCountdownFace: View {
         .foregroundStyle(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(flight.flightNumber), from \(flight.origin) to \(flight.destination), departs in \(FlightCountdownText.remaining(until: flight.departure, from: date)). Scheduled departure \(flight.departureLabel)")
+        .accessibilityLabel("\(flight.flightNumber), from \(flight.origin) to \(flight.destination), departs in \(FlightCountdownText.remaining(until: flight.departure, from: date, abbreviated: false)). Scheduled departure \(flight.departureLabel)")
     }
 }

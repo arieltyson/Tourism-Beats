@@ -1,6 +1,6 @@
 # Tourism Beats Accessibility
 
-**Last updated:** March 17, 2026
+**Last updated:** November 2, 2026
 
 Tourism Beats is an iPhone app for destination discovery, travel research, food journaling, and trip planning. The app has been updated to support Apple's Accessibility Nutrition Label categories across its common tasks, with a focus on usable default controls, scalable layouts, adaptive contrast, and reduced-motion behavior.
 
@@ -29,6 +29,7 @@ Accessibility support is intended to cover the app's primary common tasks on iPh
 - exploring the destination map and moving between city detail sections
 - browsing the food journal, opening a city, and adding, editing, or deleting restaurants
 - creating, editing, and deleting trips, days, and trip activities
+- adding, editing, and deleting standalone flight countdowns in Settings → Tools
 - reviewing visa, safety, and walkability information
 
 ## VoiceOver
@@ -122,3 +123,7 @@ Accessibility remains an ongoing part of Tourism Beats development. These root n
 ## Contact
 
 If you have questions or feedback about Tourism Beats accessibility, please contact arieltyson30190@gmail.com.
+
+## Flight Countdown
+
+The editor uses native form controls, labeled actions, searchable time-zone selection, and Dynamic Type. Countdown cards expose one combined VoiceOver description with the flight number, airport codes, countdown, and scheduled departure time zone. The widget uses a static, opaque background, strengthens contrast when requested, and introduces no animations. Widget setup instructions are available from the tool’s Add Widget button.
