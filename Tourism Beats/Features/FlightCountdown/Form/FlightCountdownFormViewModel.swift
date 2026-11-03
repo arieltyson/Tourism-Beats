@@ -13,9 +13,12 @@ final class FlightCountdownFormViewModel {
     var departure: Date
     private(set) var timeZoneIdentifier: String
     var cardTheme: FlightCardTheme
-    /// The card photo: the saved one, or one just chosen.
-    private(set) var photo: CGImage?
-    private(set) var photoChange: FlightPhotoChange = .unchanged
+    /// The card's photos in collage order: saved ones and ones just chosen.
+    private(set) var photos: [FlightCardPhoto]
+    /// Every photo's pixels, saved or just chosen, by photo.
+    private(set) var images: [UUID: CGImage]
+    /// Photos chosen since the form opened, prepared and waiting to be saved.
+    private(set) var newPhotos: [UUID: FlightPhoto] = [:]
     private(set) var isPreparingPhoto = false
     var photoErrorMessage: String?
     let isEditing: Bool
@@ -35,7 +38,7 @@ final class FlightCountdownFormViewModel {
 
     init(
         flight: CountdownFlight? = nil,
-        photo: CGImage? = nil,
+        images: [UUID: CGImage] = [:],
         airlines: AirlineDirectory = .bundled,
         airports: AirportDirectory = .bundled,
         now: Date = .now
@@ -47,7 +50,8 @@ final class FlightCountdownFormViewModel {
         departure = flight?.departure ?? Self.suggestedDeparture(after: now)
         storedFlightNumber = Self.digits(in: flight?.flightNumber ?? "")
         cardTheme = flight?.cardTheme ?? .twilight
-        self.photo = photo
+        photos = flight?.photos ?? []
+        self.images = images
         if let flight {
             airline = flight.airlineCode.isEmpty ? nil
                 : airlines.airline(code: flight.airlineCode) ?? .unlisted(code: flight.airlineCode)
@@ -62,10 +66,16 @@ final class FlightCountdownFormViewModel {
     var timeZone: TimeZone { TimeZone(identifier: timeZoneIdentifier) ?? .gmt }
     var timeZoneLabel: String { FlightTimeZoneOption(timeZone: timeZone, at: departure).summary }
 
+    /// The photos ready to draw, whether or not the card uses them yet.
+    var cardImages: [FlightCardImage] {
+        photos.compactMap { photo in
+            images[photo.id].map { FlightCardImage(id: photo.id, image: $0, framing: photo.framing) }
+        }
+    }
+
     var hasChanges: Bool {
-        if case .replace = photoChange { return true }
         guard let initialFlight else {
-            return airline != nil || !flightNumber.isEmpty || origin != nil || destination != nil
+            return airline != nil || !flightNumber.isEmpty || origin != nil || destination != nil || !photos.isEmpty
         }
         return flight != initialFlight
     }
@@ -74,7 +84,7 @@ final class FlightCountdownFormViewModel {
         airline != nil && !flightNumber.isEmpty
             && origin != nil && destination != nil && origin?.code != destination?.code
             && TimeZone(identifier: timeZoneIdentifier) != nil
-            && (cardTheme != .photo || photo != nil) && !isPreparingPhoto
+            && (cardTheme != .photo || !photos.isEmpty) && !isPreparingPhoto
     }
 
     /// Explains whose clock the departure time is on.
@@ -98,6 +108,7 @@ final class FlightCountdownFormViewModel {
             departure: departure,
             timeZoneIdentifier: timeZoneIdentifier,
             cardTheme: cardTheme,
+            photos: cardTheme == .photo ? photos : [],
             countdownStartedAt: countdownStartedAt
         )
     }
@@ -116,17 +127,48 @@ final class FlightCountdownFormViewModel {
         self.destination = destination
     }
 
-    /// Prepares a library photo and makes it the card's background.
-    func usePhoto(_ data: Data) async {
+    /// Makes the photos chosen in the picker the card's background, in the
+    /// order they were chosen. Photos the card already has keep their
+    /// framing; new ones are prepared. Choosing none returns the card to
+    /// its first design.
+    func usePhotos(_ sources: [FlightPhotoSource]) async {
         isPreparingPhoto = true
         defer { isPreparingPhoto = false }
-        do {
-            let prepared = try await FlightPhotoProcessor.prepare(data)
-            photo = prepared.image
-            photoChange = .replace(prepared)
+        var chosen: [FlightCardPhoto] = []
+        for source in sources.prefix(FlightCountdownStyle.maximumCollageCount) {
+            if let identifier = source.identifier,
+               let existing = photos.first(where: { $0.sourceIdentifier == identifier }) {
+                chosen.append(existing)
+                continue
+            }
+            do {
+                let prepared = try await FlightPhotoProcessor.prepare(try await source.load())
+                let photo = FlightCardPhoto(sourceIdentifier: source.identifier)
+                images[photo.id] = prepared.image
+                newPhotos[photo.id] = prepared
+                chosen.append(photo)
+            } catch {
+                photoErrorMessage = error.localizedDescription
+            }
+        }
+        // Photos that all failed to open leave the card as it was.
+        guard sources.isEmpty || !chosen.isEmpty else { return }
+        let kept = Set(chosen.map(\.id))
+        for photo in photos where !kept.contains(photo.id) {
+            newPhotos[photo.id] = nil
+        }
+        photos = chosen
+        if !chosen.isEmpty {
             cardTheme = .photo
-        } catch {
-            photoErrorMessage = error.localizedDescription
+        } else if cardTheme == .photo, let first = FlightCardTheme.gradients.first {
+            cardTheme = first
+        }
+    }
+
+    /// Keeps the framing chosen for each photo.
+    func applyFramings(_ framings: [UUID: FlightPhotoFraming]) {
+        for index in photos.indices {
+            if let framing = framings[photos[index].id] { photos[index].framing = framing }
         }
     }
 

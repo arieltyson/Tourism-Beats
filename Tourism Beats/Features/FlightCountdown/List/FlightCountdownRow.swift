@@ -1,17 +1,16 @@
-import CoreGraphics
 import SwiftUI
 
 /// A flight in the list: its card design, route, and when it leaves.
 struct FlightCountdownRow: View {
     let flight: CountdownFlight
-    var photo: CGImage?
+    var photos: [FlightCardImage] = []
     let now: Date
 
     @ScaledMetric private var thumbnailSize = FlightCountdownTokens.swatchSize
 
     var body: some View {
         HStack(spacing: SpacingTokens.small) {
-            FlightCardBackground(theme: flight.cardTheme, photo: photo)
+            FlightCardBackground(theme: flight.cardTheme, photos: photos)
                 .frame(width: thumbnailSize, height: thumbnailSize)
                 .clipShape(.rect(cornerRadius: FlightCountdownTokens.thumbnailCornerRadius))
                 .accessibilityHidden(true)

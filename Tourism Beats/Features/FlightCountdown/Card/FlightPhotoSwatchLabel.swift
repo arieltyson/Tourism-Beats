@@ -1,9 +1,9 @@
 import SwiftUI
 
-/// The swatch that opens the photo library.
+/// The swatch that opens the photo library to choose up to four photos.
 struct FlightPhotoSwatchLabel: View {
     let isPreparing: Bool
-    let hasPhoto: Bool
+    let hasPhotos: Bool
 
     @ScaledMetric private var size = FlightCountdownTokens.swatchSize
 
@@ -12,7 +12,7 @@ struct FlightPhotoSwatchLabel: View {
             if isPreparing {
                 ProgressView()
             } else {
-                Label(hasPhoto ? "Choose Another Photo" : "Choose Photo", systemImage: "photo.badge.plus")
+                Label(hasPhotos ? "Change Photos" : "Choose Photos", systemImage: "photo.badge.plus")
                     .labelStyle(.iconOnly)
             }
         }

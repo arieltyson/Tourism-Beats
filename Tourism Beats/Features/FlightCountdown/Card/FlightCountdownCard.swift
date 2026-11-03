@@ -1,11 +1,10 @@
-import CoreGraphics
 import SwiftUI
 
 /// A flight's countdown as a card, exactly as its widget shows it.
 struct FlightCountdownCard: View {
     let flight: CountdownFlight
     let date: Date
-    var photo: CGImage?
+    var photos: [FlightCardImage] = []
 
     @ScaledMetric private var minimumHeight = FlightCountdownTokens.cardMinimumHeight
 
@@ -13,7 +12,7 @@ struct FlightCountdownCard: View {
         FlightCountdownFace(flight: flight, date: date)
             .padding(SpacingTokens.large)
             .frame(maxWidth: .infinity, minHeight: minimumHeight, alignment: .leading)
-            .background { FlightCardBackground(theme: flight.cardTheme, photo: photo) }
+            .background { FlightCardBackground(theme: flight.cardTheme, photos: photos) }
             .clipShape(.rect(cornerRadius: FlightCountdownTokens.cardCornerRadius))
     }
 }

@@ -1,10 +1,9 @@
-import CoreGraphics
 import WidgetKit
 
 struct FlightCountdownEntry: TimelineEntry, Sendable {
     let date: Date
     let flight: CountdownFlight?
-    /// The flight's card photo, sized for this widget.
-    var photo: CGImage?
+    /// The flight's card photos, sized for this widget.
+    var photos: [FlightCardImage] = []
     var isUnavailable = false
 }

@@ -15,7 +15,7 @@ struct FlightCountdownView: View {
                 Section("Preview") {
                     TimelineView(.periodic(from: .now, by: FlightCountdownConfiguration.secondsPerMinute)) { context in
                         if let flight = CountdownFlight.next(in: model.flights, after: context.date) {
-                            FlightCountdownCard(flight: flight, date: context.date, photo: model.photos[flight.id])
+                            FlightCountdownCard(flight: flight, date: context.date, photos: model.images(for: flight))
                         }
                     }
                     .listRowInsets(EdgeInsets())
@@ -28,7 +28,7 @@ struct FlightCountdownView: View {
                         Button {
                             editedFlight = flight
                         } label: {
-                            FlightCountdownRow(flight: flight, photo: model.photos[flight.id], now: .now)
+                            FlightCountdownRow(flight: flight, photos: model.images(for: flight), now: .now)
                         }
                         .accessibilityHint("Edits the flight")
                         .swipeActions(edge: .leading) {
@@ -87,7 +87,7 @@ struct FlightCountdownView: View {
         .sheet(isPresented: $showsWidgetHelp) {
             let flight = model.nextFlight
             FlightCountdownWidgetHelp(
-                flight: flight ?? .sample(from: .now), photo: flight.flatMap { model.photos[$0.id] }
+                flight: flight ?? .sample(from: .now), photos: flight.map(model.images(for:)) ?? []
             )
         }
         .alert("Couldn’t Update Flights", isPresented: Binding(

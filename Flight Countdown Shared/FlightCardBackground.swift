@@ -1,27 +1,20 @@
 import SwiftUI
 
-/// A card's backdrop: a soft mesh of its theme's tones, or the chosen photo
+/// A card's backdrop: a soft mesh of its theme's tones, or the chosen photos
 /// beneath a scrim that keeps the text legible.
 struct FlightCardBackground: View {
     @Environment(\.colorSchemeContrast) private var contrast
     let theme: FlightCardTheme
-    var photo: CGImage?
+    var photos: [FlightCardImage] = []
 
     var body: some View {
-        if theme == .photo, let photo {
-            Color.clear
-                .overlay {
-                    Image(decorative: photo, scale: 1)
-                        .resizable()
-                        .scaledToFill()
-                }
-                .clipped()
-                .overlay {
-                    LinearGradient(
-                        stops: contrast == .increased ? FlightCountdownStyle.strongScrim : FlightCountdownStyle.scrim,
-                        startPoint: .top, endPoint: .bottom
-                    )
-                }
+        if theme == .photo, !photos.isEmpty {
+            FlightPhotoCollage(count: photos.count) { index in
+                FlightFramedPhoto(photo: photos[index])
+            }
+            // The hairlines between photos stay dark in either appearance.
+            .background(.black)
+            .overlay { FlightPhotoScrim() }
         } else if contrast == .increased {
             theme.palette[0]
         } else {

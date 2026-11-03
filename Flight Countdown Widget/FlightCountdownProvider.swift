@@ -8,14 +8,16 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
 
     func getSnapshot(in context: Context, completion: @escaping @Sendable (FlightCountdownEntry) -> Void) {
         if context.isPreview { completion(sample); return }
-        let pixelSize = Self.photoPixelSize(for: context.displaySize)
+        let displaySize = context.displaySize
         Task {
             do {
                 let flights = try await FlightCountdownStore().load()
                 let now = Date.now
                 let flight = CountdownFlight.next(in: flights, after: now)
-                let photos = await Self.photos(for: flight.map { [$0] } ?? [], pixelSize: pixelSize)
-                completion(FlightCountdownEntry(date: now, flight: flight, photo: flight.flatMap { photos[$0.id] }))
+                let images = await Self.images(for: flight.map { [$0] } ?? [], displaySize: displaySize)
+                completion(FlightCountdownEntry(
+                    date: now, flight: flight, photos: flight.map { FlightCardImage.images(for: $0, from: images) } ?? []
+                ))
             } catch {
                 completion(FlightCountdownEntry(date: .now, flight: nil, isUnavailable: true))
             }
@@ -23,17 +25,19 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
     }
 
     func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<FlightCountdownEntry>) -> Void) {
-        let pixelSize = Self.photoPixelSize(for: context.displaySize)
+        let displaySize = context.displaySize
         Task {
             let now = Date.now
             do {
                 let flights = try await FlightCountdownStore().load()
                 let dates = FlightCountdownSchedule.dates(for: flights, from: now)
                 let upcoming = dates.compactMap { CountdownFlight.next(in: flights, after: $0) }
-                let photos = await Self.photos(for: upcoming, pixelSize: pixelSize)
+                let images = await Self.images(for: upcoming, displaySize: displaySize)
                 let entries = dates.map { date in
                     let flight = CountdownFlight.next(in: flights, after: date)
-                    return FlightCountdownEntry(date: date, flight: flight, photo: flight.flatMap { photos[$0.id] })
+                    return FlightCountdownEntry(
+                        date: date, flight: flight, photos: flight.map { FlightCardImage.images(for: $0, from: images) } ?? []
+                    )
                 }
                 completion(Timeline(entries: entries, policy: .atEnd))
             } catch {
@@ -45,17 +49,24 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
 
     /// Loads each distinct photo once, no larger than the widget shows it;
     /// WidgetKit won't draw images much bigger than the widget itself.
-    private static func photos(for flights: [CountdownFlight], pixelSize: Int) async -> [UUID: CGImage] {
+    private static func images(for flights: [CountdownFlight], displaySize: CGSize) async -> [UUID: CGImage] {
         let store = FlightPhotoStore()
-        var photos: [UUID: CGImage] = [:]
-        for flight in flights where flight.cardTheme == .photo && photos[flight.id] == nil {
-            photos[flight.id] = await store.image(for: flight.id, maximumPixelSize: pixelSize)
+        var images: [UUID: CGImage] = [:]
+        for flight in flights where flight.cardTheme == .photo {
+            let pixelSize = photoPixelSize(for: displaySize, count: flight.photos.count)
+            for photo in flight.photos where images[photo.id] == nil {
+                images[photo.id] = await store.image(for: photo.id, maximumPixelSize: pixelSize)
+            }
         }
-        return photos
+        return images
     }
 
-    private static func photoPixelSize(for size: CGSize) -> Int {
-        Int(max(size.width, size.height) * FlightCountdownConfiguration.maximumDisplayScale)
+    /// A photo sharing the widget with two or more others spans at most
+    /// half of it, so it's loaded at half the size to stay within the
+    /// widget's memory.
+    private static func photoPixelSize(for size: CGSize, count: Int) -> Int {
+        let side = max(size.width, size.height) * FlightCountdownConfiguration.maximumDisplayScale
+        return Int(count > 2 ? side / 2 : side)
     }
 
     private var sample: FlightCountdownEntry {

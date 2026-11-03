@@ -1,13 +1,24 @@
 import PhotosUI
 import SwiftUI
 
-/// Chooses a card's background: a designed one, or a photo from the library.
+/// Chooses a card's background: a designed one, or up to four photos from
+/// the library, arranged as a collage in the order they're chosen.
 ///
 /// The photo picker runs outside the app, so no photo library access is
-/// requested; only the chosen photo is shared with Tourism Beats.
+/// requested; only the chosen photos are shared with Tourism Beats.
 struct FlightCardDesignPicker: View {
     @Bindable var form: FlightCountdownFormViewModel
-    @State private var photoItem: PhotosPickerItem?
+    @State private var photoItems: [PhotosPickerItem]
+    /// A selection waiting to be loaded once the picker closes.
+    @State private var pendingItems: [PhotosPickerItem]?
+
+    init(form: FlightCountdownFormViewModel) {
+        self.form = form
+        // Photos chosen before show as chosen when the picker opens again.
+        _photoItems = State(initialValue: form.photos.compactMap(\.sourceIdentifier).map {
+            PhotosPickerItem(itemIdentifier: $0)
+        })
+    }
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -15,15 +26,22 @@ struct FlightCardDesignPicker: View {
                 ForEach(FlightCardTheme.gradients) { theme in
                     FlightThemeSwatch(theme: theme, isSelected: form.cardTheme == theme) { form.cardTheme = theme }
                 }
-                if let photo = form.photo {
-                    FlightThemeSwatch(theme: .photo, photo: photo, isSelected: form.cardTheme == .photo) {
+                let images = form.cardImages
+                if !images.isEmpty {
+                    FlightThemeSwatch(theme: .photo, photos: images, isSelected: form.cardTheme == .photo) {
                         form.cardTheme = .photo
                     }
                 }
                 let isPreparing = form.isPreparingPhoto
-                let hasPhoto = form.photo != nil
-                PhotosPicker(selection: $photoItem, matching: .images, photoLibrary: .shared()) {
-                    FlightPhotoSwatchLabel(isPreparing: isPreparing, hasPhoto: hasPhoto)
+                let hasPhotos = !images.isEmpty
+                PhotosPicker(
+                    selection: $photoItems,
+                    maxSelectionCount: FlightCountdownStyle.maximumCollageCount,
+                    selectionBehavior: .ordered,
+                    matching: .images,
+                    photoLibrary: .shared()
+                ) {
+                    FlightPhotoSwatchLabel(isPreparing: isPreparing, hasPhotos: hasPhotos)
                 }
                 .disabled(form.isPreparingPhoto)
                 .accessibilityIdentifier("chooseCardPhoto")
@@ -32,17 +50,20 @@ struct FlightCardDesignPicker: View {
         .scrollIndicators(.hidden)
         .scrollClipDisabled()
         .sensoryFeedback(.selection, trigger: form.cardTheme)
-        .task(id: photoItem) {
-            guard let photoItem else { return }
-            do {
-                guard let data = try await photoItem.loadTransferable(type: Data.self) else {
-                    throw FlightPhotoError.unreadable
+        .onChange(of: photoItems) { _, items in
+            pendingItems = items
+        }
+        .task(id: pendingItems) {
+            guard let items = pendingItems else { return }
+            await form.usePhotos(items.map { item in
+                FlightPhotoSource(identifier: item.itemIdentifier) {
+                    guard let data = try await item.loadTransferable(type: Data.self) else {
+                        throw FlightPhotoError.unreadable
+                    }
+                    return data
                 }
-                await form.usePhoto(data)
-            } catch {
-                form.photoErrorMessage = error.localizedDescription
-            }
-            self.photoItem = nil
+            })
+            pendingItems = nil
         }
     }
 }

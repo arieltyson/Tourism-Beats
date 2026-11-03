@@ -9,7 +9,7 @@ import WidgetKit
 @Observable
 final class FlightCountdownViewModel {
     private(set) var flights: [CountdownFlight] = []
-    /// Card photos for flights that use one, ready to draw.
+    /// Card photos for flights that use them, by photo, ready to draw.
     private(set) var photos: [UUID: CGImage] = [:]
     private(set) var isLoading = true
     private(set) var isSaving = false
@@ -60,35 +60,42 @@ final class FlightCountdownViewModel {
         }
     }
 
-    /// Saves a new or edited flight. A flight that no longer uses a photo
-    /// has its photo removed.
+    /// The flight's card photos in collage order, as far as they've loaded.
+    func images(for flight: CountdownFlight) -> [FlightCardImage] {
+        FlightCardImage.images(for: flight, from: photos)
+    }
+
+    /// Saves a new or edited flight with any photos just chosen for it.
+    /// Photos the flight no longer uses are removed.
     @discardableResult
-    func save(_ flight: CountdownFlight, photo change: FlightPhotoChange = .unchanged) async -> Bool {
+    func save(_ flight: CountdownFlight, newPhotos: [UUID: FlightPhoto] = [:]) async -> Bool {
+        let previous = flights.first { $0.id == flight.id }
         var updated = flights.filter { $0.id != flight.id }
         updated.append(flight)
+        let added = flight.photos.compactMap { photo in newPhotos[photo.id].map { (id: photo.id, photo: $0) } }
         let photoStore = photoStore
         let saved = await persist(updated) {
-            if case let .replace(photo) = change, flight.cardTheme == .photo {
-                try await photoStore.save(photo.data, for: flight.id)
+            for (id, photo) in added {
+                try await photoStore.save(photo.data, for: id)
             }
         }
         guard saved else { return false }
-        if flight.cardTheme != .photo {
-            await discardPhoto(of: flight.id)
-        } else if case let .replace(photo) = change {
-            photos[flight.id] = photo.image
+        for (id, photo) in added {
+            photos[id] = photo.image
         }
+        let kept = Set(flight.photos.map(\.id))
+        await discardPhotos((previous?.photos ?? []).map(\.id).filter { !kept.contains($0) })
         return true
     }
 
     @discardableResult
     func delete(_ flight: CountdownFlight) async -> Bool {
         guard await persist(flights.filter({ $0.id != flight.id })) else { return false }
-        await discardPhoto(of: flight.id)
+        await discardPhotos(flight.photos.map(\.id))
         return true
     }
 
-    /// Writes the flights, after any photo they depend on, then refreshes the widget.
+    /// Writes the flights, after any photos they depend on, then refreshes the widget.
     private func persist(
         _ updated: [CountdownFlight], afterPreparing prepare: () async throws -> Void = {}
     ) async -> Bool {
@@ -112,12 +119,14 @@ final class FlightCountdownViewModel {
     private func loadPhotos() async {
         var loaded: [UUID: CGImage] = [:]
         for flight in flights where flight.cardTheme == .photo {
-            if let photo = photos[flight.id] {
-                loaded[flight.id] = photo
-            } else {
-                loaded[flight.id] = await photoStore.image(
-                    for: flight.id, maximumPixelSize: FlightCountdownTokens.photoPixelSize
-                )
+            for photo in flight.photos {
+                if let image = photos[photo.id] {
+                    loaded[photo.id] = image
+                } else {
+                    loaded[photo.id] = await photoStore.image(
+                        for: photo.id, maximumPixelSize: FlightCountdownTokens.photoPixelSize
+                    )
+                }
             }
         }
         photos = loaded
@@ -125,12 +134,14 @@ final class FlightCountdownViewModel {
 
     /// A leftover photo only takes space, so failing to remove it isn't
     /// worth interrupting anyone over.
-    private func discardPhoto(of id: UUID) async {
-        photos[id] = nil
-        do {
-            try await photoStore.remove(for: id)
-        } catch {
-            logger.error("Couldn't remove a card photo: \(error.localizedDescription, privacy: .public)")
+    private func discardPhotos(_ ids: [UUID]) async {
+        for id in ids {
+            photos[id] = nil
+            do {
+                try await photoStore.remove(for: id)
+            } catch {
+                logger.error("Couldn't remove a card photo: \(error.localizedDescription, privacy: .public)")
+            }
         }
     }
 }

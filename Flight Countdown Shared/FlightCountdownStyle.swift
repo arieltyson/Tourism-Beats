@@ -26,6 +26,11 @@ enum FlightCountdownStyle {
         [0, 1], [0.5, 1], [1, 1],
     ]
 
+    /// The hairline between photos in a collage.
+    static let collageSpacing: CGFloat = 2
+    /// The most photos a card holds and still reads at the small widget's size.
+    static let maximumCollageCount = 4
+
     /// Darkens a photo at the top and bottom, where the text sits.
     static let scrim: [Gradient.Stop] = [
         .init(color: .black.opacity(0.5), location: 0),

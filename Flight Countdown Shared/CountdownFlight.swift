@@ -19,6 +19,8 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
     var departure: Date
     var timeZoneIdentifier: String
     var cardTheme: FlightCardTheme = .twilight
+    /// The photos on the card, in collage order, when its theme is a photo.
+    var photos: [FlightCardPhoto] = []
     var countdownStartedAt: Date? = Date.now
 
     func countdownProgress(at date: Date) -> Double {
@@ -86,11 +88,12 @@ extension CountdownFlight {
     private enum CodingKeys: String, CodingKey {
         case id, airlineCode, airlineName, flightNumber
         case origin, originCity, destination, destinationCity
-        case departure, timeZoneIdentifier, cardTheme, countdownStartedAt
+        case departure, timeZoneIdentifier, cardTheme, photos, countdownStartedAt
     }
 
     /// Flights saved before the airline was chosen separately stored the whole
-    /// designator in `flightNumber`; they're split on the way in.
+    /// designator in `flightNumber`; they're split on the way in. Flights
+    /// saved with a single photo keep it as a one-photo collage.
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let number = try container.decode(String.self, forKey: .flightNumber)
@@ -109,6 +112,9 @@ extension CountdownFlight {
         departure = try container.decode(Date.self, forKey: .departure)
         timeZoneIdentifier = try container.decode(String.self, forKey: .timeZoneIdentifier)
         cardTheme = try container.decodeIfPresent(FlightCardTheme.self, forKey: .cardTheme) ?? .twilight
+        // Before collages, a card had one photo, stored under the flight's own ID.
+        photos = try container.decodeIfPresent([FlightCardPhoto].self, forKey: .photos)
+            ?? (cardTheme == .photo ? [FlightCardPhoto(id: id)] : [])
         countdownStartedAt = try container.decodeIfPresent(Date.self, forKey: .countdownStartedAt)
     }
 }

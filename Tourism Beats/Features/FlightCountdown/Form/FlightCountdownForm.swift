@@ -16,7 +16,7 @@ struct FlightCountdownForm: View {
         self.model = model
         originalFlight = flight
         _form = State(initialValue: FlightCountdownFormViewModel(
-            flight: flight, photo: flight.flatMap { model.photos[$0.id] }
+            flight: flight, images: model.photos
         ))
     }
 
@@ -73,7 +73,7 @@ struct FlightCountdownForm: View {
                     }
                 }
                 Section("Card") {
-                    FlightCountdownCard(flight: form.flight, date: .now, photo: form.photo)
+                    FlightCountdownCard(flight: form.flight, date: .now, photos: form.cardImages)
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.clear)
                         .accessibilityLabel("Card preview")
@@ -141,7 +141,7 @@ struct FlightCountdownForm: View {
     private func save() {
         isEditingNumber = false
         Task {
-            if await model.save(form.flight, photo: form.photoChange) { dismiss() } else { takeError() }
+            if await model.save(form.flight, newPhotos: form.newPhotos) { dismiss() } else { takeError() }
         }
     }
 

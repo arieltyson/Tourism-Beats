@@ -1,4 +1,3 @@
-import CoreGraphics
 import SwiftUI
 
 /// Shows the widget as it will look, then how to add it.
@@ -6,13 +5,13 @@ struct FlightCountdownWidgetHelp: View {
     @Environment(\.dismiss) private var dismiss
     /// The flight the widget will show, or a sample before there is one.
     let flight: CountdownFlight
-    var photo: CGImage?
+    var photos: [FlightCardImage] = []
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    FlightWidgetPreview(flight: flight, photo: photo)
+                    FlightWidgetPreview(flight: flight, photos: photos)
                         .frame(maxWidth: .infinity)
                         .listRowBackground(Color.clear)
                 }
