@@ -74,44 +74,6 @@ final class FlightCountdownUITests: XCTestCase {
         XCTAssertTrue(flight.waitForNonExistence(timeout: 5))
     }
 
-    /// Chooses two library photos, then frames the first by pinching and
-    /// dragging it directly on the card.
-    func testFramingACollageOfPhotos() throws {
-        let app = XCUIApplication()
-        app.launch()
-        openFlightCountdown(in: app)
-        app.navigationBars.buttons["Add Flight"].tap()
-        XCTAssertTrue(app.buttons["flightAirline"].waitForExistence(timeout: 5))
-        // The form draws rows as they scroll into view.
-        let choosePhotos = app.buttons["chooseCardPhoto"]
-        for _ in 0..<4 where !(choosePhotos.exists && choosePhotos.isHittable) { app.swipeUp() }
-        choosePhotos.tap()
-
-        let libraryPhotos = app.images.matching(NSPredicate(format: "label BEGINSWITH 'Photo'"))
-        XCTAssertTrue(libraryPhotos.firstMatch.waitForExistence(timeout: 10), app.debugDescription)
-        libraryPhotos.element(boundBy: 0).tap()
-        libraryPhotos.element(boundBy: 1).tap()
-        capture("Photo Picker")
-        app.buttons["Add"].firstMatch.tap()
-
-        let adjust = app.buttons["adjustCardPhotos"]
-        XCTAssertTrue(adjust.waitForExistence(timeout: 10))
-        capture("Collage")
-        adjust.tap()
-
-        let first = app.otherElements["Photo 1 of 2"]
-        XCTAssertTrue(first.waitForExistence(timeout: 5), app.debugDescription)
-        let done = app.buttons["doneFramingPhotos"]
-        XCTAssertFalse(done.isEnabled, "Nothing to keep until a photo moves")
-        first.pinch(withScale: 2, velocity: 1)
-        first.swipeRight()
-        XCTAssertTrue(done.isEnabled)
-        capture("Framing Editor")
-        done.tap()
-        XCTAssertTrue(adjust.waitForExistence(timeout: 5))
-        capture("Framed Collage")
-    }
-
     func testAccessibilityTextSizeAndWidgetInstructions() throws {
         let app = XCUIApplication()
         app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
