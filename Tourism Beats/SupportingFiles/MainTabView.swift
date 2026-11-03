@@ -4,6 +4,7 @@ import SwiftUI
 
 struct MainTabView: View {
     @Binding var selectedTab: AppTab
+    var flightCountdownRequest: UUID? = nil
     let onSelectFeedback: (FeedbackCategory) -> Void
 
     @State private var homePath = NavigationPath()
@@ -72,6 +73,10 @@ struct MainTabView: View {
                         .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
                 }
             }
+        }
+        .task(id: self.flightCountdownRequest) {
+            guard self.flightCountdownRequest != nil else { return }
+            self.settingsPath = NavigationPath([FlightCountdownRoute.countdown])
         }
         .onChange(of: self.selectedTab) { old, new in
             if old == new {

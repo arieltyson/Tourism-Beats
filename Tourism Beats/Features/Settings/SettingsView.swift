@@ -16,6 +16,8 @@ struct SettingsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: SpacingTokens.large) {
+                SettingsToolsSection()
+
                 SettingsFeedbackSection(
                     reviewURL: self.appStoreReviewURL,
                     onReportBug: {
@@ -31,7 +33,6 @@ struct SettingsView: View {
                     privacyURL: self.privacyURL
                 )
 
-                SettingsVersionFooter()
             }
             .padding(.horizontal, SpacingTokens.medium)
             .padding(.vertical, SpacingTokens.large)
@@ -39,6 +40,9 @@ struct SettingsView: View {
         .scrollIndicators(.hidden)
         .background(Color.clear.ignoresSafeArea())
         .navigationTitle("Settings")
+        .navigationDestination(for: FlightCountdownRoute.self) { _ in
+            FlightCountdownView()
+        }
     }
 }
 
@@ -50,8 +54,10 @@ private struct SettingsFeedbackSection: View {
     let onSuggestFeature: () -> Void
 
     var body: some View {
-        GlassCard(cornerRadius: 28) {
+        GlassCard(cornerRadius: SettingsLayoutTokens.sectionCornerRadius) {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
+                SettingsSectionTitle(title: "Support")
+
                 SettingsLinkActionRow(
                     title: "Rate Tourism Beats",
                     subtitle: "Open the App Store review page for Tourism Beats.",
@@ -96,7 +102,7 @@ private struct SettingsResourcesSection: View {
     let privacyURL: URL?
 
     var body: some View {
-        GlassCard(cornerRadius: 28) {
+        GlassCard(cornerRadius: SettingsLayoutTokens.sectionCornerRadius) {
             VStack(alignment: .leading, spacing: SpacingTokens.small) {
                 SettingsSectionTitle(
                     title: "Policies"
@@ -125,34 +131,6 @@ private struct SettingsResourcesSection: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-}
-
-// MARK: - SettingsSectionTitle
-
-private struct SettingsSectionTitle: View {
-    let title: String
-    var subtitle: String?
-
-    init(title: String, subtitle: String? = nil) {
-        self.title = title
-        self.subtitle = subtitle
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
-            Text(self.title)
-                .font(TypographyTokens.songTitle)
-                .bold()
-                .foregroundStyle(AppColors.label)
-
-            if let subtitle {
-                Text(subtitle)
-                    .font(TypographyTokens.body)
-                    .foregroundStyle(AppColors.secondaryLabel)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
         }
     }
 }
@@ -247,7 +225,7 @@ private struct SettingsActionRowContent: View {
             Image(systemName: self.systemImage)
                 .font(.title3)
                 .foregroundStyle(self.tint)
-                .frame(width: 28)
+                .frame(width: SettingsLayoutTokens.iconWidth)
 
             VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
                 Text(self.title)
@@ -273,7 +251,7 @@ private struct SettingsActionRowContent: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             AppColors.surfaceSecondary,
-            in: .rect(cornerRadius: 22, style: .continuous)
+            in: .rect(cornerRadius: SettingsLayoutTokens.rowCornerRadius, style: .continuous)
         )
     }
 }
@@ -290,7 +268,7 @@ private struct SettingsResourceRow: View {
             Image(systemName: self.systemImage)
                 .font(.title3)
                 .foregroundStyle(AppColors.info)
-                .frame(width: 28)
+                .frame(width: SettingsLayoutTokens.iconWidth)
 
             VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
                 Text(self.title)
@@ -314,26 +292,8 @@ private struct SettingsResourceRow: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             AppColors.surfaceSecondary,
-            in: .rect(cornerRadius: 22, style: .continuous)
+            in: .rect(cornerRadius: SettingsLayoutTokens.rowCornerRadius, style: .continuous)
         )
     }
 }
 
-// MARK: - SettingsVersionFooter
-
-private struct SettingsVersionFooter: View {
-    private let shortVersion =
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
-            as? String ?? "Unknown"
-    private let buildNumber =
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion")
-            as? String ?? "Unknown"
-
-    var body: some View {
-        Text("Tourism Beats \(self.shortVersion) (\(self.buildNumber))")
-            .font(TypographyTokens.footnote)
-            .foregroundStyle(AppColors.secondaryLabel)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.bottom, SpacingTokens.large)
-    }
-}

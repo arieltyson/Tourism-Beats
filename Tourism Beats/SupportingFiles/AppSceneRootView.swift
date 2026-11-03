@@ -13,6 +13,7 @@ struct AppSceneRootView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.modelContext) private var modelContext
 
+    @State private var flightCountdownRequest: UUID?
     @State private var launchPhase: LaunchPhase = .branded
     @State private var hasPerformedStartupTasks = false
     @State private var requestedFeedbackCategory: FeedbackCategory?
@@ -27,6 +28,7 @@ struct AppSceneRootView: View {
             if self.launchPhase == .ready {
                 MainTabView(
                     selectedTab: self.$selectedTab,
+                    flightCountdownRequest: self.flightCountdownRequest,
                     onSelectFeedback: { category in
                         self.requestedFeedbackCategory = category
                     }
@@ -50,6 +52,11 @@ struct AppSceneRootView: View {
             self.reduceMotion ? .none : .easeInOut(duration: 0.35),
             value: self.launchPhase
         )
+        .onOpenURL { url in
+            guard url == FlightCountdownConfiguration.deepLink else { return }
+            self.selectedTab = .settings
+            self.flightCountdownRequest = UUID()
+        }
         .task {
             self.appDelegate.onQuickAction = { action in
                 self.handleQuickAction(action)

@@ -51,6 +51,7 @@
 		AF57609C2DF4BAA90052E696 /* Tourism Beats */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Tourism Beats"; sourceTree = "<group>"; };
 		AFB8A0B52DF40E32000CA6A7 /* Tourism BeatsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Tourism BeatsTests"; sourceTree = "<group>"; };
 		AFB8A0BA2DF40E36000CA6A7 /* Tourism BeatsUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Tourism BeatsUITests"; sourceTree = "<group>"; };
+		FC0000000000000000000001 /* Flight Countdown Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Flight Countdown Shared"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +89,7 @@
 		AF23D1A92C211F2400A3406D = {
 			isa = PBXGroup;
 			children = (
+				FC0000000000000000000001 /* Flight Countdown Shared */,
 				AF4B45A42DDB1C7F005F3B5A /* Tourism-Beats-Info.plist */,
 				AF57609C2DF4BAA90052E696 /* Tourism Beats */,
 				AFB8A0B52DF40E32000CA6A7 /* Tourism BeatsTests */,
@@ -138,6 +140,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				AF57609C2DF4BAA90052E696 /* Tourism Beats */,
+				FC0000000000000000000001 /* Flight Countdown Shared */,
 			);
 			name = "Tourism Beats";
 			productName = "Tourism Beats";
