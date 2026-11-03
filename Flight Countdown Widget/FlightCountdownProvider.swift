@@ -36,7 +36,8 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
 
     private var sample: FlightCountdownEntry {
         FlightCountdownEntry(date: .now, flight: CountdownFlight(
-            flightNumber: "AC 123", origin: "YVR", destination: "YYZ",
+            airlineCode: "AC", airlineName: "Air Canada", flightNumber: "123",
+            origin: "YVR", originCity: "Vancouver", destination: "YYZ", destinationCity: "Toronto",
             departure: Date.now.addingTimeInterval(3 * FlightCountdownConfiguration.secondsPerDay),
             timeZoneIdentifier: "America/Vancouver"
         ))

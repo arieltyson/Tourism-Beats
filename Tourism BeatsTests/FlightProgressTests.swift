@@ -6,7 +6,7 @@ import Testing
 struct FlightProgressTests {
     @Test func progressClampsAndEditingPreservesStart() {
         let start = Date(timeIntervalSince1970: 1_800_000_000)
-        let flight = CountdownFlight(flightNumber: "AC 123", origin: "YVR", destination: "YYZ",
+        let flight = CountdownFlight(airlineCode: "AC", flightNumber: "123", origin: "YVR", destination: "YYZ",
             departure: start.addingTimeInterval(100), timeZoneIdentifier: "America/Vancouver",
             countdownStartedAt: start)
         #expect(flight.countdownProgress(at: start.addingTimeInterval(-10)) == 0)
@@ -25,5 +25,31 @@ struct FlightProgressTests {
         let flight = try JSONDecoder().decode(CountdownFlight.self, from: Data(json.utf8))
         #expect(flight.countdownStartedAt == nil)
         #expect(flight.countdownProgress(at: .now) == 0)
+        #expect(flight.airlineCode == "AC")
+        #expect(flight.flightNumber == "123")
+        #expect(flight.destinationName == "YYZ")
+    }
+
+    @Test(arguments: [
+        ("AC 308", "AC", "308"), ("ac308", "AC", "308"), ("B6 1234", "B6", "1234"),
+        ("ACA 12", "ACA", "12"), ("UITEST 901", "", "UITEST 901"), ("12 34", "", "12 34"),
+    ])
+    func legacyDesignatorsSplitIntoAirlineAndNumber(designator: String, airline: String, number: String) {
+        let split = CountdownFlight.split(designator: designator)
+        #expect(split.airlineCode == airline)
+        #expect(split.flightNumber == number)
+    }
+
+    @Test func airlineAndPlacesRoundTrip() throws {
+        let flight = CountdownFlight(
+            airlineCode: "AC", airlineName: "Air Canada", flightNumber: "308",
+            origin: "YVR", originCity: "Vancouver", destination: "YUL", destinationCity: "Montréal",
+            departure: Date(timeIntervalSince1970: 1_800_000_000), timeZoneIdentifier: "America/Vancouver"
+        )
+        let decoded = try JSONDecoder().decode(CountdownFlight.self, from: JSONEncoder().encode(flight))
+        #expect(decoded == flight)
+        #expect(decoded.designator == "AC 308")
+        #expect(decoded.spokenName == "Air Canada 308")
+        #expect(decoded.destinationName == "Montréal")
     }
 }

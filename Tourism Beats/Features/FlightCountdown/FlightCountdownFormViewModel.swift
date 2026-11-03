@@ -16,14 +16,14 @@ final class FlightCountdownFormViewModel {
 
     init(flight: CountdownFlight? = nil) {
         let initial = flight ?? CountdownFlight(
-            flightNumber: "", origin: "", destination: "",
+            airlineCode: "", flightNumber: "", origin: "", destination: "",
             departure: Date.now.addingTimeInterval(FlightCountdownConfiguration.secondsPerDay),
             timeZoneIdentifier: TimeZone.current.identifier
         )
         initialFlight = initial
         id = initial.id
         isEditing = flight != nil
-        flightNumber = initial.flightNumber
+        flightNumber = initial.designator
         origin = initial.origin
         destination = initial.destination
         departure = initial.departure
@@ -51,9 +51,11 @@ final class FlightCountdownFormViewModel {
     }
 
     var flight: CountdownFlight {
-        CountdownFlight(
+        let designator = CountdownFlight.split(designator: flightNumber)
+        return CountdownFlight(
             id: id,
-            flightNumber: flightNumber.trimmingCharacters(in: .whitespacesAndNewlines).uppercased(),
+            airlineCode: designator.airlineCode,
+            flightNumber: designator.flightNumber,
             origin: origin.trimmingCharacters(in: .whitespacesAndNewlines).uppercased(),
             destination: destination.trimmingCharacters(in: .whitespacesAndNewlines).uppercased(),
             departure: departure,

@@ -8,7 +8,7 @@ struct FlightCountdownTests {
 
     private func flight(after interval: TimeInterval = 3_600) -> CountdownFlight {
         CountdownFlight(
-            flightNumber: "AC 123", origin: "YVR", destination: "YYZ",
+            airlineCode: "AC", flightNumber: "123", origin: "YVR", destination: "YYZ",
             departure: now.addingTimeInterval(interval), timeZoneIdentifier: "America/Vancouver"
         )
     }
@@ -51,7 +51,7 @@ struct FlightCountdownTests {
         form.origin = " yvr "
         form.destination = "lhr"
         #expect(form.canSave)
-        #expect(form.flight.flightNumber == "AC 456")
+        #expect(form.flight.designator == "AC 456")
         #expect(form.flight.origin == "YVR")
         #expect(form.flight.destination == "LHR")
         #expect(form.hasChanges)
@@ -80,7 +80,7 @@ struct FlightCountdownTests {
         try await store.save([original])
         #expect(try await FlightCountdownStore(directory: directory).load() == [original])
         var edited = original
-        edited.flightNumber = "AC 456"
+        edited.flightNumber = "456"
         try await store.save([edited])
         #expect(try await store.load() == [edited])
         try await store.save([])

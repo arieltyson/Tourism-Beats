@@ -7,7 +7,7 @@ struct FlightCountdownFace: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: FlightCountdownStyle.spacing) {
-            Text(flight.flightNumber)
+            Text(flight.designator)
                 .font(.caption)
             Text(FlightCountdownText.remaining(until: flight.departure, from: date))
                 .font(compact ? .title2 : .largeTitle)
@@ -26,6 +26,6 @@ struct FlightCountdownFace: View {
         .foregroundStyle(.white)
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(flight.flightNumber), from \(flight.origin) to \(flight.destination), departs in \(FlightCountdownText.remaining(until: flight.departure, from: date, abbreviated: false)). Scheduled departure \(flight.departureLabel)")
+        .accessibilityLabel("\(flight.spokenName), from \(flight.origin) to \(flight.destination), departs in \(FlightCountdownText.remaining(until: flight.departure, from: date, abbreviated: false)). Scheduled departure \(flight.departureLabel)")
     }
 }
