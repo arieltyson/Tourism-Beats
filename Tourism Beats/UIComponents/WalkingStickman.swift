@@ -9,6 +9,14 @@ import SwiftUI
 /// pose when Reduce Motion is enabled.
 struct WalkingStickman: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
+    /// The figure walks only while on screen; a page scrolled away or a
+    /// backgrounded app shouldn't redraw it every frame.
+    @State private var isOnScreen = true
+
+    /// A stick figure reads as smooth at this rate, a fraction of the
+    /// display's own, which saves drawing and battery.
+    private static let frameInterval: TimeInterval = 1.0 / 30
 
     /// Overall height of the stickman figure.
     let height: CGFloat
@@ -23,10 +31,16 @@ struct WalkingStickman: View {
         if self.reduceMotion {
             self.stickmanCanvas(phase: .pi / 4)
         } else {
-            TimelineView(.animation) { context in
+            TimelineView(.animation(
+                minimumInterval: Self.frameInterval,
+                paused: !self.isOnScreen || self.scenePhase != .active
+            )) { context in
                 let elapsed = context.date.timeIntervalSinceReferenceDate
                 let phase = elapsed * 2 * .pi / self.cycleDuration
                 self.stickmanCanvas(phase: phase)
+            }
+            .onScrollVisibilityChange { isVisible in
+                self.isOnScreen = isVisible
             }
         }
     }

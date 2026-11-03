@@ -4,16 +4,17 @@ import SwiftUI
 
 struct TimeView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @StateObject private var viewModel: TimeViewModel
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var viewModel: TimeViewModel
+    /// The second hand moves only while the clock can be seen.
+    @State private var isOnScreen = true
 
     init(city: CityModel) {
-        _viewModel = StateObject(
-            wrappedValue: TimeViewModel(timeZone: city.timeZone)
-        )
+        _viewModel = State(initialValue: TimeViewModel(timeZone: city.timeZone))
     }
 
     var body: some View {
-        TimelineView(.periodic(from: Date.now, by: 1)) { context in
+        TimelineView(OnScreenTicks(isPaused: !self.isOnScreen || self.scenePhase != .active)) { context in
             let formattedTime = self.viewModel.formattedTime(for: context.date)
 
             Group {
@@ -30,6 +31,9 @@ struct TimeView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Local time")
             .accessibilityValue(formattedTime)
+        }
+        .onScrollVisibilityChange { isVisible in
+            self.isOnScreen = isVisible
         }
     }
 }
@@ -84,8 +88,14 @@ private struct StandardTimeCard: View {
                             )
                         )
                 }
+                // Cast by the glass, not the whole card: the card redraws every
+                // second, and a whole-card shadow redrew an offscreen copy with it.
+                .shadow(
+                    color: AppColors.glassShadow(for: self.scheme),
+                    radius: 12,
+                    y: 6
+                )
         }
-        .clipShape(.rect(cornerRadius: 20, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(
@@ -93,11 +103,6 @@ private struct StandardTimeCard: View {
                     lineWidth: 0.8
                 )
         }
-        .shadow(
-            color: AppColors.glassShadow(for: self.scheme),
-            radius: 12,
-            y: 6
-        )
     }
 }
 
@@ -131,8 +136,12 @@ private struct AccessibilityTimeCard: View {
                         ? AnyShapeStyle(AppColors.surfaceSecondary)
                         : AnyShapeStyle(.ultraThinMaterial)
                 )
+                .shadow(
+                    color: AppColors.glassShadow(for: self.scheme),
+                    radius: 12,
+                    y: 6
+                )
         }
-        .clipShape(.rect(cornerRadius: 20, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(
@@ -140,10 +149,5 @@ private struct AccessibilityTimeCard: View {
                     lineWidth: 0.8
                 )
         }
-        .shadow(
-            color: AppColors.glassShadow(for: self.scheme),
-            radius: 12,
-            y: 6
-        )
     }
 }

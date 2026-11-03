@@ -1,10 +1,11 @@
 import SwiftUI
 
 @MainActor
-class TimeViewModel: ObservableObject {
-    @Published var timeZone: TimeZone
+@Observable
+final class TimeViewModel {
+    let timeZone: TimeZone
 
-    private lazy var dateFormatter: DateFormatter = {
+    @ObservationIgnored private lazy var dateFormatter: DateFormatter = {
         let df = DateFormatter()
         df.timeZone = self.timeZone
         df.dateFormat = "h:mm a"
