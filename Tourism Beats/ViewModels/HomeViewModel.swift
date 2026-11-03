@@ -20,7 +20,13 @@ final class HomeViewModel {
     private(set) var citiesByPosition: [Int: CityModel] = [:]
     private(set) var isLoaded = false
 
+    /// How many cards either side of the centre have their photos loaded
+    /// ahead of time, so a swipe reveals a photo rather than a placeholder.
+    static let prefetchRadius = visibleRadius + 1
+
     private var deck = HomeCityDeck(cities: [])
+    /// Starts loading photos for cards about to appear.
+    @ObservationIgnored var prefetchImages: @Sendable ([URL]) -> Void = { ImagePipeline.shared.prefetch($0) }
     private var lowestDealtPosition = 0
     private var highestDealtPosition = -1
 
@@ -69,6 +75,10 @@ final class HomeViewModel {
             }
             self.lowestDealtPosition = lowest
         }
+
+        let nearby = (position - Self.prefetchRadius ... position + Self.prefetchRadius)
+            .compactMap { self.citiesByPosition[$0]?.imageURL }
+        self.prefetchImages(nearby)
     }
 
     /// The cards to draw for a carousel resting or moving at `position`,
