@@ -30,6 +30,14 @@ final class FlightCountdownViewModel {
         defer { isLoading = false }
         do {
             flights = try await store.load().sorted { $0.departure < $1.departure }
+            if flights.contains(where: { $0.countdownStartedAt == nil }) {
+                let now = Date.now
+                for index in flights.indices where flights[index].countdownStartedAt == nil {
+                    flights[index].countdownStartedAt = now
+                }
+                try await store.save(flights)
+                reloadWidget()
+            }
             hasLoaded = true
         } catch {
             errorMessage = error.localizedDescription

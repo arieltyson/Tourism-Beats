@@ -57,7 +57,8 @@ final class FlightCountdownFormViewModel {
             origin: origin.trimmingCharacters(in: .whitespacesAndNewlines).uppercased(),
             destination: destination.trimmingCharacters(in: .whitespacesAndNewlines).uppercased(),
             departure: departure,
-            timeZoneIdentifier: timeZoneIdentifier
+            timeZoneIdentifier: timeZoneIdentifier,
+            countdownStartedAt: initialFlight.countdownStartedAt
         )
     }
 

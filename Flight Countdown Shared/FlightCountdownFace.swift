@@ -7,7 +7,7 @@ struct FlightCountdownFace: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: FlightCountdownStyle.spacing) {
-            Label("Next Flight", systemImage: "airplane.departure")
+            Text(flight.flightNumber)
                 .font(.caption)
             Text(FlightCountdownText.remaining(until: flight.departure, from: date))
                 .font(compact ? .title2 : .largeTitle)
@@ -16,9 +16,7 @@ struct FlightCountdownFace: View {
                 .fixedSize(horizontal: false, vertical: true)
             Text(flight.route)
                 .font(.headline)
-            Text(flight.flightNumber)
-                .font(.subheadline)
-                .lineLimit(1)
+            FlightProgressTrack(progress: flight.countdownProgress(at: date))
             if !compact {
                 Text(flight.departureLabel)
                     .font(.caption)
