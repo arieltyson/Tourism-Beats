@@ -12,6 +12,8 @@ enum FlightCountdownTokens {
     // MARK: - Card
 
     static let cardCornerRadius: CGFloat = 28
+    /// A card's design shown small beside its flight in the list.
+    static let thumbnailCornerRadius: CGFloat = 10
     /// Scaled with Dynamic Type so the card keeps a widget's proportions.
     static let cardMinimumHeight: CGFloat = 200
     /// A background choice, at least as large as the smallest tap target.
