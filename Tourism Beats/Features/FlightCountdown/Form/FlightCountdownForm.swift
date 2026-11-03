@@ -10,6 +10,7 @@ struct FlightCountdownForm: View {
     @State private var showsDiscardConfirmation = false
     @State private var errorMessage: String?
     @State private var calendarEvent: FlightCalendarEvent?
+    @State private var isAdjustingPhotos = false
     @FocusState private var isEditingNumber: Bool
 
     init(model: FlightCountdownViewModel, flight: CountdownFlight? = nil) {
@@ -73,13 +74,30 @@ struct FlightCountdownForm: View {
                     }
                 }
                 Section("Card") {
-                    FlightCountdownCard(flight: form.flight, date: .now, photos: form.cardImages)
-                        .listRowInsets(EdgeInsets())
-                        .listRowBackground(Color.clear)
-                        .accessibilityLabel("Card preview")
+                    let usesPhotos = form.cardTheme == .photo && !form.cardImages.isEmpty
+                    Group {
+                        let card = FlightCountdownCard(flight: form.flight, date: .now, photos: form.cardImages)
+                        if usesPhotos {
+                            // Touching the photo is the most direct way to frame it.
+                            Button { isAdjustingPhotos = true } label: { card }
+                                .buttonStyle(.plain)
+                                .accessibilityHint("Adjusts how the photos are framed")
+                        } else {
+                            card
+                        }
+                    }
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+                    .accessibilityLabel("Card preview")
                     FlightCardDesignPicker(form: form)
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.clear)
+                    if usesPhotos {
+                        Button(form.cardImages.count > 1 ? "Adjust Photos" : "Adjust Photo", systemImage: "crop") {
+                            isAdjustingPhotos = true
+                        }
+                        .accessibilityIdentifier("adjustCardPhotos")
+                    }
                 }
                 if originalFlight != nil {
                     Section {
@@ -91,6 +109,11 @@ struct FlightCountdownForm: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .flightCalendarSheet(for: $calendarEvent)
+            .sheet(isPresented: $isAdjustingPhotos) {
+                FlightPhotoFramingEditor(flight: form.flight, photos: form.cardImages) { framings in
+                    form.applyFramings(framings)
+                }
+            }
             .navigationDestination(for: FlightCountdownFormRoute.self) { route in
                 FlightCountdownFormDestination(route: route, form: form)
             }

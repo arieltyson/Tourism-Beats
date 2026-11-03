@@ -38,4 +38,8 @@ enum FlightCountdownTokens {
     /// The longer side of a stored card photo, enough for the largest widget.
     static let photoPixelSize = 1_200
     static let photoCompressionQuality: Double = 0.8
+    /// How far one VoiceOver action moves a photo, as a share of its frame.
+    static let framingNudge: CGFloat = 0.1
+    /// How much one VoiceOver swipe zooms a photo in or out.
+    static let framingZoomStep: Double = 1.25
 }
