@@ -27,22 +27,43 @@ struct MusicViewModelTests {
 
         await viewModel.requestAccessAndLoadTopSong()
 
-        #expect(viewModel.songTitle != "Could Not Load Song")
+        #expect(viewModel.availability != .failed)
         #expect(viewModel.artistName != "cancelled")
 
         await viewModel.requestAccessAndLoadTopSong()
 
         #expect(viewModel.songTitle == "Song Title")
+        #expect(viewModel.availability == .available)
     }
 
-    @Test func realFailureShowsAPlainMessage() async {
+    @Test func realFailureShowsAPlainMessageAndCanBeRetried() async {
         let service = StubMusicService(results: [.failure(URLError(.notConnectedToInternet))])
         let viewModel = MusicViewModel(city: Self.city, musicService: service)
 
         await viewModel.requestAccessAndLoadTopSong()
 
-        #expect(viewModel.songTitle == "Could Not Load Song")
+        #expect(viewModel.availability == .failed)
+        #expect(!viewModel.availability.showsPlayers)
+        #expect(viewModel.songTitle == "Couldn’t Load Top Song")
         #expect(viewModel.artistName == "Check your connection and try again.")
+
+        await viewModel.retry()
+        #expect(viewModel.availability == .available)
+        #expect(viewModel.songTitle == "Song Title")
+    }
+
+    /// The message is said once, in the header, without naming the
+    /// service behind the chart; the players step aside.
+    @Test func unavailableChartsSayItOnceWithoutNamingAService() async {
+        let service = StubMusicService(results: [.failure(MusicService.MusicServiceError.storefrontNotAvailable)])
+        let viewModel = MusicViewModel(city: Self.city, musicService: service)
+
+        await viewModel.requestAccessAndLoadTopSong()
+
+        #expect(viewModel.availability == .unavailable)
+        #expect(!viewModel.availability.showsPlayers)
+        #expect(viewModel.songTitle == "Music Not Available")
+        #expect(!viewModel.artistName.localizedStandardContains("Apple"))
     }
 }
 

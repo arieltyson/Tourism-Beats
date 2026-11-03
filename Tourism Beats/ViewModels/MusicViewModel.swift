@@ -6,35 +6,36 @@ import SwiftUI
 import UIKit
 
 @MainActor
-final class MusicViewModel: ObservableObject {
+@Observable
+final class MusicViewModel {
     // MARK: Display
 
-    @Published var songTitle: String = "Loading…"
-    @Published var artistName: String = ""
-    @Published var songImage: URL?
+    private(set) var availability: MusicAvailability = .loading
+    var songTitle: String = "Loading…"
+    var artistName: String = ""
+    var songImage: URL?
 
     // MARK: Playback state
 
-    @Published var isPlaying = false
-    @Published var userFeedbackMessage: String?
-    @Published var isSpotifySearching = false
+    var isPlaying = false
+    var userFeedbackMessage: String?
+    var isSpotifySearching = false
 
     // MARK: Dependencies
 
-    let city: CityModel
-    private let musicService: MusicProtocol
+    @ObservationIgnored let city: CityModel
+    @ObservationIgnored private let musicService: MusicProtocol
 
     // MARK: Internal state
 
-    private var hasLoadedData = false
-    private var playableSong: Song? // Apple Music playable item
-    private var appleSong: AppSong? // Apple Music chart result
-    private var spotifyMirroredSong: AppSong? // Mirror of Apple result
+    @ObservationIgnored private var hasLoadedData = false
+    @ObservationIgnored private var playableSong: Song? // Apple Music playable item
+    @ObservationIgnored private var appleSong: AppSong? // Apple Music chart result
+    @ObservationIgnored private var spotifyMirroredSong: AppSong? // Mirror of Apple result
 
     // MARK: Observers
 
-    private var cancellables = Set<AnyCancellable>()
-    private var playbackStateTask: Task<Void, Never>?
+    @ObservationIgnored private var cancellables = Set<AnyCancellable>()
 
     // MARK: Init
 
@@ -42,10 +43,6 @@ final class MusicViewModel: ObservableObject {
         self.city = city
         self.musicService = musicService
         self.setupPlaybackStateMonitoring()
-    }
-
-    deinit {
-        playbackStateTask?.cancel()
     }
 
     // MARK: - Playback State Monitoring
@@ -60,14 +57,6 @@ final class MusicViewModel: ObservableObject {
         .store(in: &self.cancellables)
 
         NotificationCenter.default.publisher(
-            for: UIApplication.willResignActiveNotification
-        )
-        .sink { [weak self] _ in
-            Task { @MainActor in await self?.handleAppWillResignActive() }
-        }
-        .store(in: &self.cancellables)
-
-        NotificationCenter.default.publisher(
             for: AVAudioSession.interruptionNotification
         )
         .sink { [weak self] note in
@@ -75,26 +64,18 @@ final class MusicViewModel: ObservableObject {
         }
         .store(in: &self.cancellables)
 
-        self.startPlaybackStateMonitoring()
-    }
-
-    private func startPlaybackStateMonitoring() {
-        self.playbackStateTask?.cancel()
-        self.playbackStateTask = Task {
-            while !Task.isCancelled {
-                await self.syncPlaybackState()
-                try? await Task.sleep(for: .seconds(1))
+        // The player announces each change, so the play button follows
+        // playback without waking every second to ask.
+        ApplicationMusicPlayer.shared.state.objectWillChange
+            .sink { [weak self] _ in
+                // The change lands after this announcement; read it once it has.
+                Task { @MainActor in await self?.syncPlaybackState() }
             }
-        }
+            .store(in: &self.cancellables)
     }
 
     private func handleAppBecameActive() async {
         await self.syncPlaybackState()
-        if self.appleSong != nil { self.startPlaybackStateMonitoring() }
-    }
-
-    private func handleAppWillResignActive() async {
-        self.playbackStateTask?.cancel()
     }
 
     private func handleAudioInterruption(_ notification: Notification) async {
@@ -134,7 +115,14 @@ final class MusicViewModel: ObservableObject {
         await self.fetchTopSongMetadata()
     }
 
+    /// Loads the top song again after a failed attempt.
+    func retry() async {
+        self.hasLoadedData = false
+        await self.requestAccessAndLoadTopSong()
+    }
+
     private func fetchTopSongMetadata() async {
+        self.availability = .loading
         self.songTitle = "Loading Top Song…"
         self.artistName = "for \(self.city.name)"
         self.songImage = nil
@@ -149,15 +137,19 @@ final class MusicViewModel: ObservableObject {
             self.songTitle = result.title
             self.artistName = result.artistName
             self.songImage = result.artworkURL
+            self.availability = .available
         } catch where Self.isCancellation(error) {
             // The page was scrolled away or closed mid-load. That isn't a
             // failure: load again the next time the page appears.
             self.hasLoadedData = false
         } catch MusicService.MusicServiceError.storefrontNotAvailable {
+            // Which service supplies the chart is ours to know, not the listener's.
+            self.availability = .unavailable
             self.songTitle = "Music Not Available"
-            self.artistName = "Apple Music charts are not available in \(self.city.country.name)."
+            self.artistName = "Top songs aren’t available in \(self.city.country.name) yet."
         } catch {
-            self.songTitle = "Could Not Load Song"
+            self.availability = .failed
+            self.songTitle = "Couldn’t Load Top Song"
             self.artistName = "Check your connection and try again."
         }
     }

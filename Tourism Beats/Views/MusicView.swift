@@ -11,12 +11,13 @@ import SwiftUI
 
 struct MusicView: View {
     let city: CityModel
-    @StateObject private var viewModel: MusicViewModel
+    @State private var viewModel: MusicViewModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let fallbackView: FallbackMusicView
 
     init(city: CityModel, fallbackView: FallbackMusicView) {
         self.city = city
-        _viewModel = StateObject(wrappedValue: MusicViewModel(city: city))
+        _viewModel = State(initialValue: MusicViewModel(city: city))
         self.fallbackView = fallbackView
     }
 
@@ -36,36 +37,48 @@ struct MusicView: View {
                     artist: self.viewModel.artistName
                 )
 
-                VStack(spacing: SpacingTokens.small) {
-                    GlassMusicCard(
-                        artworkURL: self.viewModel.songImage,
-                        songTitle: self.viewModel.songTitle,
-                        artistName: self.viewModel.artistName,
-                        isPlaying: self.viewModel.isPlaying,
-                        onPlayPause: {
-                            Task { await self.viewModel.handleAppleMusicAction() }
-                        },
-                        onRestart: {
-                            self.viewModel.skipBackward()
-                        }
-                    )
-
-                    GlassSpotifyCard(
-                        artworkURL: self.viewModel.songImage,
-                        songTitle: self.viewModel.songTitle,
-                        artistName: self.viewModel.artistName,
-                        isSearching: self.viewModel.isSpotifySearching,
-                        onOpen: {
-                            Task { await self.viewModel.handleSpotifyAction() }
-                        }
-                    )
+                if self.viewModel.availability == .failed {
+                    Button("Try Again", systemImage: "arrow.clockwise") {
+                        Task { await self.viewModel.retry() }
+                    }
+                    .buttonStyle(.glass)
+                    .transition(.opacity)
                 }
-                .padding(.horizontal, SpacingTokens.medium)
+
+                if self.viewModel.availability.showsPlayers {
+                    VStack(spacing: SpacingTokens.small) {
+                        GlassMusicCard(
+                            artworkURL: self.viewModel.songImage,
+                            songTitle: self.viewModel.songTitle,
+                            artistName: self.viewModel.artistName,
+                            isPlaying: self.viewModel.isPlaying,
+                            onPlayPause: {
+                                Task { await self.viewModel.handleAppleMusicAction() }
+                            },
+                            onRestart: {
+                                self.viewModel.skipBackward()
+                            }
+                        )
+
+                        GlassSpotifyCard(
+                            artworkURL: self.viewModel.songImage,
+                            songTitle: self.viewModel.songTitle,
+                            artistName: self.viewModel.artistName,
+                            isSearching: self.viewModel.isSpotifySearching,
+                            onOpen: {
+                                Task { await self.viewModel.handleSpotifyAction() }
+                            }
+                        )
+                    }
+                    .padding(.horizontal, SpacingTokens.medium)
+                    .transition(.opacity)
+                }
 
                 MusicFeedbackBanner(message: self.viewModel.userFeedbackMessage)
             }
             .padding(.bottom, SpacingTokens.medium)
             .frame(maxWidth: .infinity)
+            .animation(self.reduceMotion ? nil : AnimationTokens.standard, value: self.viewModel.availability)
         }
         .scrollIndicators(.hidden)
         .safeAreaPadding(.bottom, SpacingTokens.medium)
