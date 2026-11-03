@@ -20,6 +20,8 @@ struct Airport: Codable, Hashable, Identifiable, Sendable {
     var size: Int = 2
     /// Other names and codes people search with, never shown.
     var aliases: String?
+    var latitude: Double?
+    var longitude: Double?
 
     var id: String { code }
 

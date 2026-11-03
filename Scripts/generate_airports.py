@@ -77,6 +77,7 @@ METROPOLITAN_AREAS = {
 # limited so an island airport never borrows a far-away mainland zone.
 MAXIMUM_TIME_ZONE_DISTANCE_KM = 150
 MAXIMUM_ALIASES_LENGTH = 120
+COORDINATE_DECIMALS = 2
 
 
 def fetch(url):
@@ -126,6 +127,9 @@ def main(output_path):
             "country": row["iso_country"],
             "timeZone": zone,
             "size": AIRPORT_TYPES[row["type"]],
+            # About a kilometre of precision: enough to estimate flight times.
+            "latitude": round(float(row["latitude_deg"]), COORDINATE_DECIMALS),
+            "longitude": round(float(row["longitude_deg"]), COORDINATE_DECIMALS),
         }
         metro = metro_by_code.get(code)
         if metro and metro != city:
