@@ -33,7 +33,7 @@ struct FlightCountdownWidgetHelp: View {
             .navigationTitle("Add a Widget")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(role: .close) { dismiss() }
                 }
             }

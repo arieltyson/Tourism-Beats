@@ -14,6 +14,8 @@ struct FlightWidgetPreview: View {
                 .background { FlightCardBackground(theme: flight.cardTheme, photo: photo) }
                 .clipShape(.rect(cornerRadius: FlightCountdownTokens.widgetPreviewCornerRadius))
         }
+        // Widgets cap text size to fit; the preview matches what will appear.
+        .dynamicTypeSize(...FlightCountdownTokens.widgetPreviewMaximumTypeSize)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Widget preview")
     }

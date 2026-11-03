@@ -33,10 +33,13 @@ struct FlightCountdownForm: View {
                         }
                     }
                     .accessibilityIdentifier("flightAirline")
-                    TextField("Flight Number", text: $form.flightNumber, prompt: Text("Flight Number"))
-                        .keyboardType(.asciiCapableNumberPad)
-                        .focused($isEditingNumber)
-                        .accessibilityIdentifier("flightNumber")
+                    LabeledContent("Flight Number") {
+                        TextField("Flight Number", text: $form.flightNumber, prompt: Text("Required"))
+                            .keyboardType(.asciiCapableNumberPad)
+                            .multilineTextAlignment(.trailing)
+                            .focused($isEditingNumber)
+                            .accessibilityIdentifier("flightNumber")
+                    }
                 }
                 Section("Route") {
                     NavigationLink(value: FlightCountdownFormRoute.origin) {
@@ -95,9 +98,9 @@ struct FlightCountdownForm: View {
                         .disabled(!form.canSave || model.isSaving)
                         .accessibilityIdentifier("saveFlight")
                 }
-                ToolbarItem(placement: .keyboard) {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
                     Button("Done") { isEditingNumber = false }
-                        .frame(maxWidth: .infinity, alignment: .trailing)
                 }
             }
             .confirmationDialog("Delete this flight?", isPresented: $showsDeleteConfirmation, titleVisibility: .visible) {

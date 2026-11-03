@@ -10,8 +10,9 @@ struct FlightProgressLayout: Layout {
     let rightToLeft: Bool
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        CGSize(width: proposal.width ?? FlightProgressTokens.idealWidth,
-               height: subviews.last?.sizeThatFits(.unspecified).height ?? 0)
+        // An unbounded proposal asks for the maximum size; the track has none.
+        let width = proposal.width.flatMap { $0.isFinite ? $0 : nil } ?? FlightProgressTokens.idealWidth
+        return CGSize(width: width, height: subviews.last?.sizeThatFits(.unspecified).height ?? 0)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {

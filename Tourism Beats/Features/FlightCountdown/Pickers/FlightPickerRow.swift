@@ -11,7 +11,6 @@ struct FlightPickerRow: View {
         HStack(spacing: SpacingTokens.small) {
             VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
                 Text(title)
-                    .foregroundStyle(.primary)
                 if let subtitle, !subtitle.isEmpty {
                     Text(subtitle)
                         .font(.subheadline)
@@ -29,6 +28,8 @@ struct FlightPickerRow: View {
                     .accessibilityHidden(true)
             }
         }
+        // Inside a button, `.primary` would resolve to the tint colour.
+        .foregroundStyle(Color.primary)
         .contentShape(.rect)
         .accessibilityElement(children: .combine)
     }

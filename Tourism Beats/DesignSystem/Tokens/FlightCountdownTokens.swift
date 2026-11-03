@@ -31,6 +31,7 @@ enum FlightCountdownTokens {
     static let smallWidgetSide: CGFloat = 170
     static let widgetPreviewCornerRadius: CGFloat = 22
     static let widgetPreviewPadding: CGFloat = 16
+    static let widgetPreviewMaximumTypeSize: DynamicTypeSize = .xxLarge
 
     // MARK: - Photos
 

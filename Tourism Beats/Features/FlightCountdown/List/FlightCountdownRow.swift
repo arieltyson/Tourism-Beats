@@ -18,12 +18,13 @@ struct FlightCountdownRow: View {
             VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
                 Text("\(flight.originName) → \(flight.destinationName)")
                     .font(.headline)
-                    .foregroundStyle(.primary)
                 Text(subtitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
         }
+        // Inside a button, `.primary` would resolve to the tint colour.
+        .foregroundStyle(Color.primary)
         .accessibilityElement(children: .combine)
     }
 
