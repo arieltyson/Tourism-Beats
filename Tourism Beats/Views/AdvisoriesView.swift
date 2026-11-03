@@ -77,9 +77,7 @@ struct AdvisoriesView: View {
                     )
                     .padding(.bottom, 2)
 
-                    WalkabilityView(
-                        viewModel: WalkabilityViewModel(city: self.city)
-                    )
+                    WalkabilityView(city: self.city)
                     .fixedSize(horizontal: false, vertical: true)
                     .transition(.opacity.combined(with: .scale))
                 }

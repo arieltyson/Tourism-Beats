@@ -3,7 +3,11 @@ import SwiftUI
 // MARK: - WalkabilityView
 
 struct WalkabilityView: View {
-    @StateObject var viewModel: WalkabilityViewModel
+    @State private var viewModel: WalkabilityViewModel
+
+    init(city: CityModel) {
+        _viewModel = State(initialValue: WalkabilityViewModel(city: city))
+    }
 
     var body: some View {
         Group {
@@ -28,6 +32,7 @@ struct WalkabilityView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .task { await self.viewModel.load() }
     }
 }
 

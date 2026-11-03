@@ -3,13 +3,14 @@ import SwiftUI
 // MARK: - WalkabilityViewModel
 
 @MainActor
-class WalkabilityViewModel: ObservableObject {
-    @Published var walkability: WalkabilityModel?
-    @Published var isLoading = false
-    @Published var errorMessage: String?
+@Observable
+final class WalkabilityViewModel {
+    private(set) var walkability: WalkabilityModel?
+    private(set) var isLoading = true
+    private(set) var errorMessage: String?
 
-    let city: CityModel
-    private let service: WalkabilityProtocol
+    @ObservationIgnored let city: CityModel
+    @ObservationIgnored private let service: WalkabilityProtocol
 
     init(
         city: CityModel,
@@ -17,24 +18,25 @@ class WalkabilityViewModel: ObservableObject {
     ) {
         self.city = city
         self.service = service
-        self.fetchWalkability()
     }
 
-    func fetchWalkability() {
+    /// Loads the scores once, when the view appears; creating the model
+    /// does no work, so rebuilding the view never starts another request.
+    func load() async {
+        guard self.walkability == nil else { return }
         self.isLoading = true
         self.errorMessage = nil
-
-        Task { @MainActor in
-            do {
-                self.walkability = try await self.service.fetchWalkability(
-                    city: self.city.name,
-                    countryCode: self.city.country.code
-                )
-            } catch {
-                self.errorMessage = "Walkability data unavailable."
-            }
-            self.isLoading = false
+        do {
+            self.walkability = try await self.service.fetchWalkability(
+                city: self.city.name,
+                countryCode: self.city.country.code
+            )
+        } catch is CancellationError {
+            // The page went away mid-load; the next appearance tries again.
+        } catch {
+            self.errorMessage = "Walkability data unavailable."
         }
+        self.isLoading = false
     }
 
     // MARK: - Score Colors

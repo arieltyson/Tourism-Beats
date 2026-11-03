@@ -7,7 +7,7 @@ struct WeatherView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.locale) private var locale
-    @StateObject private var viewModel: WeatherViewModel
+    @State private var viewModel: WeatherViewModel
 
     @State private var attribution: WeatherAttribution?
 
@@ -16,9 +16,7 @@ struct WeatherView: View {
     }
 
     init(city: CityModel) {
-        _viewModel = StateObject(
-            wrappedValue: WeatherViewModel(coordinate: city.coordinate)
-        )
+        _viewModel = State(initialValue: WeatherViewModel(coordinate: city.coordinate))
     }
 
     var body: some View {
@@ -120,8 +118,13 @@ struct WeatherView: View {
                             )
                         )
                 }
+                // Cast by the glass, not the whole card, so it needs no offscreen pass.
+                .shadow(
+                    color: AppColors.glassShadow(for: self.colorScheme),
+                    radius: 12,
+                    y: 6
+                )
         }
-        .clipShape(.rect(cornerRadius: 20, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .strokeBorder(
@@ -129,16 +132,13 @@ struct WeatherView: View {
                     lineWidth: 0.8
                 )
         }
-        .shadow(
-            color: AppColors.glassShadow(for: self.colorScheme),
-            radius: 12,
-            y: 6
-        )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Weather")
         .accessibilityValue(self.accessibilityDescription)
         .task {
-            await self.fetchAttribution()
+            async let weather: Void = self.viewModel.load()
+            async let attribution: Void = self.fetchAttribution()
+            _ = await (weather, attribution)
         }
         .motionSensitiveAnimation(
             .easeInOut,
