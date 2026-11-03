@@ -11,33 +11,11 @@ final class FoodViewModel {
     var isAddSheetPresented: Bool = false
     var restaurantToEdit: Restaurant?
 
-    private let catalogCitiesByNormalizedName: [String: [CityModel]]
-    private let catalogPlaces: [RestaurantPlace]
-    private let countries: [CountryModel]
-    private let flagsByNormalizedCountryName: [String: String]
+    private let catalog: FoodCatalog
 
-    init(dataService: DataService = DataService()) {
-        let catalogCities = (try? dataService.loadCities()) ?? []
-        self.catalogCitiesByNormalizedName = Dictionary(
-            grouping: catalogCities,
-            by: { FoodJournalCityGroup.normalizedLookupValue($0.name) }
-        )
-        self.catalogPlaces = catalogCities
-            .map {
-                RestaurantPlace(
-                    city: $0.name,
-                    country: $0.country.name,
-                    flag: $0.country.flag,
-                    searchAliases: $0.searchAliases
-                )
-            }
-            .sorted { $0.city.localizedStandardCompare($1.city) == .orderedAscending }
-        self.countries = ((try? dataService.loadCountries()) ?? [])
-            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
-        self.flagsByNormalizedCountryName = Dictionary(
-            self.countries.map { (FoodJournalCityGroup.normalizedLookupValue($0.name), $0.flag) },
-            uniquingKeysWith: { first, _ in first }
-        )
+    /// Uses the bundled catalog unless given another, such as in tests.
+    init(catalog: FoodCatalog = .bundled) {
+        self.catalog = catalog
     }
 
     func cityGroups(from restaurants: [Restaurant]) -> [FoodJournalCityGroup] {
@@ -90,15 +68,15 @@ final class FoodViewModel {
                 city: city,
                 country: country,
                 flag: catalogCity?.country.flag
-                    ?? self.flagsByNormalizedCountryName[FoodJournalCityGroup.normalizedLookupValue(country)],
+                    ?? self.catalog.flagsByNormalizedCountryName[FoodJournalCityGroup.normalizedLookupValue(country)],
                 searchAliases: catalogCity?.searchAliases ?? []
             )
         }
 
         return RestaurantPlaceOptions(
             journalPlaces: journalPlaces,
-            catalogPlaces: self.catalogPlaces.filter { !coveredCatalogCityIdentifiers.contains($0.id) },
-            countries: self.countries
+            catalogPlaces: self.catalog.places.filter { !coveredCatalogCityIdentifiers.contains($0.id) },
+            countries: self.catalog.countries
         )
     }
 
@@ -140,7 +118,7 @@ final class FoodViewModel {
         let normalizedCityName = FoodJournalCityGroup.normalizedLookupValue(cityName)
         guard !normalizedCityName.isEmpty else { return nil }
 
-        let candidates = self.catalogCitiesByNormalizedName[normalizedCityName] ?? []
+        let candidates = self.catalog.citiesByNormalizedName[normalizedCityName] ?? []
         guard !candidates.isEmpty else { return nil }
 
         let normalizedCountryName = FoodJournalCityGroup.normalizedLookupValue(countryName)

@@ -13,22 +13,21 @@ struct FoodCityJournalView: View {
     @Query(sort: \Restaurant.dateAdded, order: .reverse)
     private var restaurants: [Restaurant]
 
-    private var cityRestaurants: [Restaurant] {
-        self.restaurants.filter { self.group.contains($0) }
-    }
-
     var body: some View {
+        // Filtered once per update; the header, list, and dismissal share it.
+        let cityRestaurants = self.restaurants.filter { self.group.contains($0) }
+
         ScrollView {
             LazyVStack(spacing: SpacingTokens.large) {
                 FoodCityJournalHeader(
                     group: self.group,
-                    restaurantCount: self.cityRestaurants.count
+                    restaurantCount: cityRestaurants.count
                 )
 
-                if self.cityRestaurants.isEmpty {
+                if cityRestaurants.isEmpty {
                     FoodCityJournalEmptyState(group: self.group)
                 } else {
-                    ForEach(self.cityRestaurants) { restaurant in
+                    ForEach(cityRestaurants) { restaurant in
                         FoodRestaurantCard(
                             restaurant: restaurant,
                             mealPhotos: restaurant.sortedMealPhotos,
@@ -45,7 +44,7 @@ struct FoodCityJournalView: View {
         .background(Color.clear.ignoresSafeArea())
         .navigationTitle(self.group.displayCityName)
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: self.cityRestaurants.count) { oldCount, newCount in
+        .onChange(of: cityRestaurants.count) { oldCount, newCount in
             guard oldCount > 0, newCount == 0 else { return }
             self.dismiss()
         }
