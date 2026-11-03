@@ -62,7 +62,7 @@ struct FlightCountdownView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                Button("Add Widget", systemImage: "square.grid.2x2") { showsWidgetHelp = true }
+                Button("Add a Widget", systemImage: "info.circle") { showsWidgetHelp = true }
                 Button("Add Flight", systemImage: "plus") { isAdding = true }
                     .disabled(!model.hasLoaded || model.isSaving)
             }
@@ -74,7 +74,10 @@ struct FlightCountdownView: View {
             FlightCountdownForm(model: model, flight: flight)
         }
         .sheet(isPresented: $showsWidgetHelp) {
-            FlightCountdownWidgetHelp()
+            let flight = model.nextFlight
+            FlightCountdownWidgetHelp(
+                flight: flight ?? .sample(from: .now), photo: flight.flatMap { model.photos[$0.id] }
+            )
         }
         .alert("Couldn’t Update Flights", isPresented: Binding(
             get: { model.errorMessage != nil },

@@ -25,6 +25,13 @@ enum FlightCountdownTokens {
     /// The route drawing on the empty screen, scaled with Dynamic Type.
     static let emptyGlyphHeight: CGFloat = 64
 
+    // MARK: - Widget Preview
+
+    /// A small widget's side and shape on current iPhones.
+    static let smallWidgetSide: CGFloat = 170
+    static let widgetPreviewCornerRadius: CGFloat = 22
+    static let widgetPreviewPadding: CGFloat = 16
+
     // MARK: - Photos
 
     /// The longer side of a stored card photo, enough for the largest widget.

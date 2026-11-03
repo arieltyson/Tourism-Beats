@@ -56,6 +56,18 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
         return "\(departure.formatted(style)) \(timeZone.gmtOffsetLabel(at: departure))"
     }
 
+    /// A flight to show where a real one isn't available yet, such as the
+    /// widget gallery.
+    static func sample(from date: Date) -> Self {
+        CountdownFlight(
+            airlineCode: "AC", airlineName: "Air Canada", flightNumber: "123",
+            origin: "YVR", originCity: "Vancouver", destination: "YYZ", destinationCity: "Toronto",
+            departure: date.addingTimeInterval(3 * FlightCountdownConfiguration.secondsPerDay),
+            timeZoneIdentifier: "America/Vancouver",
+            countdownStartedAt: date.addingTimeInterval(-FlightCountdownConfiguration.secondsPerDay)
+        )
+    }
+
     static func next(in flights: [Self], after date: Date) -> Self? {
         flights.filter { $0.departure > date }.min { $0.departure < $1.departure }
     }
