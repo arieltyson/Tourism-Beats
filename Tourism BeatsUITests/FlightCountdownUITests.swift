@@ -41,6 +41,12 @@ final class FlightCountdownUITests: XCTestCase {
 
         XCTAssertTrue(app.staticTexts["Use the local time in Vancouver."].exists)
         capture("Flight Filled In")
+        app.buttons["addToCalendar"].tap()
+        XCTAssertFalse(app.alerts.firstMatch.waitForExistence(timeout: 2), "Adding an event asks for no calendar access")
+        sleep(6)
+        capture("New Event")
+        dismissEventEditor(app, revealing: app.buttons["addToCalendar"])
+
         app.swipeUp()
         capture("Card Designs")
         XCTAssertTrue(app.buttons["saveFlight"].isEnabled)
@@ -56,6 +62,13 @@ final class FlightCountdownUITests: XCTestCase {
         app.launch()
         openFlightCountdown(in: app)
         XCTAssertTrue(flight.waitForExistence(timeout: 5))
+        flight.press(forDuration: 1)
+        XCTAssertTrue(app.buttons["Add to Calendar"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Share Event"].exists)
+        capture("Flight Menu")
+        app.buttons["Add to Calendar"].tap()
+        sleep(2)
+        dismissEventEditor(app, revealing: flight)
         flight.swipeLeft()
         app.buttons["Delete"].firstMatch.tap()
         XCTAssertTrue(flight.waitForNonExistence(timeout: 5))
@@ -88,8 +101,24 @@ final class FlightCountdownUITests: XCTestCase {
         let settings = app.tabBars.buttons["Settings"].firstMatch
         XCTAssertTrue(settings.waitForExistence(timeout: 15))
         settings.tap()
-        app.buttons["Flight Countdown"].tap()
+        // A tap during launch can land before the tab bar responds.
+        let tool = app.buttons["Flight Countdown"]
+        if !tool.waitForExistence(timeout: 3) { settings.tap() }
+        XCTAssertTrue(tool.waitForExistence(timeout: 5))
+        tool.tap()
         XCTAssertTrue(app.navigationBars["Flight Countdown"].waitForExistence(timeout: 5))
+    }
+
+    /// The New Event sheet runs in another process, so its controls aren't
+    /// in this app's hierarchy and it draws only once loaded; its close
+    /// button is tapped where it sits until the screen beneath returns.
+    private func dismissEventEditor(_ app: XCUIApplication, revealing element: XCUIElement) {
+        for _ in 0..<10 where !element.isHittable {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.09, dy: 0.125)).tap()
+            _ = element.waitForExistence(timeout: 1)
+            if !element.isHittable { sleep(1) }
+        }
+        XCTAssertTrue(element.isHittable, "The New Event sheet closes")
     }
 
     private func search(_ app: XCUIApplication, for text: String) {

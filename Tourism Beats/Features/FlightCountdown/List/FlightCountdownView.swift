@@ -7,6 +7,7 @@ struct FlightCountdownView: View {
     @State private var editedFlight: CountdownFlight?
     @State private var isAdding = false
     @State private var showsWidgetHelp = false
+    @State private var calendarEvent: FlightCalendarEvent?
 
     var body: some View {
         List {
@@ -30,11 +31,20 @@ struct FlightCountdownView: View {
                             FlightCountdownRow(flight: flight, photo: model.photos[flight.id], now: .now)
                         }
                         .accessibilityHint("Edits the flight")
+                        .swipeActions(edge: .leading) {
+                            Button("Add to Calendar", systemImage: "calendar.badge.plus") {
+                                calendarEvent = FlightCalendarEvent(flight: flight)
+                            }
+                            .tint(AppColors.info)
+                        }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button("Delete", systemImage: "trash", role: .destructive) { delete(flight) }
                         }
                         .contextMenu {
                             Button("Edit", systemImage: "pencil") { editedFlight = flight }
+                            let event = FlightCalendarEvent(flight: flight)
+                            FlightCalendarActions(event: event) { calendarEvent = event }
+                            Divider()
                             Button("Delete", systemImage: "trash", role: .destructive) { delete(flight) }
                         }
                     }
@@ -73,6 +83,7 @@ struct FlightCountdownView: View {
         .sheet(item: $editedFlight) { flight in
             FlightCountdownForm(model: model, flight: flight)
         }
+        .flightCalendarSheet(for: $calendarEvent)
         .sheet(isPresented: $showsWidgetHelp) {
             let flight = model.nextFlight
             FlightCountdownWidgetHelp(

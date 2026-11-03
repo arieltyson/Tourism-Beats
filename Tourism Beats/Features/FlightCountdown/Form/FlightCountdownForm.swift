@@ -9,6 +9,7 @@ struct FlightCountdownForm: View {
     @State private var showsDeleteConfirmation = false
     @State private var showsDiscardConfirmation = false
     @State private var errorMessage: String?
+    @State private var calendarEvent: FlightCalendarEvent?
     @FocusState private var isEditingNumber: Bool
 
     init(model: FlightCountdownViewModel, flight: CountdownFlight? = nil) {
@@ -62,6 +63,15 @@ struct FlightCountdownForm: View {
                 } footer: {
                     Text(form.departureFooter)
                 }
+                if form.canSave {
+                    Section {
+                        Button("Add to Calendar", systemImage: "calendar.badge.plus") {
+                            isEditingNumber = false
+                            calendarEvent = FlightCalendarEvent(flight: form.flight)
+                        }
+                        .accessibilityIdentifier("addToCalendar")
+                    }
+                }
                 Section("Card") {
                     FlightCountdownCard(flight: form.flight, date: .now, photo: form.photo)
                         .listRowInsets(EdgeInsets())
@@ -80,6 +90,7 @@ struct FlightCountdownForm: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            .flightCalendarSheet(for: $calendarEvent)
             .navigationDestination(for: FlightCountdownFormRoute.self) { route in
                 FlightCountdownFormDestination(route: route, form: form)
             }
