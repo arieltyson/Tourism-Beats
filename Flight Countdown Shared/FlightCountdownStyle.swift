@@ -15,6 +15,13 @@ enum FlightCountdownStyle {
     static let clockSpacing: CGFloat = 16
     /// A countdown's smaller unit, such as days after months, relative to its largest.
     static let secondaryClockScale: CGFloat = 0.55
+    /// The widget's page dots, one per upcoming flight, and the most it shows
+    /// before counting instead.
+    static let pageDotSize: CGFloat = 6
+    static let pageDotSpacing: CGFloat = 4
+    static let maximumPageDots = 5
+    /// Room around the page dots, so they're easier to tap.
+    static let pageIndicatorPadding: CGFloat = 4
     /// Each column shows at least two digits, as a departures board does.
     static let clockDigits = 2
     /// How far a long countdown may shrink to stay on one line.

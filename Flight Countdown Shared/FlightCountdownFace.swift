@@ -2,10 +2,12 @@ import SwiftUI
 
 /// The countdown card's content: where the flight is going, when, how long
 /// is left, and how far along the wait is.
-struct FlightCountdownFace: View {
+struct FlightCountdownFace<Accessory: View>: View {
     let flight: CountdownFlight
     let date: Date
     var style: FlightCountdownFaceStyle = .card
+    /// Sits in the top trailing corner, beneath the flight number.
+    @ViewBuilder var accessory: Accessory
 
     @ScaledMetric(relativeTo: .largeTitle) private var countdownSize = FlightCountdownStyle.countdownSize
     @ScaledMetric(relativeTo: .largeTitle) private var compactCountdownSize = FlightCountdownStyle.compactCountdownSize
@@ -27,11 +29,14 @@ struct FlightCountdownFace: View {
                 }
                 .lineLimit(1)
                 Spacer(minLength: FlightCountdownStyle.spacing)
-                if style.showsFlightNumber, !flight.flightNumber.isEmpty {
-                    Text(flight.designator)
-                        .font(.caption.monospacedDigit())
-                        .bold()
-                        .opacity(FlightCountdownStyle.secondaryOpacity)
+                VStack(alignment: .trailing, spacing: 0) {
+                    if style.showsFlightNumber, !flight.flightNumber.isEmpty {
+                        Text(flight.designator)
+                            .font(.caption.monospacedDigit())
+                            .bold()
+                            .opacity(FlightCountdownStyle.secondaryOpacity)
+                    }
+                    accessory
                 }
             }
             Spacer(minLength: 0)
@@ -72,5 +77,11 @@ struct FlightCountdownFace: View {
             \(flight.spokenName), from \(flight.originName) to \(flight.destinationName), departs in \(remaining). \
             Scheduled departure \(flight.departureLabel)
             """)
+    }
+}
+
+extension FlightCountdownFace where Accessory == EmptyView {
+    init(flight: CountdownFlight, date: Date, style: FlightCountdownFaceStyle = .card) {
+        self.init(flight: flight, date: date, style: style) { EmptyView() }
     }
 }
