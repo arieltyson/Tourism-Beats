@@ -44,26 +44,56 @@ struct FlightCountdownTests {
         #expect(value.departureLabel != flight().departureLabel)
     }
 
-    @Test func formNormalizesInputAndRejectsInvalidRoutes() {
+    @Test func formBuildsAFlightFromChoicesAndRejectsInvalidRoutes() throws {
+        let airports = AirportDirectory.bundled
         let form = FlightCountdownFormViewModel(flight: flight())
         #expect(!form.hasChanges)
-        form.flightNumber = " ac 456 "
-        form.origin = " yvr "
-        form.destination = "lhr"
+        #expect(form.airline?.name == "Air Canada")
+        form.flightNumber = " 45a6 78"
+        #expect(form.flightNumber == "4567")
+        form.select(destination: try #require(airports.airport(code: "LHR")))
         #expect(form.canSave)
-        #expect(form.flight.designator == "AC 456")
-        #expect(form.flight.origin == "YVR")
-        #expect(form.flight.destination == "LHR")
         #expect(form.hasChanges)
-        form.destination = " yvr "
+        #expect(form.flight.designator == "AC 4567")
+        #expect(form.flight.airlineName == "Air Canada")
+        #expect(form.flight.destinationCity == "London")
+        form.select(destination: try #require(airports.airport(code: "YVR")))
         #expect(!form.canSave)
-        form.destination = "123"
+        form.select(destination: .unlisted(code: "XYZ"))
+        #expect(form.canSave)
+        #expect(form.flight.destinationCity == nil)
+        form.flightNumber = ""
         #expect(!form.canSave)
-        form.destination = "Vancouver"
+    }
+
+    @Test func newFormNeedsEveryChoiceAndCountsOnlyRealInputAsChanges() throws {
+        let form = FlightCountdownFormViewModel(now: now)
+        #expect(!form.hasChanges)
         #expect(!form.canSave)
-        form.destination = "YYZ"
-        form.timeZoneIdentifier = "Invalid/Zone"
-        #expect(!form.canSave)
+        #expect(form.departure > now)
+        form.select(airline: .unlisted(code: "ZZ"))
+        #expect(form.hasChanges)
+        form.flightNumber = "1"
+        form.select(origin: try #require(AirportDirectory.bundled.airport(code: "YVR")))
+        form.select(destination: try #require(AirportDirectory.bundled.airport(code: "YUL")))
+        #expect(form.canSave)
+        #expect(form.flight.airlineName == nil)
+        #expect(form.flight.countdownStartedAt == now)
+    }
+
+    @Test func choosingADepartureAirportKeepsTheClockTimeInItsZone() throws {
+        let form = FlightCountdownFormViewModel(now: now)
+        form.setTimeZone("America/Toronto")
+        var toronto = Calendar(identifier: .gregorian)
+        toronto.timeZone = try #require(TimeZone(identifier: "America/Toronto"))
+        form.departure = try #require(toronto.date(from: DateComponents(year: 2026, month: 12, day: 20, hour: 13, minute: 50)))
+        form.select(origin: try #require(AirportDirectory.bundled.airport(code: "YVR")))
+        #expect(form.timeZoneIdentifier == "America/Vancouver")
+        var vancouver = Calendar(identifier: .gregorian)
+        vancouver.timeZone = form.timeZone
+        let clock = vancouver.dateComponents([.month, .day, .hour, .minute], from: form.departure)
+        #expect(clock == DateComponents(month: 12, day: 20, hour: 13, minute: 50))
+        #expect(form.departureFooter.contains("Vancouver"))
     }
 
     @Test func countdownNeverShowsZeroForAnUpcomingFlight() {
