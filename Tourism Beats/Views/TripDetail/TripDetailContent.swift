@@ -14,21 +14,25 @@ struct TripDetailContent: View {
     let onDeleteDay: (TripDay) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.large) {
-            TripHeroCard(
-                trip: self.trip,
-                cityModel: self.cityModel,
-                countryFlag: self.countryFlag
-            )
+        // Lazy, so a long itinerary builds only the days on screen and the
+        // trip opens without laying out every activity first.
+        LazyVStack(alignment: .leading, spacing: SpacingTokens.medium) {
+            VStack(alignment: .leading, spacing: SpacingTokens.large) {
+                TripHeroCard(
+                    trip: self.trip,
+                    cityModel: self.cityModel,
+                    countryFlag: self.countryFlag
+                )
 
-            if self.trip.isSample {
-                TripSampleNoticeCard(trip: self.trip)
-            }
+                if self.trip.isSample {
+                    TripSampleNoticeCard(trip: self.trip)
+                }
 
-            TripSummaryCard(trip: self.trip)
+                TripSummaryCard(trip: self.trip)
 
-            if let notes = self.trip.notesSummary {
-                TripNotesCard(notes: notes)
+                if let notes = self.trip.notesSummary {
+                    TripNotesCard(notes: notes)
+                }
             }
 
             TripItinerarySection(

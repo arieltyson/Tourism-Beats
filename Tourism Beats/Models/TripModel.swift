@@ -75,14 +75,16 @@ final class Trip {
         (self.days ?? []).count
     }
 
+    // Counts read the days as stored: order doesn't change a total, and
+    // sorting on every read made each redraw pay for it.
     var activityCount: Int {
-        self.sortedDays.reduce(0) { partialResult, day in
+        (self.days ?? []).reduce(0) { partialResult, day in
             partialResult + day.activityCount
         }
     }
 
     var completedActivityCount: Int {
-        self.sortedDays.reduce(0) { partialResult, day in
+        (self.days ?? []).reduce(0) { partialResult, day in
             partialResult + day.completedActivityCount
         }
     }
@@ -129,7 +131,7 @@ final class Trip {
     }
 
     var nextDayDate: Date? {
-        self.sortedDays.compactMap(\.date).last.flatMap { lastDate in
+        (self.days ?? []).filter { $0.date != nil }.max { $0.dayNumber < $1.dayNumber }?.date.flatMap { lastDate in
             Calendar.current.date(byAdding: .day, value: 1, to: lastDate)
         }
     }
@@ -263,11 +265,11 @@ final class TripDay {
     }
 
     var completedActivityCount: Int {
-        self.sortedActivities.count(where: { $0.activityStatus == .done })
+        (self.activities ?? []).count(where: { $0.activityStatus == .done })
     }
 
     var pendingActivityCount: Int {
-        self.sortedActivities.count(where: { $0.activityStatus == .planned })
+        (self.activities ?? []).count(where: { $0.activityStatus == .planned })
     }
 
     private static let dayDateFormatter: DateFormatter = {

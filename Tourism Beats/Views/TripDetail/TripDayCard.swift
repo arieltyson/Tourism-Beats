@@ -13,6 +13,9 @@ struct TripDayCard: View {
     let onDeleteDay: () -> Void
 
     var body: some View {
+        // Sorted once per update; the empty check and the rows share it.
+        let activities = self.day.sortedActivities
+
         GlassCard(cornerRadius: 26) {
             VStack(alignment: .leading, spacing: SpacingTokens.medium) {
                 TripDayHeader(
@@ -23,14 +26,14 @@ struct TripDayCard: View {
                     onDeleteDay: self.onDeleteDay
                 )
 
-                if self.day.sortedActivities.isEmpty {
+                if activities.isEmpty {
                     TripEmptyDayContent(
                         onAddActivity: self.onAddActivity,
                         onSuggestActivities: self.onSuggestActivities
                     )
                 } else {
                     VStack(spacing: SpacingTokens.small) {
-                        ForEach(self.day.sortedActivities) { activity in
+                        ForEach(activities) { activity in
                             TripActivityRow(
                                 activity: activity,
                                 onEdit: {

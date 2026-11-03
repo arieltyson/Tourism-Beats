@@ -70,10 +70,16 @@ struct TripHeroCard: View {
                     lineWidth: 0.8
                 )
         }
-        .shadow(
-            color: AppColors.glassShadow(for: self.colorScheme),
-            radius: 18,
-            y: 10
-        )
+        // Cast by the card's shape, not its photo and text, so drawing it
+        // needs no offscreen pass.
+        .background {
+            RoundedRectangle(cornerRadius: 32, style: .continuous)
+                .fill(AppColors.imageScrimBottom)
+                .shadow(
+                    color: AppColors.glassShadow(for: self.colorScheme),
+                    radius: 18,
+                    y: 10
+                )
+        }
     }
 }

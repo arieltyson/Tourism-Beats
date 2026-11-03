@@ -11,33 +11,37 @@ struct TripItinerarySection: View {
     let onDeleteActivity: (TripActivity) -> Void
     let onDeleteDay: (TripDay) -> Void
 
+    /// The header and each day are separate children of the lazy stack
+    /// around this view, so days are built only as they scroll into view.
     var body: some View {
-        VStack(alignment: .leading, spacing: SpacingTokens.medium) {
-            Text("Itinerary")
-                .font(TypographyTokens.songTitle)
-                .bold()
-                .accessibilityAddTraits(.isHeader)
+        // Sorted once per update rather than once per day.
+        let days = self.trip.sortedDays
 
-            ForEach(self.trip.sortedDays) { day in
-                TripDayCard(
-                    day: day,
-                    canDelete: self.trip.sortedDays.count > 1,
-                    onAddActivity: {
-                        self.onAddActivity(day)
-                    },
-                    onSuggestActivities: self.onSuggest.map { onSuggest in
-                        { onSuggest(.day(day)) }
-                    },
-                    onEditActivity: self.onEditActivity,
-                    onCycleActivityStatus: self.onCycleActivityStatus,
-                    onDeleteActivity: self.onDeleteActivity,
-                    onDeleteDay: {
-                        self.onDeleteDay(day)
-                    }
-                )
-                .id(day.persistentModelID)
-            }
+        Text("Itinerary")
+            .font(TypographyTokens.songTitle)
+            .bold()
+            .accessibilityAddTraits(.isHeader)
+            // The gap above the itinerary matches the one between cards.
+            .padding(.top, SpacingTokens.large - SpacingTokens.medium)
+
+        ForEach(days) { day in
+            TripDayCard(
+                day: day,
+                canDelete: days.count > 1,
+                onAddActivity: {
+                    self.onAddActivity(day)
+                },
+                onSuggestActivities: self.onSuggest.map { onSuggest in
+                    { onSuggest(.day(day)) }
+                },
+                onEditActivity: self.onEditActivity,
+                onCycleActivityStatus: self.onCycleActivityStatus,
+                onDeleteActivity: self.onDeleteActivity,
+                onDeleteDay: {
+                    self.onDeleteDay(day)
+                }
+            )
+            .id(day.persistentModelID)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
