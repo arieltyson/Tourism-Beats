@@ -1,6 +1,6 @@
 # Tourism Beats Privacy Policy
 
-**Last updated:** October 25, 2026
+**Last updated:** November 2, 2026
 
 Tourism Beats is an iPhone app for destination discovery, travel research, food journaling, and trip planning. The app is designed to keep personal data handling narrow and local-first wherever possible.
 
@@ -10,13 +10,14 @@ The public privacy policy for App Store Connect is also available at [arieltyson
 
 Tourism Beats does **not** require you to create an account to use the app.
 
-Most information you create in the app, such as saved restaurants, trip plans, trip activities, ratings, notes, and meal photos, is stored **locally on your device**. The app makes limited network requests to support features such as weather, city facts, activity and restaurant guides, Apple Music results, Spotify handoff, and remote city images.
+Most information you create in the app, such as saved restaurants, trip plans, trip activities, flight countdowns, ratings, notes, and meal photos, is stored **locally on your device**. The app makes limited network requests to support features such as weather, city facts, activity and restaurant guides, Apple Music results, Spotify handoff, and remote city images.
 
 ## What We Store
 
 | Data | Purpose | Stored Where | Shared With Tourism Beats Servers |
 |---|---|---|---|
 | **Saved restaurants, trip plans, trip days, trip activities, ratings, notes, and statuses** | Lets you keep a personal food journal and trip planner. | On-device using SwiftData. | No |
+| **Manually entered flight numbers, airport codes, departure times, and time zones** | Shows your flight countdown in the app and an optional Home Screen widget. | On-device in an App Group shared only by Tourism Beats and its widget extension. | No |
 | **Meal photos you choose to add** | Lets you attach your own food photos to restaurant entries. | On-device in the app's Application Support storage after optimization. | No |
 | **City image cache** | Improves loading performance for destination imagery. | On-device in the app cache. | No |
 | **City fact cache** | Improves loading performance for city facts. | On-device in the app cache. | No |
@@ -116,7 +117,7 @@ Those providers handle data under their own terms and privacy policies.
 
 ## Retention and Deletion
 
-- **Saved restaurants, trips, notes, ratings, and statuses** remain on your device until you edit or delete them, or until you remove the app and its local data.
+- **Saved restaurants, trips, flight countdowns, notes, ratings, and statuses** remain on your device until you edit or delete them, or until you remove the app and its local data.
 - **Meal photos** remain on your device until you remove them from the app or delete the related restaurant entry.
 - **Caches** such as city facts and images may remain until the app or iOS clears them.
 - **Spotify tokens** remain in the device Keychain as needed to support the optional Spotify integration on that device.

@@ -20,6 +20,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 - [x] **SwiftUI** — Declarative UI with `@Observable`, `NavigationStack`, `Tab` API, and `MeshGradient`
 - [x] **Observation** — State management powered by `@Observable` view models
 - [x] **SwiftData** — Persistent storage for restaurants, meal photos, and trip itineraries
+- [x] **WidgetKit** — Standalone flight countdowns shared through an App Group
 - [x] **MapKit** — Interactive world map with city annotations and search
 - [x] **CoreLocation** — Coordinate-based city discovery, filtering, and proximity logic
 - [x] **WeatherKit** — Real-time weather conditions and forecasts per city
@@ -69,6 +70,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 - 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content
 - 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city
 - ✈️ **Trip Planner** — Create and manage trip itineraries with activities, and fill any trip or day with suggested sights and restaurants from the city guide, grouped by area and reviewed before they are added
+- ✈️ **Flight Countdown** — Settings → Tools; manually save flights from any airline and show the next scheduled departure in a small or medium Home Screen widget
 - 🌤️ **Live Weather** — Real-time conditions via WeatherKit
 - 🕐 **Local Time** — Live clocks for every city
 - 🚶 **Walkability** — City walkability scores and pedestrian insights

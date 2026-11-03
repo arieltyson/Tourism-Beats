@@ -35,9 +35,7 @@ struct FlightCountdownForm: View {
                         .accessibilityIdentifier("flightDestination")
                 }
                 Section {
-                    NavigationLink {
-                        FlightTimeZonePicker(form: form)
-                    } label: {
+                    NavigationLink(value: FlightCountdownFormRoute.timeZone) {
                         LabeledContent("Time zone", value: form.timeZoneLabel)
                     }
                     DatePicker("Departure", selection: $form.departure)
@@ -54,6 +52,9 @@ struct FlightCountdownForm: View {
                         }
                     }
                 }
+            }
+            .navigationDestination(for: FlightCountdownFormRoute.self) { _ in
+                FlightTimeZonePicker(form: form)
             }
             .navigationTitle(form.isEditing ? "Edit Flight" : "Add Flight")
             .navigationBarTitleDisplayMode(.inline)

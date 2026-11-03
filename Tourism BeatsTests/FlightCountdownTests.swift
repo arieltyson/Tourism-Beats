@@ -22,6 +22,19 @@ struct FlightCountdownTests {
         #expect(CountdownFlight.next(in: flights, after: second.departure) == nil)
     }
 
+    @Test func widgetTimelineIncludesExactDeparturesAndFutureCoverage() {
+        let first = flight(after: 65)
+        let second = flight(after: 950)
+        let dates = FlightCountdownSchedule.dates(for: [second, first], from: now)
+        #expect(dates.first == now)
+        #expect(dates.contains(first.departure))
+        #expect(dates.contains(second.departure))
+        #expect(dates.last == now.addingTimeInterval(FlightCountdownSchedule.horizon))
+        #expect(dates == dates.sorted())
+        #expect(Set(dates).count == dates.count)
+        #expect(CountdownFlight.next(in: [first, second], after: first.departure) == second)
+    }
+
     @Test func departureIsAnAbsoluteInstantAcrossTimeZones() {
         var value = flight()
         let date = value.departure
@@ -119,4 +132,3 @@ struct FlightCountdownTests {
         #expect(reloadCount == 3)
     }
 }
-
