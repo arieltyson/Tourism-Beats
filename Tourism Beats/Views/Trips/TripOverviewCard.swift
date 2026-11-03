@@ -90,7 +90,8 @@ struct TripOverviewCard: View {
                     lineWidth: 0.8
                 )
         }
-        .shadow(
+        .cardShadow(
+            cornerRadius: 28,
             color: AppColors.glassShadow(for: self.colorScheme),
             radius: 18,
             y: 10

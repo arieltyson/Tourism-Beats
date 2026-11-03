@@ -89,7 +89,8 @@ extension CityRestaurantsView {
                                 lineWidth: 1
                             )
                     }
-                    .shadow(
+                    .cardShadow(
+                        cornerRadius: 24,
                         color: AppColors.glassShadow(for: self.scheme),
                         radius: 16,
                         y: 10

@@ -42,10 +42,18 @@ struct GlassCard<Content: View>: View {
         self.content
             .padding(self.contentPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                self.cardBackground,
-                in: .rect(cornerRadius: self.cornerRadius, style: .continuous)
-            )
+            .background {
+                // The shadow is cast by the card's shape alone. Casting it from
+                // the whole card made SwiftUI render every label and blur into
+                // an extra offscreen layer just to find the card's outline.
+                RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
+                    .fill(self.cardBackground)
+                    .shadow(
+                        color: AppColors.glassShadow(for: self.colorScheme),
+                        radius: 12,
+                        y: 6
+                    )
+            }
             .overlay {
                 RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous)
                     .strokeBorder(
@@ -53,11 +61,6 @@ struct GlassCard<Content: View>: View {
                         lineWidth: 0.5
                     )
             }
-            .shadow(
-                color: AppColors.glassShadow(for: self.colorScheme),
-                radius: 12,
-                y: 6
-            )
     }
 
     private var cardBackground: some ShapeStyle {

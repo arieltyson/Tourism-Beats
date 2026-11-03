@@ -35,8 +35,18 @@ struct MusicArtworkCard: View {
                     MusicArtworkPlaceholderView()
                 }
             }
-            .background(.ultraThinMaterial)
             .clipShape(.rect(cornerRadius: 28, style: .continuous))
+            // The glass casts the shadow, not the artwork, so drawing it
+            // needs no offscreen pass.
+            .background {
+                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    .fill(.ultraThinMaterial)
+                    .shadow(
+                        color: AppColors.glassShadow(for: self.colorScheme),
+                        radius: 18,
+                        y: 10
+                    )
+            }
             .overlay {
                 RoundedRectangle(cornerRadius: 28, style: .continuous)
                     .strokeBorder(
@@ -44,11 +54,6 @@ struct MusicArtworkCard: View {
                         lineWidth: 1
                     )
             }
-            .shadow(
-                color: AppColors.glassShadow(for: self.colorScheme),
-                radius: 18,
-                y: 10
-            )
             .contentShape(.rect(cornerRadius: 28, style: .continuous))
             .accessibilityHidden(true)
     }

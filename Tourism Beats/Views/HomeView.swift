@@ -309,7 +309,8 @@ private struct DiscoveryCityCard: View {
                         lineWidth: 1
                     )
             )
-            .shadow(
+            .cardShadow(
+                cornerRadius: 16,
                 color: AppColors.glassShadow(for: self.scheme),
                 radius: 12,
                 y: 4

@@ -29,7 +29,8 @@ struct FoodCityCard: View {
                     lineWidth: 0.5
                 )
         }
-        .shadow(
+        .cardShadow(
+            cornerRadius: 20,
             color: AppColors.glassShadow(for: self.colorScheme),
             radius: 12,
             y: 6

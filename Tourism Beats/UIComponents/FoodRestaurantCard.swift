@@ -73,10 +73,17 @@ struct FoodRestaurantCard: View {
         }
         .padding(SpacingTokens.small)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            .ultraThinMaterial,
-            in: .rect(cornerRadius: 16, style: .continuous)
-        )
+        // The glass casts the shadow, not the whole card, so drawing it needs
+        // no offscreen pass.
+        .background {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .shadow(
+                    color: AppColors.glassShadow(for: self.colorScheme),
+                    radius: 8,
+                    y: 4
+                )
+        }
         .overlay {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .strokeBorder(
@@ -85,11 +92,6 @@ struct FoodRestaurantCard: View {
                 )
                 .allowsHitTesting(false)
         }
-        .shadow(
-            color: AppColors.glassShadow(for: self.colorScheme),
-            radius: 8,
-            y: 4
-        )
         .accessibilityElement(children: .contain)
         .accessibilityLabel(self.accessibilityDescription)
     }
