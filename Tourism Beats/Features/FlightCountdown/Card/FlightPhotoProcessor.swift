@@ -15,7 +15,7 @@ enum FlightPhotoProcessor {
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceShouldCacheImmediately: true,
-            kCGImageSourceThumbnailMaxPixelSize: FlightCountdownTokens.photoPixelSize,
+            kCGImageSourceThumbnailMaxPixelSize: FlightCountdownTokens.photoPixelSize
         ]
         guard let source = CGImageSourceCreateWithData(data as CFData, nil),
               let image = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
@@ -24,7 +24,7 @@ enum FlightPhotoProcessor {
         guard let destination = CGImageDestinationCreateWithData(encoded, UTType.jpeg.identifier as CFString, 1, nil)
         else { throw FlightPhotoError.unreadable }
         CGImageDestinationAddImage(destination, image, [
-            kCGImageDestinationLossyCompressionQuality: FlightCountdownTokens.photoCompressionQuality,
+            kCGImageDestinationLossyCompressionQuality: FlightCountdownTokens.photoCompressionQuality
         ] as CFDictionary)
         guard CGImageDestinationFinalize(destination) else { throw FlightPhotoError.unreadable }
         return FlightPhoto(data: encoded as Data, image: image)

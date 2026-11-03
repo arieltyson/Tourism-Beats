@@ -17,7 +17,8 @@ Most information you create in the app, such as saved restaurants, trip plans, t
 | Data | Purpose | Stored Where | Shared With Tourism Beats Servers |
 |---|---|---|---|
 | **Saved restaurants, trip plans, trip days, trip activities, ratings, notes, and statuses** | Lets you keep a personal food journal and trip planner. | On-device using SwiftData. | No |
-| **Manually entered flight numbers, airport codes, departure times, and time zones** | Shows your flight countdown in the app and an optional Home Screen widget. | On-device in an App Group shared only by Tourism Beats and its widget extension. | No |
+| **Manually entered airlines, flight numbers, airports, departure times, and time zones** | Shows your flight countdown in the app and an optional Home Screen widget. Airport and airline search runs against directories bundled in the app, so searches never leave your device. | On-device in an App Group shared only by Tourism Beats and its widget extension. | No |
+| **Card photos you choose for a flight** | Shows your photo behind that flight's countdown in the app and widget. Photos are chosen with the system photo picker, so the app never accesses your library; each one is downsized and re-encoded, which removes its location and other metadata. | On-device in the same App Group. Removed when the flight is deleted or given a different background. | No |
 | **Meal photos you choose to add** | Lets you attach your own food photos to restaurant entries. | On-device in the app's Application Support storage after optimization. | No |
 | **City image cache** | Improves loading performance for destination imagery. | On-device in the app cache. | No |
 | **City fact cache** | Improves loading performance for city facts. | On-device in the app cache. | No |

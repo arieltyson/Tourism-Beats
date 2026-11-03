@@ -126,4 +126,6 @@ If you have questions or feedback about Tourism Beats accessibility, please cont
 
 ## Flight Countdown
 
-The editor uses native form controls, labeled actions, searchable time-zone selection, and Dynamic Type. Countdown cards expose one combined VoiceOver description with the flight number, airport codes, countdown, and scheduled departure time zone. The widget uses a static, opaque background, strengthens contrast when requested, and introduces no animations. Widget setup instructions are available from the tool’s Add Widget button.
+The editor uses native form controls with visible labels: airlines and airports are chosen by searching rather than typed as codes, From and To are labeled rows, and the number pad has a Done button and dismisses when the form scrolls. Time zones are listed by place and everyday name with their GMT offset on the departure date. Countdown cards expose one combined VoiceOver description with the airline, flight number, cities, countdown, and scheduled departure with its GMT offset.
+
+Every designed card background keeps white text at a contrast ratio of 4.5:1 or better; with Increase Contrast, backgrounds become solid and photo scrims strengthen. Background choices are buttons with spoken names and a selected state. Flights can be deleted by swiping, from their context menu, or with the VoiceOver actions rotor. The empty screen's route drawing flies in once and stays still with Reduce Motion; the widget introduces no animations. The widget guide, behind the info button, previews the widget and lists numbered steps.
