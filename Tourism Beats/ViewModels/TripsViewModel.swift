@@ -12,22 +12,19 @@ final class TripsViewModel {
     var selectedStatusFilter: TripStatus?
     var isAddTripSheetPresented: Bool = false
 
-    private let catalogCitiesByLookupKey: [String: CityModel]
-    private let countryFlagsByNormalizedName: [String: String]
+    private let catalog: TripCatalog
 
-    convenience init(dataService: DataService = DataService()) {
-        let catalogCities = (try? dataService.loadCities()) ?? []
-        let countries = (try? dataService.loadCountries()) ?? []
-        self.init(catalogCities: catalogCities, countries: countries)
+    /// Uses the bundled catalog, which is built once and shared.
+    convenience init() {
+        self.init(catalog: .bundled)
     }
 
-    init(catalogCities: [CityModel], countries: [CountryModel]) {
-        self.catalogCitiesByLookupKey = Self.makeCityLookup(from: catalogCities)
-        self.countryFlagsByNormalizedName = Dictionary(
-            uniqueKeysWithValues: countries.map {
-                (Self.normalizedLookupValue($0.name), $0.flag)
-            }
-        )
+    convenience init(catalogCities: [CityModel], countries: [CountryModel]) {
+        self.init(catalog: TripCatalog(cities: catalogCities, countries: countries))
+    }
+
+    init(catalog: TripCatalog) {
+        self.catalog = catalog
     }
 
     // MARK: - Grouping
@@ -75,19 +72,14 @@ final class TripsViewModel {
 
     /// The catalog city with this name in this country, if the app knows it.
     func cityModel(named cityName: String, in countryName: String) -> CityModel? {
-        self.catalogCitiesByLookupKey[
-            Self.lookupKey(cityName: cityName, countryName: countryName)
-        ]
+        self.catalog.city(named: cityName, in: countryName)
     }
 
     func countryFlag(for trip: Trip) -> String {
         if let city = self.cityModel(for: trip) {
             return city.country.flag
         }
-
-        return self.countryFlagsByNormalizedName[
-            Self.normalizedLookupValue(trip.country)
-        ] ?? "🧳"
+        return self.catalog.flag(forCountryNamed: trip.country) ?? "🧳"
     }
 
     // MARK: - Private
@@ -103,42 +95,5 @@ final class TripsViewModel {
         return trip.name.localizedStandardContains(query)
             || trip.city.localizedStandardContains(query)
             || trip.country.localizedStandardContains(query)
-    }
-
-    private static func lookupKey(cityName: String, countryName: String)
-        -> String
-    {
-        [
-            self.normalizedLookupValue(cityName),
-            self.normalizedLookupValue(countryName)
-        ]
-        .joined(separator: "|")
-    }
-
-    private static func normalizedLookupValue(_ value: String) -> String {
-        value
-            .folding(
-                options: [.caseInsensitive, .diacriticInsensitive],
-                locale: .current
-            )
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-
-    private static func makeCityLookup(from catalogCities: [CityModel])
-        -> [String: CityModel]
-    {
-        catalogCities.reduce(into: [:]) { partialResult, city in
-            let key = Self.lookupKey(
-                cityName: city.name,
-                countryName: city.country.name
-            )
-
-            // The city catalog can legitimately contain duplicate rows for the
-            // same city/country pair. Keep the first stable match instead of
-            // crashing on duplicate dictionary keys.
-            if partialResult[key] == nil {
-                partialResult[key] = city
-            }
-        }
     }
 }
