@@ -106,18 +106,45 @@ struct FlightCardTests {
         #expect(try JSONDecoder().decode(CountdownFlight.self, from: Data(json.utf8)).cardTheme == .twilight)
     }
 
-    @Test func headlineShowsTheLargestWholeUnit() {
-        let day = FlightCountdownConfiguration.secondsPerDay
-        let hour = FlightCountdownConfiguration.secondsPerHour
-        func headline(_ interval: TimeInterval) -> String {
-            String(FlightCountdownText.headline(until: now.addingTimeInterval(interval), from: now).characters)
+    /// A departures board's columns: months and days, then days and hours
+    /// within a month, then hours and minutes on the day.
+    @Test func countdownShowsTheTwoUnitsThatMatter() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(identifier: "America/Vancouver"))
+        let start = try #require(calendar.date(from: DateComponents(year: 2026, month: 11, day: 3, hour: 13, minute: 18)))
+        func columns(_ components: DateComponents) throws -> [String] {
+            let departure = try #require(calendar.date(byAdding: components, to: start))
+            return FlightCountdownText.components(until: departure, from: start, calendar: calendar)
+                .map { "\($0.value) \($0.unit)" }
         }
-        #expect(headline(47 * day + 17 * hour) == "47 days")
-        #expect(headline(day) == "1 day")
-        #expect(headline(5 * hour + 1_800) == "5 hours")
-        #expect(headline(30) == "1 minute")
-        #expect(headline(-1) == "Departed")
-        let marked = FlightCountdownText.headline(until: now.addingTimeInterval(47 * day), from: now)
-        #expect(marked.runs.contains { $0.measurement == .value })
+        #expect(try columns(DateComponents(month: 1, day: 17, hour: 5)) == ["1 month", "17 day"])
+        #expect(try columns(DateComponents(month: 14)) == ["14 month", "0 day"])
+        #expect(try columns(DateComponents(day: 29, hour: 23, minute: 59)) == ["29 day", "23 hour"])
+        #expect(try columns(DateComponents(day: 1)) == ["1 day", "0 hour"])
+        #expect(try columns(DateComponents(hour: 5, minute: 7, second: 30)) == ["5 hour", "7 minute"])
+        #expect(try columns(DateComponents(minute: 45)) == ["0 hour", "45 minute"])
+        #expect(try columns(DateComponents(second: -1)).isEmpty)
+    }
+
+    @Test func unitsAgreeWithTheirNumbers() {
+        let locale = Locale(identifier: "en_US")
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = locale
+        func label(_ value: Int, _ unit: FlightCountdownUnit) -> String {
+            FlightCountdownComponent(value: value, unit: unit).unitLabel(calendar: calendar, locale: locale)
+        }
+        #expect(label(1, .month) == "month")
+        #expect(label(2, .month) == "months")
+        #expect(label(17, .day) == "days")
+        #expect(label(0, .hour) == "hours")
+        #expect(label(1, .minute) == "minute")
+    }
+
+    @Test func countdownIsSpokenAsTheCardShowsIt() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "en_US")
+        let departure = try #require(calendar.date(byAdding: DateComponents(month: 1, day: 17, hour: 3), to: now))
+        let spoken = FlightCountdownText.remaining(until: departure, from: now, calendar: calendar)
+        #expect(spoken.contains("1 month") && spoken.contains("17 days") && !spoken.contains("hour"))
     }
 }

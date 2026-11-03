@@ -11,6 +11,10 @@ enum FlightCountdownStyle {
     /// The countdown's number, scaled with Dynamic Type from these sizes.
     static let countdownSize: CGFloat = 56
     static let compactCountdownSize: CGFloat = 44
+    /// The gap between a countdown's columns, such as months and days.
+    static let clockSpacing: CGFloat = 16
+    /// Each column shows at least two digits, as a departures board does.
+    static let clockDigits = 2
     /// How far a long countdown may shrink to stay on one line.
     static let minimumCountdownScale: CGFloat = 0.5
 

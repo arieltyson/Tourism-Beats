@@ -97,7 +97,8 @@ struct FlightCountdownTests {
     }
 
     @Test func countdownNeverShowsZeroForAnUpcomingFlight() {
-        #expect(FlightCountdownText.remaining(until: now.addingTimeInterval(1), from: now) == Duration.seconds(60).formatted(.units(allowed: [.hours, .minutes], width: .abbreviated, maximumUnitCount: 2)))
+        let soon = FlightCountdownText.components(until: now.addingTimeInterval(1), from: now)
+        #expect(soon == [.init(value: 0, unit: .hour), .init(value: 1, unit: .minute)])
         #expect(FlightCountdownText.remaining(until: now, from: now) == "Scheduled departure passed")
     }
 

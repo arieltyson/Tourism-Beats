@@ -30,9 +30,11 @@ struct FlightCountdownFace: View {
                 }
             }
             Spacer(minLength: 0)
-            Text(countdown)
-                .lineLimit(1)
-                .minimumScaleFactor(FlightCountdownStyle.minimumCountdownScale)
+            FlightCountdownClock(
+                components: FlightCountdownText.components(until: flight.departure, from: date, calendar: calendar),
+                calendar: calendar,
+                numberSize: style == .card ? countdownSize : compactCountdownSize
+            )
             FlightProgressTrack(progress: flight.countdownProgress(at: date))
             if style.showsAirports {
                 HStack {
@@ -60,20 +62,16 @@ struct FlightCountdownFace: View {
         return flight.departure.formatted(format)
     }
 
-    /// The number set large and its unit at a reading size, as a departures
-    /// board would.
-    private var countdown: AttributedString {
-        var text = FlightCountdownText.headline(until: flight.departure, from: date)
-        text.font = .title2.bold()
-        for run in text.runs where run.measurement == .value {
-            text[run.range].font = .system(size: style == .card ? countdownSize : compactCountdownSize, weight: .bold)
-                .monospacedDigit()
-        }
-        return text
+    /// Months and days are counted on the departure airport's calendar, the
+    /// same one the date above is shown in.
+    private var calendar: Calendar {
+        var calendar = Calendar.autoupdatingCurrent
+        calendar.timeZone = flight.timeZone
+        return calendar
     }
 
     private var accessibilityDescription: String {
-        let remaining = FlightCountdownText.remaining(until: flight.departure, from: date, abbreviated: false)
+        let remaining = FlightCountdownText.remaining(until: flight.departure, from: date, calendar: calendar)
         return String(localized: """
             \(flight.spokenName), from \(flight.originName) to \(flight.destinationName), departs in \(remaining). \
             Scheduled departure \(flight.departureLabel)
