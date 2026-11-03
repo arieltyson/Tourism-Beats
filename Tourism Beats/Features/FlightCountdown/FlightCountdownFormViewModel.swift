@@ -9,7 +9,6 @@ final class FlightCountdownFormViewModel {
     var destination: String
     var departure: Date
     var timeZoneIdentifier: String
-    var timeZoneQuery = ""
     private let initialFlight: CountdownFlight
     private let id: UUID
     let isEditing: Bool
@@ -33,14 +32,7 @@ final class FlightCountdownFormViewModel {
     var hasChanges: Bool { flight != initialFlight }
 
     var timeZone: TimeZone { TimeZone(identifier: timeZoneIdentifier) ?? .gmt }
-    var timeZoneLabel: String { Self.label(for: timeZoneIdentifier) }
-
-    var matchingTimeZones: [String] {
-        TimeZone.knownTimeZoneIdentifiers.filter {
-            timeZoneQuery.isEmpty || Self.label(for: $0).localizedStandardContains(timeZoneQuery)
-                || $0.localizedStandardContains(timeZoneQuery)
-        }
-    }
+    var timeZoneLabel: String { FlightTimeZoneOption(timeZone: timeZone, at: departure).summary }
 
     var canSave: Bool {
         !flightNumber.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -62,10 +54,6 @@ final class FlightCountdownFormViewModel {
             timeZoneIdentifier: timeZoneIdentifier,
             countdownStartedAt: initialFlight.countdownStartedAt
         )
-    }
-
-    static func label(for identifier: String) -> String {
-        identifier.replacing("_", with: " ")
     }
 
     private static func isAirportCode(_ value: String) -> Bool {

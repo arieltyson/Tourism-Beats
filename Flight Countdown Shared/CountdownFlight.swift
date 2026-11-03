@@ -43,10 +43,13 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
     /// Where the flight lands, by city when it's known.
     var destinationName: String { destinationCity ?? destination }
 
+    /// The departure in the airport's local time with its GMT offset, such as
+    /// "Dec 20, 2026 at 1:50 PM GMT-7". Offsets are unambiguous where
+    /// abbreviations such as "MST" are not.
     var departureLabel: String {
         var style = Date.FormatStyle(date: .abbreviated, time: .shortened)
         style.timeZone = timeZone
-        return "\(departure.formatted(style)) \(timeZone.abbreviation(for: departure) ?? timeZoneIdentifier)"
+        return "\(departure.formatted(style)) \(timeZone.gmtOffsetLabel(at: departure))"
     }
 
     static func next(in flights: [Self], after date: Date) -> Self? {
