@@ -23,7 +23,7 @@ enum FlightICalendarWriter {
             "DTEND:\(utc(event.end))",
             "SUMMARY:\(escaped(event.title))",
             "LOCATION:\(escaped(event.location))",
-            "DESCRIPTION:\(escaped(event.notes))",
+            "DESCRIPTION:\(escaped(event.notes))"
         ]
         if let url = event.url { lines.append("URL:\(url.absoluteString)") }
         lines += ["END:VEVENT", "END:VCALENDAR"]
