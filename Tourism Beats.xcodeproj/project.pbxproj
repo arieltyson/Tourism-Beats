@@ -6,14 +6,6 @@
 	objectVersion = 70;
 	objects = {
 
-/* Begin PBXCopyFilesBuildPhase section */
-		FC0000000000000000000013 /* Embed App Extensions */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (FC0000000000000000000014,); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0; };
-/* End PBXCopyFilesBuildPhase section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FC0000000000000000000017 = {isa = PBXFileSystemSynchronizedBuildFileExceptionSet; membershipExceptions = (Info.plist,); target = FC000000000000000000000A; };
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXBuildFile section */
 		AF23D1E32C21213900A3406D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF23D1E22C21213900A3406D /* AVFoundation.framework */; };
 		AF653D862C213DDA002F7EFE /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D852C213DDA002F7EFE /* SceneKit.framework */; };
@@ -22,7 +14,7 @@
 		AF653D8D2C213E5E002F7EFE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D8C2C213E5E002F7EFE /* UIKit.framework */; };
 		AF653D8F2C213E64002F7EFE /* MusicKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D8E2C213E64002F7EFE /* MusicKit.framework */; };
 		AF653D912C213E7E002F7EFE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF653D902C213E7E002F7EFE /* QuartzCore.framework */; };
-		FC0000000000000000000014 = {isa = PBXBuildFile; fileRef = FC000000000000000000000C; settings = {ATTRIBUTES = (RemoveHeadersOnCopy,); }; };
+		FC0000000000000000000014 /* Flight Countdown Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FC000000000000000000000C /* Flight Countdown Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +32,28 @@
 			remoteGlobalIDString = AF23D1B12C211F2400A3406D;
 			remoteInfo = "Tourism Beats";
 		};
-		FC0000000000000000000016 = {isa = PBXContainerItemProxy; containerPortal = AF23D1AA2C211F2400A3406D; proxyType = 1; remoteGlobalIDString = FC000000000000000000000A; remoteInfo = "Flight Countdown Widget"; };
+		FC0000000000000000000016 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AF23D1AA2C211F2400A3406D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC000000000000000000000A;
+			remoteInfo = "Flight Countdown Widget";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FC0000000000000000000013 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FC0000000000000000000014 /* Flight Countdown Widget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AF23D1B22C211F2400A3406D /* Tourism Beats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tourism Beats.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,12 +70,22 @@
 		FC000000000000000000000C /* Flight Countdown Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Flight Countdown Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FC0000000000000000000017 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FC000000000000000000000A /* Flight Countdown Widget */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AF57609C2DF4BAA90052E696 /* Tourism Beats */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Tourism Beats"; sourceTree = "<group>"; };
 		AFB8A0B52DF40E32000CA6A7 /* Tourism BeatsTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Tourism BeatsTests"; sourceTree = "<group>"; };
 		AFB8A0BA2DF40E36000CA6A7 /* Tourism BeatsUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Tourism BeatsUITests"; sourceTree = "<group>"; };
 		FC0000000000000000000001 /* Flight Countdown Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Flight Countdown Shared"; sourceTree = "<group>"; };
-		FC000000000000000000000B /* Flight Countdown Widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (FC0000000000000000000017,); explicitFileTypes = {}; explicitFolders = (); path = "Flight Countdown Widget"; sourceTree = "<group>"; };
+		FC000000000000000000000B /* Flight Countdown Widget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (FC0000000000000000000017 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Flight Countdown Widget"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +117,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC000000000000000000000E = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		FC000000000000000000000E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -152,7 +180,9 @@
 			);
 			buildRules = (
 			);
-			dependencies = (FC0000000000000000000015,);
+			dependencies = (
+				FC0000000000000000000015 /* PBXTargetDependency */,
+			);
 			fileSystemSynchronizedGroups = (
 				AF57609C2DF4BAA90052E696 /* Tourism Beats */,
 				FC0000000000000000000001 /* Flight Countdown Shared */,
@@ -205,16 +235,26 @@
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		FC000000000000000000000A /* Flight Countdown Widget */ = {
-            isa = PBXNativeTarget;
-            buildConfigurationList = FC0000000000000000000012;
-            buildPhases = (FC000000000000000000000D, FC000000000000000000000E, FC000000000000000000000F,);
-            buildRules = (); dependencies = ();
-            fileSystemSynchronizedGroups = (FC000000000000000000000B, FC0000000000000000000001,);
-            name = "Flight Countdown Widget";
-            productName = "Flight Countdown Widget";
-            productReference = FC000000000000000000000C;
-            productType = "com.apple.product-type.app-extension";
-        };
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC0000000000000000000012 /* Build configuration list for PBXNativeTarget "Flight Countdown Widget" */;
+			buildPhases = (
+				FC000000000000000000000D /* Sources */,
+				FC000000000000000000000E /* Frameworks */,
+				FC000000000000000000000F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FC0000000000000000000001 /* Flight Countdown Shared */,
+				FC000000000000000000000B /* Flight Countdown Widget */,
+			);
+			name = "Flight Countdown Widget";
+			productName = "Flight Countdown Widget";
+			productReference = FC000000000000000000000C /* Flight Countdown Widget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -283,7 +323,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC000000000000000000000F = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		FC000000000000000000000F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -308,7 +354,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC000000000000000000000D = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		FC000000000000000000000D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -322,7 +374,11 @@
 			target = AF23D1B12C211F2400A3406D /* Tourism Beats */;
 			targetProxy = AF23D1CD2C211F2500A3406D /* PBXContainerItemProxy */;
 		};
-		FC0000000000000000000015 = {isa = PBXTargetDependency; target = FC000000000000000000000A; targetProxy = FC0000000000000000000016; };
+		FC0000000000000000000015 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC000000000000000000000A /* Flight Countdown Widget */;
+			targetProxy = FC0000000000000000000016 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -601,44 +657,60 @@
 			};
 			name = Release;
 		};
-		FC0000000000000000000010 = {isa = XCBuildConfiguration; buildSettings = {
-                APPLICATION_EXTENSION_API_ONLY = YES;
-                CODE_SIGN_ENTITLEMENTS = "Flight Countdown Widget/FlightCountdownWidget.entitlements";
-                CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 1;
-                GENERATE_INFOPLIST_FILE = YES;
-                INFOPLIST_FILE = "Flight Countdown Widget/Info.plist";
-                INFOPLIST_KEY_CFBundleDisplayName = "Flight Countdown";
-                IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks",);
-                MARKETING_VERSION = 5.8.0;
-                PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats.FlightCountdown";
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SKIP_INSTALL = YES;
-                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-                SWIFT_STRICT_CONCURRENCY = complete;
-                SWIFT_VERSION = 6.0;
-                TARGETED_DEVICE_FAMILY = 1;
-            }; name = Debug; };
-		FC0000000000000000000011 = {isa = XCBuildConfiguration; buildSettings = {
-                APPLICATION_EXTENSION_API_ONLY = YES;
-                CODE_SIGN_ENTITLEMENTS = "Flight Countdown Widget/FlightCountdownWidget.entitlements";
-                CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 1;
-                GENERATE_INFOPLIST_FILE = YES;
-                INFOPLIST_FILE = "Flight Countdown Widget/Info.plist";
-                INFOPLIST_KEY_CFBundleDisplayName = "Flight Countdown";
-                IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks",);
-                MARKETING_VERSION = 5.8.0;
-                PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats.FlightCountdown";
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SKIP_INSTALL = YES;
-                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-                SWIFT_STRICT_CONCURRENCY = complete;
-                SWIFT_VERSION = 6.0;
-                TARGETED_DEVICE_FAMILY = 1;
-            }; name = Release; };
+		FC0000000000000000000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = "Flight Countdown Widget/FlightCountdownWidget.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Flight Countdown Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Flight Countdown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 5.8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats.FlightCountdown";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FC0000000000000000000011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = "Flight Countdown Widget/FlightCountdownWidget.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Flight Countdown Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Flight Countdown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 5.8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.arieljtyson.Tourism-Beats.FlightCountdown";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -678,7 +750,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FC0000000000000000000012 = {isa = XCConfigurationList; buildConfigurations = (FC0000000000000000000010, FC0000000000000000000011,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		FC0000000000000000000012 /* Build configuration list for PBXNativeTarget "Flight Countdown Widget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC0000000000000000000010 /* Debug */,
+				FC0000000000000000000011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 	};
 	rootObject = AF23D1AA2C211F2400A3406D /* Project object */;
