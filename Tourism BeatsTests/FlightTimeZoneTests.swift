@@ -28,6 +28,24 @@ struct FlightTimeZoneTests {
         #expect(try zone("Europe/London").gmtOffsetLabel(at: winter) == "GMT+0")
     }
 
+    /// The card's time carries its zone, so 1:50 PM in Vancouver can't be
+    /// mistaken for 1:50 PM wherever the widget is read.
+    @Test func cardTimesNameTheirTimeZone() throws {
+        var vancouver = Calendar(identifier: .gregorian)
+        vancouver.timeZone = try zone("America/Vancouver")
+        let departure = try #require(vancouver.date(from: DateComponents(year: 2026, month: 12, day: 20, hour: 13, minute: 50)))
+        let flight = CountdownFlight(
+            airlineCode: "AC", flightNumber: "308", origin: "YVR", destination: "YUL",
+            departure: departure, timeZoneIdentifier: "America/Vancouver"
+        )
+        let offset = vancouver.timeZone.gmtOffsetLabel(at: departure)
+        let full = flight.departureSummary(showsTime: true)
+        #expect(full.hasSuffix(offset) && full.contains("Sun") && full.contains("1:50"))
+        let compact = flight.departureSummary(showsTime: true, includesWeekday: false)
+        #expect(compact.hasSuffix(offset) && !compact.contains("Sun"))
+        #expect(!flight.departureSummary(showsTime: false).contains("GMT"))
+    }
+
     @Test func optionsNamePlacesAndSearchByOffset() throws {
         let option = FlightTimeZoneOption(timeZone: try zone("America/Argentina/Buenos_Aires"), at: winter)
         #expect(option.city == "Buenos Aires")

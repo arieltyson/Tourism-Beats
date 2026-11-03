@@ -58,6 +58,23 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
         return "\(departure.formatted(style)) \(timeZone.gmtOffsetLabel(at: departure))"
     }
 
+    /// When the flight leaves, told on the card, such as "Sun, Dec 20 at
+    /// 1:50 PM GMT-7". The time is always followed by its GMT offset, so it
+    /// reads correctly from any time zone, in the same form the time zone
+    /// was chosen in. Without the time, it's just the day, such as "Dec 20".
+    func departureSummary(showsTime: Bool, includesWeekday: Bool = true) -> String {
+        var format = Date.FormatStyle.dateTime.month(.abbreviated).day()
+        if showsTime {
+            format = format.hour().minute()
+            if includesWeekday { format = format.weekday(.abbreviated) }
+        }
+        format.timeZone = timeZone
+        let day = departure.formatted(format)
+        guard showsTime else { return day }
+        return String(localized: "\(day) \(timeZone.gmtOffsetLabel(at: departure))",
+                      comment: "A departure time followed by its GMT offset, such as Sun, Dec 20 at 1:50 PM GMT-7")
+    }
+
     /// A flight to show where a real one isn't available yet, such as the
     /// widget gallery.
     static func sample(from date: Date) -> Self {

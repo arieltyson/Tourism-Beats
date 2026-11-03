@@ -16,9 +16,14 @@ struct FlightCountdownFace: View {
                 VStack(alignment: .leading) {
                     Text(flight.destinationName.isEmpty ? String(localized: "Destination") : flight.destinationName)
                         .font(.headline)
-                    Text(departureDay)
-                        .font(.subheadline)
-                        .opacity(FlightCountdownStyle.secondaryOpacity)
+                    // Where the full line doesn't fit, the weekday gives way
+                    // before the time zone does.
+                    ViewThatFits(in: .horizontal) {
+                        Text(flight.departureSummary(showsTime: style.showsTime))
+                        Text(flight.departureSummary(showsTime: style.showsTime, includesWeekday: false))
+                    }
+                    .font(.subheadline)
+                    .opacity(FlightCountdownStyle.secondaryOpacity)
                 }
                 .lineLimit(1)
                 Spacer(minLength: FlightCountdownStyle.spacing)
@@ -51,15 +56,6 @@ struct FlightCountdownFace: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityDescription)
-    }
-
-    /// The departure on the airport's own calendar, such as "Sun, Dec 20".
-    private var departureDay: String {
-        var format = style.showsTime
-            ? Date.FormatStyle.dateTime.weekday(.abbreviated).month(.abbreviated).day().hour().minute()
-            : Date.FormatStyle.dateTime.month(.abbreviated).day()
-        format.timeZone = flight.timeZone
-        return flight.departure.formatted(format)
     }
 
     /// Months and days are counted on the departure airport's calendar, the
