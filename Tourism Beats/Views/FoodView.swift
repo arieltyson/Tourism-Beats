@@ -21,7 +21,10 @@ struct FoodView: View {
                 )
                 .padding(.horizontal, SpacingTokens.medium)
 
-                if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
+                if self.viewModel.isShowingTopCuisines, !self.restaurants.isEmpty {
+                    WorldCuisineRankingSection(cuisines: WorldCuisineRanking.top, source: WorldCuisineRanking.source)
+                        .padding([.horizontal, .bottom], SpacingTokens.medium)
+                } else if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
                     // Adding lives in the toolbar alone; the empty journal
                     // offers something to explore instead of a second button.
                     FoodEmptyState()
@@ -53,7 +56,7 @@ struct FoodView: View {
         )
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                FoodJournalFilterMenu(selectedFilter: self.$viewModel.selectedFilter)
+                FoodJournalFilterMenu(viewModel: self.viewModel)
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -152,57 +155,6 @@ private struct FoodJournalContent: View {
         }
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.vertical, SpacingTokens.small)
-    }
-}
-
-// MARK: - FoodJournalFilterMenu
-
-private struct FoodJournalFilterMenu: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    @Binding var selectedFilter: RestaurantStatus?
-
-    var body: some View {
-        Menu {
-            Button {
-                self.selectedFilter = nil
-            } label: {
-                Label(
-                    "All",
-                    systemImage: self.selectedFilter == nil ? "checkmark" : ""
-                )
-            }
-
-            ForEach(RestaurantStatus.allCases) { status in
-                Button {
-                    self.selectedFilter = status
-                } label: {
-                    Label(
-                        status.label,
-                        systemImage: self.selectedFilter == status
-                            ? "checkmark"
-                            : status.systemImage
-                    )
-                }
-            }
-        } label: {
-            if self.reduceMotion {
-                Image(
-                    systemName: self.selectedFilter == nil
-                        ? "line.3.horizontal.decrease.circle"
-                        : "line.3.horizontal.decrease.circle.fill"
-                )
-            } else {
-                Image(
-                    systemName: self.selectedFilter == nil
-                        ? "line.3.horizontal.decrease.circle"
-                        : "line.3.horizontal.decrease.circle.fill"
-                )
-                .symbolEffect(.bounce, value: self.selectedFilter)
-            }
-        }
-        .accessibilityLabel("Filter restaurants")
-        .accessibilityInputLabels(["Filter Restaurants", "Restaurant Filter"])
     }
 }
 

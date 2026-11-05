@@ -7,7 +7,10 @@ import SwiftUI
 @Observable
 final class FoodViewModel {
     var searchText: String = ""
-    var selectedFilter: RestaurantStatus?
+    private(set) var selectedFilter: RestaurantStatus?
+    /// Shows the world's best cuisines in place of the journal, so the
+    /// ranking stays a tap away once the journal has restaurants.
+    private(set) var showsTopCuisines = false
     var isAddSheetPresented: Bool = false
     var restaurantToEdit: Restaurant?
 
@@ -16,6 +19,26 @@ final class FoodViewModel {
     /// Uses the bundled catalog unless given another, such as in tests.
     init(catalog: FoodCatalog = .bundled) {
         self.catalog = catalog
+    }
+
+    /// Shows the journal, narrowed to `filter` when there is one.
+    func select(_ filter: RestaurantStatus?) {
+        self.selectedFilter = filter
+        self.showsTopCuisines = false
+    }
+
+    func selectTopCuisines() {
+        self.showsTopCuisines = true
+    }
+
+    /// Whether the journal is showing anything other than all of it.
+    var isNarrowed: Bool {
+        self.selectedFilter != nil || self.showsTopCuisines
+    }
+
+    /// Searching always searches the journal itself.
+    var isShowingTopCuisines: Bool {
+        self.showsTopCuisines && self.searchText.isEmpty
     }
 
     func cityGroups(from restaurants: [Restaurant]) -> [FoodJournalCityGroup] {
