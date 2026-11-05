@@ -17,13 +17,10 @@ struct TripSectionView: View {
                     .font(TypographyTokens.sectionHeader)
                     .bold()
                     .foregroundStyle(.primary)
-
-                Spacer()
-
-                Text(self.section.trips.count, format: .number)
-                    .font(TypographyTokens.caption.monospacedDigit())
-                    .foregroundStyle(.secondary)
             }
+            // The cards below show how many there are; the header just names them.
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
 
             ForEach(self.section.trips) { trip in
                 NavigationLink {
