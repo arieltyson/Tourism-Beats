@@ -19,8 +19,8 @@ struct FlightCountdownFace: View {
                     // Where the full line doesn't fit, the weekday gives way
                     // before the time zone does.
                     ViewThatFits(in: .horizontal) {
-                        Text(flight.departureSummary(showsTime: style.showsTime))
-                        Text(flight.departureSummary(showsTime: style.showsTime, includesWeekday: false))
+                        FlightDepartureLine(flight: flight, showsTime: style.showsTime)
+                        FlightDepartureLine(flight: flight, showsTime: style.showsTime, includesWeekday: false)
                     }
                     .font(.subheadline)
                     .opacity(FlightCountdownStyle.secondaryOpacity)

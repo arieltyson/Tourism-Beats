@@ -44,6 +44,25 @@ struct FlightTimeZoneTests {
         let compact = flight.departureSummary(showsTime: true, includesWeekday: false)
         #expect(compact.hasSuffix(offset) && !compact.contains("Sun"))
         #expect(!flight.departureSummary(showsTime: false).contains("GMT"))
+        #expect(!flight.departureDay(showsTime: true).contains("GMT"))
+        #expect(flight.departureOffset == offset)
+    }
+
+    /// The day period sits quietly in lowercase, where the locale has one.
+    @Test func dayPeriodIsLowercase() throws {
+        var vancouver = Calendar(identifier: .gregorian)
+        vancouver.timeZone = try zone("America/Vancouver")
+        let departure = try #require(vancouver.date(from: DateComponents(year: 2026, month: 12, day: 20, hour: 13, minute: 50)))
+        let flight = CountdownFlight(
+            airlineCode: "AC", flightNumber: "308", origin: "YVR", destination: "YUL",
+            departure: departure, timeZoneIdentifier: "America/Vancouver"
+        )
+        let day = flight.departureDay(showsTime: true)
+        #expect(day == day.lowercased(with: .current) || !day.contains("PM"))
+        #expect(!day.contains("PM") && !day.contains("AM"))
+        if [.oneToTwelve, .zeroToEleven].contains(Locale.current.hourCycle) {
+            #expect(day.contains("pm"))
+        }
     }
 
     @Test func optionsNamePlacesAndSearchByOffset() throws {
