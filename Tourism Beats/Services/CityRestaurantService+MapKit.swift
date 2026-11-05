@@ -13,7 +13,7 @@ extension CityRestaurantService {
     static func multiQueryMapKitSearch(
         for city: CityModel
     ) async -> [RestaurantModels.MapKitRestaurantResult] {
-        let queries = RestaurantRankFusion.queries(forCityNamed: city.name)
+        let queries = RestaurantRankFusion.queries
 
         var appearanceCounts: [String: Int] = [:]
         var foodQueryCounts: [String: Int] = [:]
@@ -25,8 +25,13 @@ extension CityRestaurantService {
             queries: queries.map(\.text)
         )
 
+        // A search that found almost nothing matched names, not quality;
+        // only the searches that returned a ranking take part.
+        let isRanking = RestaurantRankFusion.ranks(resultCounts: resultsByQuery.map(\.count))
+        let rankingQueries = zip(queries, isRanking).filter(\.1).map(\.0)
+
         // Fold in query order so ties resolve the same way on every load.
-        for (query, results) in zip(queries, resultsByQuery) {
+        for ((query, results), isRanked) in zip(zip(queries, resultsByQuery), isRanking) where isRanked {
             self.accumulateResults(
                 from: results,
                 into: &bestResultByKey,
@@ -63,7 +68,7 @@ extension CityRestaurantService {
                 popularityRank: result.popularityRank,
                 crossQueryAppearanceCount: appearanceCounts[key, default: 1],
                 foodQueryAppearanceCount: foodQueryCounts[key, default: 0],
-                appleMapsConsensus: RestaurantRankFusion.normalized(fusedTotals[key, default: 0]),
+                appleMapsConsensus: RestaurantRankFusion.normalized(fusedTotals[key, default: 0], over: rankingQueries),
                 mapItemIdentifier: result.mapItemIdentifier
             )
         }
