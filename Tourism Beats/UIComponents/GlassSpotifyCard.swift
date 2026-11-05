@@ -123,8 +123,10 @@ private struct GlassSpotifyCardInfo: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+            // The service stays recognisable while the song is a placeholder.
             ProviderLogo.spotify.view
                 .frame(width: 16, height: 16)
+                .unredacted()
                 .accessibilityHidden(true)
 
             Text(self.songTitle)

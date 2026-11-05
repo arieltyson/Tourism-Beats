@@ -158,8 +158,10 @@ private struct GlassMusicCardInfo: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+            // The service stays recognisable while the song is a placeholder.
             ProviderLogo.appleMusic.view
                 .frame(width: 16, height: 16)
+                .unredacted()
                 .accessibilityHidden(true)
 
             Text(self.songTitle)
@@ -211,6 +213,8 @@ private struct GlassMusicCardControls: View {
         .labelStyle(.iconOnly)
         .foregroundStyle(.primary)
         .buttonStyle(.plain)
+        // Controls keep their shape while the song loads; they're disabled instead.
+        .unredacted()
     }
 }
 

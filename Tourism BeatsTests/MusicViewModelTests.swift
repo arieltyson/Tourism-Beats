@@ -65,6 +65,12 @@ struct MusicViewModelTests {
         #expect(viewModel.songTitle == "Music Not Available")
         #expect(!viewModel.artistName.localizedStandardContains("Apple"))
     }
+
+    @Test func onlyAnArrivedSongShowsInThePlayers() {
+        #expect(MusicAvailability.available.showsSongDetails)
+        #expect(!MusicAvailability.loading.showsSongDetails)
+        #expect(MusicAvailability.loading.showsPlayers)
+    }
 }
 
 // MARK: - StubMusicService

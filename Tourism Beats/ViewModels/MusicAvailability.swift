@@ -7,6 +7,11 @@ enum MusicAvailability: Equatable, Sendable {
     /// The chart couldn't be reached; trying again may work.
     case failed
 
+    /// The players show the song only once it has arrived. While it's on
+    /// its way, the song header alone says so; the players hold their place
+    /// with placeholders, so nothing moves when the song lands.
+    var showsSongDetails: Bool { self == .available }
+
     /// Players appear only while there's a song, or one is on its way;
     /// with nothing to play, the song header alone explains why.
     var showsPlayers: Bool {

@@ -71,6 +71,10 @@ struct MusicView: View {
                         )
                     }
                     .padding(.horizontal, SpacingTokens.medium)
+                    // Loading is said once, by the header above.
+                    .redacted(reason: self.viewModel.availability.showsSongDetails ? [] : .placeholder)
+                    .disabled(!self.viewModel.availability.showsSongDetails)
+                    .accessibilityHidden(!self.viewModel.availability.showsSongDetails)
                     .transition(.opacity)
                 }
 
