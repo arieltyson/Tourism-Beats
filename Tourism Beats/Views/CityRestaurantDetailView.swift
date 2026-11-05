@@ -121,23 +121,24 @@ extension CityRestaurantDetailView {
                         .bold()
                         .foregroundStyle(AppColors.label)
 
-                    if let websiteURL = self.restaurant.websiteURL {
-                        Link(destination: websiteURL) {
-                            Self.LinkLabel(
-                                title: "Website",
-                                subtitle: websiteURL.host ?? websiteURL.absoluteString,
-                                systemImage: "safari"
-                            )
-                        }
-                        .buttonStyle(.plain)
-                    }
-
+                    // Directions are what most people come for, so they lead.
                     if let mapsURL = self.restaurant.mapsURL(in: self.city) {
                         Link(destination: mapsURL) {
                             Self.LinkLabel(
                                 title: "Open in Google Maps",
                                 subtitle: self.restaurant.address ?? self.restaurant.name,
                                 systemImage: "map.fill"
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+
+                    if let websiteURL = self.restaurant.websiteURL {
+                        Link(destination: websiteURL) {
+                            Self.LinkLabel(
+                                title: "Website",
+                                subtitle: websiteURL.host ?? websiteURL.absoluteString,
+                                systemImage: "safari"
                             )
                         }
                         .buttonStyle(.plain)
