@@ -60,7 +60,7 @@ final class FlightCountdownViewModel {
         }
     }
 
-    /// The flight's card photos in collage order, as far as they've loaded.
+    /// The flight's card photos in the order chosen, as far as they've loaded.
     func images(for flight: CountdownFlight) -> [FlightCardImage] {
         FlightCardImage.images(for: flight, from: photos)
     }

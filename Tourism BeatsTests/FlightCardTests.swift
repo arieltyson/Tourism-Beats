@@ -97,11 +97,11 @@ struct FlightCardTests {
         #expect(form.cardTheme == FlightCardTheme.gradients.first)
     }
 
-    @Test func aCollageHoldsAtMostFourPhotos() async throws {
+    @Test func aCardHoldsAtMostFourPhotos() async throws {
         let form = FlightCountdownFormViewModel(flight: flight())
         let data = try cameraPhoto()
         await form.usePhotos((0..<6).map { source("\($0)", data) })
-        #expect(form.photos.count == FlightCountdownStyle.maximumCollageCount)
+        #expect(form.photos.count == FlightCountdownStyle.maximumPhotoCount)
     }
 
     @Test func photosAreSavedWithTheFlightAndRemovedWhenNoLongerUsed() async throws {
@@ -147,8 +147,8 @@ struct FlightCardTests {
         #expect(model.changeCount == 5)
     }
 
-    /// A card from before collages kept its one photo under the flight's ID.
-    @Test func singlePhotoCardsBecomeOnePhotoCollages() throws {
+    /// A card from before several photos kept its one photo under the flight's ID.
+    @Test func singlePhotoCardsKeepTheirPhoto() throws {
         let json = """
         {"id":"00000000-0000-0000-0000-000000000002","airlineCode":"AC","flightNumber":"308","origin":"YVR","destination":"YUL","departure":100,"timeZoneIdentifier":"America/Vancouver","cardTheme":"photo"}
         """

@@ -28,10 +28,10 @@ enum FlightCountdownStyle {
         [0, 1], [0.5, 1], [1, 1],
     ]
 
-    /// The hairline between photos in a collage.
-    static let collageSpacing: CGFloat = 2
-    /// The most photos a card holds and still reads at the small widget's size.
-    static let maximumCollageCount = 4
+    /// The most photos a card takes turns showing.
+    static let maximumPhotoCount = 4
+    /// How long each photo fills the card before the next takes its turn.
+    static let photoInterval: TimeInterval = 15 * FlightCountdownConfiguration.secondsPerMinute
 
     /// Darkens a photo only behind the title and the route, easing to clear
     /// between them. A scrim across the whole photo flattens it, so the text

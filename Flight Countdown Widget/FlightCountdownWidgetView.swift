@@ -28,7 +28,10 @@ struct FlightCountdownWidgetView: View {
             }
         }
         .containerBackground(for: .widget) {
-            FlightCardBackground(theme: entry.flight?.cardTheme ?? .twilight, photos: entry.photos)
+            FlightCardBackground(
+                theme: entry.flight?.cardTheme ?? .twilight,
+                photo: entry.flight.flatMap { FlightPhotoRotation.photo(from: entry.photos, of: $0, at: entry.date) }
+            )
         }
         .widgetURL(FlightCountdownConfiguration.deepLink)
     }

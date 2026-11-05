@@ -12,7 +12,9 @@ struct FlightCountdownCard: View {
         FlightCountdownFace(flight: flight, date: date)
             .padding(SpacingTokens.large)
             .frame(maxWidth: .infinity, minHeight: minimumHeight, alignment: .leading)
-            .background { FlightCardBackground(theme: flight.cardTheme, photos: photos) }
+            .background {
+                FlightCardBackground(theme: flight.cardTheme, photo: FlightPhotoRotation.photo(from: photos, of: flight, at: date))
+            }
             .clipShape(.rect(cornerRadius: FlightCountdownTokens.cardCornerRadius))
     }
 }

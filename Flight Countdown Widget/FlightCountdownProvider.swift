@@ -47,7 +47,7 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
         let store = FlightPhotoStore()
         var images: [UUID: CGImage] = [:]
         for flight in flights where flight.cardTheme == .photo {
-            let pixelSize = photoPixelSize(for: displaySize, count: flight.photos.count)
+            let pixelSize = photoPixelSize(for: displaySize)
             for photo in flight.photos where images[photo.id] == nil {
                 images[photo.id] = await store.image(for: photo.id, maximumPixelSize: pixelSize)
             }
@@ -55,12 +55,9 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
         return images
     }
 
-    /// A photo sharing the widget with two or more others spans at most
-    /// half of it, so it's loaded at half the size to stay within the
-    /// widget's memory.
-    private static func photoPixelSize(for size: CGSize, count: Int) -> Int {
-        let side = max(size.width, size.height) * FlightCountdownConfiguration.maximumDisplayScale
-        return Int(count > 2 ? side / 2 : side)
+    /// Each photo fills the whole widget in its turn.
+    private static func photoPixelSize(for size: CGSize) -> Int {
+        Int(max(size.width, size.height) * FlightCountdownConfiguration.maximumDisplayScale)
     }
 
     private static func entry(at date: Date, flight: CountdownFlight?, images: [UUID: CGImage]) -> FlightCountdownEntry {

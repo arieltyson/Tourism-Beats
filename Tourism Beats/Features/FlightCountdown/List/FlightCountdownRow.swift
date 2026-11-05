@@ -10,7 +10,7 @@ struct FlightCountdownRow: View {
 
     var body: some View {
         HStack(spacing: SpacingTokens.small) {
-            FlightCardBackground(theme: flight.cardTheme, photos: photos)
+            FlightCardBackground(theme: flight.cardTheme, photo: FlightPhotoRotation.photo(from: photos, of: flight, at: now))
                 .frame(width: thumbnailSize, height: thumbnailSize)
                 .clipShape(.rect(cornerRadius: FlightCountdownTokens.thumbnailCornerRadius))
                 .accessibilityHidden(true)

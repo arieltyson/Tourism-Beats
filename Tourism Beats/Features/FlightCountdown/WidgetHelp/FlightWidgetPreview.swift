@@ -10,7 +10,12 @@ struct FlightWidgetPreview: View {
             FlightCountdownFace(flight: flight, date: context.date, style: .small)
                 .padding(FlightCountdownTokens.widgetPreviewPadding)
                 .frame(width: FlightCountdownTokens.smallWidgetSide, height: FlightCountdownTokens.smallWidgetSide)
-                .background { FlightCardBackground(theme: flight.cardTheme, photos: photos) }
+                .background {
+                    FlightCardBackground(
+                        theme: flight.cardTheme,
+                        photo: FlightPhotoRotation.photo(from: photos, of: flight, at: context.date)
+                    )
+                }
                 .clipShape(.rect(cornerRadius: FlightCountdownTokens.widgetPreviewCornerRadius))
         }
         // Widgets cap text size to fit; the preview matches what will appear.

@@ -6,7 +6,7 @@ import SwiftUI
 /// with actions, so framing never depends on a gesture.
 struct FlightPhotoFramingTile: View {
     @Binding var photo: FlightCardImage
-    /// The photo's place in the collage, counted from 1.
+    /// The photo's place among the card's photos, counted from 1.
     let position: Int
     let count: Int
 

@@ -13,7 +13,7 @@ final class FlightCountdownFormViewModel {
     var departure: Date
     private(set) var timeZoneIdentifier: String
     var cardTheme: FlightCardTheme
-    /// The card's photos in collage order: saved ones and ones just chosen.
+    /// The card's photos in the order chosen: saved ones and ones just chosen.
     private(set) var photos: [FlightCardPhoto]
     /// Every photo's pixels, saved or just chosen, by photo.
     private(set) var images: [UUID: CGImage]
@@ -135,7 +135,7 @@ final class FlightCountdownFormViewModel {
         isPreparingPhoto = true
         defer { isPreparingPhoto = false }
         var chosen: [FlightCardPhoto] = []
-        for source in sources.prefix(FlightCountdownStyle.maximumCollageCount) {
+        for source in sources.prefix(FlightCountdownStyle.maximumPhotoCount) {
             if let identifier = source.identifier,
                let existing = photos.first(where: { $0.sourceIdentifier == identifier }) {
                 chosen.append(existing)

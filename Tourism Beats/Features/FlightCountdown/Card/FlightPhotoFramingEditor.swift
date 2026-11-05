@@ -1,16 +1,20 @@
 import SwiftUI
 
-/// Frames a card's photos in place: the card as it will look, with each
-/// photo moved and zoomed directly beneath the countdown.
+/// Frames a card's photos in place: the card as it will look, with the
+/// chosen photo filling it, moved and zoomed directly beneath the countdown.
+/// Each photo fills the whole card in its turn, so each is framed alone.
 struct FlightPhotoFramingEditor: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let flight: CountdownFlight
     let onDone: ([UUID: FlightPhotoFraming]) -> Void
     @State private var photos: [FlightCardImage]
+    /// The photo being framed.
+    @State private var selection = 0
     private let original: [FlightPhotoFraming]
 
     @ScaledMetric private var minimumHeight = FlightCountdownTokens.cardMinimumHeight
+    @ScaledMetric private var thumbnailSize = FlightCountdownTokens.swatchSize
 
     init(flight: CountdownFlight, photos: [FlightCardImage], onDone: @escaping ([UUID: FlightPhotoFraming]) -> Void) {
         self.flight = flight
@@ -29,14 +33,16 @@ struct FlightPhotoFramingEditor: View {
                     .allowsHitTesting(false)
                     .accessibilityHidden(true)
                     .background {
-                        FlightPhotoCollage(count: photos.count) { index in
-                            FlightPhotoFramingTile(photo: $photos[index], position: index + 1, count: photos.count)
+                        if photos.indices.contains(selection) {
+                            FlightPhotoFramingTile(photo: $photos[selection], position: selection + 1, count: photos.count)
+                                // A new photo starts its own gesture.
+                                .id(photos[selection].id)
+                                .overlay { FlightPhotoScrim().allowsHitTesting(false) }
                         }
-                        .background(.black)
-                        .overlay { FlightPhotoScrim().allowsHitTesting(false) }
                     }
                     .clipShape(.rect(cornerRadius: FlightCountdownTokens.cardCornerRadius))
-                Text(photos.count > 1 ? "Drag or pinch each photo to frame it." : "Drag or pinch the photo to frame it.")
+                if photos.count > 1 { chooser }
+                Text(photos.count > 1 ? "Drag or pinch to frame the photo, then choose the next one below." : "Drag or pinch the photo to frame it.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -67,6 +73,31 @@ struct FlightPhotoFramingEditor: View {
         }
         .presentationDetents([.medium, .large])
         .interactiveDismissDisabled(hasChanges)
+    }
+
+    /// The card's photos as thumbnails, framed as they are on the card;
+    /// choosing one frames it.
+    private var chooser: some View {
+        HStack(spacing: SpacingTokens.xSmall) {
+            ForEach(photos.indices, id: \.self) { index in
+                let isSelected = index == selection
+                Button { selection = index } label: {
+                    FlightFramedPhoto(photo: photos[index])
+                        .frame(width: thumbnailSize, height: thumbnailSize)
+                        .clipShape(.rect(cornerRadius: FlightCountdownTokens.thumbnailCornerRadius))
+                        .padding(FlightCountdownTokens.swatchRingInset)
+                        .overlay {
+                            if isSelected {
+                                RoundedRectangle(cornerRadius: FlightCountdownTokens.thumbnailCornerRadius + FlightCountdownTokens.swatchRingInset)
+                                    .strokeBorder(.tint, lineWidth: FlightCountdownTokens.swatchRingWidth)
+                            }
+                        }
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(Text("Photo \(index + 1) of \(photos.count)"))
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
     }
 
     private var hasChanges: Bool { photos.map(\.framing) != original }

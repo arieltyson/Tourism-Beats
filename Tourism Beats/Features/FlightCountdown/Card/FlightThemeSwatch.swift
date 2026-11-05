@@ -3,7 +3,7 @@ import SwiftUI
 /// One background a card can have, ringed when it's the chosen one.
 struct FlightThemeSwatch: View {
     let theme: FlightCardTheme
-    var photos: [FlightCardImage] = []
+    var photo: FlightCardImage?
     let isSelected: Bool
     let action: () -> Void
 
@@ -11,7 +11,7 @@ struct FlightThemeSwatch: View {
 
     var body: some View {
         Button(action: action) {
-            FlightCardBackground(theme: theme, photos: photos)
+            FlightCardBackground(theme: theme, photo: photo)
                 .frame(width: size, height: size)
                 .clipShape(.circle)
                 .padding(FlightCountdownTokens.swatchRingInset)

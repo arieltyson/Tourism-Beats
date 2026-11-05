@@ -2,7 +2,7 @@ import PhotosUI
 import SwiftUI
 
 /// Chooses a card's background: a designed one, or up to four photos from
-/// the library, arranged as a collage in the order they're chosen.
+/// the library that take turns filling the card.
 ///
 /// The photo picker runs outside the app, so no photo library access is
 /// requested; only the chosen photos are shared with Tourism Beats.
@@ -28,7 +28,7 @@ struct FlightCardDesignPicker: View {
                 }
                 let images = form.cardImages
                 if !images.isEmpty {
-                    FlightThemeSwatch(theme: .photo, photos: images, isSelected: form.cardTheme == .photo) {
+                    FlightThemeSwatch(theme: .photo, photo: images.first, isSelected: form.cardTheme == .photo) {
                         form.cardTheme = .photo
                     }
                 }
@@ -36,7 +36,7 @@ struct FlightCardDesignPicker: View {
                 let hasPhotos = !images.isEmpty
                 PhotosPicker(
                     selection: $photoItems,
-                    maxSelectionCount: FlightCountdownStyle.maximumCollageCount,
+                    maxSelectionCount: FlightCountdownStyle.maximumPhotoCount,
                     selectionBehavior: .ordered,
                     matching: .images,
                     photoLibrary: .shared()
