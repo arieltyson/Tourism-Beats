@@ -22,10 +22,10 @@ struct FoodView: View {
                 .padding(.horizontal, SpacingTokens.medium)
 
                 if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
-                    FoodEmptyState {
-                        self.viewModel.isAddSheetPresented = true
-                    }
-                    .padding(.top, SpacingTokens.large)
+                    // Adding lives in the toolbar alone; the empty journal
+                    // offers something to explore instead of a second button.
+                    FoodEmptyState()
+                        .padding([.horizontal, .bottom], SpacingTokens.medium)
                 } else {
                     FoodJournalContent(
                         cityGroups: self.viewModel.cityGroups(from: self.restaurants),
@@ -203,56 +203,6 @@ private struct FoodJournalFilterMenu: View {
         }
         .accessibilityLabel("Filter restaurants")
         .accessibilityInputLabels(["Filter Restaurants", "Restaurant Filter"])
-    }
-}
-
-// MARK: - FoodEmptyState
-
-private struct FoodEmptyState: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    let onAdd: () -> Void
-
-    var body: some View {
-        VStack(spacing: SpacingTokens.large) {
-            Image(systemName: "fork.knife.circle")
-                .font(.system(size: 64))
-                .foregroundStyle(AppColors.coral.opacity(0.6))
-                .symbolEffect(
-                    .pulse,
-                    options: .repeating,
-                    isActive: !self.reduceMotion
-                )
-
-            VStack(spacing: SpacingTokens.xSmall) {
-                Text("Your Food Journal")
-                    .font(TypographyTokens.songTitle)
-                    .bold()
-                    .foregroundStyle(.primary)
-
-                Text("Save restaurants city by city so every trip builds its own food story.")
-                    .font(TypographyTokens.body)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: 300)
-            }
-
-            Button {
-                self.onAdd()
-            } label: {
-                Label("Add Restaurant", systemImage: "plus")
-                    .font(TypographyTokens.cardLabel)
-                    .bold()
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, SpacingTokens.large)
-                    .padding(.vertical, SpacingTokens.small)
-                    .background(AppColors.coral, in: Capsule())
-            }
-            .buttonStyle(.plain)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(SpacingTokens.xLarge)
-        .accessibilityElement(children: .contain)
     }
 }
 
