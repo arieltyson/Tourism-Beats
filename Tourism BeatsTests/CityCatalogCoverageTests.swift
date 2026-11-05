@@ -7,6 +7,8 @@ struct CityCatalogCoverageTests {
         let walkabilityKeys = try Self.loadWalkabilityKeys()
         let requestedKeys: Set<String> = [
             Self.lookupKey(city: "Ouagadougou", countryCode: "BF"),
+            Self.lookupKey(city: "İzmir", countryCode: "TR"),
+            Self.lookupKey(city: "Kasane", countryCode: "BW"),
             Self.lookupKey(city: "Bandar Seri Begawan", countryCode: "BN"),
             Self.lookupKey(city: "Monrovia", countryCode: "LR"),
             Self.lookupKey(city: "Conakry", countryCode: "GN"),

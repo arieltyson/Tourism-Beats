@@ -4009,5 +4009,23 @@
     "latitude": 11.15,
     "longitude": -60.835,
     "timeZoneIdentifier": "America/Port_of_Spain"
+  },
+  {
+    "name": "İzmir",
+    "countryCode": "TR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Izmir_square_clock_tower.jpg/1280px-Izmir_square_clock_tower.jpg",
+    "latitude": 38.42444444,
+    "longitude": 27.13222222,
+    "timeZoneIdentifier": "Europe/Istanbul",
+    "searchAliases": ["Izmir", "Smyrna"]
+  },
+  {
+    "name": "Kasane",
+    "countryCode": "BW",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Chobe_River_at_Kasane.jpg/1280px-Chobe_River_at_Kasane.jpg",
+    "latitude": -17.81666667,
+    "longitude": 25.15,
+    "timeZoneIdentifier": "Africa/Gaborone",
+    "searchAliases": ["Chobe"]
   }
 ]

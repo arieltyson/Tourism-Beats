@@ -497,5 +497,7 @@
   {"city": "Monterrey", "countryCode": "MX", "walkScore": 55, "transitScore": 45},
   {"city": "Cayenne", "countryCode": "GF", "walkScore": 60, "transitScore": 25},
   {"city": "Tunapuna", "countryCode": "TT", "walkScore": 55, "transitScore": 40},
-  {"city": "Crown Point", "countryCode": "TT", "walkScore": 40, "transitScore": 15}
+  {"city": "Crown Point", "countryCode": "TT", "walkScore": 40, "transitScore": 15},
+  {"city": "İzmir", "countryCode": "TR", "walkScore": 65, "transitScore": 60},
+  {"city": "Kasane", "countryCode": "BW", "walkScore": 30, "transitScore": 5}
 ]
