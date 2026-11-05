@@ -71,7 +71,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 - 🎵 **Trending Music** — City-specific Apple Music playlists via MusicKit
 - 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content
 - 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city
-- ✈️ **Trip Planner** — Create and manage trip itineraries with activities, and fill any trip or day with suggested sights and restaurants from the city guide, grouped by area and reviewed before they are added
+- ✈️ **Trip Planner** — Create and manage trip itineraries with activities, and fill any trip or day with suggested sights and restaurants from the city guide, grouped by area, centred on your hotel when you add one, and reviewed before they are added
 - ✈️ **Flight Countdown** — Settings → Tools; count down to any flight, yours or a loved one's, by searching airlines and airports by name or city, counted in months and days, then days and hours, then hours and minutes as departure nears, with five card designs or up to four of your own photos that take turns filling the card in a shuffled order, each framed by dragging and pinching it on the card, shown in a small or medium Home Screen widget that counts down to your next flight and moves on to the one after once it departs, and added to Apple, Google, Outlook, or Notion Calendar without calendar access
 - 🌤️ **Live Weather** — Real-time conditions via WeatherKit
 - 🕐 **Local Time** — Live clocks for every city

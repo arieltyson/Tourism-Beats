@@ -5,8 +5,8 @@ import SwiftUI
 
 /// Sheet form for creating or editing a trip.
 ///
-/// Only the trip name and city are required. Country, dates, notes, and status
-/// remain lightweight and optional so users can sketch a plan quickly.
+/// Only the trip name and city are required. Country, hotel, dates, notes,
+/// and status remain lightweight and optional so users can sketch a plan quickly.
 struct AddEditTripView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dismiss) private var dismiss
@@ -23,6 +23,8 @@ struct AddEditTripView: View {
     @State private var endDate: Date
     @State private var status: TripStatus
     @State private var notes: String
+    @State private var stay: TripStay?
+    @State private var isSearchingStay = false
     @State private var saveErrorMessage: String?
     @State private var catalog = TripsViewModel()
     @State private var suggestsPlan: Bool = false
@@ -68,10 +70,22 @@ struct AddEditTripView: View {
         return Array(suggestions.prefix(8))
     }
 
+    /// The catalog city the trip is headed to, if it's one the app knows.
+    private var catalogCity: CityModel? {
+        self.catalog.cityModel(named: self.trimmedCity, in: self.trimmedCountry)
+    }
+
     /// The catalog city a new trip is headed to, which a plan can be suggested for.
     private var plannableCity: CityModel? {
-        guard !self.isEditing else { return nil }
-        return self.catalog.cityModel(named: self.trimmedCity, in: self.trimmedCountry)
+        self.isEditing ? nil : self.catalogCity
+    }
+
+    private var stayArea: TripStaySearchArea {
+        TripStaySearchArea(
+            cityName: self.catalogCity?.name ?? self.trimmedCity,
+            countryName: self.catalogCity?.country.name ?? self.trimmedCountry,
+            center: self.catalogCity?.coordinate
+        )
     }
 
     init(trip: Trip? = nil) {
@@ -98,6 +112,7 @@ struct AddEditTripView: View {
         self._endDate = State(initialValue: defaultEndDate)
         self._status = State(initialValue: trip?.status ?? .upcoming)
         self._notes = State(initialValue: trip?.notes ?? "")
+        self._stay = State(initialValue: trip?.stay)
     }
 
     var body: some View {
@@ -120,6 +135,15 @@ struct AddEditTripView: View {
                     )
                 }
 
+                if !self.trimmedCity.isEmpty {
+                    TripStaySection(
+                        stay: self.stay,
+                        cityName: self.trimmedCity,
+                        onChoose: { self.isSearchingStay = true },
+                        onRemove: { self.stay = nil }
+                    )
+                }
+
                 TripDatesSection(
                     hasDates: self.$hasDates,
                     startDate: self.$startDate,
@@ -127,7 +151,11 @@ struct AddEditTripView: View {
                 )
 
                 if let plannableCity {
-                    TripPlanSection(suggestsPlan: self.$suggestsPlan, cityName: plannableCity.name)
+                    TripPlanSection(
+                        suggestsPlan: self.$suggestsPlan,
+                        cityName: plannableCity.name,
+                        stayName: self.stay?.name
+                    )
                 }
 
                 TripStatusSection(status: self.$status)
@@ -157,6 +185,9 @@ struct AddEditTripView: View {
                 selectedCode: self.$formViewModel.selectedCountryCode
             )
         }
+        .sheet(isPresented: self.$isSearchingStay) {
+            TripStaySearchView(area: self.stayArea) { self.stay = $0 }
+        }
         .sheet(item: self.$planRequest, onDismiss: { self.dismiss() }) { request in
             TripSuggestionsView(
                 trip: request.trip,
@@ -181,6 +212,10 @@ struct AddEditTripView: View {
         .onChange(of: self.country) { _, newValue in
             self.formViewModel.synchronizeCountrySelection(with: newValue)
         }
+        .onChange(of: self.trimmedCity) { _, _ in
+            // A hotel belongs to the city it was found in.
+            self.stay = nil
+        }
         .alert(
             "Couldn't Save Trip",
             isPresented: self.saveErrorPresented
@@ -198,6 +233,7 @@ struct AddEditTripView: View {
                 || self.trimmedCountry != trip.country
                 || self.status != trip.status
                 || self.normalizedNotes != trip.trimmedNotes
+                || self.stay != trip.stay
                 || self.hasDates != (trip.startDate != nil)
                 || !Self.sameDay(
                     self.hasDates ? self.startDate : nil,
@@ -215,6 +251,7 @@ struct AddEditTripView: View {
             || self.hasDates
             || self.status != .upcoming
             || self.normalizedNotes != nil
+            || self.stay != nil
     }
 
     private var saveErrorPresented: Binding<Bool> {
@@ -287,6 +324,7 @@ struct AddEditTripView: View {
                     ? Calendar.current.startOfDay(for: self.endDate) : nil
             trip.status = self.status
             trip.notes = self.normalizedNotes
+            trip.stay = self.stay
             self.synchronizeDays(for: trip)
             if self.modelContext.hasChanges {
                 try self.modelContext.save()
@@ -304,6 +342,7 @@ struct AddEditTripView: View {
                 notes: self.normalizedNotes,
                 status: self.status
             )
+            newTrip.stay = self.stay
             self.modelContext.insert(newTrip)
             self.createInitialDays(for: newTrip)
             if self.modelContext.hasChanges {
