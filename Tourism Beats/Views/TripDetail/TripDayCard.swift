@@ -48,12 +48,7 @@ struct TripDayCard: View {
                             )
                         }
                     }
-
-                    Button("Add Activity", systemImage: "plus") {
-                        self.onAddActivity()
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(AppColors.coral)
+                    // Adding more lives in the day's menu above, not repeated here.
                 }
             }
         }
