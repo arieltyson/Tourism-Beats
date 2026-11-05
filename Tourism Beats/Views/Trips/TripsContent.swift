@@ -2,13 +2,15 @@ import SwiftUI
 
 // MARK: - TripsContent
 
+/// The trips, grouped by status, as cards in a list styled to disappear:
+/// no row backgrounds or separators, only the cards themselves.
 struct TripsContent: View {
     let sections: [TripsViewModel.TripSection]
     let viewModel: TripsViewModel
     let onDeleteTrip: (Trip) -> Void
 
     var body: some View {
-        LazyVStack(alignment: .leading, spacing: SpacingTokens.large) {
+        List {
             ForEach(self.sections) { section in
                 TripSectionView(
                     section: section,
@@ -17,7 +19,9 @@ struct TripsContent: View {
                 )
             }
         }
-        .padding(.horizontal, SpacingTokens.medium)
-        .padding(.vertical, SpacingTokens.small)
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
+        .listRowSpacing(SpacingTokens.small)
     }
 }

@@ -26,23 +26,30 @@ struct TripsView: View {
     }
 
     var body: some View {
-        ScrollView {
+        Group {
             if self.presentedTrips.isEmpty, self.viewModel.searchText.isEmpty {
-                TripsEmptyState(
-                    showsSampleTrips: self.shouldOfferSampleTrips,
-                    onCreateTrip: {
-                        self.viewModel.isAddTripSheetPresented = true
-                    },
-                    onRestoreSamples: self.restoreSampleTrips
-                )
-                .padding(.top, SpacingTokens.xxLarge)
+                ScrollView {
+                    TripsEmptyState(
+                        showsSampleTrips: self.shouldOfferSampleTrips,
+                        onCreateTrip: {
+                            self.viewModel.isAddTripSheetPresented = true
+                        },
+                        onRestoreSamples: self.restoreSampleTrips
+                    )
+                    .padding(.top, SpacingTokens.xxLarge)
+                }
             } else if self.sections.isEmpty {
-                TripsNoResults(
-                    searchText: self.viewModel.searchText,
-                    selectedStatusFilter: self.viewModel.selectedStatusFilter
-                )
-                .padding(.top, SpacingTokens.xxLarge)
+                ScrollView {
+                    TripsNoResults(
+                        searchText: self.viewModel.searchText,
+                        selectedStatusFilter: self.viewModel.selectedStatusFilter
+                    )
+                    .padding(.top, SpacingTokens.xxLarge)
+                }
             } else {
+                // A list, not a scroll view, so swiping a card to delete it
+                // behaves as it does everywhere else in iOS: one card open at
+                // a time, and closed again once its button is tapped.
                 TripsContent(
                     sections: self.sections,
                     viewModel: self.viewModel,
