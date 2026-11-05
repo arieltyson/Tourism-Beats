@@ -37,7 +37,7 @@ struct FlightPhotoFramingEditor: View {
                             FlightPhotoFramingTile(photo: $photos[selection], position: selection + 1, count: photos.count)
                                 // A new photo starts its own gesture.
                                 .id(photos[selection].id)
-                                .overlay { FlightPhotoScrim().allowsHitTesting(false) }
+                                .overlay { FlightPhotoScrim(photo: photos[selection]).allowsHitTesting(false) }
                         }
                     }
                     .clipShape(.rect(cornerRadius: FlightCountdownTokens.cardCornerRadius))

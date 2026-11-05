@@ -35,22 +35,26 @@ enum FlightCountdownStyle {
     /// How long each photo fills the card before the next takes its turn.
     static let photoInterval: TimeInterval = 15 * FlightCountdownConfiguration.secondsPerMinute
 
-    /// Darkens a photo only behind the title and the route, easing to clear
-    /// between them. A scrim across the whole photo flattens it, so the text
-    /// in the middle relies on `photoTextShadow` instead.
-    static let scrim: [Gradient.Stop] = [
-        .init(color: .black.opacity(0.45), location: 0),
-        .init(color: .black.opacity(0.2), location: 0.18),
-        .init(color: .clear, location: 0.38),
-        .init(color: .clear, location: 0.55),
-        .init(color: .black.opacity(0.2), location: 0.78),
-        .init(color: .black.opacity(0.5), location: 1),
+    /// The contrast every line of text keeps over a photo: WCAG's 4.5:1
+    /// for body text, and 7:1 with Increase Contrast.
+    static let textContrast: Double = 4.5
+    static let increasedTextContrast: Double = 7
+    /// Where the card's text sits: destination and date, countdown, route.
+    static let scrimBands = [
+        FlightScrimBand(span: 0...0.4, minimumOpacity: 0.25),
+        FlightScrimBand(span: 0.4...0.76, minimumOpacity: 0),
+        FlightScrimBand(span: 0.76...1, minimumOpacity: 0.25),
     ]
-    static let strongScrim: [Gradient.Stop] = [
-        .init(color: .black.opacity(0.7), location: 0),
-        .init(color: .black.opacity(0.45), location: 0.45),
-        .init(color: .black.opacity(0.8), location: 1),
-    ]
+    /// The blend between neighbouring bands.
+    static let scrimFeather: Double = 0.06
+    /// The darkest the scrim gets, so even a white photo still shows.
+    static let maximumScrimOpacity: Double = 0.9
+    /// How finely a photo is measured: a grid this many cells on a side.
+    static let toneGridSide = 16
+    /// The scrim's colour: the photo's average hue, this deep and at most
+    /// this saturated.
+    static let shadeBrightness: Double = 0.12
+    static let shadeMaximumSaturation: Double = 0.6
 
     /// A slight lift in colour and contrast, so the photo still reads as
     /// vivid as it does in Photos once the scrim has darkened it.

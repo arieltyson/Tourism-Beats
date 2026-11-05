@@ -10,7 +10,7 @@ enum FlightCardPalette {
     static let sunset = [
         Color(red: 0.24, green: 0.07, blue: 0.20),
         Color(red: 0.46, green: 0.13, blue: 0.24),
-        Color(red: 0.68, green: 0.29, blue: 0.16),
+        Color(red: 0.66, green: 0.27, blue: 0.14),
     ]
     static let ocean = [
         Color(red: 0.02, green: 0.13, blue: 0.24),

@@ -12,7 +12,7 @@ struct FlightCardBackground: View {
             FlightFramedPhoto(photo: photo)
                 .saturation(FlightCountdownStyle.photoSaturation)
                 .contrast(FlightCountdownStyle.photoContrast)
-                .overlay { FlightPhotoScrim() }
+                .overlay { FlightPhotoScrim(photo: photo) }
         } else if contrast == .increased {
             theme.palette[0]
         } else {
