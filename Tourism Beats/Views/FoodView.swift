@@ -4,7 +4,7 @@ import SwiftUI
 // MARK: - FoodView
 
 struct FoodView: View {
-    private static let navigationSubtitle = "Save restaurants by city. Remember your favourite meals"
+    private static let navigationSubtitle = "Save your favourite restaurants & meals."
 
     @Query(sort: \Restaurant.dateAdded, order: .reverse)
     private var restaurants: [Restaurant]
