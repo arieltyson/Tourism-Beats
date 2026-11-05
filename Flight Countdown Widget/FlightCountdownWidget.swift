@@ -8,7 +8,7 @@ struct FlightCountdownWidget: Widget {
             FlightCountdownWidgetView(entry: entry)
         }
         .configurationDisplayName("Flight Countdown")
-        .description("Count down to your upcoming flights. Tap the dots to see the next one.")
+        .description("Count down to your next flight. Once it departs, the one after it takes its place.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }

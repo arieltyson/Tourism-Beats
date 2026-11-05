@@ -13,11 +13,11 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
             do {
                 let flights = try await FlightCountdownStore().load()
                 let now = Date.now
-                let page = FlightWidgetCarousel.page(in: flights, at: now, selectedID: FlightWidgetSelection.selectedID())
-                let images = await Self.images(for: page.map { [$0.flight] } ?? [], displaySize: displaySize)
-                completion(Self.entry(at: now, page: page, images: images))
+                let flight = CountdownFlight.next(in: flights, after: now)
+                let images = await Self.images(for: flight.map { [$0] } ?? [], displaySize: displaySize)
+                completion(Self.entry(at: now, flight: flight, images: images))
             } catch {
-                completion(FlightCountdownEntry(date: .now, page: nil, isUnavailable: true))
+                completion(FlightCountdownEntry(date: .now, flight: nil, isUnavailable: true))
             }
         }
     }
@@ -29,14 +29,13 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
             do {
                 let flights = try await FlightCountdownStore().load()
                 let dates = FlightCountdownSchedule.dates(for: flights, from: now)
-                // Each entry shows the chosen flight until it departs, then the next.
-                let selectedID = FlightWidgetSelection.selectedID()
-                let pages = dates.map { FlightWidgetCarousel.page(in: flights, at: $0, selectedID: selectedID) }
-                let images = await Self.images(for: pages.compactMap(\.?.flight), displaySize: displaySize)
-                let entries = zip(dates, pages).map { Self.entry(at: $0, page: $1, images: images) }
+                // Each entry shows the next flight until it departs, then the one after.
+                let shown = dates.map { CountdownFlight.next(in: flights, after: $0) }
+                let images = await Self.images(for: shown.compactMap(\.self), displaySize: displaySize)
+                let entries = zip(dates, shown).map { Self.entry(at: $0, flight: $1, images: images) }
                 completion(Timeline(entries: entries, policy: .atEnd))
             } catch {
-                let entry = FlightCountdownEntry(date: now, page: nil, isUnavailable: true)
+                let entry = FlightCountdownEntry(date: now, flight: nil, isUnavailable: true)
                 completion(Timeline(entries: [entry], policy: .after(now.addingTimeInterval(FlightCountdownConfiguration.secondsPerHour))))
             }
         }
@@ -64,13 +63,13 @@ struct FlightCountdownProvider: TimelineProvider, Sendable {
         return Int(count > 2 ? side / 2 : side)
     }
 
-    private static func entry(at date: Date, page: FlightWidgetPage?, images: [UUID: CGImage]) -> FlightCountdownEntry {
+    private static func entry(at date: Date, flight: CountdownFlight?, images: [UUID: CGImage]) -> FlightCountdownEntry {
         FlightCountdownEntry(
-            date: date, page: page, photos: page.map { FlightCardImage.images(for: $0.flight, from: images) } ?? []
+            date: date, flight: flight, photos: flight.map { FlightCardImage.images(for: $0, from: images) } ?? []
         )
     }
 
     private var sample: FlightCountdownEntry {
-        FlightCountdownEntry(date: .now, page: FlightWidgetPage(flight: .sample(from: .now), position: 1, count: 1))
+        FlightCountdownEntry(date: .now, flight: .sample(from: .now))
     }
 }

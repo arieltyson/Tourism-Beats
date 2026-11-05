@@ -1,4 +1,3 @@
-import AppIntents
 import SwiftUI
 import WidgetKit
 
@@ -8,16 +7,11 @@ struct FlightCountdownWidgetView: View {
 
     var body: some View {
         Group {
-            if let page = entry.page {
-                FlightCountdownFace(flight: page.flight, date: entry.date, style: family == .systemSmall ? .small : .medium) {
-                    if page.hasOthers { FlightPageIndicator(page: page) }
-                }
-                // The face reads as one element, so VoiceOver moves on with an action.
-                .accessibilityValue(page.hasOthers ? Text("Flight \(page.position) of \(page.count)") : Text(""))
-                .accessibilityAction(named: "Next Flight", intent: ShowNextFlightIntent())
-                // Moving to another flight slides it in, like turning a page.
-                .id(page.flight.id)
-                .transition(.push(from: .trailing))
+            if let flight = entry.flight {
+                FlightCountdownFace(flight: flight, date: entry.date, style: family == .systemSmall ? .small : .medium)
+                    // When a flight departs, the next slides in, like turning a page.
+                    .id(flight.id)
+                    .transition(.push(from: .trailing))
             } else {
                 VStack(alignment: .leading, spacing: FlightCountdownStyle.spacing) {
                     FlightPathGlyph(progress: FlightPathGlyphTokens.restingProgress)
