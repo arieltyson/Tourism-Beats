@@ -78,4 +78,22 @@ struct TripActivityMapsTests {
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
     }
+
+    /// A street alone let Google open a same-named restaurant in another
+    /// country; the city and country keep it in Tobago.
+    @Test func searchesNameTheirCityAndCountry() throws {
+        let url = try #require(GoogleMapsLink.searchURL(for: [
+            "Blue Crab Restaurant", "Robinson Street", "Scarborough", "Trinidad and Tobago",
+        ]))
+        let query = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first { $0.name == "query" }?.value
+        #expect(query == "Blue Crab Restaurant, Robinson Street, Scarborough, Trinidad and Tobago")
+    }
+
+    @Test func aCityAlreadyInTheAddressIsNotRepeatedButOneInTheNameIs() throws {
+        let repeated = try #require(GoogleMapsLink.searchURL(for: ["Café", "4 Main Street, Vancouver", "Vancouver", "Canada"]))
+        #expect(repeated.absoluteString.components(separatedBy: "Vancouver").count == 2)
+        let named = try #require(GoogleMapsLink.searchURL(for: ["Paris Bistro", "Rue Cler", "Paris", "France"]))
+        let query = URLComponents(url: named, resolvingAgainstBaseURL: false)?.queryItems?.first { $0.name == "query" }?.value
+        #expect(query == "Paris Bistro, Rue Cler, Paris, France")
+    }
 }

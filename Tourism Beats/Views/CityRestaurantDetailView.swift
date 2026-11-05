@@ -11,7 +11,7 @@ struct CityRestaurantDetailView: View {
             VStack(alignment: .leading, spacing: SpacingTokens.large) {
                 Self.Hero(restaurant: self.restaurant, city: self.city)
                 Self.RecommendationCard(restaurant: self.restaurant)
-                Self.LinkCard(restaurant: self.restaurant)
+                Self.LinkCard(restaurant: self.restaurant, city: self.city)
             }
             .padding(.horizontal, SpacingTokens.medium)
             .padding(.vertical, SpacingTokens.medium)
@@ -106,12 +106,13 @@ extension CityRestaurantDetailView {
 
     struct LinkCard: View {
         let restaurant: CityRestaurant
+        let city: CityModel
 
         @Environment(\.colorScheme) private var scheme
 
         var body: some View {
             if self.restaurant.websiteURL != nil
-                || self.restaurant.mapsURL != nil
+                || self.restaurant.mapsURL(in: self.city) != nil
                 || self.restaurant.sourceURL != nil
             {
                 VStack(alignment: .leading, spacing: SpacingTokens.small) {
@@ -131,7 +132,7 @@ extension CityRestaurantDetailView {
                         .buttonStyle(.plain)
                     }
 
-                    if let mapsURL = self.restaurant.mapsURL {
+                    if let mapsURL = self.restaurant.mapsURL(in: self.city) {
                         Link(destination: mapsURL) {
                             Self.LinkLabel(
                                 title: "Open in Google Maps",

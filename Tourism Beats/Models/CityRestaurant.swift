@@ -63,7 +63,9 @@ struct CityRestaurant: Identifiable, Hashable, Codable, Sendable {
         }
     }
 
-    var mapsURL: URL? {
-        GoogleMapsLink.searchURL(for: [self.name, self.address])
+    /// The restaurant in Google Maps, searched within `city` and its country
+    /// so a same-named place elsewhere can't be opened instead.
+    func mapsURL(in city: CityModel) -> URL? {
+        GoogleMapsLink.searchURL(for: [self.name, self.address, city.name, city.country.name])
     }
 }

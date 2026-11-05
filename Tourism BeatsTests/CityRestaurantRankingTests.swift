@@ -197,7 +197,7 @@ struct CityRestaurantRankingTests {
             rankingHighlights: []
         )
 
-        let mapsURL = try #require(restaurant.mapsURL)
+        let mapsURL = try #require(restaurant.mapsURL(in: self.city))
         let components = try #require(
             URLComponents(url: mapsURL, resolvingAgainstBaseURL: false)
         )
@@ -209,7 +209,11 @@ struct CityRestaurantRankingTests {
 
         #expect(components.host == "www.google.com")
         #expect(queryItems["api"] == "1")
-        #expect(queryItems["query"] == "Signal Kitchen, 4 Main Street, Vancouver")
+        // The city and country narrow the search to this place; a city the
+        // address already names isn't repeated.
+        #expect(queryItems["query"]?.hasPrefix("Signal Kitchen, 4 Main Street, Vancouver") == true)
+        #expect(queryItems["query"]?.hasSuffix(self.city.country.name) == true)
+        #expect(queryItems["query"]?.components(separatedBy: "Vancouver").count == 2)
     }
 
     private var city: CityModel {
