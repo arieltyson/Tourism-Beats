@@ -34,9 +34,14 @@ struct TripSectionView: View {
                 }
                 .buttonStyle(.plain)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button("Delete", systemImage: "trash", role: .destructive) {
+                    // Not `.destructive`: that role tells the system the row is
+                    // going away, so it stays slid open while the deletion is
+                    // confirmed, and stranded if it's cancelled. Tinted red, the
+                    // swipe closes and the card settles before the alert asks.
+                    Button("Delete", systemImage: "trash") {
                         self.onDeleteTrip(trip)
                     }
+                    .tint(.red)
                 }
             }
         }
