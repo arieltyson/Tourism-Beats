@@ -19,6 +19,12 @@ final class Trip {
     var notes: String?
     var statusRaw: String = TripStatus.upcoming.rawValue
     var dateCreated: Date = Date.now
+    /// The optional hotel suggestions start near. Stored as plain fields so
+    /// trips saved before it existed migrate without a schema change.
+    var stayName: String?
+    var stayAddress: String?
+    var stayLatitude: Double?
+    var stayLongitude: Double?
 
     @Relationship(deleteRule: .cascade)
     var days: [TripDay]?
@@ -49,6 +55,19 @@ final class Trip {
     var status: TripStatus {
         get { TripStatus(rawValue: self.statusRaw) ?? .upcoming }
         set { self.statusRaw = newValue.rawValue }
+    }
+
+    var stay: TripStay? {
+        get {
+            guard let stayName, let stayLatitude, let stayLongitude else { return nil }
+            return TripStay(name: stayName, address: self.stayAddress, latitude: stayLatitude, longitude: stayLongitude)
+        }
+        set {
+            self.stayName = newValue?.name
+            self.stayAddress = newValue?.address
+            self.stayLatitude = newValue?.latitude
+            self.stayLongitude = newValue?.longitude
+        }
     }
 
     var sortedDays: [TripDay] {

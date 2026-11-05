@@ -1,3 +1,4 @@
+import CoreLocation
 import Testing
 @testable import Tourism_Beats
 
@@ -203,6 +204,43 @@ struct TripItineraryPlannerTests {
 
         let names = plan.first?.map(\.name)
         #expect(names == ["Downtown Museum", "Downtown Roti", "Downtown Cathedral", "Harbour Bistro"])
+    }
+
+    @Test func aStayPutsNearbyPlacesFirstInRankOrderThenTheNearest() {
+        let stay = CLLocationCoordinate2D(latitude: 10.650, longitude: -61.510)
+        let plan = Planner.plan(
+            days: Self.emptyDays(count: 1),
+            activities: [
+                Fixtures.activity("Far Waterfall", latitude: 10.800, longitude: -61.200),
+                Fixtures.activity("Nearby Gallery", latitude: 10.655, longitude: -61.512),
+                Fixtures.activity("Nearby Museum", latitude: 10.651, longitude: -61.511),
+                Fixtures.activity("Mid Fort", latitude: 10.700, longitude: -61.450)
+            ],
+            restaurants: [
+                Fixtures.restaurant("Far Grill", latitude: 10.790, longitude: -61.210),
+                Fixtures.restaurant("Hotel Roti", latitude: 10.6505, longitude: -61.5102),
+                Fixtures.restaurant("Harbour Café", latitude: 10.660, longitude: -61.520)
+            ],
+            excludedPlaceNames: [],
+            stay: stay
+        )
+
+        let names = plan.first?.map(\.name)
+        #expect(names == ["Nearby Gallery", "Hotel Roti", "Nearby Museum", "Harbour Café"])
+    }
+
+    @Test func withoutAStayTheCitysBestComeFirst() {
+        let plan = Planner.plan(
+            days: Self.emptyDays(count: 1),
+            activities: [
+                Fixtures.activity("Far Waterfall", latitude: 10.800, longitude: -61.200),
+                Fixtures.activity("Nearby Gallery", latitude: 10.655, longitude: -61.512)
+            ],
+            restaurants: [],
+            excludedPlaceNames: []
+        )
+
+        #expect(plan.first?.first?.name == "Far Waterfall")
     }
 
     @Test func suggestionsCarryLocationAndContextNotes() throws {

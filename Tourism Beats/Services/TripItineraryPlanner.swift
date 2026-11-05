@@ -111,11 +111,14 @@ enum TripItineraryPlanner {
     ///   - activities: Ranked sights and experiences, best first.
     ///   - restaurants: Ranked restaurants, best first.
     ///   - excludedPlaceNames: Names already planned anywhere in the trip.
+    ///   - stay: Where the traveller is staying. When given, the best places
+    ///     within reach of it come first; without it, the city's best do.
     static func plan(
         days: [Day],
         activities: [CityActivity],
         restaurants: [CityRestaurant],
-        excludedPlaceNames: some Sequence<String>
+        excludedPlaceNames: some Sequence<String>,
+        stay: CLLocationCoordinate2D? = nil
     ) -> [[TripActivitySuggestion]] {
         let excludedKeys = excludedPlaceNames.map(CityActivityRanking.placeKey(for:))
         var sightPool = Self.uniqueCandidates(
@@ -126,6 +129,10 @@ enum TripItineraryPlanner {
             restaurants.map(Candidate.init(restaurant:)),
             excluding: excludedKeys + sightPool.map(\.key)
         )
+        if let stay {
+            sightPool = Self.favoring(stay, in: sightPool)
+            restaurantPool = Self.favoring(stay, in: restaurantPool)
+        }
 
         let openSlotsByDay = days.map(Self.openSlots(for:))
         var assignments = Array(repeating: [Slot: Candidate](), count: days.count)
@@ -147,7 +154,8 @@ enum TripItineraryPlanner {
 
         for mealSlot in Slot.allCases where mealSlot.isMeal {
             for dayIndex in days.indices where openSlotsByDay[dayIndex].contains(mealSlot) {
-                let anchor = Self.centroid(of: assignments[dayIndex].values.compactMap(\.coordinate))
+                // Meals fall between the day's sights and, when known, the stay.
+                let anchor = Self.centroid(of: assignments[dayIndex].values.compactMap(\.coordinate) + [stay].compactMap(\.self))
                 guard let candidate = Self.takeCandidate(nearest: anchor, from: &restaurantPool) else {
                     break
                 }
@@ -337,6 +345,28 @@ extension TripItineraryPlanner {
             .index
 
         return pool.remove(at: nearestIndex ?? pool.startIndex)
+    }
+
+    /// How far from the stay a place still counts as nearby: about a
+    /// half-hour walk.
+    static let stayRadius: CLLocationDistance = 2_500
+
+    /// Reorders a ranked pool around the stay: places within `stayRadius`
+    /// keep their ranking and come first, then the rest from nearest to
+    /// farthest, then places with no known location.
+    private static func favoring(_ stay: CLLocationCoordinate2D, in pool: [Candidate]) -> [Candidate] {
+        let stayLocation = CLLocation(latitude: stay.latitude, longitude: stay.longitude)
+        let distances = pool.map { candidate in
+            candidate.coordinate.map {
+                CLLocation(latitude: $0.latitude, longitude: $0.longitude).distance(from: stayLocation)
+            }
+        }
+        let ranked = zip(pool, distances).enumerated()
+        let nearby = ranked.filter { ($0.element.1 ?? .infinity) <= Self.stayRadius }
+        let farther = ranked
+            .filter { ($0.element.1 ?? .infinity) > Self.stayRadius }
+            .sorted { ($0.element.1 ?? .infinity, $0.offset) < ($1.element.1 ?? .infinity, $1.offset) }
+        return (nearby + farther).map(\.element.0)
     }
 
     private static func centroid(of coordinates: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D? {

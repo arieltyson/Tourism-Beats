@@ -150,7 +150,8 @@ final class TripSuggestionsViewModel {
             days: planningDays,
             activities: activities,
             restaurants: restaurants,
-            excludedPlaceNames: self.trip.sortedDays.flatMap { $0.sortedActivities.map(\.name) }
+            excludedPlaceNames: self.trip.sortedDays.flatMap { $0.sortedActivities.map(\.name) },
+            stay: self.trip.stay?.coordinate
         )
         let daySuggestions = zip(targetDays, plan)
             .filter { !$1.isEmpty }
