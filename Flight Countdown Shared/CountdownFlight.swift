@@ -59,37 +59,58 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
     }
 
     /// When the flight leaves, told on the card, such as "Sun, Dec 20 at
-    /// 1:50 pm GMT-7". The time is always followed by its GMT offset, so it
-    /// reads correctly from any time zone, in the same form the time zone
+    /// 1:50 p.m. (GMT-7)". The time is always followed by its GMT offset, so
+    /// it reads correctly from any time zone, in the same form the time zone
     /// was chosen in. Without the time, it's just the day, such as "Dec 20".
     func departureSummary(showsTime: Bool, includesWeekday: Bool = true) -> String {
         let day = departureDay(showsTime: showsTime, includesWeekday: includesWeekday)
         guard showsTime else { return day }
-        return String(localized: "\(day) \(departureOffset)",
-                      comment: "A departure time followed by its GMT offset, such as Sun, Dec 20 at 1:50 pm GMT-7")
+        return String(localized: "\(day) \(departureOffsetNote)",
+                      comment: "A departure time followed by its GMT offset, such as Sun, Dec 20 at 1:50 p.m. (GMT-7)")
     }
 
     /// The departure's day, and its time when shown, without the offset,
-    /// such as "Sun, Dec 20 at 1:50 pm". The day period is lowercased to sit
-    /// quietly beside the numbers; 24-hour locales have none to change.
+    /// such as "Sun, Dec 20 at 1:50 p.m.".
     func departureDay(showsTime: Bool, includesWeekday: Bool = true) -> String {
         var format = Date.FormatStyle.dateTime.month(.abbreviated).day()
         if showsTime {
             format = format.hour().minute()
             if includesWeekday { format = format.weekday(.abbreviated) }
         }
+        return formattedDeparture(format)
+    }
+
+    /// The departure in `format`, at the departure airport, with its day
+    /// period written the way it reads in a sentence: "p.m." rather than
+    /// "PM" in English, and lowercased in other languages that have one.
+    /// 24-hour locales have none to change.
+    func formattedDeparture(_ format: Date.FormatStyle) -> String {
+        var format = format
         format.timeZone = timeZone
-        var day = departure.formatted(format.attributed)
-        let periods = day.runs[\.dateField].filter { $0.0 == .amPM }.map(\.1)
+        var text = departure.formatted(format.attributed)
+        let periods = text.runs[\.dateField].filter { $0.0 == .amPM }.map(\.1)
         for range in periods.reversed() {
-            let period = String(day[range].characters)
-            day.replaceSubrange(range, with: AttributedString(period.lowercased(with: format.locale)))
+            let period = Self.dayPeriod(String(text[range].characters), locale: format.locale)
+            text.replaceSubrange(range, with: AttributedString(period))
         }
-        return String(day.characters)
+        return String(text.characters)
     }
 
     /// The GMT offset at departure, such as "GMT-7".
     var departureOffset: String { timeZone.gmtOffsetLabel(at: departure) }
+
+    /// The offset as an aside, such as "(GMT-7)".
+    var departureOffsetNote: String {
+        String(localized: "(\(departureOffset))", comment: "A GMT offset set aside in parentheses, such as (GMT-7)")
+    }
+
+    private static func dayPeriod(_ period: String, locale: Locale) -> String {
+        switch period.lowercased(with: locale) {
+        case "am": String(localized: "a.m.", comment: "Before noon, after a time such as 9:15")
+        case "pm": String(localized: "p.m.", comment: "After noon, after a time such as 1:50")
+        case let other: other
+        }
+    }
 
     /// A flight to show where a real one isn't available yet, such as the
     /// widget gallery.

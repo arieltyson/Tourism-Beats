@@ -40,15 +40,16 @@ struct FlightTimeZoneTests {
         )
         let offset = vancouver.timeZone.gmtOffsetLabel(at: departure)
         let full = flight.departureSummary(showsTime: true)
-        #expect(full.hasSuffix(offset) && full.contains("Sun") && full.contains("1:50"))
+        #expect(full.hasSuffix("(\(offset))") && full.contains("Sun") && full.contains("1:50"))
         let compact = flight.departureSummary(showsTime: true, includesWeekday: false)
-        #expect(compact.hasSuffix(offset) && !compact.contains("Sun"))
+        #expect(compact.hasSuffix("(\(offset))") && !compact.contains("Sun"))
         #expect(!flight.departureSummary(showsTime: false).contains("GMT"))
         #expect(!flight.departureDay(showsTime: true).contains("GMT"))
         #expect(flight.departureOffset == offset)
+        #expect(flight.departureOffsetNote == "(\(offset))")
     }
 
-    /// The day period sits quietly in lowercase, where the locale has one.
+    /// The day period reads as it does in a sentence, "p.m." in English.
     @Test func dayPeriodIsLowercase() throws {
         var vancouver = Calendar(identifier: .gregorian)
         vancouver.timeZone = try zone("America/Vancouver")
@@ -58,11 +59,21 @@ struct FlightTimeZoneTests {
             departure: departure, timeZoneIdentifier: "America/Vancouver"
         )
         let day = flight.departureDay(showsTime: true)
-        #expect(day == day.lowercased(with: .current) || !day.contains("PM"))
         #expect(!day.contains("PM") && !day.contains("AM"))
         if [.oneToTwelve, .zeroToEleven].contains(Locale.current.hourCycle) {
-            #expect(day.contains("pm"))
+            #expect(day.hasSuffix("1:50\u{202F}p.m.") || day.hasSuffix("1:50 p.m."))
         }
+        var morning = Date.FormatStyle(date: .omitted, time: .shortened)
+        morning.locale = Locale(identifier: "en_US")
+        let early = CountdownFlight(
+            airlineCode: "AC", flightNumber: "1", origin: "YVR", destination: "YUL",
+            departure: departure.addingTimeInterval(-6 * FlightCountdownConfiguration.secondsPerHour),
+            timeZoneIdentifier: "America/Vancouver"
+        )
+        #expect(early.formattedDeparture(morning).hasSuffix("a.m."))
+        var german = morning
+        german.locale = Locale(identifier: "de_DE")
+        #expect(!early.formattedDeparture(german).contains("."))
     }
 
     @Test func optionsNamePlacesAndSearchByOffset() throws {

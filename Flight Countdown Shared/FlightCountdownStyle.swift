@@ -5,8 +5,10 @@ enum FlightCountdownStyle {
     static let spacing: CGFloat = 8
     /// Secondary text over the card's dark backgrounds.
     static let secondaryOpacity: Double = 0.85
-    /// The GMT offset after a departure time, a step below the line's text.
-    static let offsetFont: Font = .caption
+    /// The departure line under the destination: a quiet detail beneath it.
+    static let departureFont: Font = .footnote
+    /// The GMT offset after a departure time, two text styles below the line.
+    static let offsetFont: Font = .caption2
     /// The part of the route still to fly.
     static let remainingTrackOpacity: Double = 0.45
 

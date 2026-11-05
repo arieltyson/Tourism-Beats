@@ -17,7 +17,7 @@ struct FlightCountdownRow: View {
             VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
                 Text("\(flight.originName) → \(flight.destinationName)")
                     .font(.headline)
-                Text(subtitle)
+                FlightCountdownRowSubtitle(flight: flight, now: now)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -25,14 +25,5 @@ struct FlightCountdownRow: View {
         // Inside a button, `.primary` would resolve to the tint colour.
         .foregroundStyle(Color.primary)
         .accessibilityElement(children: .combine)
-    }
-
-    private var subtitle: String {
-        var format = Date.FormatStyle(date: .abbreviated, time: .shortened)
-        format.timeZone = flight.timeZone
-        let day = flight.departure.formatted(format)
-        return flight.departure > now
-            ? "\(flight.spokenName) · \(day)"
-            : String(localized: "Departed \(day)")
     }
 }

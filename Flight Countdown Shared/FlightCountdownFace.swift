@@ -22,7 +22,7 @@ struct FlightCountdownFace: View {
                         FlightDepartureLine(flight: flight, showsTime: style.showsTime)
                         FlightDepartureLine(flight: flight, showsTime: style.showsTime, includesWeekday: false)
                     }
-                    .font(.subheadline)
+                    .font(FlightCountdownStyle.departureFont)
                     .opacity(FlightCountdownStyle.secondaryOpacity)
                 }
                 .lineLimit(1)

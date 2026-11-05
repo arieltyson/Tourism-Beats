@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// When the flight leaves, with its GMT offset set a size smaller: the
-/// offset clarifies the time rather than competing with it.
+/// When the flight leaves, with its GMT offset set aside in parentheses two
+/// text styles smaller: it clarifies the time rather than competing with it.
 struct FlightDepartureLine: View {
     let flight: CountdownFlight
     let showsTime: Bool
@@ -10,7 +10,7 @@ struct FlightDepartureLine: View {
     var body: some View {
         let day = flight.departureDay(showsTime: showsTime, includesWeekday: includesWeekday)
         if showsTime {
-            Text("\(day) \(Text(flight.departureOffset).font(FlightCountdownStyle.offsetFont))")
+            Text("\(day) \(Text(flight.departureOffsetNote).font(FlightCountdownStyle.offsetFont))")
         } else {
             Text(day)
         }

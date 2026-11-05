@@ -36,6 +36,8 @@ enum FlightCountdownTokens {
     // MARK: - Photos
 
     /// The longer side of a stored card photo, enough for the largest widget.
+    /// A row's GMT offset, two text styles below its subheadline.
+    static let rowOffsetFont: Font = .caption
     static let photoPixelSize = 1_200
     static let photoCompressionQuality: Double = 0.8
     /// How far one VoiceOver action moves a photo, as a share of its frame.
