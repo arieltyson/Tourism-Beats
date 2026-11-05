@@ -40,15 +40,30 @@ enum FlightCountdownStyle {
     /// The most photos a card holds and still reads at the small widget's size.
     static let maximumCollageCount = 4
 
-    /// Darkens a photo at the top and bottom, where the text sits.
+    /// Darkens a photo only behind the title and the route, easing to clear
+    /// between them. A scrim across the whole photo flattens it, so the text
+    /// in the middle relies on `photoTextShadow` instead.
     static let scrim: [Gradient.Stop] = [
-        .init(color: .black.opacity(0.5), location: 0),
-        .init(color: .black.opacity(0.1), location: 0.45),
-        .init(color: .black.opacity(0.6), location: 1),
+        .init(color: .black.opacity(0.45), location: 0),
+        .init(color: .black.opacity(0.2), location: 0.18),
+        .init(color: .clear, location: 0.38),
+        .init(color: .clear, location: 0.55),
+        .init(color: .black.opacity(0.2), location: 0.78),
+        .init(color: .black.opacity(0.5), location: 1),
     ]
     static let strongScrim: [Gradient.Stop] = [
         .init(color: .black.opacity(0.7), location: 0),
         .init(color: .black.opacity(0.45), location: 0.45),
         .init(color: .black.opacity(0.8), location: 1),
     ]
+
+    /// A slight lift in colour and contrast, so the photo still reads as
+    /// vivid as it does in Photos once the scrim has darkened it.
+    static let photoSaturation: Double = 1.12
+    static let photoContrast: Double = 1.06
+
+    /// Lifts white text off a photo where the scrim has eased away.
+    static let photoTextShadowOpacity: Double = 0.45
+    static let photoTextShadowRadius: CGFloat = 4
+    static let photoTextShadowOffset: CGFloat = 1
 }

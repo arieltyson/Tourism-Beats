@@ -12,6 +12,8 @@ struct FlightCardBackground: View {
             FlightPhotoCollage(count: photos.count) { index in
                 FlightFramedPhoto(photo: photos[index])
             }
+            .saturation(FlightCountdownStyle.photoSaturation)
+            .contrast(FlightCountdownStyle.photoContrast)
             // The hairlines between photos stay dark in either appearance.
             .background(.black)
             .overlay { FlightPhotoScrim() }

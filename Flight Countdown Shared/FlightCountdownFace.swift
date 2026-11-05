@@ -58,6 +58,11 @@ struct FlightCountdownFace<Accessory: View>: View {
             }
         }
         .foregroundStyle(.white)
+        .shadow(
+            color: .black.opacity(flight.cardTheme == .photo ? FlightCountdownStyle.photoTextShadowOpacity : 0),
+            radius: FlightCountdownStyle.photoTextShadowRadius,
+            y: FlightCountdownStyle.photoTextShadowOffset
+        )
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityDescription)
