@@ -30,16 +30,13 @@ enum ClockFaceTokens {
     static let numeralGap: CGFloat = 0.05
 
     /// The numerals' point size.
-    static let numeralSize: CGFloat = 0.27
+    static let numeralSize: CGFloat = 0.23
 
     /// Opacity of the minute ticks against the face.
     static let tickOpacity: Double = 0.4
 
     /// Tick opacity when Increase Contrast is on.
     static let increasedContrastTickOpacity: Double = 0.75
-
-    /// Width of the hairline drawn around the rim.
-    static let rimWidth: CGFloat = 0.015
 
     // MARK: - Hands
 
