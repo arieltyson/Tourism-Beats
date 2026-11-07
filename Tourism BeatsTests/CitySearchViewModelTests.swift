@@ -7,11 +7,26 @@ import Testing
 
 @MainActor
 struct CitySearchViewModelTests {
-    @Test func emptyQuerySuggestsTheFirstCities() {
+    @Test func emptyQuerySuggestsTheChosenCitiesInOrder() {
+        let cities = ["Rome", "London", "Lima", "Paris"].map { Self.city($0, country: "Country") }
+        let viewModel = CitySearchViewModel(cities: cities, suggestedCityIDs: ["london", "paris", "missing", "rome"])
+
+        #expect(viewModel.results.map(\.name) == ["London", "Paris", "Rome"])
+    }
+
+    /// Every suggestion is a city the catalog has, so none quietly drops out.
+    @Test func everySuggestedCityIsInTheCatalog() throws {
+        let catalogIDs = Set(try DataService().loadCities().map(\.id))
+        let missing = CitySearchViewModel.suggestedCityIDs.filter { !catalogIDs.contains($0) }
+
+        #expect(missing.isEmpty, "\(missing)")
+    }
+
+    @Test func emptyQueryFallsBackToTheFirstCities() {
         let cities = (0 ..< CitySearchViewModel.suggestionCount + 5).map {
             Self.city("City \($0)", country: "Country \($0)")
         }
-        let viewModel = CitySearchViewModel(cities: cities)
+        let viewModel = CitySearchViewModel(cities: cities, suggestedCityIDs: [])
 
         #expect(viewModel.results.map(\.id) == cities.prefix(CitySearchViewModel.suggestionCount).map(\.id))
     }

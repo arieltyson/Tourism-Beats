@@ -4,8 +4,25 @@ import Observation
 @MainActor
 @Observable
 final class CitySearchViewModel {
-    /// How many cities to suggest before the user has typed anything.
+    /// How many cities to suggest before the user has typed anything, when
+    /// none of the chosen suggestions are in the catalog.
     static let suggestionCount = 10
+
+    /// The cities suggested before anything is typed, in order: the world's
+    /// great destinations, and a few close to home.
+    static let suggestedCityIDs = [
+        "London-GB",
+        "Paris-FR",
+        "New York-US",
+        "Tokyo-JP",
+        "Berlin-DE",
+        "Barcelona-ES",
+        "Rome-IT",
+        "Beijing-CN",
+        "Vancouver-CA",
+        "San Fernando-TT",
+        "New Delhi-IN",
+    ]
 
     /// Shorter queries are too ambiguous to correct for typos.
     static let minimumCorrectableQueryLength = 4
@@ -16,20 +33,25 @@ final class CitySearchViewModel {
     var query = ""
 
     @ObservationIgnored private let entries: [CitySearchEntry]
+    @ObservationIgnored private let suggestions: [CityModel]
 
-    init(cities: [CityModel]) {
+    init(cities: [CityModel], suggestedCityIDs: [String] = CitySearchViewModel.suggestedCityIDs) {
         self.entries = cities.map(CitySearchEntry.init)
+
+        let citiesByID = Dictionary(cities.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+        let suggested = suggestedCityIDs.compactMap { citiesByID[$0] }
+        self.suggestions = suggested.isEmpty ? Array(cities.prefix(Self.suggestionCount)) : suggested
     }
 
     /// Cities matching the query, best first: names that start with it, then
     /// names with a word that does, then states and countries, then matches mid-word.
     /// When nothing matches, the closest spellings within a typo or two.
-    /// With no query, a short list of suggestions.
+    /// With no query, the suggested cities.
     var results: [CityModel] {
         let query = CitySearchEntry.normalized(self.query)
 
         guard !query.isEmpty else {
-            return self.entries.prefix(Self.suggestionCount).map(\.city)
+            return self.suggestions
         }
 
         let matches = self.entries.enumerated().compactMap { index, entry in
