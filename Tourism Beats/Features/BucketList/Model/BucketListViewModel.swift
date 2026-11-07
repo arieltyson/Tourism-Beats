@@ -24,11 +24,15 @@ final class BucketListViewModel {
 
     // MARK: - Adding
 
-    /// Adds an activity, unless it's only whitespace.
+    /// Adds an activity, unless it's only whitespace. An activity already on
+    /// the list, however it's capitalized, is returned rather than added twice.
     @discardableResult
     func addActivity(_ text: String) -> BucketListItem? {
         let title = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !title.isEmpty else { return nil }
+        if let existing = self.activity(titled: title) {
+            return existing
+        }
         let item = BucketListItem(activity: title)
         self.modelContext.insert(item)
         self.save()
@@ -91,6 +95,18 @@ final class BucketListViewModel {
     }
 
     // MARK: - Private
+
+    /// The list's activity with this title, ignoring case and accents.
+    private func activity(titled title: String) -> BucketListItem? {
+        let activityKind = BucketListItemKind.activity.rawValue
+        let descriptor = FetchDescriptor<BucketListItem>(
+            predicate: #Predicate { $0.kindRaw == activityKind }
+        )
+        let activities = (try? self.modelContext.fetch(descriptor)) ?? []
+        return activities.first {
+            $0.title.compare(title, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
+        }
+    }
 
     /// The list's entry for a country alone, or for a city in it.
     private func item(country: CountryModel, city: CityModel?) -> BucketListItem? {

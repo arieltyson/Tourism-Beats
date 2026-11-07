@@ -12,6 +12,9 @@ final class BucketListFormViewModel {
     /// The city, optional, always one in the chosen country.
     var city: CityModel?
 
+    /// Whether this form has added its item, so a second tap adds nothing.
+    private(set) var hasAdded = false
+
     @ObservationIgnored private let countries: [CountryModel]
     @ObservationIgnored private let cities: [CityModel]
 
@@ -110,7 +113,8 @@ final class BucketListFormViewModel {
     }
 
     var canAdd: Bool {
-        switch self.kind {
+        guard !self.hasAdded else { return false }
+        return switch self.kind {
         case .place: self.country != nil
         case .activity: !self.activity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
@@ -124,9 +128,10 @@ final class BucketListFormViewModel {
         case .place:
             guard let country else { return false }
             list.addPlace(country: country, city: self.city)
-            return true
         case .activity:
-            return list.addActivity(self.activity) != nil
+            guard list.addActivity(self.activity) != nil else { return false }
         }
+        self.hasAdded = true
+        return true
     }
 }

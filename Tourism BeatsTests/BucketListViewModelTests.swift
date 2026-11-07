@@ -97,6 +97,18 @@ struct BucketListViewModelTests {
         #expect(BucketListViewModel.activities(in: items).map(\.title) == ["Surfing", "Dogsledding"])
     }
 
+    /// The same activity, however it's typed, is on the list once.
+    @Test func anActivityIsOnTheListOnce() throws {
+        let (viewModel, context, container) = try Self.makeViewModel()
+        defer { withExtendedLifetime(container) {} }
+
+        let first = viewModel.addActivity("Jumping")
+        let second = viewModel.addActivity("  jumping ")
+
+        #expect(first === second)
+        #expect(try context.fetchCount(FetchDescriptor<BucketListItem>()) == 1)
+    }
+
     /// The container must outlive the test, or its context goes with it.
     private static func makeViewModel() throws -> (BucketListViewModel, ModelContext, ModelContainer) {
         let container = try ModelContainer(

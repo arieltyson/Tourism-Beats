@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 import Testing
 @testable import Tourism_Beats
 
@@ -110,5 +111,21 @@ struct BucketListFormViewModelTests {
         #expect(!form.updateActivity("Hot air balloon"))
         #expect(form.updateActivity("Hot air balloon\n"))
         #expect(form.activity == "Hot air balloon")
+    }
+    /// A second tap on Add adds nothing more.
+    @Test func aFormAddsItsItemOnce() throws {
+        let container = try ModelContainer(
+            for: BucketListItem.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let list = BucketListViewModel(modelContext: container.mainContext)
+        let form = Self.makeForm()
+        form.kind = .activity
+        form.activity = "Dogsledding"
+
+        #expect(form.add(to: list))
+        #expect(!form.add(to: list))
+        #expect(!form.canAdd)
+        #expect(try container.mainContext.fetchCount(FetchDescriptor<BucketListItem>()) == 1)
     }
 }
