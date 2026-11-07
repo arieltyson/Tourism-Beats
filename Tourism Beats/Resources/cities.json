@@ -4178,5 +4178,30 @@
     "longitude": -111.50138889,
     "timeZoneIdentifier": "America/Denver",
     "searchAliases": ["Deer Valley"]
+  },
+  {
+    "name": "Nancy",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Place_Stanislas_et_ses_grilles_%C3%A0_Nancy.jpg/1280px-Place_Stanislas_et_ses_grilles_%C3%A0_Nancy.jpg",
+    "latitude": 48.6936,
+    "longitude": 6.1846,
+    "timeZoneIdentifier": "Europe/Paris",
+    "searchAliases": ["Lorraine"],
+    "curatedFunFacts": [
+      {
+        "text": "Nancy may be where quiche began: the dish is said to derive from féouse, a preparation typical of the city in the 16th century, and a quiche-like dish was served at a dinner for Charles III, Duke of Lorraine, in 1586.",
+        "sourceName": "Wikipedia",
+        "sourceURL": "https://en.wikipedia.org/wiki/Quiche"
+      }
+    ]
+  },
+  {
+    "name": "Strasbourg",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Petite_France_during_golden_hour.jpg/1280px-Petite_France_during_golden_hour.jpg",
+    "latitude": 48.58333333,
+    "longitude": 7.74583333,
+    "timeZoneIdentifier": "Europe/Paris",
+    "searchAliases": ["Alsace"]
   }
 ]
