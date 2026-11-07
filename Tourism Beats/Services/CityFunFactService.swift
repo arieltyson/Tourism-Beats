@@ -7,8 +7,9 @@ import OSLog
 actor CityFunFactService: CityFunFactProviding {
     static let shared = CityFunFactService()
     /// Bumped when stored facts change: v2 keeps sentences whole rather than clipping
-    /// them; v3 retires facts taken from the wrong article, before states were searched.
-    private static let cacheVersion = "v3"
+    /// them; v3 retires facts taken from the wrong article, before states were searched;
+    /// v4 retires those of cities since pinned to their article, such as Chail's.
+    private static let cacheVersion = "v4"
 
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -41,9 +42,12 @@ actor CityFunFactService: CityFunFactProviding {
         return curated + lookedUp.filter { !$0.isFallback }
     }
 
-    /// Article titles to try before searching. "Lehi" alone is a disambiguation
-    /// page and "Portland" a different city's, so the state or province comes first.
+    /// Article titles to try before searching. A pinned article is the only one
+    /// tried. Otherwise the state or province comes first, because "Lehi" alone
+    /// is a disambiguation page and "Portland" a different city's.
     static func initialTitles(for city: CityModel) -> [String] {
+        if let wikipediaTitle = city.wikipediaTitle { return [wikipediaTitle] }
+
         let regionalTitle = city.administrativeArea.map { "\(city.name), \($0)" }
 
         return [regionalTitle].compactMap(\.self) + [
@@ -105,6 +109,9 @@ actor CityFunFactService: CityFunFactProviding {
     }
 
     private func candidateTitles(for city: CityModel) async throws -> [String] {
+        // A pinned article is known to be right; a search could only stray from it.
+        guard city.wikipediaTitle == nil else { return Self.initialTitles(for: city) }
+
         let searchURL = try self.makeSearchURL(for: city)
         let request = self.makeRequest(url: searchURL)
         let (data, response) = try await self.session.data(for: request)

@@ -22,6 +22,7 @@ private struct CityJSON: Decodable {
     let searchAliases: [String]?
     let administrativeArea: String?
     let curatedFunFacts: [CuratedFunFactJSON]?
+    let wikipediaTitle: String?
 }
 
 // MARK: - CuratedFunFactJSON
@@ -101,7 +102,8 @@ final class DataService {
                 timeZoneIdentifier: entry.timeZoneIdentifier,
                 featuredHeroEligibleOverride: entry.featuredHeroEligible,
                 searchAliases: entry.searchAliases ?? [],
-                curatedFunFacts: entry.curatedFunFacts?.map(\.fact) ?? []
+                curatedFunFacts: entry.curatedFunFacts?.map(\.fact) ?? [],
+                wikipediaTitle: entry.wikipediaTitle
             )
         }
         Self.cachedCities = cities

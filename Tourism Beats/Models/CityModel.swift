@@ -17,6 +17,10 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
     /// Facts worth telling that a Wikipedia introduction wouldn't reach, such
     /// as the origin of quiche for Nancy. They join the facts looked up live.
     let curatedFunFacts: [CityFunFact]
+    /// The one Wikipedia article to take facts from, for a city whose name
+    /// alone finds the wrong one (Chail, Himachal Pradesh, not Uttar Pradesh)
+    /// or that has no article of its own (Orimasvaru, told by its atoll's).
+    let wikipediaTitle: String?
 
     init(
         id: String,
@@ -28,7 +32,8 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
         timeZoneIdentifier: String,
         featuredHeroEligibleOverride: Bool? = nil,
         searchAliases: [String] = [],
-        curatedFunFacts: [CityFunFact] = []
+        curatedFunFacts: [CityFunFact] = [],
+        wikipediaTitle: String? = nil
     ) {
         self.id = id
         self.name = name
@@ -40,6 +45,7 @@ struct CityModel: Identifiable, Equatable, Hashable, Sendable {
         self.featuredHeroEligibleOverride = featuredHeroEligibleOverride
         self.searchAliases = searchAliases
         self.curatedFunFacts = curatedFunFacts
+        self.wikipediaTitle = wikipediaTitle
     }
 
     var timeZone: TimeZone {

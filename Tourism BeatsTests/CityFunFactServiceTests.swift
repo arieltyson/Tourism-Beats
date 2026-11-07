@@ -17,6 +17,16 @@ struct CityFunFactServiceTests {
         #expect(CityFunFactService.initialTitles(for: city).contains("Okanagan"))
     }
 
+    @Test func aPinnedArticleIsTheOnlyTitleTried() {
+        let city = Self.city(
+            "Chail",
+            administrativeArea: "Himachal Pradesh",
+            wikipediaTitle: "Chail, Himachal Pradesh"
+        )
+
+        #expect(CityFunFactService.initialTitles(for: city) == ["Chail, Himachal Pradesh"])
+    }
+
     @Test func citiesWithoutAStateStartFromTheirName() {
         #expect(CityFunFactService.initialTitles(for: Self.city("Tema")).first == "Tema")
     }
@@ -59,7 +69,11 @@ struct CityFunFactServiceTests {
         CityFunFact(text: text, sourceName: "Source", sourceURL: nil, isFallback: isFallback)
     }
 
-    private static func city(_ name: String, administrativeArea: String? = nil) -> CityModel {
+    private static func city(
+        _ name: String,
+        administrativeArea: String? = nil,
+        wikipediaTitle: String? = nil
+    ) -> CityModel {
         CityModel(
             id: name,
             name: name,
@@ -67,7 +81,8 @@ struct CityFunFactServiceTests {
             administrativeArea: administrativeArea,
             imageURL: URL.documentsDirectory,
             coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
-            timeZoneIdentifier: "UTC"
+            timeZoneIdentifier: "UTC",
+            wikipediaTitle: wikipediaTitle
         )
     }
 }
