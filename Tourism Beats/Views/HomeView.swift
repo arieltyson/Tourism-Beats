@@ -318,7 +318,7 @@ private struct DiscoveryCityCard: View {
         }
         .buttonStyle(.cardPress)
         .accessibilityLabel(
-            "\(self.city.country.flag) \(self.city.name), \(self.city.country.name). Local time \(self.localTime)"
+            "\(self.city.country.flag) \(self.city.name), \(self.city.locationName). Local time \(self.localTime)"
         )
         .accessibilityHint("Opens city details")
         .accessibilityInputLabels(["\(self.city.name)", "Open \(self.city.name)"])

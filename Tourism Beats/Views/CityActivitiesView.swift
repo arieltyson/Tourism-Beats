@@ -75,7 +75,7 @@ extension CityActivitiesView {
                         .bold()
                         .foregroundStyle(AppColors.label)
 
-                    Text("\(self.city.name), \(self.city.country.name)")
+                    Text(self.city.displayName)
                         .font(TypographyTokens.cardLabel)
                         .foregroundStyle(AppColors.secondaryLabel)
                         .lineLimit(2)

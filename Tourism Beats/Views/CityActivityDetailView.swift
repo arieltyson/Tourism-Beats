@@ -71,7 +71,7 @@ extension CityActivityDetailView {
                         .foregroundStyle(AppColors.label)
                         .multilineTextAlignment(.leading)
 
-                    Text("\(self.activity.category) • \(self.city.name), \(self.city.country.name)")
+                    Text("\(self.activity.category) • \(self.city.displayName)")
                         .font(TypographyTokens.cardLabel)
                         .foregroundStyle(AppColors.secondaryLabel)
                 }

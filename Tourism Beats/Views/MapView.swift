@@ -81,7 +81,7 @@ struct MapView: UIViewControllerRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
     private static func annotationTitle(for city: CityModel) -> String {
-        "\(city.name), \(city.country.name)"
+        city.displayName
     }
 
     @MainActor

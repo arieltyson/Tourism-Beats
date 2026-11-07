@@ -42,7 +42,7 @@ extension CityRestaurantDetailView {
                         .foregroundStyle(AppColors.label)
                         .multilineTextAlignment(.leading)
 
-                    Text("\(self.restaurant.displayCuisine) • \(self.city.name), \(self.city.country.name)")
+                    Text("\(self.restaurant.displayCuisine) • \(self.city.displayName)")
                         .font(TypographyTokens.cardLabel)
                         .foregroundStyle(AppColors.secondaryLabel)
                 }

@@ -23,7 +23,7 @@ struct CitySearchResultRow: View {
                 .foregroundStyle(.primary)
                 .multilineTextAlignment(.leading)
 
-                Text(self.city.country.name)
+                Text(self.city.locationName)
                     .font(TypographyTokens.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
@@ -42,7 +42,7 @@ struct CitySearchResultRow: View {
             in: RoundedRectangle(cornerRadius: 12)
         )
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(self.city.name), \(self.city.country.name)")
+        .accessibilityLabel("\(self.city.name), \(self.city.locationName)")
         .accessibilityHint("Opens city details")
     }
 

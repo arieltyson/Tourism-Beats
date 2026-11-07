@@ -121,7 +121,7 @@ struct WorldView: View {
             }
         } message: {
             if let city = self.selectedCity {
-                Text("Would you like to explore \(city.name), \(city.country.name)?")
+                Text("Would you like to explore \(city.displayName)?")
             }
         }
     }

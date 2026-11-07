@@ -20,7 +20,7 @@ struct TripCitySuggestionsSection: View {
                             Text(city.name)
                                 .foregroundStyle(Color.primary)
 
-                            Text("\(city.country.flag) \(city.country.name)")
+                            Text("\(city.country.flag) \(city.locationName)")
                                 .font(TypographyTokens.caption)
                                 .foregroundStyle(Color.secondary)
                         }
@@ -34,7 +34,7 @@ struct TripCitySuggestionsSection: View {
                     // The whole row is the target, not only its text and arrow.
                     .contentShape(.rect)
                 }
-                .accessibilityLabel("\(city.name), \(city.country.name)")
+                .accessibilityLabel("\(city.name), \(city.locationName)")
                 .accessibilityHint("Uses this city for the trip")
             }
         } header: {

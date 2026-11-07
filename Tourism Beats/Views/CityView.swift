@@ -49,7 +49,7 @@ private struct CityHeaderView: View {
     var body: some View {
         VStack {
             Text("\(self.city.name),")
-            Text("\(self.city.country.name) \(self.city.country.flag)")
+            Text("\(self.city.regionName) \(self.city.country.flag)")
         }
         .font(.title2).bold().italic()
         .foregroundStyle(AppColors.onImagePrimary)
