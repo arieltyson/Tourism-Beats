@@ -2258,7 +2258,12 @@
     "latitude": 5.86287,
     "longitude": 73.2072,
     "timeZoneIdentifier": "Indian/Maldives",
-    "featuredHeroEligible": false
+    "featuredHeroEligible": false,
+    "wikipediaTitle": "Noonu Atoll",
+    "curatedFunFacts": [
+      "Orimasvaru is one of 71 islands in Noonu Atoll, the southern half of Miladhunmadulu Atoll in the northern Maldives, and only 13 of them are inhabited.",
+      "Noonu Atoll has the highest density of schooling fish in the Maldives, especially fusiliers and snappers, and a large population of spinner dolphins."
+    ]
   },
   {
     "name": "Jerusalem",
@@ -3849,7 +3854,13 @@
     "latitude": 10.61666667,
     "longitude": -85.65805556,
     "timeZoneIdentifier": "America/Costa_Rica",
-    "searchAliases": ["Bahía Culebra", "Papagayo"]
+    "searchAliases": ["Bahía Culebra", "Papagayo"],
+    "wikipediaTitle": "Gulf of Papagayo",
+    "curatedFunFacts": [
+      "Culebra Bay lies in the south of the Gulf of Papagayo, whose Spanish name, Golfo del Papagayo, means “gulf of the parrot.”",
+      "Long before the resorts, Culebra Bay was home to Nacascolo, a pre-Columbian trading port where archaeologists have found salt, purple dye, cotton, obsidian, and copper.",
+      "A fragment of a wax mold found at Culebra Bay is the only archaeological evidence that gold was ever cast in Guanacaste."
+    ]
   },
   {
     "name": "Sarteneja",

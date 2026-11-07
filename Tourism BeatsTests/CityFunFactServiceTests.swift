@@ -73,6 +73,17 @@ struct CityFunFactServiceTests {
         #expect(lehi.displayName == "Lehi, Utah")
     }
 
+    /// Their names alone find the wrong article, or none, so each keeps its
+    /// own facts and the one article that describes it.
+    @MainActor
+    @Test(arguments: ["Chail-IN", "Crown Point-TT", "Culebra-CR", "Orimasvaru-MV"])
+    func citiesWithoutAClearArticleHaveCuratedFactsAndAPinnedOne(id: String) throws {
+        let city = try #require(DataService().loadCities().first { $0.id == id })
+
+        #expect(!city.curatedFunFacts.isEmpty)
+        #expect(city.wikipediaTitle != nil)
+    }
+
     private static func fact(_ text: String, isFallback: Bool = false) -> CityFunFact {
         CityFunFact(text: text, sourceName: "Source", sourceURL: nil, isFallback: isFallback)
     }
