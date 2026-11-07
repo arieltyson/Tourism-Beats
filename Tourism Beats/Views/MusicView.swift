@@ -22,15 +22,43 @@ struct MusicView: View {
     }
 
     var body: some View {
-        ScrollView(.vertical) {
+        // This page sits inside the vertical city pager. A page that scrolls
+        // itself catches the swipe meant for the next page, so this page
+        // fits the screen whenever it can, and the artwork gives up height
+        // first. Only text too large to fit even then falls back to scrolling.
+        ViewThatFits(in: .vertical) {
+            Self.Content(city: self.city, viewModel: self.viewModel, fitsPage: true)
+
+            ScrollView(.vertical) {
+                Self.Content(city: self.city, viewModel: self.viewModel, fitsPage: false)
+            }
+            .scrollIndicators(.hidden)
+            // Content that fits never holds onto a swipe.
+            .scrollBounceBehavior(.basedOnSize)
+        }
+        .animation(self.reduceMotion ? nil : AnimationTokens.standard, value: self.viewModel.availability)
+        .task { await self.viewModel.requestAccessAndLoadTopSong() }
+    }
+}
+
+// MARK: MusicView.Content
+
+extension MusicView {
+    /// The page's content, laid out to fit the page or to scroll.
+    private struct Content: View {
+        let city: CityModel
+        let viewModel: MusicViewModel
+
+        /// Whether the artwork shrinks so the page fits without scrolling.
+        let fitsPage: Bool
+
+        var body: some View {
             VStack(spacing: SpacingTokens.medium) {
-                Self.HeroCard(city: self.city)
+                MusicView.HeroCard(city: self.city)
                     .padding(.horizontal, SpacingTokens.medium)
                     .padding(.top, SpacingTokens.small)
 
-                MusicArtworkCard(artworkURL: self.viewModel.songImage)
-                    .frame(maxWidth: 320)
-                    .padding(.horizontal, SpacingTokens.xLarge)
+                MusicPageArtwork(artworkURL: self.viewModel.songImage, fitsPage: self.fitsPage)
 
                 MusicSongHeader(
                     title: self.viewModel.songTitle,
@@ -46,47 +74,14 @@ struct MusicView: View {
                 }
 
                 if self.viewModel.availability.showsPlayers {
-                    VStack(spacing: SpacingTokens.small) {
-                        GlassMusicCard(
-                            artworkURL: self.viewModel.songImage,
-                            songTitle: self.viewModel.songTitle,
-                            artistName: self.viewModel.artistName,
-                            isPlaying: self.viewModel.isPlaying,
-                            onPlayPause: {
-                                Task { await self.viewModel.handleAppleMusicAction() }
-                            },
-                            onRestart: {
-                                self.viewModel.skipBackward()
-                            }
-                        )
-
-                        GlassSpotifyCard(
-                            artworkURL: self.viewModel.songImage,
-                            songTitle: self.viewModel.songTitle,
-                            artistName: self.viewModel.artistName,
-                            isSearching: self.viewModel.isSpotifySearching,
-                            onOpen: {
-                                Task { await self.viewModel.handleSpotifyAction() }
-                            }
-                        )
-                    }
-                    .padding(.horizontal, SpacingTokens.medium)
-                    // Loading is said once, by the header above.
-                    .redacted(reason: self.viewModel.availability.showsSongDetails ? [] : .placeholder)
-                    .disabled(!self.viewModel.availability.showsSongDetails)
-                    .accessibilityHidden(!self.viewModel.availability.showsSongDetails)
-                    .transition(.opacity)
+                    MusicPlayerCards(viewModel: self.viewModel)
                 }
 
                 MusicFeedbackBanner(message: self.viewModel.userFeedbackMessage)
             }
             .padding(.bottom, SpacingTokens.medium)
             .frame(maxWidth: .infinity)
-            .animation(self.reduceMotion ? nil : AnimationTokens.standard, value: self.viewModel.availability)
         }
-        .scrollIndicators(.hidden)
-        .safeAreaPadding(.bottom, SpacingTokens.medium)
-        .task { await self.viewModel.requestAccessAndLoadTopSong() }
     }
 }
 
@@ -142,6 +137,73 @@ extension MusicView {
                     )
             }
         }
+    }
+}
+
+// MARK: - MusicPageArtwork
+
+/// The album artwork, which absorbs the page's spare height.
+///
+/// When the page fits, the artwork asks for only its minimum size, so the page
+/// counts as fitting with the artwork at its smallest. It then grows into the
+/// space left by the text and cards, up to its largest size, centered in that
+/// space. When the page scrolls, the artwork keeps its full width instead.
+private struct MusicPageArtwork: View {
+    let artworkURL: URL?
+    let fitsPage: Bool
+
+    var body: some View {
+        MusicArtworkCard(artworkURL: self.artworkURL)
+            .frame(maxWidth: MusicPageTokens.artworkMaximumSide)
+            .frame(
+                minHeight: self.fitsPage ? MusicPageTokens.artworkMinimumSide : nil,
+                idealHeight: self.fitsPage ? MusicPageTokens.artworkMinimumSide : nil,
+                maxHeight: self.fitsPage ? .infinity : nil
+            )
+            .padding(.horizontal, SpacingTokens.xLarge)
+    }
+}
+
+// MARK: - MusicPlayerCards
+
+/// The Apple Music and Spotify cards, shown as placeholders while loading.
+private struct MusicPlayerCards: View {
+    let viewModel: MusicViewModel
+
+    var body: some View {
+        VStack(spacing: SpacingTokens.small) {
+            GlassMusicCard(
+                artworkURL: self.viewModel.songImage,
+                songTitle: self.viewModel.songTitle,
+                artistName: self.viewModel.artistName,
+                isPlaying: self.viewModel.isPlaying,
+                onPlayPause: {
+                    Task { await self.viewModel.handleAppleMusicAction() }
+                },
+                onRestart: {
+                    self.viewModel.skipBackward()
+                }
+            )
+
+            GlassSpotifyCard(
+                artworkURL: self.viewModel.songImage,
+                songTitle: self.viewModel.songTitle,
+                artistName: self.viewModel.artistName,
+                isSearching: self.viewModel.isSpotifySearching,
+                onOpen: {
+                    Task { await self.viewModel.handleSpotifyAction() }
+                }
+            )
+        }
+        // The Apple Music card's tap area stretches to fill its card, so the
+        // cards keep their natural height and the artwork takes the spare room.
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, SpacingTokens.medium)
+        // Loading is said once, by the header above.
+        .redacted(reason: self.viewModel.availability.showsSongDetails ? [] : .placeholder)
+        .disabled(!self.viewModel.availability.showsSongDetails)
+        .accessibilityHidden(!self.viewModel.availability.showsSongDetails)
+        .transition(.opacity)
     }
 }
 
