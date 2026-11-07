@@ -9,6 +9,7 @@ struct AdvisoriesView: View {
     @State private var appeared = false
     @State private var visaViewModel: VisaViewModel
     @State private var safetyViewModel: SafetyViewModel
+    @State private var walkabilityViewModel: WalkabilityViewModel
 
     init(city: CityModel) {
         self.city = city
@@ -21,84 +22,122 @@ struct AdvisoriesView: View {
         _safetyViewModel = State(
             initialValue: SafetyViewModel(city: city)
         )
+        _walkabilityViewModel = State(
+            initialValue: WalkabilityViewModel(city: city)
+        )
     }
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 12) {
-                // MARK: Hero
+        let content = AdvisoriesContent(
+            city: self.city,
+            safetyViewModel: self.safetyViewModel,
+            visaViewModel: self.visaViewModel,
+            walkabilityViewModel: self.walkabilityViewModel
+        )
 
-                HeroCard(city: self.city)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(
-                        "Travel Advisories for \(self.city.name), \(self.city.country.name)"
-                    )
+        // This page sits inside the vertical city pager, where a page that
+        // scrolls itself catches the swipe meant for the next page. So it
+        // fits the screen whenever it can: first as it is, then compact, and
+        // only when neither fits, at large text sizes, does it scroll.
+        ViewThatFits(in: .vertical) {
+            content
 
-                // MARK: Safety
+            content
+                .environment(\.advisoriesDensity, .compact)
 
-                AdvisoryCard {
-                    SectionHeader(
-                        title: "Safety Advisory",
-                        subtitle: "Global Peace Index 2026"
-                    )
-                    .padding(.bottom, 2)
+            ScrollView(.vertical) {
+                content
+            }
+            .cityPageScrolling()
+        }
+        .opacity(self.appeared ? 1 : 0.9)
+        .scaleEffect(self.reduceMotion ? 1 : (self.appeared ? 1 : 0.98))
+        .motionSensitiveAnimation(
+            .spring(response: 0.6, dampingFraction: 0.85),
+            reduced: .linear(duration: 0.01),
+            value: self.appeared
+        )
+        .onAppear { self.appeared = true }
+    }
+}
 
-                    SafetyView(viewModel: self.safetyViewModel)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .transition(.opacity.combined(with: .scale))
-                }
-                .accessibilityHint(
-                    "Shows travel advisories for \(self.city.name)"
+// MARK: - AdvisoriesContent
+
+/// The page's cards, shared by each of its layouts. The view models belong
+/// to the page, so switching layouts never loads anything again.
+private struct AdvisoriesContent: View {
+    let city: CityModel
+    let safetyViewModel: SafetyViewModel
+    let visaViewModel: VisaViewModel
+    let walkabilityViewModel: WalkabilityViewModel
+
+    @Environment(\.advisoriesDensity) private var density
+
+    var body: some View {
+        VStack(spacing: self.density.cardSpacing) {
+            // MARK: Hero
+
+            HeroCard(city: self.city)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(
+                    "Travel Advisories for \(self.city.name), \(self.city.country.name)"
                 )
 
-                // MARK: Visa
+            // MARK: Safety
 
-                AdvisoryCard {
-                    SectionHeader(
-                        title: "Visa Entry",
-                        subtitle: "Verify with the passport of your choice"
-                    )
-                    .padding(.bottom, 2)
-
-                    VisaView(viewModel: self.visaViewModel)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .transition(.opacity.combined(with: .scale))
-                }
-                .accessibilityHint(
-                    "Shows visa information for travelers to \(self.city.name)"
+            AdvisoryCard {
+                SectionHeader(
+                    title: "Safety Advisory",
+                    subtitle: "Global Peace Index 2026"
                 )
+                .padding(.bottom, 2)
 
-                // MARK: Getting Around
-
-                AdvisoryCard {
-                    SectionHeader(
-                        title: "Getting Around",
-                        subtitle: "Walk Score\u{00AE} Index"
-                    )
-                    .padding(.bottom, 2)
-
-                    WalkabilityView(city: self.city)
+                SafetyView(viewModel: self.safetyViewModel)
                     .fixedSize(horizontal: false, vertical: true)
                     .transition(.opacity.combined(with: .scale))
-                }
-                .accessibilityHint(
-                    "Shows walkability and transit scores for \(self.city.name)"
-                )
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
-            .padding(.bottom, 16)
-            .opacity(self.appeared ? 1 : 0.9)
-            .scaleEffect(self.reduceMotion ? 1 : (self.appeared ? 1 : 0.98))
-            .motionSensitiveAnimation(
-                .spring(response: 0.6, dampingFraction: 0.85),
-                reduced: .linear(duration: 0.01),
-                value: self.appeared
+            .accessibilityHint(
+                "Shows travel advisories for \(self.city.name)"
             )
-            .onAppear { self.appeared = true }
+
+            // MARK: Visa
+
+            AdvisoryCard {
+                SectionHeader(
+                    title: "Visa Entry",
+                    subtitle: "Verify with the passport of your choice"
+                )
+                .padding(.bottom, 2)
+
+                VisaView(viewModel: self.visaViewModel)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .transition(.opacity.combined(with: .scale))
+            }
+            .accessibilityHint(
+                "Shows visa information for travelers to \(self.city.name)"
+            )
+
+            // MARK: Getting Around
+
+            AdvisoryCard {
+                SectionHeader(
+                    title: "Getting Around",
+                    subtitle: "Walk Score\u{00AE} Index"
+                )
+                .padding(.bottom, 2)
+
+                WalkabilityView(viewModel: self.walkabilityViewModel)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .transition(.opacity.combined(with: .scale))
+            }
+            .accessibilityHint(
+                "Shows walkability and transit scores for \(self.city.name)"
+            )
         }
-        .background(Color.clear.ignoresSafeArea())
-        .safeAreaPadding(.bottom, 32)
+        .padding(.horizontal, SpacingTokens.medium)
+        .padding(.top, SpacingTokens.small)
+        .padding(.bottom, SpacingTokens.medium)
+        .environment(\.showsWalkabilityDetail, self.density.showsWalkabilityDetail)
     }
 }
 
@@ -108,9 +147,10 @@ private struct HeroCard: View {
     let city: CityModel
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.advisoriesDensity) private var density
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: SpacingTokens.small) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(self.city.name)
                     .font(.system(.title, design: .rounded).weight(.bold))
@@ -139,7 +179,7 @@ private struct HeroCard: View {
                         .strokeBorder(Color.green.opacity(0.2), lineWidth: 1)
                 )
         }
-        .padding(12)
+        .padding(self.density.cardPadding)
         .background {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.ultraThinMaterial)
@@ -175,13 +215,14 @@ private struct HeroCard: View {
 private struct AdvisoryCard<Content: View>: View {
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.advisoriesDensity) private var density
     @ViewBuilder var content: Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: self.density.cardContentSpacing) {
             self.content
         }
-        .padding(12)
+        .padding(self.density.cardPadding)
         .background {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.ultraThinMaterial)

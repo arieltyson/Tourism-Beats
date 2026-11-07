@@ -32,9 +32,7 @@ struct MusicView: View {
             ScrollView(.vertical) {
                 Self.Content(city: self.city, viewModel: self.viewModel, fitsPage: false)
             }
-            .scrollIndicators(.hidden)
-            // Content that fits never holds onto a swipe.
-            .scrollBounceBehavior(.basedOnSize)
+            .cityPageScrolling()
         }
         .animation(self.reduceMotion ? nil : AnimationTokens.standard, value: self.viewModel.availability)
         .task { await self.viewModel.requestAccessAndLoadTopSong() }

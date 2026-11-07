@@ -3,11 +3,8 @@ import SwiftUI
 // MARK: - WalkabilityView
 
 struct WalkabilityView: View {
-    @State private var viewModel: WalkabilityViewModel
-
-    init(city: CityModel) {
-        _viewModel = State(initialValue: WalkabilityViewModel(city: city))
-    }
+    /// Owned by the page, so each of its layouts shows the same loaded scores.
+    let viewModel: WalkabilityViewModel
 
     var body: some View {
         Group {
@@ -88,6 +85,7 @@ private struct ScoreTile: View {
 
     @Environment(\.colorScheme) private var scheme
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.showsWalkabilityDetail) private var showsDetail
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
@@ -115,11 +113,12 @@ private struct ScoreTile: View {
                 .foregroundStyle(.primary)
                 .fixedSize(horizontal: false, vertical: true)
 
-            // Detail text
-            Text(self.detail)
-                .font(TypographyTokens.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            if self.showsDetail {
+                Text(self.detail)
+                    .font(TypographyTokens.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .padding(SpacingTokens.small)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
