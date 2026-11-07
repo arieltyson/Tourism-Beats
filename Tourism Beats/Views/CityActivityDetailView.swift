@@ -33,6 +33,7 @@ struct CityActivityDetailView: View {
                 )
                 Self.LinkCard(
                     activity: self.activity,
+                    city: self.city,
                     articleURL: self.viewModel.articleURL
                 )
             }
@@ -225,12 +226,15 @@ extension CityActivityDetailView {
 
     struct LinkCard: View {
         let activity: CityActivity
+        let city: CityModel
         var articleURL: URL?
 
         @Environment(\.colorScheme) private var scheme
 
         private var hasLinks: Bool {
-            self.activity.officialURL != nil || self.articleURL != nil
+            self.activity.mapsURL(in: self.city) != nil
+                || self.activity.officialURL != nil
+                || self.articleURL != nil
         }
 
         var body: some View {
@@ -240,6 +244,19 @@ extension CityActivityDetailView {
                         .font(TypographyTokens.sectionHeader)
                         .bold()
                         .foregroundStyle(AppColors.label)
+
+                    // Getting there is what most people come for, so it leads.
+                    if let mapsURL = self.activity.mapsURL(in: self.city) {
+                        Link(destination: mapsURL) {
+                            Self.LinkLabel(
+                                title: "Open in Google Maps",
+                                subtitle: self.activity.address ?? self.activity.name,
+                                systemImage: "map.fill"
+                            )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityHint("Opens in Google Maps")
+                    }
 
                     if let officialURL = self.activity.officialURL {
                         Link(destination: officialURL) {
