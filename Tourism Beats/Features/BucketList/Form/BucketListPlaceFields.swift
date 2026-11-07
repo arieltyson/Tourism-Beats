@@ -21,7 +21,7 @@ struct BucketListPlaceFields: View {
                 .contentShape(.rect)
             }
             .buttonStyle(.plain)
-            .accessibilityHint("Opens the list of countries")
+            .accessibilityHint("Finds a country, or a city and its country")
 
             NavigationLink {
                 BucketListCityPicker(form: self.form)

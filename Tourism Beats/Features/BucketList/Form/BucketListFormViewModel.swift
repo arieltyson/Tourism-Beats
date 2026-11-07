@@ -41,6 +41,45 @@ final class BucketListFormViewModel {
         }
     }
 
+    /// Chooses a city, and with it the city's country, for someone who knows
+    /// where they want to go but not which country it's in.
+    func selectCity(_ city: CityModel) {
+        self.countryCode = city.country.code
+        self.city = city
+    }
+
+    /// The countries whose names match a search, by name.
+    func countries(matching query: String) -> [CountryModel] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        return self.countries
+            .filter { trimmed.isEmpty || $0.name.localizedStandardContains(trimmed) }
+            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
+
+    /// The app's cities anywhere that match a search by name, region, or
+    /// another name they go by; none until something's typed.
+    func anyCities(matching query: String) -> [CityModel] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return [] }
+        return self.cities
+            .filter { city in
+                city.name.localizedStandardContains(trimmed)
+                    || city.alternateSearchNames.contains { $0.localizedStandardContains(trimmed) }
+            }
+            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
+
+    /// Takes in an edit to the activity. Return adds the activity rather than
+    /// starting a new line, so it's true when the edit asks to add.
+    func updateActivity(_ text: String) -> Bool {
+        guard text.contains(where: \.isNewline) else {
+            self.activity = text
+            return false
+        }
+        self.activity = String(text.filter { !$0.isNewline })
+        return true
+    }
+
     /// The app's cities in the chosen country, by name, narrowed by a search.
     func cities(matching query: String) -> [CityModel] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)

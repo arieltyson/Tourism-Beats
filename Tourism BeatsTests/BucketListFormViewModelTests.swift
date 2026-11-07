@@ -67,4 +67,32 @@ struct BucketListFormViewModelTests {
         form.selectCountry(code: "FR")
         #expect(form.city == nil)
     }
+    /// Someone who knows the city but not its country finds it by name.
+    @Test func citiesAreFoundAnywhereByName() {
+        let form = Self.makeForm()
+
+        #expect(form.anyCities(matching: "").isEmpty)
+        #expect(form.anyCities(matching: "nic").map(\.name) == ["Nice"])
+
+        let nice = form.anyCities(matching: "Nice")[0]
+        form.selectCity(nice)
+        #expect(form.country?.name == "France")
+        #expect(form.city?.name == "Nice")
+        #expect(form.canAdd)
+    }
+
+    @Test func countriesNarrowBySearch() {
+        let form = Self.makeForm()
+        #expect(form.countries(matching: "").map(\.name) == ["France", "Japan"])
+        #expect(form.countries(matching: "jap").map(\.name) == ["Japan"])
+    }
+
+    /// Return adds the activity instead of starting a new line.
+    @Test func returnAsksToAddRatherThanBreakTheLine() {
+        let form = Self.makeForm()
+
+        #expect(!form.updateActivity("Hot air balloon"))
+        #expect(form.updateActivity("Hot air balloon\n"))
+        #expect(form.activity == "Hot air balloon")
+    }
 }

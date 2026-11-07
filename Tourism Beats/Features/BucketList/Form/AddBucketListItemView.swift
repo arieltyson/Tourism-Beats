@@ -47,14 +47,10 @@ struct AddBucketListItemView: View {
                         .disabled(!self.form.canAdd)
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             // Presented from here, not from the form's lazy rows.
             .sheet(isPresented: self.$isChoosingCountry) {
-                SearchableCountryPicker(
-                    selectedCode: Binding(
-                        get: { self.form.countryCode },
-                        set: { self.form.selectCountry(code: $0) }
-                    )
-                )
+                BucketListPlacePicker(form: self.form)
             }
         }
         .presentationDetents([.medium, .large])
