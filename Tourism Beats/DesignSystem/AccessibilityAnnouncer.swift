@@ -62,6 +62,12 @@ enum AccessibilityAnnouncer {
         self.post(label)
     }
 
+    // MARK: - Bucket List
+
+    static func announceBucketList(_ confirmation: BucketListConfirmation) {
+        self.post("\(confirmation.message).")
+    }
+
     // MARK: - Private
 
     private static func post(_ message: String) {

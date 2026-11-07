@@ -40,5 +40,5 @@ enum BucketListTokens {
     // MARK: - Confirmation
 
     /// How long the card confirming a city added or removed stays up.
-    static let confirmationDuration: Duration = .seconds(1.6)
+    static let confirmationDuration: Duration = .seconds(2)
 }

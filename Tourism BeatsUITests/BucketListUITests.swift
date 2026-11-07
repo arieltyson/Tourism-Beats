@@ -55,4 +55,35 @@ final class BucketListUITests: XCTestCase {
         kyotoRow.tap()
         XCTAssertEqual(kyotoRow.value as? String, "Done")
     }
+    /// A city page adds its city to the list, and the plus becomes a checkmark.
+    func testAddingACityFromItsPage() throws {
+        let app = XCUIApplication()
+        app.launchArguments += ["-inMemoryStore"]
+        app.launch()
+
+        let mapTab = app.tabBars.buttons["Map"].firstMatch
+        XCTAssertTrue(mapTab.waitForExistence(timeout: 15))
+        mapTab.tap()
+
+        let field = app.textFields["Search cities or countries"]
+        XCTAssertTrue(field.waitForExistence(timeout: 10))
+        field.tap()
+        field.typeText("Kyoto")
+        let kyoto = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Kyoto'")).firstMatch
+        XCTAssertTrue(kyoto.waitForExistence(timeout: 5))
+        kyoto.tap()
+
+        let add = app.navigationBars.buttons["Add to Bucket List"].firstMatch
+        XCTAssertTrue(add.waitForExistence(timeout: 5))
+        add.tap()
+        XCTAssertTrue(
+            app.navigationBars.buttons["Remove from Bucket List"].firstMatch.waitForExistence(timeout: 5),
+            "The plus didn't become a checkmark"
+        )
+
+        app.tabBars.buttons["Settings"].firstMatch.tap()
+        app.buttons["Bucket List"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["Places to Visit"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Kyoto'")).firstMatch.exists)
+    }
 }

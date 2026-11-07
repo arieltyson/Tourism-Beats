@@ -8,6 +8,7 @@ struct CityContainerView: View {
     @State private var pageIndex: Int? = 0
     @State private var haptic = HapticTrigger()
     @State private var barInsets = EdgeInsets()
+    @State private var bucketListConfirmation: BucketListConfirmation?
 
     private let pages = PageDescriptor.defaults
 
@@ -65,6 +66,7 @@ struct CityContainerView: View {
                 CityRestaurantDetailView(city: route.city, restaurant: route.restaurant)
             }
         }
+        .bucketListConfirmation(self.$bucketListConfirmation)
         // Every city backdrop is a dark gradient designed for light text, so
         // the pages always use the dark appearance. In Light Mode, glass cards
         // would otherwise turn pale and pair dark text with a dark backdrop.
@@ -104,6 +106,12 @@ struct CityContainerView: View {
                         reduced: .linear(duration: 0.01),
                         value: self.currentPageIndex
                     )
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                CityBucketListButton(city: self.city) { confirmation in
+                    self.bucketListConfirmation = confirmation
+                }
             }
         }
     }
