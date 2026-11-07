@@ -23,7 +23,8 @@ struct Tourism_BeatsApp: App {
                     RestaurantMealPhoto.self,
                     Trip.self,
                     TripDay.self,
-                    TripActivity.self
+                    TripActivity.self,
+                    BucketListItem.self
                 ]
             )
         }
