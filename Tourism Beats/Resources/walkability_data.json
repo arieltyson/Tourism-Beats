@@ -513,5 +513,16 @@
   {"city": "Little Rock", "countryCode": "US", "walkScore": 31, "transitScore": 20},
   {"city": "Memphis", "countryCode": "US", "walkScore": 35, "transitScore": 24},
   {"city": "Birmingham", "countryCode": "US", "walkScore": 34, "transitScore": 22},
-  {"city": "Jackson", "countryCode": "US", "walkScore": 27, "transitScore": 15}
+  {"city": "Jackson", "countryCode": "US", "walkScore": 27, "transitScore": 15},
+  {"city": "Madison", "countryCode": "US", "walkScore": 49, "transitScore": 37},
+  {"city": "Wichita", "countryCode": "US", "walkScore": 33, "transitScore": 16},
+  {"city": "Fargo", "countryCode": "US", "walkScore": 39, "transitScore": 22},
+  {"city": "Sioux Falls", "countryCode": "US", "walkScore": 33, "transitScore": 15},
+  {"city": "Baltimore", "countryCode": "US", "walkScore": 69, "transitScore": 49},
+  {"city": "Wilmington", "countryCode": "US", "walkScore": 60, "transitScore": 41},
+  {"city": "Atlantic City", "countryCode": "US", "walkScore": 67, "transitScore": 44},
+  {"city": "Newark", "countryCode": "US", "walkScore": 78, "transitScore": 64},
+  {"city": "Albany", "countryCode": "US", "walkScore": 61, "transitScore": 42},
+  {"city": "Buffalo", "countryCode": "US", "walkScore": 68, "transitScore": 46},
+  {"city": "Pittsburgh", "countryCode": "US", "walkScore": 62, "transitScore": 45}
 ]

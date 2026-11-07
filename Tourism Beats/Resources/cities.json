@@ -4292,5 +4292,104 @@
     "latitude": 32.29888889,
     "longitude": -90.18472222,
     "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Madison",
+    "countryCode": "US",
+    "administrativeArea": "Wisconsin",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/69/Aerial_View_of_Campus%2C_with_Helen_C._White_Hall_in_foreground_%2814070186173%29.jpg",
+    "latitude": 43.07472222,
+    "longitude": -89.38416667,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Wichita",
+    "countryCode": "US",
+    "administrativeArea": "Kansas",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Wichita%2C_Kansas_skyline.jpg/1280px-Wichita%2C_Kansas_skyline.jpg",
+    "latitude": 37.68888889,
+    "longitude": -97.33611111,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Fargo",
+    "countryCode": "US",
+    "administrativeArea": "North Dakota",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Downtown_Fargo_Aerial_-_Facing_Southeast_%2851009704407%29.jpg/1280px-Downtown_Fargo_Aerial_-_Facing_Southeast_%2851009704407%29.jpg",
+    "latitude": 46.87333333,
+    "longitude": -96.82722222,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Sioux Falls",
+    "countryCode": "US",
+    "administrativeArea": "South Dakota",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Downtown_and_Falls_Park_03-16-24.jpg/1280px-Downtown_and_Falls_Park_03-16-24.jpg",
+    "latitude": 43.53638889,
+    "longitude": -96.73166667,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Baltimore",
+    "countryCode": "US",
+    "administrativeArea": "Maryland",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Fell%27s_Point_Aerial_2022.jpg/1280px-Fell%27s_Point_Aerial_2022.jpg",
+    "latitude": 39.28944444,
+    "longitude": -76.61527778,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Wilmington",
+    "countryCode": "US",
+    "administrativeArea": "Delaware",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Wilmington%2C_Delaware%2C_USA.jpg/1280px-Wilmington%2C_Delaware%2C_USA.jpg",
+    "latitude": 39.74583333,
+    "longitude": -75.54666667,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Atlantic City",
+    "countryCode": "US",
+    "administrativeArea": "New Jersey",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/A_sunset_view_of_the_beach_in_Atlantic_City%2C_NJ.jpg/1280px-A_sunset_view_of_the_beach_in_Atlantic_City%2C_NJ.jpg",
+    "latitude": 39.3625,
+    "longitude": -74.425,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Newark",
+    "countryCode": "US",
+    "administrativeArea": "New Jersey",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/2025-09-12_12_24_59_Aerial_view_of_downtown_in_Newark%2C_Essex_County%2C_New_Jersey_from_an_aircraft_which_just_departed_from_Newark_Liberty_International_Airport.jpg/1280px-thumbnail.jpg",
+    "latitude": 40.7356,
+    "longitude": -74.1722,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Albany",
+    "countryCode": "US",
+    "administrativeArea": "New York",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Albany%2C_New_York.jpg/1280px-Albany%2C_New_York.jpg",
+    "latitude": 42.6525,
+    "longitude": -73.75722222,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Buffalo",
+    "countryCode": "US",
+    "administrativeArea": "New York",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Buffalo%2C_NY_skyline.jpg/1280px-Buffalo%2C_NY_skyline.jpg",
+    "latitude": 42.88638889,
+    "longitude": -78.87805556,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Pittsburgh",
+    "countryCode": "US",
+    "administrativeArea": "Pennsylvania",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Downtown_Pittsburgh_from_Duquesne_Incline_in_the_morning.jpg/1280px-Downtown_Pittsburgh_from_Duquesne_Incline_in_the_morning.jpg",
+    "latitude": 40.43972222,
+    "longitude": -79.97638889,
+    "timeZoneIdentifier": "America/New_York"
   }
 ]
