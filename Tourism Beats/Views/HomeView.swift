@@ -60,6 +60,10 @@ struct HomeView: View {
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .navigationBarBackButtonHidden(true)
+        // The Earth behind this page is always at night, but the tab bar's
+        // glass can't read a 3D scene the way it reads the map, so in Light
+        // Mode it turned a flat gray with dark icons. It's dark glass here.
+        .toolbarColorScheme(.dark, for: .tabBar)
         .task {
             self.viewModel.loadCities()
             if self.viewModel.isLoaded {
