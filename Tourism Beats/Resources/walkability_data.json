@@ -132,7 +132,7 @@
   {"city": "Sofia", "countryCode": "BG", "walkScore": 70, "transitScore": 72},
   {"city": "Salt Lake City", "countryCode": "US", "walkScore": 48, "transitScore": 38},
   {"city": "Phoenix", "countryCode": "US", "walkScore": 35, "transitScore": 22},
-  {"city": "Portland", "countryCode": "US", "walkScore": 68, "transitScore": 55},
+  {"city": "Portland", "administrativeArea": "Oregon", "countryCode": "US", "walkScore": 68, "transitScore": 55},
   {"city": "Charlotte", "countryCode": "US", "walkScore": 35, "transitScore": 18},
   {"city": "Oklahoma City", "countryCode": "US", "walkScore": 28, "transitScore": 8},
   {"city": "Kansas City", "countryCode": "US", "walkScore": 38, "transitScore": 18},
@@ -524,5 +524,14 @@
   {"city": "Newark", "countryCode": "US", "walkScore": 78, "transitScore": 64},
   {"city": "Albany", "countryCode": "US", "walkScore": 61, "transitScore": 42},
   {"city": "Buffalo", "countryCode": "US", "walkScore": 68, "transitScore": 46},
-  {"city": "Pittsburgh", "countryCode": "US", "walkScore": 62, "transitScore": 45}
+  {"city": "Pittsburgh", "countryCode": "US", "walkScore": 62, "transitScore": 45},
+  {"city": "Virginia Beach", "countryCode": "US", "walkScore": 32, "transitScore": 13},
+  {"city": "Charleston", "administrativeArea": "West Virginia", "countryCode": "US", "walkScore": 39, "transitScore": 18},
+  {"city": "Charleston", "administrativeArea": "South Carolina", "countryCode": "US", "walkScore": 41, "transitScore": 21},
+  {"city": "New Haven", "countryCode": "US", "walkScore": 72, "transitScore": 47},
+  {"city": "Providence", "countryCode": "US", "walkScore": 77, "transitScore": 48},
+  {"city": "Manchester", "countryCode": "US", "walkScore": 49, "transitScore": 22},
+  {"city": "Burlington", "countryCode": "US", "walkScore": 63, "transitScore": 33},
+  {"city": "Portland", "administrativeArea": "Maine", "countryCode": "US", "walkScore": 61, "transitScore": 34},
+  {"city": "Charlottetown", "countryCode": "CA", "walkScore": 52, "transitScore": 22}
 ]

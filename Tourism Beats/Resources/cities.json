@@ -4391,5 +4391,86 @@
     "latitude": 40.43972222,
     "longitude": -79.97638889,
     "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Virginia Beach",
+    "countryCode": "US",
+    "administrativeArea": "Virginia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/VB_Oceanfront.jpg/1280px-VB_Oceanfront.jpg",
+    "latitude": 36.85,
+    "longitude": -75.97777778,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Charleston",
+    "countryCode": "US",
+    "administrativeArea": "West Virginia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/The_West_Virginia_State_Capitol_building_-_Image03.jpg/1280px-The_West_Virginia_State_Capitol_building_-_Image03.jpg",
+    "latitude": 38.34981944,
+    "longitude": -81.63262222,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Charleston",
+    "countryCode": "US",
+    "administrativeArea": "South Carolina",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/East_Battery_Street_Charleston_Aug2010.jpg/1280px-East_Battery_Street_Charleston_Aug2010.jpg",
+    "latitude": 32.81388889,
+    "longitude": -79.93194444,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "New Haven",
+    "countryCode": "US",
+    "administrativeArea": "Connecticut",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/New_Haven%2C_Connecticut_skyline_%28cropped%29.jpg/1280px-New_Haven%2C_Connecticut_skyline_%28cropped%29.jpg",
+    "latitude": 41.3083,
+    "longitude": -72.925,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Providence",
+    "countryCode": "US",
+    "administrativeArea": "Rhode Island",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Providence_RI_skyline.jpg/1280px-Providence_RI_skyline.jpg",
+    "latitude": 41.82361111,
+    "longitude": -71.42222222,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Manchester",
+    "countryCode": "US",
+    "administrativeArea": "New Hampshire",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Manchester%2C_New_Hampshire_skyline.jpg/1280px-Manchester%2C_New_Hampshire_skyline.jpg",
+    "latitude": 42.99083333,
+    "longitude": -71.46361111,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Burlington",
+    "countryCode": "US",
+    "administrativeArea": "Vermont",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/View_of_the_Burlington_Marketplace_2017-10-01.jpg/1280px-View_of_the_Burlington_Marketplace_2017-10-01.jpg",
+    "latitude": 44.47611111,
+    "longitude": -73.21305556,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Portland",
+    "countryCode": "US",
+    "administrativeArea": "Maine",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/TheOldPort.jpg/1280px-TheOldPort.jpg",
+    "latitude": 43.64722222,
+    "longitude": -70.17166667,
+    "timeZoneIdentifier": "America/New_York"
+  },
+  {
+    "name": "Charlottetown",
+    "countryCode": "CA",
+    "administrativeArea": "Prince Edward Island",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Charlottetown%2C_PEI_skyline.jpg/1280px-Charlottetown%2C_PEI_skyline.jpg",
+    "latitude": 46.23527778,
+    "longitude": -63.12666667,
+    "timeZoneIdentifier": "America/Halifax"
   }
 ]
