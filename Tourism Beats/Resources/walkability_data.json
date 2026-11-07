@@ -501,5 +501,7 @@
   {"city": "İzmir", "countryCode": "TR", "walkScore": 65, "transitScore": 60},
   {"city": "Kasane", "countryCode": "BW", "walkScore": 30, "transitScore": 5},
   {"city": "Isfahan", "countryCode": "IR", "walkScore": 60, "transitScore": 45},
-  {"city": "Yantai", "countryCode": "CN", "walkScore": 50, "transitScore": 40}
+  {"city": "Yantai", "countryCode": "CN", "walkScore": 50, "transitScore": 40},
+  {"city": "Lehi", "countryCode": "US", "walkScore": 28, "transitScore": 18},
+  {"city": "Park City", "countryCode": "US", "walkScore": 45, "transitScore": 35}
 ]

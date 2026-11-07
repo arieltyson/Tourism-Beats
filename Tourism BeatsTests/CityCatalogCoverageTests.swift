@@ -9,6 +9,8 @@ struct CityCatalogCoverageTests {
             Self.lookupKey(city: "Ouagadougou", countryCode: "BF"),
             Self.lookupKey(city: "Isfahan", countryCode: "IR"),
             Self.lookupKey(city: "Yantai", countryCode: "CN"),
+            Self.lookupKey(city: "Lehi", countryCode: "US"),
+            Self.lookupKey(city: "Park City", countryCode: "US"),
             Self.lookupKey(city: "İzmir", countryCode: "TR"),
             Self.lookupKey(city: "Kasane", countryCode: "BW"),
             Self.lookupKey(city: "Bandar Seri Begawan", countryCode: "BN"),

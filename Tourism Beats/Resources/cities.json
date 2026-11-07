@@ -4158,5 +4158,25 @@
     "longitude": 121.4478,
     "timeZoneIdentifier": "Asia/Shanghai",
     "searchAliases": ["Chefoo"]
+  },
+  {
+    "name": "Lehi",
+    "countryCode": "US",
+    "administrativeArea": "Utah",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Lehi_Main_Street_Historic_District_from_above.jpg/1280px-Lehi_Main_Street_Historic_District_from_above.jpg",
+    "latitude": 40.38777778,
+    "longitude": -111.87166667,
+    "timeZoneIdentifier": "America/Denver",
+    "searchAliases": ["Silicon Slopes"]
+  },
+  {
+    "name": "Park City",
+    "countryCode": "US",
+    "administrativeArea": "Utah",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/2019_Park_City%2C_Utah_01.jpg/1280px-2019_Park_City%2C_Utah_01.jpg",
+    "latitude": 40.65027778,
+    "longitude": -111.50138889,
+    "timeZoneIdentifier": "America/Denver",
+    "searchAliases": ["Deer Valley"]
   }
 ]
