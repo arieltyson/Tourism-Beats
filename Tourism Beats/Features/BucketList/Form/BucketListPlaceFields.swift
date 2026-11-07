@@ -2,13 +2,14 @@ import SwiftUI
 
 // MARK: - BucketListPlaceFields
 
-/// The country to visit and, if one comes to mind, a city in it.
+/// The country to visit and, if one comes to mind, a city in it, as rows
+/// of the form's one question section.
 struct BucketListPlaceFields: View {
     @Bindable var form: BucketListFormViewModel
     let onChooseCountry: () -> Void
 
     var body: some View {
-        Section {
+        Group {
             Button(action: self.onChooseCountry) {
                 LabeledContent("Country") {
                     if let country = self.form.country {

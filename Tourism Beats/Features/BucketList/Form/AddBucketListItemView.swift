@@ -6,6 +6,7 @@ import SwiftUI
 struct AddBucketListItemView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var form = BucketListFormViewModel()
     @State private var isChoosingCountry = false
 
@@ -24,15 +25,23 @@ struct AddBucketListItemView: View {
                     .listRowInsets(EdgeInsets())
                 }
 
-                switch self.form.kind {
-                case .place:
-                    BucketListPlaceFields(form: self.form) {
-                        self.isChoosingCountry = true
+                // Both kinds share one section, a question and its answer, so
+                // switching swaps only what's inside it.
+                Section {
+                    switch self.form.kind {
+                    case .place:
+                        BucketListPlaceFields(form: self.form) {
+                            self.isChoosingCountry = true
+                        }
+                    case .activity:
+                        BucketListActivityField(form: self.form)
                     }
-                case .activity:
-                    BucketListActivityField(form: self.form)
+                } header: {
+                    Text(self.form.kind.prompt)
+                        .contentTransition(.opacity)
                 }
             }
+            .animation(self.reduceMotion ? nil : AnimationTokens.snappy, value: self.form.kind)
             .navigationTitle("Add to Bucket List")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

@@ -14,6 +14,14 @@ enum BucketListItemKind: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// The question the add form asks for this kind.
+    var prompt: String {
+        switch self {
+        case .place: "Where do you want to go?"
+        case .activity: "What do you want to do?"
+        }
+    }
+
     var systemImage: String {
         switch self {
         case .place: "globe.americas.fill"
