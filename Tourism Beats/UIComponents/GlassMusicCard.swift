@@ -167,11 +167,13 @@ private struct GlassMusicCardInfo: View {
             Text(self.songTitle)
                 .font(TypographyTokens.cardLabel.weight(.semibold))
                 .foregroundStyle(.primary)
+                .lineLimit(self.dynamicTypeSize.musicCardTextLineLimit)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(self.artistName)
                 .font(TypographyTokens.footnote)
                 .foregroundStyle(.secondary)
+                .lineLimit(self.dynamicTypeSize.musicCardTextLineLimit)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
