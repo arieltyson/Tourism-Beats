@@ -49,23 +49,21 @@ private struct StandardTimeCard: View {
     let timeZone: TimeZone
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: SpacingTokens.xSmall) {
             ClockView(
                 date: self.date,
                 timeZone: self.timeZone
             )
-            .aspectRatio(1, contentMode: .fit)
-            .frame(maxWidth: 120, maxHeight: 120)
-            .padding(.horizontal, 12)
-            .padding(.top, 12)
+            .frame(maxWidth: ClockFaceTokens.cardMaximumSide, maxHeight: ClockFaceTokens.cardMaximumSide)
+            .padding([.horizontal, .top], SpacingTokens.small)
 
             Text(self.formattedTime)
                 .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(AppColors.label)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
-                .padding(.horizontal, 10)
-                .padding(.bottom, 12)
+                .padding(.horizontal, SpacingTokens.xSmall)
+                .padding(.bottom, SpacingTokens.small)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
