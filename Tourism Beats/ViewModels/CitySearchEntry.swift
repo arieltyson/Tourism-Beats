@@ -2,17 +2,18 @@ import Foundation
 
 // MARK: - CitySearchEntry
 
-/// A city prepared for search: its city and country names, and any other
-/// names it goes by, folded to plain lowercase words, so "sao paulo" finds
-/// São Paulo, "cluj napoca" finds Cluj-Napoca, and "kashmir" finds Srinagar.
+/// A city prepared for search: its city, state, and country names, and any
+/// other names it goes by, folded to plain lowercase words, so "sao paulo"
+/// finds São Paulo, "cluj napoca" finds Cluj-Napoca, "kashmir" finds Srinagar,
+/// and "utah" finds Lehi.
 struct CitySearchEntry {
     /// How well a city matches, best first.
     enum Rank: Int, Comparable {
         case namePrefix
         case nameWordPrefix
-        case countryWordPrefix
+        case regionWordPrefix
         case nameContains
-        case countryContains
+        case regionContains
 
         static func < (lhs: Rank, rhs: Rank) -> Bool {
             lhs.rawValue < rhs.rawValue
@@ -22,18 +23,19 @@ struct CitySearchEntry {
     let city: CityModel
     /// The city's name followed by its aliases, which match just as well.
     private let names: [String]
-    private let country: String
+    /// The state or province, if any, and the country.
+    private let regions: [String]
     /// The name from each word onward: "san fernando" gives "san fernando"
     /// and "fernando", so typing the start of any word matches.
     private let nameWordStarts: [String]
-    private let countryWordStarts: [String]
+    private let regionWordStarts: [String]
 
     init(city: CityModel) {
         self.city = city
         self.names = ([city.name] + city.searchAliases).map(Self.normalized)
-        self.country = Self.normalized(city.country.name)
+        self.regions = [city.administrativeArea, city.country.name].compactMap(\.self).map(Self.normalized)
         self.nameWordStarts = self.names.flatMap(Self.wordStarts(of:))
-        self.countryWordStarts = Self.wordStarts(of: self.country)
+        self.regionWordStarts = self.regions.flatMap(Self.wordStarts(of:))
     }
 
     /// Lowercases, drops accents, and turns punctuation into single spaces.
@@ -49,21 +51,21 @@ struct CitySearchEntry {
             .namePrefix
         } else if self.nameWordStarts.contains(where: { $0.hasPrefix(query) }) {
             .nameWordPrefix
-        } else if self.countryWordStarts.contains(where: { $0.hasPrefix(query) }) {
-            .countryWordPrefix
+        } else if self.regionWordStarts.contains(where: { $0.hasPrefix(query) }) {
+            .regionWordPrefix
         } else if self.names.contains(where: { $0.contains(query) }) {
             .nameContains
-        } else if self.country.contains(query) {
-            .countryContains
+        } else if self.regions.contains(where: { $0.contains(query) }) {
+            .regionContains
         } else {
             nil
         }
     }
 
     /// The fewest typos separating a normalized query from the start of any
-    /// word in the city or country name, if within `tolerance`.
+    /// word in the city, state, or country name, if within `tolerance`.
     func typoDistance(to query: String, tolerance: Int) -> Int? {
-        let closest = (self.nameWordStarts + self.countryWordStarts)
+        let closest = (self.nameWordStarts + self.regionWordStarts)
             .map { String($0.prefix(query.count)).editDistance(to: query) }
             .min()
 

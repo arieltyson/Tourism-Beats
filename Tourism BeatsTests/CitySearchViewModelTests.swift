@@ -121,6 +121,28 @@ struct CitySearchViewModelTests {
         #expect(viewModel.results.first?.id == expectedID)
     }
 
+    @Test func aStateFindsItsCities() {
+        let viewModel = CitySearchViewModel(cities: [
+            Self.city("Lehi", country: "United States", administrativeArea: "Utah"),
+            Self.city("Paris", country: "France")
+        ])
+
+        viewModel.query = "utah"
+
+        #expect(viewModel.results.map(\.id) == ["lehi"])
+    }
+
+    @Test func aCityNamedLikeAStateOutranksThatStatesCities() {
+        let viewModel = CitySearchViewModel(cities: [
+            Self.city("Seattle", country: "United States", administrativeArea: "Washington"),
+            Self.city("Washington", country: "United States", administrativeArea: "D.C.")
+        ])
+
+        viewModel.query = "washington"
+
+        #expect(viewModel.results.map(\.id) == ["washington", "seattle"])
+    }
+
     @Test func shortQueriesAreNotCorrected() {
         let viewModel = CitySearchViewModel(cities: [Self.city("Rome", country: "Italy")])
 
@@ -138,11 +160,17 @@ struct CitySearchViewModelTests {
         #expect(!viewModel.hasNoResults)
     }
 
-    private static func city(_ name: String, country: String, aliases: [String] = []) -> CityModel {
+    private static func city(
+        _ name: String,
+        country: String,
+        administrativeArea: String? = nil,
+        aliases: [String] = []
+    ) -> CityModel {
         CityModel(
             id: name.lowercased().replacing(" ", with: "-"),
             name: name,
             country: CountryModel(name: country, code: "XX", flag: ""),
+            administrativeArea: administrativeArea,
             imageURL: URL.documentsDirectory,
             coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
             timeZoneIdentifier: "UTC",

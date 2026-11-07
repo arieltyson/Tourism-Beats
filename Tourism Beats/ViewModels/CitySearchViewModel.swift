@@ -22,7 +22,7 @@ final class CitySearchViewModel {
     }
 
     /// Cities matching the query, best first: names that start with it, then
-    /// names with a word that does, then countries, then matches mid-word.
+    /// names with a word that does, then states and countries, then matches mid-word.
     /// When nothing matches, the closest spellings within a typo or two.
     /// With no query, a short list of suggestions.
     var results: [CityModel] {

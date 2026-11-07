@@ -92,7 +92,7 @@ final class FoodViewModel {
                 country: country,
                 flag: catalogCity?.country.flag
                     ?? self.catalog.flagsByNormalizedCountryName[FoodJournalCityGroup.normalizedLookupValue(country)],
-                searchAliases: catalogCity?.searchAliases ?? []
+                searchAliases: catalogCity?.alternateSearchNames ?? []
             )
         }
 

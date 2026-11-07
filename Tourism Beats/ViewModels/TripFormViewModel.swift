@@ -86,6 +86,9 @@ final class TripFormViewModel {
                         || city.country.name.localizedStandardContains(
                             trimmedQuery
                         )
+                        || city.alternateSearchNames.contains {
+                            $0.localizedStandardContains(trimmedQuery)
+                        }
                 }
             }
 
