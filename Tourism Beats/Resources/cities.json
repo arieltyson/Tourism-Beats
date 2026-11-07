@@ -3918,7 +3918,25 @@
     "latitude": 30.9697,
     "longitude": 77.1975,
     "timeZoneIdentifier": "Asia/Kolkata",
-    "searchAliases": ["Himachal Pradesh"]
+    "searchAliases": ["Himachal Pradesh"],
+    "wikipediaTitle": "Chail, Himachal Pradesh",
+    "curatedFunFacts": [
+      {
+        "text": "Chail's cricket ground, cleared from a deodar forest in 1893 at 2,444 metres, is said to be the highest in the world.",
+        "sourceName": "Wikipedia",
+        "sourceURL": "https://en.wikipedia.org/wiki/Chail,_Himachal_Pradesh"
+      },
+      {
+        "text": "The Patiala peg, a famously generous pour of whisky, is said to have been invented here, at the palace of the Maharaja of Patiala.",
+        "sourceName": "Wikipedia",
+        "sourceURL": "https://en.wikipedia.org/wiki/Chail,_Himachal_Pradesh"
+      },
+      {
+        "text": "Maharaja Bhupinder Singh of Patiala held a yearly chess tournament at Chail's palace, drawing famous players of the day such as the Yugoslav grandmaster Boris Kostić.",
+        "sourceName": "Wikipedia",
+        "sourceURL": "https://en.wikipedia.org/wiki/Chail,_Himachal_Pradesh"
+      }
+    ]
   },
   {
     "name": "Bellevue",
@@ -4121,7 +4139,20 @@
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Pigeon_Point_Beach_Tobago_Jetti-pier.jpg/1280px-Pigeon_Point_Beach_Tobago_Jetti-pier.jpg",
     "latitude": 11.15,
     "longitude": -60.835,
-    "timeZoneIdentifier": "America/Port_of_Spain"
+    "timeZoneIdentifier": "America/Port_of_Spain",
+    "wikipediaTitle": "Crown Point, Tobago",
+    "curatedFunFacts": [
+      {
+        "text": "The “Crown” in Crown Point has nothing to do with a crown: the name comes from Courland, the Baltic duchy that ruled Tobago in the late 17th century.",
+        "sourceName": "Wikipedia",
+        "sourceURL": "https://en.wikipedia.org/wiki/Crown_Point,_Tobago"
+      },
+      {
+        "text": "Tobago's international airport is in Crown Point, and it was called Crown Point International Airport before taking the name of A. N. R. Robinson.",
+        "sourceName": "Wikipedia",
+        "sourceURL": "https://en.wikipedia.org/wiki/Crown_Point,_Tobago"
+      }
+    ]
   },
   {
     "name": "İzmir",
