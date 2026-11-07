@@ -11,6 +11,9 @@ struct Tourism_BeatsApp: App {
 
     @State private var selectedTab: AppTab = .home
 
+    /// The launch argument that keeps everything saved in memory only.
+    static let inMemoryStoreArgument = "-inMemoryStore"
+
     var body: some Scene {
         WindowGroup {
             AppSceneRootView(
@@ -25,7 +28,9 @@ struct Tourism_BeatsApp: App {
                     TripDay.self,
                     TripActivity.self,
                     BucketListItem.self
-                ]
+                ],
+                // UI tests start from an empty store that's gone when they end.
+                inMemory: ProcessInfo.processInfo.arguments.contains(Self.inMemoryStoreArgument)
             )
         }
     }

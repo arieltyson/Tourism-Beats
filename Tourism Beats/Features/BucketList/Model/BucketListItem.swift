@@ -18,6 +18,7 @@ final class BucketListItem {
     /// The place's country, by ISO code and name. Empty for activities.
     var countryCode: String = ""
     var countryName: String = ""
+    var countryFlag: String = ""
 
     /// The catalog city, for a place that names one. It links the item to
     /// that city's page, so the page knows the city is on the list.
@@ -39,6 +40,7 @@ final class BucketListItem {
         self.title = city?.name ?? country.name
         self.countryCode = country.code
         self.countryName = country.name
+        self.countryFlag = country.flag
         self.cityID = city?.id
         self.cityName = city?.name
         self.cityRegion = city?.regionName

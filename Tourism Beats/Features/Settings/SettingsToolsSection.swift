@@ -14,6 +14,16 @@ struct SettingsToolsSection: View {
                     )
                 }
                 .buttonStyle(.plain)
+
+                NavigationLink(value: BucketListRoute.list) {
+                    SettingsRowContent(
+                        title: "Bucket List",
+                        systemImage: "checklist",
+                        tint: AppColors.gold,
+                        accessorySystemImage: "chevron.forward"
+                    )
+                }
+                .buttonStyle(.plain)
             }
         }
     }

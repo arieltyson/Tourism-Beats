@@ -43,5 +43,8 @@ struct SettingsView: View {
         .navigationDestination(for: FlightCountdownRoute.self) { _ in
             FlightCountdownView()
         }
+        .navigationDestination(for: BucketListRoute.self) { _ in
+            BucketListView()
+        }
     }
 }

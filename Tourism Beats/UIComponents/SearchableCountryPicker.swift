@@ -107,7 +107,7 @@ private struct CountryRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(self.country.flag) \(self.country.name)")
         .accessibilityValue(self.isSelected ? "Selected" : "")
-        .accessibilityHint("Selects this passport country")
+        .accessibilityHint("Selects this country")
     }
 }
 
