@@ -34,7 +34,7 @@ struct SafetyView: View {
             }
         }
         .task {
-            await self.viewModel.fetchSafetyData()
+            await self.viewModel.loadIfNeeded()
         }
     }
 }

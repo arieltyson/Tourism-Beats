@@ -22,6 +22,14 @@ final class VisaViewModel {
         self.service = service
     }
 
+    /// Loads the requirement the first time the view appears. Coming back to
+    /// the page, or showing it in another layout, reuses what's loaded. A new
+    /// passport still fetches through ``updatePassport(to:)``.
+    func loadIfNeeded() async {
+        guard self.requirement == nil, !self.isLoading else { return }
+        await self.fetchRequirement()
+    }
+
     func fetchRequirement() async {
         self.isLoading = true
         self.errorMessage = nil

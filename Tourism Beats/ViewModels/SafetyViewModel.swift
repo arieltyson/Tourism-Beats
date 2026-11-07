@@ -19,6 +19,14 @@ final class SafetyViewModel {
         self.safetyService = safetyService
     }
 
+    /// Loads the index the first time the view appears. Coming back to the
+    /// page, or showing it in another layout, reuses what's loaded instead of
+    /// flashing a spinner while fetching it again.
+    func loadIfNeeded() async {
+        guard self.safetyData == nil, !self.isLoading else { return }
+        await self.fetchSafetyData()
+    }
+
     func fetchSafetyData() async {
         self.isLoading = true
         self.errorMessage = nil

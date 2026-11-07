@@ -45,7 +45,7 @@ struct VisaView: View {
             VisaDisclaimer()
         }
         .task {
-            await self.viewModel.fetchRequirement()
+            await self.viewModel.loadIfNeeded()
         }
     }
 }
