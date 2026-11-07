@@ -506,5 +506,12 @@
   {"city": "Park City", "countryCode": "US", "walkScore": 45, "transitScore": 35},
   {"city": "Nancy", "countryCode": "FR", "walkScore": 85, "transitScore": 68},
   {"city": "Strasbourg", "countryCode": "FR", "walkScore": 88, "transitScore": 78},
-  {"city": "Tema", "countryCode": "GH", "walkScore": 38, "transitScore": 20}
+  {"city": "Tema", "countryCode": "GH", "walkScore": 38, "transitScore": 20},
+  {"city": "Helena", "countryCode": "US", "walkScore": 38, "transitScore": 12},
+  {"city": "Cheyenne", "countryCode": "US", "walkScore": 33, "transitScore": 8},
+  {"city": "Albuquerque", "countryCode": "US", "walkScore": 42, "transitScore": 28},
+  {"city": "Little Rock", "countryCode": "US", "walkScore": 31, "transitScore": 20},
+  {"city": "Memphis", "countryCode": "US", "walkScore": 35, "transitScore": 24},
+  {"city": "Birmingham", "countryCode": "US", "walkScore": 34, "transitScore": 22},
+  {"city": "Jackson", "countryCode": "US", "walkScore": 27, "transitScore": 15}
 ]

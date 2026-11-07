@@ -4229,5 +4229,68 @@
     "latitude": 5.6698,
     "longitude": -0.0166,
     "timeZoneIdentifier": "Africa/Accra"
+  },
+  {
+    "name": "Helena",
+    "countryCode": "US",
+    "administrativeArea": "Montana",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Montana_State_Capitol_by_T._Elizabeth.jpg/1280px-Montana_State_Capitol_by_T._Elizabeth.jpg",
+    "latitude": 46.59638889,
+    "longitude": -112.02638889,
+    "timeZoneIdentifier": "America/Denver"
+  },
+  {
+    "name": "Cheyenne",
+    "countryCode": "US",
+    "administrativeArea": "Wyoming",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/CheyenneWyoming_%28cropped%29.jpg/1280px-CheyenneWyoming_%28cropped%29.jpg",
+    "latitude": 41.12111111,
+    "longitude": -104.78972222,
+    "timeZoneIdentifier": "America/Denver"
+  },
+  {
+    "name": "Albuquerque",
+    "countryCode": "US",
+    "administrativeArea": "New Mexico",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Albuquerque%2C_New_Mexico_skyline.jpg/1280px-Albuquerque%2C_New_Mexico_skyline.jpg",
+    "latitude": 35.08444444,
+    "longitude": -106.65166667,
+    "timeZoneIdentifier": "America/Denver"
+  },
+  {
+    "name": "Little Rock",
+    "countryCode": "US",
+    "administrativeArea": "Arkansas",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Little_Rock%2C_Arkansas_skyline.jpg/1280px-Little_Rock%2C_Arkansas_skyline.jpg",
+    "latitude": 34.7444,
+    "longitude": -92.2881,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Memphis",
+    "countryCode": "US",
+    "administrativeArea": "Tennessee",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Skyline_of_Memphis%2C_TN.jpg/1280px-Skyline_of_Memphis%2C_TN.jpg",
+    "latitude": 35.14611111,
+    "longitude": -90.05194444,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Birmingham",
+    "countryCode": "US",
+    "administrativeArea": "Alabama",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Birmingham%2C_Alabama.jpg/1280px-Birmingham%2C_Alabama.jpg",
+    "latitude": 33.5175,
+    "longitude": -86.80944444,
+    "timeZoneIdentifier": "America/Chicago"
+  },
+  {
+    "name": "Jackson",
+    "countryCode": "US",
+    "administrativeArea": "Mississippi",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Mississippi_State_Capitol_Building_%2826815684617%29.jpg/1280px-Mississippi_State_Capitol_Building_%2826815684617%29.jpg",
+    "latitude": 32.29888889,
+    "longitude": -90.18472222,
+    "timeZoneIdentifier": "America/Chicago"
   }
 ]
