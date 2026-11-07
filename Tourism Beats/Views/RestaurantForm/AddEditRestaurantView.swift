@@ -110,7 +110,7 @@ struct AddEditRestaurantView: View {
                     }
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
+            .keyboardDismissal()
             .onChange(of: self.navigationPath) {
                 // Leaving for a list ends editing, so the keyboard stays down on return.
                 self.focusedField = nil
@@ -145,13 +145,6 @@ struct AddEditRestaurantView: View {
                     .disabled(!self.canSave)
                 }
 
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-
-                    Button("Hide Keyboard", systemImage: "keyboard.chevron.compact.down") {
-                        self.focusedField = nil
-                    }
-                }
             }
         }
         .interactiveDismissDisabled(self.hasUnsavedChanges)

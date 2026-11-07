@@ -107,7 +107,7 @@ struct FlightCountdownForm: View {
                     }
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
+            .keyboardDismissal()
             .flightCalendarSheet(for: $calendarEvent)
             .sheet(isPresented: $isAdjustingPhotos) {
                 FlightPhotoFramingEditor(flight: form.flight, photos: form.cardImages) { framings in
@@ -131,10 +131,6 @@ struct FlightCountdownForm: View {
                     Button("Save", role: .confirm, action: save)
                         .disabled(!form.canSave || model.isSaving)
                         .accessibilityIdentifier("saveFlight")
-                }
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done") { isEditingNumber = false }
                 }
             }
             .confirmationDialog("Delete this flight?", isPresented: $showsDeleteConfirmation, titleVisibility: .visible) {

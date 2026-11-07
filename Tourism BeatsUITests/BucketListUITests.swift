@@ -25,8 +25,18 @@ final class BucketListUITests: XCTestCase {
         app.buttons["Activity"].tap()
         let activityField = app.textFields["Activity"].firstMatch
         XCTAssertTrue(activityField.waitForExistence(timeout: 5))
-        // Return adds it, rather than starting a new line.
+        // Return only puts the keyboard away; adding is the toolbar's.
         activityField.typeText("Skydiving\n")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5), "Return didn't put the keyboard away")
+        XCTAssertFalse(app.staticTexts["Activities to Do"].exists, "Return added the activity")
+
+        // The keyboard's own button puts it away too.
+        activityField.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
+        app.buttons["Hide Keyboard"].firstMatch.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5), "Hide Keyboard didn't put the keyboard away")
+
+        app.navigationBars.buttons["Add"].tap()
 
         XCTAssertTrue(app.staticTexts["Activities to Do"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Skydiving"].exists)

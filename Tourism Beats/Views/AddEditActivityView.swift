@@ -53,6 +53,7 @@ struct AddEditActivityView: View {
                 self.statusSection
                 self.notesSection
             }
+            .keyboardDismissal()
             .navigationTitle(self.isEditing ? "Edit Activity" : "Add Activity")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

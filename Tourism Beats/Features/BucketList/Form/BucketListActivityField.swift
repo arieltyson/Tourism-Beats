@@ -4,12 +4,10 @@ import SwiftUI
 
 /// The activity, typed in a word or a sentence.
 ///
-/// Long activities wrap onto more lines as they're typed, but Return adds
-/// the activity, as the keyboard's checkmark promises, instead of starting a
-/// new line. A swipe down the form puts the keyboard away too.
+/// Long activities wrap onto more lines as they're typed. Return puts the
+/// keyboard away rather than starting a new line; adding is the toolbar's.
 struct BucketListActivityField: View {
     let form: BucketListFormViewModel
-    let onSubmit: () -> Void
 
     @FocusState private var isFocused: Bool
 
@@ -20,11 +18,7 @@ struct BucketListActivityField: View {
                 text: Binding(
                     get: { self.form.activity },
                     set: { text in
-                        guard self.form.updateActivity(text) else { return }
-                        // With nothing to add yet, Return just puts the keyboard away.
-                        if self.form.canAdd {
-                            self.onSubmit()
-                        } else {
+                        if self.form.updateActivity(text) {
                             self.isFocused = false
                         }
                     }

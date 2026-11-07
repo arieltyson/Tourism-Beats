@@ -30,7 +30,7 @@ struct AddBucketListItemView: View {
                         self.isChoosingCountry = true
                     }
                 case .activity:
-                    BucketListActivityField(form: self.form, onSubmit: self.add)
+                    BucketListActivityField(form: self.form)
                 }
             }
             .navigationTitle("Add to Bucket List")
@@ -47,7 +47,7 @@ struct AddBucketListItemView: View {
                         .disabled(!self.form.canAdd)
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
+            .keyboardDismissal()
             // Presented from here, not from the form's lazy rows.
             .sheet(isPresented: self.$isChoosingCountry) {
                 BucketListPlacePicker(form: self.form)

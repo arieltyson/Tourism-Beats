@@ -162,6 +162,7 @@ struct AddEditTripView: View {
 
                 TripNotesSection(notes: self.$notes)
             }
+            .keyboardDismissal()
             .navigationTitle(self.isEditing ? "Edit Trip" : "New Trip")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

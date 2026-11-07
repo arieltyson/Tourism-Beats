@@ -36,7 +36,7 @@ struct FeedbackView: View {
                 .padding(.horizontal, SpacingTokens.medium)
                 .padding(.vertical, SpacingTokens.large)
             }
-            .scrollDismissesKeyboard(.interactively)
+            .keyboardDismissal()
             .background(AppColors.surface.ignoresSafeArea())
             .navigationTitle(self.category.title)
             .navigationBarTitleDisplayMode(.inline)
@@ -54,13 +54,6 @@ struct FeedbackView: View {
                     .disabled(self.isSendDisabled)
                 }
 
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-
-                    Button("Done") {
-                        self.isEditorFocused = false
-                    }
-                }
             }
         }
         .alert(
