@@ -41,6 +41,20 @@ struct CityFunFactServiceTests {
         #expect(CityFunFactService.combined(curated: [], lookedUp: [fallback]) == [fallback])
     }
 
+    @MainActor
+    @Test func nancyTellsTheOriginOfQuiche() throws {
+        let nancy = try #require(DataService().loadCities().first { $0.id == "Nancy-FR" })
+
+        #expect(nancy.curatedFunFacts.contains { $0.text.localizedStandardContains("quiche") })
+    }
+
+    @MainActor
+    @Test func theCatalogPlacesUtahCitiesByTheirState() throws {
+        let lehi = try #require(DataService().loadCities().first { $0.id == "Lehi-US" })
+
+        #expect(lehi.displayName == "Lehi, Utah")
+    }
+
     private static func fact(_ text: String, isFallback: Bool = false) -> CityFunFact {
         CityFunFact(text: text, sourceName: "Source", sourceURL: nil, isFallback: isFallback)
     }
