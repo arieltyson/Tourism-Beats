@@ -505,5 +505,6 @@
   {"city": "Lehi", "countryCode": "US", "walkScore": 28, "transitScore": 18},
   {"city": "Park City", "countryCode": "US", "walkScore": 45, "transitScore": 35},
   {"city": "Nancy", "countryCode": "FR", "walkScore": 85, "transitScore": 68},
-  {"city": "Strasbourg", "countryCode": "FR", "walkScore": 88, "transitScore": 78}
+  {"city": "Strasbourg", "countryCode": "FR", "walkScore": 88, "transitScore": 78},
+  {"city": "Tema", "countryCode": "GH", "walkScore": 38, "transitScore": 20}
 ]

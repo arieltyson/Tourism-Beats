@@ -13,6 +13,7 @@ struct CityCatalogCoverageTests {
             Self.lookupKey(city: "Park City", countryCode: "US"),
             Self.lookupKey(city: "Nancy", countryCode: "FR"),
             Self.lookupKey(city: "Strasbourg", countryCode: "FR"),
+            Self.lookupKey(city: "Tema", countryCode: "GH"),
             Self.lookupKey(city: "İzmir", countryCode: "TR"),
             Self.lookupKey(city: "Kasane", countryCode: "BW"),
             Self.lookupKey(city: "Bandar Seri Begawan", countryCode: "BN"),

@@ -4203,5 +4203,13 @@
     "longitude": 7.74583333,
     "timeZoneIdentifier": "Europe/Paris",
     "searchAliases": ["Alsace"]
+  },
+  {
+    "name": "Tema",
+    "countryCode": "GH",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Traditional_fishermen_coming_in_to_Tema_harbour_01.jpg/1280px-Traditional_fishermen_coming_in_to_Tema_harbour_01.jpg",
+    "latitude": 5.6698,
+    "longitude": -0.0166,
+    "timeZoneIdentifier": "Africa/Accra"
   }
 ]
