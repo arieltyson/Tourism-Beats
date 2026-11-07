@@ -42,6 +42,7 @@ struct AddBucketListItemView: View {
                 }
             }
             .animation(self.reduceMotion ? nil : AnimationTokens.snappy, value: self.form.kind)
+            .animation(self.reduceMotion ? nil : AnimationTokens.snappy, value: self.form.countryCode)
             .navigationTitle("Add to Bucket List")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

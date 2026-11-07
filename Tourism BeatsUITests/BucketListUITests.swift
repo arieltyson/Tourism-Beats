@@ -47,7 +47,9 @@ final class BucketListUITests: XCTestCase {
         // A city, found by its own name; its country comes with it.
         app.navigationBars.buttons["Add to Bucket List"].tap()
         app.buttons["Place"].tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Country'")).firstMatch.tap()
+        // At first there's only the search; the city waits for a country.
+        XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'City'")).firstMatch.exists)
+        app.buttons["Search by country or city"].firstMatch.tap()
         let search = app.searchFields.firstMatch
         XCTAssertTrue(search.waitForExistence(timeout: 5))
         search.tap()
@@ -56,7 +58,9 @@ final class BucketListUITests: XCTestCase {
         XCTAssertTrue(kyoto.waitForExistence(timeout: 5))
         kyoto.tap()
 
+        // Choosing a city fills in both the country and the city.
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS 'Japan'")).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'City' AND label CONTAINS 'Kyoto'")).firstMatch.exists)
         app.navigationBars.buttons["Add"].tap()
 
         XCTAssertTrue(app.staticTexts["Places to Visit"].waitForExistence(timeout: 5))
