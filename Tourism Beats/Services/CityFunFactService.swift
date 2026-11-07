@@ -6,8 +6,9 @@ import OSLog
 
 actor CityFunFactService: CityFunFactProviding {
     static let shared = CityFunFactService()
-    /// Bumped when stored facts change shape; v2 keeps sentences whole rather than clipping them.
-    private static let cacheVersion = "v2"
+    /// Bumped when stored facts change: v2 keeps sentences whole rather than clipping
+    /// them; v3 retires facts taken from the wrong article, before states were searched.
+    private static let cacheVersion = "v3"
 
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -31,6 +32,28 @@ actor CityFunFactService: CityFunFactProviding {
     }
 
     func facts(for city: CityModel) async -> [CityFunFact] {
+        Self.combined(curated: city.curatedFunFacts, lookedUp: await self.lookedUpFacts(for: city))
+    }
+
+    /// Curated facts lead, and make the generic stand-in unnecessary when a lookup fails.
+    static func combined(curated: [CityFunFact], lookedUp: [CityFunFact]) -> [CityFunFact] {
+        guard !curated.isEmpty else { return lookedUp }
+        return curated + lookedUp.filter { !$0.isFallback }
+    }
+
+    /// Article titles to try before searching. "Lehi" alone is a disambiguation
+    /// page and "Portland" a different city's, so the state or province comes first.
+    static func initialTitles(for city: CityModel) -> [String] {
+        let regionalTitle = city.administrativeArea.map { "\(city.name), \($0)" }
+
+        return [regionalTitle].compactMap(\.self) + [
+            city.name,
+            "\(city.name), \(city.country.name)",
+            "\(city.name) \(city.country.name)"
+        ]
+    }
+
+    private func lookedUpFacts(for city: CityModel) async -> [CityFunFact] {
         let cacheURL = self.cacheURL(for: city)
 
         if let cached = self.cachedPayload(at: cacheURL),
@@ -91,14 +114,9 @@ actor CityFunFactService: CityFunFactProviding {
             SearchResponse.self,
             from: data
         )
-        let initialTitles = [
-            city.name,
-            "\(city.name), \(city.country.name)",
-            "\(city.name) \(city.country.name)"
-        ]
 
         return Self.uniquedTitles(
-            initialTitles + searchResponse.query.search.map(\.title)
+            Self.initialTitles(for: city) + searchResponse.query.search.map(\.title)
         )
     }
 
@@ -133,7 +151,7 @@ actor CityFunFactService: CityFunFactProviding {
             URLQueryItem(name: "srlimit", value: "5"),
             URLQueryItem(
                 name: "srsearch",
-                value: "\"\(city.name)\" \"\(city.country.name)\""
+                value: "\"\(city.name)\" \"\(city.regionName)\""
             )
         ]
 
