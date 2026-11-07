@@ -499,5 +499,7 @@
   {"city": "Tunapuna", "countryCode": "TT", "walkScore": 55, "transitScore": 40},
   {"city": "Crown Point", "countryCode": "TT", "walkScore": 40, "transitScore": 15},
   {"city": "İzmir", "countryCode": "TR", "walkScore": 65, "transitScore": 60},
-  {"city": "Kasane", "countryCode": "BW", "walkScore": 30, "transitScore": 5}
+  {"city": "Kasane", "countryCode": "BW", "walkScore": 30, "transitScore": 5},
+  {"city": "Isfahan", "countryCode": "IR", "walkScore": 60, "transitScore": 45},
+  {"city": "Yantai", "countryCode": "CN", "walkScore": 50, "transitScore": 40}
 ]

@@ -4140,5 +4140,23 @@
     "longitude": 25.15,
     "timeZoneIdentifier": "Africa/Gaborone",
     "searchAliases": ["Chobe"]
+  },
+  {
+    "name": "Isfahan",
+    "countryCode": "IR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Naghshe_jahan_01.jpg/1280px-Naghshe_jahan_01.jpg",
+    "latitude": 32.66527778,
+    "longitude": 51.67027778,
+    "timeZoneIdentifier": "Asia/Tehran",
+    "searchAliases": ["Esfahan", "Ispahan"]
+  },
+  {
+    "name": "Yantai",
+    "countryCode": "CN",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Yantai2017.jpg/1280px-Yantai2017.jpg",
+    "latitude": 37.4646,
+    "longitude": 121.4478,
+    "timeZoneIdentifier": "Asia/Shanghai",
+    "searchAliases": ["Chefoo"]
   }
 ]
