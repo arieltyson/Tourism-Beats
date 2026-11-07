@@ -85,10 +85,26 @@ struct BucketListFormViewModelTests {
         let form = Self.makeForm()
         #expect(form.countries(matching: "").map(\.name) == ["France", "Japan"])
         #expect(form.countries(matching: "jap").map(\.name) == ["Japan"])
+        #expect(form.countries(matching: "zzz").isEmpty)
     }
 
-    /// Return adds the activity instead of starting a new line.
-    @Test func returnAsksToAddRatherThanBreakTheLine() {
+    /// Searching a city also offers its country, for a trip without one city.
+    @Test func aCitySearchAlsoOffersItsCountry() {
+        let form = Self.makeForm()
+        #expect(form.countries(matching: "Kyo").map(\.name) == ["Japan"])
+    }
+
+    /// Countries named by the search come before those only holding a match.
+    @Test func namedCountriesComeFirst() {
+        let form = BucketListFormViewModel(
+            countries: [Self.japan, Self.france],
+            cities: [Self.city("Japan Town", in: Self.france)]
+        )
+        #expect(form.countries(matching: "Japan").map(\.name) == ["Japan", "France"])
+    }
+
+    /// Return ends editing instead of starting a new line.
+    @Test func returnEndsEditingRatherThanBreakTheLine() {
         let form = Self.makeForm()
 
         #expect(!form.updateActivity("Hot air balloon"))

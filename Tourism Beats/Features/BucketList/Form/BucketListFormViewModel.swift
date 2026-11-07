@@ -48,12 +48,23 @@ final class BucketListFormViewModel {
         self.city = city
     }
 
-    /// The countries whose names match a search, by name.
+    /// The countries for a search: those whose names match, then the
+    /// countries of matching cities, so searching "Barcelona" also offers
+    /// Spain for someone who'd rather not name a city.
     func countries(matching query: String) -> [CountryModel] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        return self.countries
-            .filter { trimmed.isEmpty || $0.name.localizedStandardContains(trimmed) }
-            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        let byName: (CountryModel, CountryModel) -> Bool = {
+            $0.name.localizedStandardCompare($1.name) == .orderedAscending
+        }
+        guard !trimmed.isEmpty else { return self.countries.sorted(by: byName) }
+
+        let named = self.countries.filter { $0.name.localizedStandardContains(trimmed) }.sorted(by: byName)
+        let namedCodes = Set(named.map(\.code))
+        let cityCodes = Set(self.anyCities(matching: trimmed).map(\.country.code))
+        let ofCities = self.countries
+            .filter { cityCodes.contains($0.code) && !namedCodes.contains($0.code) }
+            .sorted(by: byName)
+        return named + ofCities
     }
 
     /// The app's cities anywhere that match a search by name, region, or
@@ -69,8 +80,9 @@ final class BucketListFormViewModel {
             .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 
-    /// Takes in an edit to the activity. Return adds the activity rather than
-    /// starting a new line, so it's true when the edit asks to add.
+    /// Takes in an edit to the activity. An activity is one line, so Return
+    /// ends editing rather than starting a new line; it's true when the edit
+    /// was Return.
     func updateActivity(_ text: String) -> Bool {
         guard text.contains(where: \.isNewline) else {
             self.activity = text

@@ -32,17 +32,24 @@ struct BucketListPlacePicker: View {
                     }
                 }
 
-                Section(cities.isEmpty ? "" : "Countries") {
-                    ForEach(countries) { country in
-                        BucketListCityPickerRow(
-                            title: "\(country.flag) \(country.name)",
-                            detail: nil,
-                            isSelected: self.form.city == nil && self.form.countryCode == country.code
-                        ) {
-                            self.form.selectCountry(code: country.code)
-                            self.dismiss()
+                if !countries.isEmpty {
+                    Section {
+                        ForEach(countries) { country in
+                            BucketListCityPickerRow(
+                                title: "\(country.flag) \(country.name)",
+                                detail: nil,
+                                isSelected: self.form.city == nil && self.form.countryCode == country.code
+                            ) {
+                                self.form.selectCountry(code: country.code)
+                                self.dismiss()
+                            }
+                            .accessibilityLabel(country.name)
                         }
-                        .accessibilityLabel(country.name)
+                    } header: {
+                        // Named only to set them apart from cities above.
+                        if !cities.isEmpty {
+                            Text("Countries")
+                        }
                     }
                 }
             }
