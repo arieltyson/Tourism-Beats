@@ -21,25 +21,8 @@ private struct CityJSON: Decodable {
     let featuredHeroEligible: Bool?
     let searchAliases: [String]?
     let administrativeArea: String?
-    let curatedFunFacts: [CuratedFunFactJSON]?
+    let curatedFunFacts: [String]?
     let wikipediaTitle: String?
-}
-
-// MARK: - CuratedFunFactJSON
-
-private struct CuratedFunFactJSON: Decodable {
-    let text: String
-    let sourceName: String
-    let sourceURL: URL
-
-    var fact: CityFunFact {
-        CityFunFact(
-            text: self.text,
-            sourceName: self.sourceName,
-            sourceURL: self.sourceURL,
-            isFallback: false
-        )
-    }
 }
 
 // MARK: - DataService
@@ -102,7 +85,7 @@ final class DataService {
                 timeZoneIdentifier: entry.timeZoneIdentifier,
                 featuredHeroEligibleOverride: entry.featuredHeroEligible,
                 searchAliases: entry.searchAliases ?? [],
-                curatedFunFacts: entry.curatedFunFacts?.map(\.fact) ?? [],
+                curatedFunFacts: entry.curatedFunFacts?.map(CityFunFact.curated) ?? [],
                 wikipediaTitle: entry.wikipediaTitle
             )
         }

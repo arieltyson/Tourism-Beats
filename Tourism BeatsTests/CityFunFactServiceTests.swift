@@ -58,6 +58,14 @@ struct CityFunFactServiceTests {
         #expect(nancy.curatedFunFacts.contains { $0.text.localizedStandardContains("quiche") })
     }
 
+    @Test func curatedFactsAreToldWithoutASource() {
+        let fact = CityFunFact.curated("Nancy may be where quiche began.")
+
+        #expect(fact.sourceName == nil)
+        #expect(fact.sourceURL == nil)
+        #expect(!fact.isFallback)
+    }
+
     @MainActor
     @Test func theCatalogPlacesUtahCitiesByTheirState() throws {
         let lehi = try #require(DataService().loadCities().first { $0.id == "Lehi-US" })
