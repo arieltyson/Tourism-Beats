@@ -2,14 +2,13 @@
 
 # Tourism Beats 🌍🎶
 
-
 <kbd>
-    <img src="https://github.com/user-attachments/assets/349d0d9f-f863-44c3-a21b-f2ab1ac8b9d7" alt="tourismBeatsLogo" width="700" height="300">
+    <img src="docs/assets/banner.png" alt="Tourism Beats — Every city has a beat." width="1000" height="500">
 </kbd>
 
 ## Project Description 🎨
 
-Tourism Beats is a native iOS application that offers an immersive experience exploring 370+ cities worldwide. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management rounds out the experience.
+Tourism Beats is a native iOS application that offers an immersive experience exploring 536 cities in 218 countries. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management, a flight countdown with a Home Screen widget, and a bucket list of the places to visit and things to do someday round out the experience.
 
 ## Technologies Used 💻
 
@@ -19,9 +18,8 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 
 - [x] **SwiftUI** — Declarative UI with `@Observable`, `NavigationStack`, `Tab` API, and `MeshGradient`
 - [x] **Observation** — State management powered by `@Observable` view models
-- [x] **SwiftData** — Persistent storage for restaurants, meal photos, and trip itineraries
+- [x] **SwiftData** — Persistent storage for restaurants, meal photos, trip itineraries, and the bucket list
 - [x] **WidgetKit** — Standalone flight countdowns shared through an App Group
-- [x] **PhotosUI** — Out-of-process photo picker for flight card photos
 - [x] **EventKitUI** — Permission-free New Event sheet for adding flights to any calendar account
 - [x] **MapKit** — Interactive world map with city annotations and search
 - [x] **CoreLocation** — Coordinate-based city discovery, filtering, and proximity logic
@@ -29,7 +27,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 - [x] **MusicKit** — Apple Music integration for city charts, playlists, and album artwork
 - [x] **SceneKit** — 3D interactive Earth globe on the home screen
 - [x] **AVFoundation** — Playback coordination and audio-session-aware music experiences
-- [x] **PhotosUI** — Meal photo import for the food journal
+- [x] **PhotosUI** — Out-of-process photo picker for meal photos and flight card photos
 - [x] **UIKit** — Focused interop for quick actions, mail composition, and SceneKit hosting
 - [x] **OSLog** — Structured logging across all services
 - [x] **Swift Concurrency** — `async`/`await`, `actor` isolation, and structured tasks throughout
@@ -65,16 +63,17 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 
 ## Features 🌟
 
-- 🌐 **250 Cities** — Explore destinations across every continent
+- 🌐 **536 Cities** — Explore destinations in 218 countries across every continent, and find any of them by name, country, or state and province
 - 🗺️ **Interactive Map** — Full world map with city pins and search
 - 🌍 **3D Globe** — Animated Earth with featured city carousel on home screen
 - 🎵 **Trending Music** — City-specific Apple Music playlists via MusicKit
-- 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content
+- 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content, each a tap away in Google Maps
 - 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city; a new journal opens on the world's five best cuisines from the TasteAtlas Awards
 - ✈️ **Trip Planner** — Create and manage trip itineraries with activities, and fill any trip or day with suggested sights and restaurants from the city guide, grouped by area, centred on your hotel when you add one, and reviewed before they are added
 - ✈️ **Flight Countdown** — Settings → Tools; count down to any flight, yours or a loved one's, by searching airlines and airports by name or city, counted in months and days, then days and hours, then hours and minutes as departure nears, with five card designs or up to four of your own photos that take turns filling the card in a shuffled order, each framed by dragging and pinching it on the card, shown in a small or medium Home Screen widget that counts down to your next flight and moves on to the one after once it departs, and added to Apple, Google, Outlook, or Notion Calendar without calendar access
+- ✅ **Bucket List** — Settings → Tools; save the places you dream of and the things you want to do in one form, find a place with a single search across countries and the app's cities, add or remove a city straight from its page, and check items off as you go, with fireworks waiting on an empty list
 - 🌤️ **Live Weather** — Real-time conditions via WeatherKit
-- 🕐 **Local Time** — Live clocks for every city
+- 🕐 **Local Time** — A live clock for every city, with sweeping hands and a face that's light by day and dark by night there
 - 🚶 **Walkability** — City walkability scores and pedestrian insights
 - 🛂 **Visa Requirements** — Passport-specific visa lookup for any destination
 - 🛡️ **Safety Advisories** — Country risk levels and travel warnings
