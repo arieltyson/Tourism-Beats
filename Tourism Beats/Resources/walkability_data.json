@@ -533,5 +533,6 @@
   {"city": "Manchester", "countryCode": "US", "walkScore": 49, "transitScore": 22},
   {"city": "Burlington", "countryCode": "US", "walkScore": 63, "transitScore": 33},
   {"city": "Portland", "administrativeArea": "Maine", "countryCode": "US", "walkScore": 61, "transitScore": 34},
-  {"city": "Charlottetown", "countryCode": "CA", "walkScore": 52, "transitScore": 22}
+  {"city": "Charlottetown", "countryCode": "CA", "walkScore": 52, "transitScore": 22},
+  {"city": "Summerland", "countryCode": "CA", "walkScore": 38, "transitScore": 12}
 ]

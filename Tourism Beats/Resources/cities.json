@@ -4472,5 +4472,14 @@
     "latitude": 46.23527778,
     "longitude": -63.12666667,
     "timeZoneIdentifier": "America/Halifax"
+  },
+  {
+    "name": "Summerland",
+    "countryCode": "CA",
+    "administrativeArea": "British Columbia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Summerland%2C_British_Columbia.JPG/1280px-Summerland%2C_British_Columbia.JPG",
+    "latitude": 49.60055556,
+    "longitude": -119.67777778,
+    "timeZoneIdentifier": "America/Vancouver"
   }
 ]
