@@ -39,7 +39,9 @@ struct BucketListPlaceFields: View {
                     }
                 }
                 .accessibilityHint("Lists the cities in this country")
-                .transition(.opacity)
+                // No transition of its own: the row arrives while the search
+                // sheet covers the form, and a fading row fades its card
+                // background too, flashing the sheet's black through it.
             }
         }
     }
