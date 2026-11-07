@@ -8,8 +8,8 @@ extension TimeZone {
     /// not today's, so a December flight shows December's offset. When a
     /// region changes its rules, as British Columbia did by adopting permanent
     /// daylight time, the label follows as soon as iOS updates its database.
-    func gmtOffsetLabel(at date: Date) -> String {
-        var style = Date.FormatStyle().timeZone(.localizedGMT(.short))
+    func gmtOffsetLabel(at date: Date, locale: Locale = .autoupdatingCurrent) -> String {
+        var style = Date.FormatStyle().timeZone(.localizedGMT(.short)).locale(locale)
         style.timeZone = self
         return date.formatted(style)
     }

@@ -5,33 +5,23 @@ import SwiftUI
 final class TimeViewModel {
     let timeZone: TimeZone
 
-    @ObservationIgnored private lazy var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.timeZone = self.timeZone
-        df.dateFormat = "h:mm a"
-        return df
-    }()
-
     init(timeZone: TimeZone) {
         self.timeZone = timeZone
     }
 
-    /// Returns format in the form "2:45 PM (GMT +1)" or "9:20 AM (GMT −5)"
-    func formattedTime(for date: Date) -> String {
-        let timeString = self.dateFormatter.string(from: date)
-        let offsetHours = self.timeZone.secondsFromGMT() / 3_600
-
-        let offsetLabel = switch offsetHours {
-        case 0:
-            "GMT"
-        case let h where h > 0:
-            "GMT +\(h)"
-        case let h where h < 0:
-            "GMT \(h)"
-        default:
-            "GMT"
-        }
-
-        return "\(timeString) (\(offsetLabel))"
+    /// The city's local time and its offset from GMT, such as "2:45 PM (GMT+1)",
+    /// "14:45 (GMT+1)", or "8:15 PM (GMT+5:30)".
+    ///
+    /// The time follows the reader's locale, including whether they use a
+    /// 12- or 24-hour clock. The offset is the one in effect at `date`, with
+    /// minutes for zones that keep them, as the system time zone database has
+    /// it. Rule changes, such as British Columbia's permanent daylight time,
+    /// arrive with iOS updates.
+    func formattedTime(for date: Date, locale: Locale = .autoupdatingCurrent) -> String {
+        var style = Date.FormatStyle(date: .omitted, time: .shortened).locale(locale)
+        style.timeZone = self.timeZone
+        let time = date.formatted(style)
+        let offset = self.timeZone.gmtOffsetLabel(at: date, locale: locale)
+        return "\(time) (\(offset))"
     }
 }
