@@ -29,6 +29,7 @@ final class WalkabilityViewModel {
         do {
             self.walkability = try await self.service.fetchWalkability(
                 city: self.city.name,
+                administrativeArea: self.city.administrativeArea,
                 countryCode: self.city.country.code
             )
         } catch is CancellationError {

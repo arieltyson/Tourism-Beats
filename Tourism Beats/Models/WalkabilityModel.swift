@@ -3,9 +3,13 @@ import Foundation
 // MARK: - WalkabilityModel
 
 struct WalkabilityModel: Codable, Identifiable, Sendable {
-    var id: String { "\(self.city)|\(self.countryCode)" }
+    var id: String {
+        [self.city, self.administrativeArea, self.countryCode].compactMap(\.self).joined(separator: "|")
+    }
 
     let city: String
+    /// Set only where another city in the country shares this one's name.
+    let administrativeArea: String?
     let countryCode: String
     let walkScore: Int
     let transitScore: Int

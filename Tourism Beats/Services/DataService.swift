@@ -64,6 +64,9 @@ final class DataService {
         }
 
         let entries: [CityJSON] = try loadJSON("cities.json")
+        let sharedNames = Dictionary(grouping: entries) { "\($0.name)|\($0.countryCode)" }
+            .filter { $0.value.count > 1 }
+            .keys
         let cities = entries.map { entry in
             let country =
                 lookup[entry.countryCode]
@@ -73,7 +76,12 @@ final class DataService {
                         flag: "❓"
                     )
             return CityModel(
-                id: "\(entry.name)-\(entry.countryCode)",
+                id: CityModel.identifier(
+                    name: entry.name,
+                    administrativeArea: entry.administrativeArea,
+                    countryCode: entry.countryCode,
+                    sharesName: sharedNames.contains("\(entry.name)|\(entry.countryCode)")
+                ),
                 name: entry.name,
                 country: country,
                 administrativeArea: entry.administrativeArea,
