@@ -56,26 +56,32 @@ extension MusicView {
                     .padding(.horizontal, SpacingTokens.medium)
                     .padding(.top, SpacingTokens.small)
 
-                MusicPageArtwork(artworkURL: self.viewModel.songImage, fitsPage: self.fitsPage)
+                // The song and its players read as one group, centered in the
+                // room below the header, so they stay together whether or not
+                // there's a song to play.
+                VStack(spacing: SpacingTokens.medium) {
+                    MusicPageArtwork(artworkURL: self.viewModel.songImage, fitsPage: self.fitsPage)
 
-                MusicSongHeader(
-                    title: self.viewModel.songTitle,
-                    artist: self.viewModel.artistName
-                )
+                    MusicSongHeader(
+                        title: self.viewModel.songTitle,
+                        artist: self.viewModel.artistName
+                    )
 
-                if self.viewModel.availability == .failed {
-                    Button("Try Again", systemImage: "arrow.clockwise") {
-                        Task { await self.viewModel.retry() }
+                    if self.viewModel.availability == .failed {
+                        Button("Try Again", systemImage: "arrow.clockwise") {
+                            Task { await self.viewModel.retry() }
+                        }
+                        .buttonStyle(.glass)
+                        .transition(.opacity)
                     }
-                    .buttonStyle(.glass)
-                    .transition(.opacity)
-                }
 
-                if self.viewModel.availability.showsPlayers {
-                    MusicPlayerCards(viewModel: self.viewModel)
-                }
+                    if self.viewModel.availability.showsPlayers {
+                        MusicPlayerCards(viewModel: self.viewModel)
+                    }
 
-                MusicFeedbackBanner(message: self.viewModel.userFeedbackMessage)
+                    MusicFeedbackBanner(message: self.viewModel.userFeedbackMessage)
+                }
+                .frame(maxHeight: self.fitsPage ? .infinity : nil)
             }
             .padding(.bottom, SpacingTokens.medium)
             .frame(maxWidth: .infinity)
@@ -144,8 +150,9 @@ extension MusicView {
 ///
 /// When the page fits, the artwork asks for only its minimum size, so the page
 /// counts as fitting with the artwork at its smallest. It then grows into the
-/// space left by the text and cards, up to its largest size, centered in that
-/// space. When the page scrolls, the artwork keeps its full width instead.
+/// space left by the text and cards, up to its largest size; any room beyond
+/// that goes evenly above and below the song's group. When the page scrolls,
+/// the artwork keeps its full width instead.
 private struct MusicPageArtwork: View {
     let artworkURL: URL?
     let fitsPage: Bool
@@ -156,7 +163,7 @@ private struct MusicPageArtwork: View {
             .frame(
                 minHeight: self.fitsPage ? MusicPageTokens.artworkMinimumSide : nil,
                 idealHeight: self.fitsPage ? MusicPageTokens.artworkMinimumSide : nil,
-                maxHeight: self.fitsPage ? .infinity : nil
+                maxHeight: self.fitsPage ? MusicPageTokens.artworkMaximumSide : nil
             )
             .padding(.horizontal, SpacingTokens.xLarge)
     }
