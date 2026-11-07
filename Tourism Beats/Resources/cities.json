@@ -186,6 +186,7 @@
   {
     "name": "Sydney",
     "countryCode": "AU",
+    "administrativeArea": "New South Wales",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg/1280px-Sydney_Opera_House_and_Harbour_Bridge_Dusk_%282%29_2019-06-21.jpg",
     "latitude": -33.8688,
     "longitude": 151.2093,
@@ -194,6 +195,7 @@
   {
     "name": "Melbourne",
     "countryCode": "AU",
+    "administrativeArea": "Victoria",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Melburnian_Skyline.jpg/1280px-Melburnian_Skyline.jpg",
     "latitude": -37.8136,
     "longitude": 144.9631,
@@ -266,6 +268,7 @@
   {
     "name": "Los Angeles",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hollywood_Sign_%28Zuschnitt%29.jpg/1280px-Hollywood_Sign_%28Zuschnitt%29.jpg",
     "latitude": 34.0522,
     "longitude": -118.2437,
@@ -274,6 +277,7 @@
   {
     "name": "San Francisco",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/San_Francisco_Downtown_Aerial%2C_August_2025.jpg/1280px-San_Francisco_Downtown_Aerial%2C_August_2025.jpg",
     "latitude": 37.7749,
     "longitude": -122.4194,
@@ -282,6 +286,7 @@
   {
     "name": "Cupertino",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Apple_park_cupertino_2019.jpg/1280px-Apple_park_cupertino_2019.jpg",
     "latitude": 37.323,
     "longitude": -122.0322,
@@ -290,6 +295,7 @@
   {
     "name": "San Jose",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/USA-San_Jose-Downtown-1.jpg/1280px-USA-San_Jose-Downtown-1.jpg",
     "latitude": 37.3382,
     "longitude": -121.8863,
@@ -298,6 +304,7 @@
   {
     "name": "Oakland",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Oakland_Skyline_Telephoto.jpg/1280px-Oakland_Skyline_Telephoto.jpg",
     "latitude": 37.8044,
     "longitude": -122.2712,
@@ -306,6 +313,7 @@
   {
     "name": "South Lake Tahoe",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/South_Lake_Tahoe_SW01.jpg/1280px-South_Lake_Tahoe_SW01.jpg",
     "latitude": 38.9399,
     "longitude": -119.9772,
@@ -314,6 +322,7 @@
   {
     "name": "Sacramento",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Sacramento%2C_CA_skyline_%28cropped%29.jpg/1280px-Sacramento%2C_CA_skyline_%28cropped%29.jpg",
     "latitude": 38.5816,
     "longitude": -121.4944,
@@ -322,6 +331,7 @@
   {
     "name": "Santa Cruz",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Santa_Cruz_Beach_Boardwalk_2023-07-16_%281%29.jpg/1280px-Santa_Cruz_Beach_Boardwalk_2023-07-16_%281%29.jpg",
     "latitude": 36.9741,
     "longitude": -122.0308,
@@ -330,6 +340,7 @@
   {
     "name": "Monterey",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Cannery_Row%2C_Monterey_6_2017-11-21.jpg/1280px-Cannery_Row%2C_Monterey_6_2017-11-21.jpg",
     "latitude": 36.6002,
     "longitude": -121.8947,
@@ -338,6 +349,7 @@
   {
     "name": "Santa Barbara",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Santa-barbara-courthouse-tower-view1_%28cropped%29.jpg/1280px-Santa-barbara-courthouse-tower-view1_%28cropped%29.jpg",
     "latitude": 34.4208,
     "longitude": -119.6982,
@@ -346,6 +358,7 @@
   {
     "name": "Berkeley",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Sather_Tower_from_Memorial_Glade.jpg/1280px-Sather_Tower_from_Memorial_Glade.jpg",
     "latitude": 37.8715,
     "longitude": -122.273,
@@ -354,6 +367,7 @@
   {
     "name": "Vancouver",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Concord_Pacific_Master_Plan_Area.jpg/1280px-Concord_Pacific_Master_Plan_Area.jpg",
     "latitude": 49.2827,
     "longitude": -123.1207,
@@ -362,6 +376,7 @@
   {
     "name": "Burnaby",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Burnaby_Metrotown_skyline.jpg/1280px-Burnaby_Metrotown_skyline.jpg",
     "latitude": 49.2488,
     "longitude": -122.9805,
@@ -370,6 +385,7 @@
   {
     "name": "Richmond",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Steveston_Harbour_from_the_cannery.jpg/1280px-Steveston_Harbour_from_the_cannery.jpg",
     "latitude": 49.1666,
     "longitude": -123.1336,
@@ -378,6 +394,7 @@
   {
     "name": "Surrey",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/King_George_Hub_District%2C_Surrey_2018.jpg/1280px-King_George_Hub_District%2C_Surrey_2018.jpg",
     "latitude": 49.1913,
     "longitude": -122.849,
@@ -386,6 +403,7 @@
   {
     "name": "Coquitlam",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Coquitlam_Lafarge_Lake.jpg/1280px-Coquitlam_Lafarge_Lake.jpg",
     "latitude": 49.2838,
     "longitude": -122.7932,
@@ -394,6 +412,7 @@
   {
     "name": "Houston",
     "countryCode": "US",
+    "administrativeArea": "Texas",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Texas_medical_center.jpg/1280px-Texas_medical_center.jpg",
     "latitude": 29.7604,
     "longitude": -95.3698,
@@ -402,6 +421,7 @@
   {
     "name": "Dallas",
     "countryCode": "US",
+    "administrativeArea": "Texas",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Dallas_Skyline_%2816780190385%29.jpg/960px-Dallas_Skyline_%2816780190385%29.jpg",
     "latitude": 32.7767,
     "longitude": -96.797,
@@ -410,6 +430,7 @@
   {
     "name": "Chicago",
     "countryCode": "US",
+    "administrativeArea": "Illinois",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Chicago_River_ferry_b.jpg/1280px-Chicago_River_ferry_b.jpg",
     "latitude": 41.8781,
     "longitude": -87.6298,
@@ -418,14 +439,17 @@
   {
     "name": "Washington",
     "countryCode": "US",
+    "administrativeArea": "D.C.",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/12-07-13-washington-by-RalfR-08.jpg/1280px-12-07-13-washington-by-RalfR-08.jpg",
     "latitude": 38.9072,
     "longitude": -77.0369,
-    "timeZoneIdentifier": "America/New_York"
+    "timeZoneIdentifier": "America/New_York",
+    "searchAliases": ["DC", "District of Columbia"]
   },
   {
     "name": "New York",
     "countryCode": "US",
+    "administrativeArea": "New York",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg/1280px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg",
     "latitude": 40.7128,
     "longitude": -74.006,
@@ -434,6 +458,7 @@
   {
     "name": "Toronto",
     "countryCode": "CA",
+    "administrativeArea": "Ontario",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Toronto_Skyline_viewed_from_Algonquin_Island_%2816-9_crop%29.jpg/1280px-Toronto_Skyline_viewed_from_Algonquin_Island_%2816-9_crop%29.jpg",
     "latitude": 43.6511,
     "longitude": -79.3832,
@@ -442,6 +467,7 @@
   {
     "name": "Montreal",
     "countryCode": "CA",
+    "administrativeArea": "Quebec",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Mtl_from_mont_royal_%28cropped%29.jpg/1280px-Mtl_from_mont_royal_%28cropped%29.jpg",
     "latitude": 45.5017,
     "longitude": -73.5673,
@@ -538,6 +564,7 @@
   {
     "name": "Seattle",
     "countryCode": "US",
+    "administrativeArea": "Washington",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Seattle_Center_as_night_falls.jpg/1280px-Seattle_Center_as_night_falls.jpg",
     "latitude": 47.6062,
     "longitude": -122.3321,
@@ -546,6 +573,7 @@
   {
     "name": "Victoria",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Fairmont_Empress%2C_Victoria%2C_British_Columbia%2C_Canada_08.jpg/1280px-Fairmont_Empress%2C_Victoria%2C_British_Columbia%2C_Canada_08.jpg",
     "latitude": 48.4284,
     "longitude": -123.3656,
@@ -554,6 +582,7 @@
   {
     "name": "Anchorage",
     "countryCode": "US",
+    "administrativeArea": "Alaska",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Anchorage_Skyline_in_Winter_-_Hotel_Captain_Cook_-_Anchorage_Alaska.jpg/1280px-Anchorage_Skyline_in_Winter_-_Hotel_Captain_Cook_-_Anchorage_Alaska.jpg",
     "latitude": 61.2181,
     "longitude": -149.9003,
@@ -562,6 +591,7 @@
   {
     "name": "Calgary",
     "countryCode": "CA",
+    "administrativeArea": "Alberta",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Downtown_Calgary_2020-4.jpg/960px-Downtown_Calgary_2020-4.jpg",
     "latitude": 51.0447,
     "longitude": -114.0719,
@@ -570,6 +600,7 @@
   {
     "name": "Miami",
     "countryCode": "US",
+    "administrativeArea": "Florida",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Villa_Vizcaya_20110228.jpg/1280px-Villa_Vizcaya_20110228.jpg",
     "latitude": 25.7617,
     "longitude": -80.1918,
@@ -578,6 +609,7 @@
   {
     "name": "Denver",
     "countryCode": "US",
+    "administrativeArea": "Colorado",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Denver_Downtown_Aerial%2C_December_2025.jpg/1280px-Denver_Downtown_Aerial%2C_December_2025.jpg",
     "latitude": 39.7392,
     "longitude": -104.9903,
@@ -922,6 +954,7 @@
   {
     "name": "San Diego",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/La_Jolla_Shores_view_%28cropped%29.jpg/1280px-La_Jolla_Shores_view_%28cropped%29.jpg",
     "latitude": 32.7157,
     "longitude": -117.1611,
@@ -930,6 +963,7 @@
   {
     "name": "Las Vegas",
     "countryCode": "US",
+    "administrativeArea": "Nevada",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Las_Vegas_from_above_%2840064746644%29.jpg/1280px-Las_Vegas_from_above_%2840064746644%29.jpg",
     "latitude": 36.1699,
     "longitude": -115.1398,
@@ -1042,6 +1076,7 @@
   {
     "name": "Salt Lake City",
     "countryCode": "US",
+    "administrativeArea": "Utah",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Salt_Lake_Union_Pacific_Railroad_Station%2C_South_Temple_at_400_West%2C_Central_City_West%2C_Salt_Lake_City%2C_UT%2C_USA.jpg/1280px-Salt_Lake_Union_Pacific_Railroad_Station%2C_South_Temple_at_400_West%2C_Central_City_West%2C_Salt_Lake_City%2C_UT%2C_USA.jpg",
     "latitude": 40.7608,
     "longitude": -111.891,
@@ -1050,6 +1085,7 @@
   {
     "name": "Phoenix",
     "countryCode": "US",
+    "administrativeArea": "Arizona",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Downtown_Phoenix_Aerial_Looking_Northeast.jpg/1280px-Downtown_Phoenix_Aerial_Looking_Northeast.jpg",
     "latitude": 33.4484,
     "longitude": -112.074,
@@ -1058,6 +1094,7 @@
   {
     "name": "Portland",
     "countryCode": "US",
+    "administrativeArea": "Oregon",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Portland_Oregon_Aerial%2C_June_2025.jpg/1280px-Portland_Oregon_Aerial%2C_June_2025.jpg",
     "latitude": 45.5051,
     "longitude": -122.675,
@@ -1066,6 +1103,7 @@
   {
     "name": "Charlotte",
     "countryCode": "US",
+    "administrativeArea": "North Carolina",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Uptown_Charlotte_2018_taking_by_DJI_Phantom_4_pro.jpg/1280px-Uptown_Charlotte_2018_taking_by_DJI_Phantom_4_pro.jpg",
     "latitude": 35.2271,
     "longitude": -80.8431,
@@ -1074,6 +1112,7 @@
   {
     "name": "Oklahoma City",
     "countryCode": "US",
+    "administrativeArea": "Oklahoma",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Downtown_Oklahoma_City_skyline_at_twilight.jpg/1280px-Downtown_Oklahoma_City_skyline_at_twilight.jpg",
     "latitude": 35.4676,
     "longitude": -97.5164,
@@ -1082,6 +1121,7 @@
   {
     "name": "Kansas City",
     "countryCode": "US",
+    "administrativeArea": "Missouri",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Kansas_City_-_Downtown_-_panoramio_%2815%29.jpg/1280px-Kansas_City_-_Downtown_-_panoramio_%2815%29.jpg",
     "latitude": 39.0997,
     "longitude": -94.5786,
@@ -1090,6 +1130,7 @@
   {
     "name": "Minneapolis",
     "countryCode": "US",
+    "administrativeArea": "Minnesota",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Minneapolis_Skyline_looking_south.jpg/1280px-Minneapolis_Skyline_looking_south.jpg",
     "latitude": 44.9778,
     "longitude": -93.265,
@@ -1098,6 +1139,7 @@
   {
     "name": "Detroit",
     "countryCode": "US",
+    "administrativeArea": "Michigan",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Detroit_Skyline_from_Windsor_2025-09-01.jpg/1280px-Detroit_Skyline_from_Windsor_2025-09-01.jpg",
     "latitude": 42.3314,
     "longitude": -83.0458,
@@ -1106,6 +1148,7 @@
   {
     "name": "Winnipeg",
     "countryCode": "CA",
+    "administrativeArea": "Manitoba",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Winnipeg%2C_Manitoba_skyline_%28cropped%29.jpg/1280px-Winnipeg%2C_Manitoba_skyline_%28cropped%29.jpg",
     "latitude": 49.8951,
     "longitude": -97.1384,
@@ -1114,6 +1157,7 @@
   {
     "name": "Edmonton",
     "countryCode": "CA",
+    "administrativeArea": "Alberta",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Alberta_Legislature_Building_at_night.jpg/1280px-Alberta_Legislature_Building_at_night.jpg",
     "latitude": 53.5461,
     "longitude": -113.4938,
@@ -1122,6 +1166,7 @@
   {
     "name": "Boston",
     "countryCode": "US",
+    "administrativeArea": "Massachusetts",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/ISH_WC_Boston4.jpg/1280px-ISH_WC_Boston4.jpg",
     "latitude": 42.3601,
     "longitude": -71.0589,
@@ -1138,6 +1183,7 @@
   {
     "name": "Atlanta",
     "countryCode": "US",
+    "administrativeArea": "Georgia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/A2ATL20250614-0721_%28cropped%29.jpg/1280px-A2ATL20250614-0721_%28cropped%29.jpg",
     "latitude": 33.749,
     "longitude": -84.388,
@@ -1154,6 +1200,7 @@
   {
     "name": "Grand Rapids",
     "countryCode": "US",
+    "administrativeArea": "Michigan",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Meyer_May_House.jpg/1280px-Meyer_May_House.jpg",
     "latitude": 42.9634,
     "longitude": -85.6681,
@@ -1162,6 +1209,7 @@
   {
     "name": "Nashville",
     "countryCode": "US",
+    "administrativeArea": "Tennessee",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Nashville%2C_TN_skyline.jpg/1280px-Nashville%2C_TN_skyline.jpg",
     "latitude": 36.1627,
     "longitude": -86.7816,
@@ -1170,6 +1218,7 @@
   {
     "name": "St. Louis",
     "countryCode": "US",
+    "administrativeArea": "Missouri",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Runner_Fountain_and_Old_Courthouse_and_Arch_%285618845531%29.jpg/1280px-Runner_Fountain_and_Old_Courthouse_and_Arch_%285618845531%29.jpg",
     "latitude": 38.627,
     "longitude": -90.1994,
@@ -1178,6 +1227,7 @@
   {
     "name": "New Orleans",
     "countryCode": "US",
+    "administrativeArea": "Louisiana",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/New_Orleans_from_the_Air_September_2019_-_Central_Business_District_Skyline_%28cropped%29.jpg/1280px-New_Orleans_from_the_Air_September_2019_-_Central_Business_District_Skyline_%28cropped%29.jpg",
     "latitude": 29.9511,
     "longitude": -90.0715,
@@ -1194,6 +1244,7 @@
   {
     "name": "Boise",
     "countryCode": "US",
+    "administrativeArea": "Idaho",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Boise_Metro_Chamber_of_Commerce_photo_to_share_-_winter_2017.jpg/1280px-Boise_Metro_Chamber_of_Commerce_photo_to_share_-_winter_2017.jpg",
     "latitude": 43.615,
     "longitude": -116.2023,
@@ -1202,6 +1253,7 @@
   {
     "name": "Omaha",
     "countryCode": "US",
+    "administrativeArea": "Nebraska",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/City_of_Omaha%2C_Nebraska_Skyline_on_the_Missouri_River_%2830899969517%29.jpg/1280px-City_of_Omaha%2C_Nebraska_Skyline_on_the_Missouri_River_%2830899969517%29.jpg",
     "latitude": 41.2565,
     "longitude": -95.9345,
@@ -1210,6 +1262,7 @@
   {
     "name": "Cleveland",
     "countryCode": "US",
+    "administrativeArea": "Ohio",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Cleveland_skyline_from_Lakewood_Park%2C_January_2026.jpg/1280px-Cleveland_skyline_from_Lakewood_Park%2C_January_2026.jpg",
     "latitude": 41.4993,
     "longitude": -81.6944,
@@ -1218,6 +1271,7 @@
   {
     "name": "Columbus",
     "countryCode": "US",
+    "administrativeArea": "Ohio",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Downtown_Columbus_View_from_Main_St_Bridge_-_edit1.jpg/1280px-Downtown_Columbus_View_from_Main_St_Bridge_-_edit1.jpg",
     "latitude": 39.9612,
     "longitude": -82.9988,
@@ -1226,6 +1280,7 @@
   {
     "name": "Cincinnati",
     "countryCode": "US",
+    "administrativeArea": "Ohio",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Downtown_Cincinnati_viewed_from_Devou_Park_%28cropped%29.jpg/1280px-Downtown_Cincinnati_viewed_from_Devou_Park_%28cropped%29.jpg",
     "latitude": 39.1031,
     "longitude": -84.512,
@@ -1234,6 +1289,7 @@
   {
     "name": "Indianapolis",
     "countryCode": "US",
+    "administrativeArea": "Indiana",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Indianapolis-1872528.jpg/1280px-Indianapolis-1872528.jpg",
     "latitude": 39.7684,
     "longitude": -86.1581,
@@ -1242,6 +1298,7 @@
   {
     "name": "Quebec City",
     "countryCode": "CA",
+    "administrativeArea": "Quebec",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Quebec_City_Rue_St-Louis_2010.jpg/1280px-Quebec_City_Rue_St-Louis_2010.jpg",
     "latitude": 46.8139,
     "longitude": -71.208,
@@ -1250,6 +1307,7 @@
   {
     "name": "Halifax",
     "countryCode": "CA",
+    "administrativeArea": "Nova Scotia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Halifax_Harbour_Sunset_Skyline%2C_Nova_Scotia_%2824237034620%29.jpg/1280px-Halifax_Harbour_Sunset_Skyline%2C_Nova_Scotia_%2824237034620%29.jpg",
     "latitude": 44.6488,
     "longitude": -63.5752,
@@ -1258,6 +1316,7 @@
   {
     "name": "Fredericton",
     "countryCode": "CA",
+    "administrativeArea": "New Brunswick",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Fredericton%2C_NB_%28cropped%29.jpg/1280px-Fredericton%2C_NB_%28cropped%29.jpg",
     "latitude": 45.9636,
     "longitude": -66.6431,
@@ -1266,6 +1325,7 @@
   {
     "name": "Ottawa",
     "countryCode": "CA",
+    "administrativeArea": "Ontario",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Parliament-Ottawa.jpg/1280px-Parliament-Ottawa.jpg",
     "latitude": 45.4215,
     "longitude": -75.6972,
@@ -1274,6 +1334,7 @@
   {
     "name": "Sudbury",
     "countryCode": "CA",
+    "administrativeArea": "Ontario",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Sudbury_downtown.JPG/1280px-Sudbury_downtown.JPG",
     "latitude": 46.4917,
     "longitude": -80.993,
@@ -1282,6 +1343,7 @@
   {
     "name": "Thunder Bay",
     "countryCode": "CA",
+    "administrativeArea": "Ontario",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Thunder_Bay_skyline.JPG/1280px-Thunder_Bay_skyline.JPG",
     "latitude": 48.3809,
     "longitude": -89.2477,
@@ -1290,6 +1352,7 @@
   {
     "name": "Regina",
     "countryCode": "CA",
+    "administrativeArea": "Saskatchewan",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Reginadowntown_%28cropped%29.png/1280px-Reginadowntown_%28cropped%29.png",
     "latitude": 50.4452,
     "longitude": -104.6189,
@@ -1298,6 +1361,7 @@
   {
     "name": "Saskatoon",
     "countryCode": "CA",
+    "administrativeArea": "Saskatchewan",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Saskatoon%2C_Saskatchewan.jpg/1280px-Saskatoon%2C_Saskatchewan.jpg",
     "latitude": 52.1579,
     "longitude": -106.6702,
@@ -1306,6 +1370,7 @@
   {
     "name": "Kelowna",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Kelowna_city_view_from_Knox_Mountain.jpg/1280px-Kelowna_city_view_from_Knox_Mountain.jpg",
     "latitude": 49.888,
     "longitude": -119.496,
@@ -1314,6 +1379,7 @@
   {
     "name": "Kamloops",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Old_Kamloops_Courthouse.jpg/1280px-Old_Kamloops_Courthouse.jpg",
     "latitude": 50.6745,
     "longitude": -120.3273,
@@ -1322,6 +1388,7 @@
   {
     "name": "Okanagan",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kelowna_Vineyards_%28114204%29.jpg/1280px-Kelowna_Vineyards_%28114204%29.jpg",
     "latitude": 49.888,
     "longitude": -119.496,
@@ -1330,6 +1397,7 @@
   {
     "name": "Prince George",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/2017-05-05-PrinceGeorge.jpg/1280px-2017-05-05-PrinceGeorge.jpg",
     "latitude": 53.9171,
     "longitude": -122.7497,
@@ -1338,6 +1406,7 @@
   {
     "name": "Tofino",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Tofino.Vue_vers_l%27est.JPG/1280px-Tofino.Vue_vers_l%27est.JPG",
     "latitude": 49.1529,
     "longitude": -125.9063,
@@ -1346,6 +1415,7 @@
   {
     "name": "Yellowknife",
     "countryCode": "CA",
+    "administrativeArea": "Northwest Territories",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Northwest_Territories_Legislative_Building.jpg/1280px-Northwest_Territories_Legislative_Building.jpg",
     "latitude": 62.454,
     "longitude": -114.3718,
@@ -1426,6 +1496,7 @@
   {
     "name": "Hobart",
     "countryCode": "AU",
+    "administrativeArea": "Tasmania",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Franklin_Wharf_2015_b_%28cropped%29.jpg/1280px-Franklin_Wharf_2015_b_%28cropped%29.jpg",
     "latitude": -42.8821,
     "longitude": 147.3272,
@@ -1658,6 +1729,7 @@
   {
     "name": "Tampa",
     "countryCode": "US",
+    "administrativeArea": "Florida",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Downtown_Tampa%2C_Florida.jpg/1280px-Downtown_Tampa%2C_Florida.jpg",
     "latitude": 27.9475,
     "longitude": -82.45861111,
@@ -1666,6 +1738,7 @@
   {
     "name": "Orlando",
     "countryCode": "US",
+    "administrativeArea": "Florida",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Lake-eola-park-orlando-florida.jpg/1280px-Lake-eola-park-orlando-florida.jpg",
     "latitude": 28.54,
     "longitude": -81.38,
@@ -1994,6 +2067,7 @@
   {
     "name": "Canberra",
     "countryCode": "AU",
+    "administrativeArea": "Australian Capital Territory",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Canberra_panorama_from_Mount_Ainslie.jpg/1280px-Canberra_panorama_from_Mount_Ainslie.jpg",
     "latitude": -35.29305556,
     "longitude": 149.12694444,
@@ -2018,6 +2092,7 @@
   {
     "name": "Gold Coast",
     "countryCode": "AU",
+    "administrativeArea": "Queensland",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Gold_Coast_skyline_%28Unsplash%29.jpg/1280px-Gold_Coast_skyline_%28Unsplash%29.jpg",
     "latitude": -27.9983,
     "longitude": 153.3344,
@@ -2154,6 +2229,7 @@
   {
     "name": "Whistler",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://commons.wikimedia.org/wiki/Special:FilePath/Whistler%20Village%20-%20November%2018th%201pm%20-%20Mountain%20open%20%3D%20lots%20of%20happy%20faces%20%286360439503%29.jpg",
     "latitude": 50.11666667,
     "longitude": -122.95416667,
@@ -2203,6 +2279,7 @@
   {
     "name": "Tucson",
     "countryCode": "US",
+    "administrativeArea": "Arizona",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d5/View_of_Tucson_from_Sentinel_Peak_2.jpg",
     "latitude": 32.22166667,
     "longitude": -110.92638889,
@@ -2236,6 +2313,7 @@
   {
     "name": "Honolulu",
     "countryCode": "US",
+    "administrativeArea": "Hawaii",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/e/e8/2022_Views_from_Diamond_Head_02.jpg",
     "latitude": 21.3,
     "longitude": -157.85,
@@ -2244,6 +2322,7 @@
   {
     "name": "Maui",
     "countryCode": "US",
+    "administrativeArea": "Hawaii",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Makena_Beach%2C_Maui_Hawaii_%2845015180584%29.jpg/1280px-Makena_Beach%2C_Maui_Hawaii_%2845015180584%29.jpg",
     "latitude": 20.8,
     "longitude": -156.3,
@@ -2260,6 +2339,7 @@
   {
     "name": "Banff",
     "countryCode": "CA",
+    "administrativeArea": "Alberta",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Town_of_Banff_viewed_from_Sulphur_Mountain.jpg",
     "latitude": 51.17777778,
     "longitude": -115.57361111,
@@ -2356,6 +2436,7 @@
   {
     "name": "Perth",
     "countryCode": "AU",
+    "administrativeArea": "Western Australia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Perth_CBD_skyline_from_State_War_Memorial_Lookout%2C_2023%2C_04_b.jpg",
     "latitude": -31.9558,
     "longitude": 115.8597,
@@ -2364,6 +2445,7 @@
   {
     "name": "Adelaide",
     "countryCode": "AU",
+    "administrativeArea": "South Australia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Adelaide_skyline%2C_December_2022_b.jpg",
     "latitude": -34.9275,
     "longitude": 138.6,
@@ -3150,6 +3232,7 @@
   {
     "name": "Austin",
     "countryCode": "US",
+    "administrativeArea": "Texas",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Skyline_of_Austin%2C_Texas_%28cropped%29.jpg/1280px-Skyline_of_Austin%2C_Texas_%28cropped%29.jpg",
     "latitude": 30.26722222,
     "longitude": -97.74305556,
@@ -3158,6 +3241,7 @@
   {
     "name": "Philadelphia",
     "countryCode": "US",
+    "administrativeArea": "Pennsylvania",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Philadelphia_skyline_20240528_%28cropped_2-1%29.jpg/1280px-Philadelphia_skyline_20240528_%28cropped_2-1%29.jpg",
     "latitude": 39.95277778,
     "longitude": -75.16361111,
@@ -3174,6 +3258,7 @@
   {
     "name": "Brisbane",
     "countryCode": "AU",
+    "administrativeArea": "Queensland",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Brisbane_CBD_seen_from_Kangaroo_Point%2C_2024%2C_01_%282%29.jpg/1280px-Brisbane_CBD_seen_from_Kangaroo_Point%2C_2024%2C_01_%282%29.jpg",
     "latitude": -27.46777778,
     "longitude": 153.02777778,
@@ -3304,6 +3389,7 @@
   {
     "name": "Cairns",
     "countryCode": "AU",
+    "administrativeArea": "Queensland",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Esplanade_Lagoon%2C_Cairns%2C_2025%2C_12.jpg/1280px-Esplanade_Lagoon%2C_Cairns%2C_2025%2C_12.jpg",
     "latitude": -16.92555556,
     "longitude": 145.77527778,
@@ -3360,6 +3446,7 @@
   {
     "name": "Sedona",
     "countryCode": "US",
+    "administrativeArea": "Arizona",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Cathedral_Rock_-_Sedona_AZ-1.jpg/1280px-Cathedral_Rock_-_Sedona_AZ-1.jpg",
     "latitude": 34.86,
     "longitude": -111.78916667,
@@ -3368,6 +3455,7 @@
   {
     "name": "Moab",
     "countryCode": "US",
+    "administrativeArea": "Utah",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Delicate_Arch%2C_Arches_National_Park%2C_Moab%2C_Utah_%289101941980%29.jpg/1280px-Delicate_Arch%2C_Arches_National_Park%2C_Moab%2C_Utah_%289101941980%29.jpg",
     "latitude": 38.5725,
     "longitude": -109.54972222,
@@ -3376,6 +3464,7 @@
   {
     "name": "Squamish",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Stawamus_Chief_from_Chief_Overlook_Panorama_Trail_Sea_to_Sky_Gondola_Squamish_dllu.jpg/1280px-Stawamus_Chief_from_Chief_Overlook_Panorama_Trail_Sea_to_Sky_Gondola_Squamish_dllu.jpg",
     "latitude": 49.70172222,
     "longitude": -123.15875,
@@ -3384,6 +3473,7 @@
   {
     "name": "Canmore",
     "countryCode": "CA",
+    "administrativeArea": "Alberta",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Canmore_from_Lady_MacDonald_Teahouse.jpg/1280px-Canmore_from_Lady_MacDonald_Teahouse.jpg",
     "latitude": 51.08799806,
     "longitude": -115.34777611,
@@ -3392,6 +3482,7 @@
   {
     "name": "Revelstoke",
     "countryCode": "CA",
+    "administrativeArea": "British Columbia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/5/54/Mount_Begbie_seen_from_Mt_Revelstoke_ski_area.jpg",
     "latitude": 50.9981,
     "longitude": -118.196,
@@ -3684,6 +3775,7 @@
   {
     "name": "Napa",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Autumn_vineyard_in_Napa_Valley.jpg/1280px-Autumn_vineyard_in_Napa_Valley.jpg",
     "latitude": 38.3,
     "longitude": -122.3,
@@ -3693,6 +3785,7 @@
   {
     "name": "Niagara-on-the-Lake",
     "countryCode": "CA",
+    "administrativeArea": "Ontario",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Queen_St_and_Clock_Tower%2C_Niagara-on-the-Lake_20170418_1.jpg/1280px-Queen_St_and_Clock_Tower%2C_Niagara-on-the-Lake_20170418_1.jpg",
     "latitude": 43.25527778,
     "longitude": -79.07166667,
@@ -3718,6 +3811,7 @@
   {
     "name": "Margaret River",
     "countryCode": "AU",
+    "administrativeArea": "Western Australia",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/2016_Margaret_River_Australia._Watershed_vineyard.jpg/1280px-2016_Margaret_River_Australia._Watershed_vineyard.jpg",
     "latitude": -33.955,
     "longitude": 115.075,
@@ -3768,6 +3862,7 @@
   {
     "name": "Avalon",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Avalon_Catalina_Island_California_by_Don_Ramey_Logan.jpg/1280px-Avalon_Catalina_Island_California_by_Don_Ramey_Logan.jpg",
     "latitude": 33.34083333,
     "longitude": -118.32777778,
@@ -3777,6 +3872,7 @@
   {
     "name": "Carmel-by-the-Sea",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Carmel_Mission_Church.jpg/1280px-Carmel_Mission_Church.jpg",
     "latitude": 36.55527778,
     "longitude": -121.92333333,
@@ -3827,6 +3923,7 @@
   {
     "name": "Bellevue",
     "countryCode": "US",
+    "administrativeArea": "Washington",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Bellevue_Downtown_Aerial%2C_May_2025.jpg/1280px-Bellevue_Downtown_Aerial%2C_May_2025.jpg",
     "latitude": 47.61444444,
     "longitude": -122.1925,
@@ -3835,6 +3932,7 @@
   {
     "name": "Redmond",
     "countryCode": "US",
+    "administrativeArea": "Washington",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Redmond_aerial%2C_April_2023.png/1280px-Redmond_aerial%2C_April_2023.png",
     "latitude": 47.66944444,
     "longitude": -122.12388889,
@@ -3843,6 +3941,7 @@
   {
     "name": "Sammamish",
     "countryCode": "US",
+    "administrativeArea": "Washington",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Lake_Sammamish_State_Park_aerial%2C_April_2023.png/1280px-Lake_Sammamish_State_Park_aerial%2C_April_2023.png",
     "latitude": 47.6089,
     "longitude": -122.042,
@@ -3851,24 +3950,25 @@
   {
     "name": "Whitehorse",
     "countryCode": "CA",
+    "administrativeArea": "Yukon",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Yukon_River_at_Whitehorse_-b.jpg/1280px-Yukon_River_at_Whitehorse_-b.jpg",
     "latitude": 60.71722222,
     "longitude": -135.05583333,
-    "timeZoneIdentifier": "America/Whitehorse",
-    "searchAliases": ["Yukon"]
+    "timeZoneIdentifier": "America/Whitehorse"
   },
   {
     "name": "Iqaluit",
     "countryCode": "CA",
+    "administrativeArea": "Nunavut",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Iqaluit%2C_Nunavut.jpg/1280px-Iqaluit%2C_Nunavut.jpg",
     "latitude": 63.74944444,
     "longitude": -68.52166667,
-    "timeZoneIdentifier": "America/Iqaluit",
-    "searchAliases": ["Nunavut"]
+    "timeZoneIdentifier": "America/Iqaluit"
   },
   {
     "name": "Palo Alto",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Ramona_Street_Architectural_District%2C_261_Hamilton_St.%2C_Palo_Alto%2C_CA_5-27-2012_2-20-25_PM.JPG/1280px-Ramona_Street_Architectural_District%2C_261_Hamilton_St.%2C_Palo_Alto%2C_CA_5-27-2012_2-20-25_PM.JPG",
     "latitude": 37.4444,
     "longitude": -122.16,
@@ -3877,6 +3977,7 @@
   {
     "name": "Sunnyvale",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Historic_Murphy_Avenue%2C_Sunnyvale_%28May_2025%29_%28cropped%29.jpg/1280px-Historic_Murphy_Avenue%2C_Sunnyvale_%28May_2025%29_%28cropped%29.jpg",
     "latitude": 37.3711,
     "longitude": -122.0375,
@@ -3885,6 +3986,7 @@
   {
     "name": "Mountain View",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Castro_Street_in_Mountain_View.jpg/1280px-Castro_Street_in_Mountain_View.jpg",
     "latitude": 37.3861,
     "longitude": -122.0839,
@@ -3893,6 +3995,7 @@
   {
     "name": "Daly City",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Daly_City_little_boxes_aerial.jpg/1280px-Daly_City_little_boxes_aerial.jpg",
     "latitude": 37.6864,
     "longitude": -122.4683,
@@ -3901,6 +4004,7 @@
   {
     "name": "Sausalito",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Sausalito.jpg/1280px-Sausalito.jpg",
     "latitude": 37.8592,
     "longitude": -122.4853,
@@ -3909,6 +4013,7 @@
   {
     "name": "Corte Madera",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Corte_Madera_Sunrise_over_Salt_Marsh_Nikon_S550_-_panoramio.jpg/1280px-Corte_Madera_Sunrise_over_Salt_Marsh_Nikon_S550_-_panoramio.jpg",
     "latitude": 37.9256,
     "longitude": -122.5275,
@@ -3917,6 +4022,7 @@
   {
     "name": "Santa Rosa",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/A_Santa_Rosa_Railway_Station_1302.jpg/1280px-A_Santa_Rosa_Railway_Station_1302.jpg",
     "latitude": 38.4486,
     "longitude": -122.7047,
@@ -3925,6 +4031,7 @@
   {
     "name": "Sonoma",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Sonoma_Plaza_-_September_2022_-_Sarah_Stierch_01.jpg/1280px-Sonoma_Plaza_-_September_2022_-_Sarah_Stierch_01.jpg",
     "latitude": 38.2919,
     "longitude": -122.4578,
@@ -3933,6 +4040,7 @@
   {
     "name": "Fresno",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Fresno_California.jpg/1280px-Fresno_California.jpg",
     "latitude": 36.75,
     "longitude": -119.7667,
@@ -3941,6 +4049,7 @@
   {
     "name": "Bakersfield",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/2009-0726-CA-Bakersfield-FoxTheater_%28cropped%29.jpg/1280px-2009-0726-CA-Bakersfield-FoxTheater_%28cropped%29.jpg",
     "latitude": 35.3733,
     "longitude": -119.0189,
@@ -3949,6 +4058,7 @@
   {
     "name": "San Luis Obispo",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Mission_San_Luis_Obispo_%28cropped%29.jpg/1280px-Mission_San_Luis_Obispo_%28cropped%29.jpg",
     "latitude": 35.2742,
     "longitude": -120.6631,
@@ -3957,6 +4067,7 @@
   {
     "name": "Santa Monica",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Santa_Monica_Beach_with_pier_2.JPG/1280px-Santa_Monica_Beach_with_pier_2.JPG",
     "latitude": 34.0219,
     "longitude": -118.4814,
@@ -3965,6 +4076,7 @@
   {
     "name": "Long Beach",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Long-Beach-skyline-at-dusk_%2821611595655%29.jpg/1280px-Long-Beach-skyline-at-dusk_%2821611595655%29.jpg",
     "latitude": 33.7683,
     "longitude": -118.1956,
@@ -3973,6 +4085,7 @@
   {
     "name": "Palm Springs",
     "countryCode": "US",
+    "administrativeArea": "California",
     "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Palm_Springs_from_the_Museum_Trail.jpg/1280px-Palm_Springs_from_the_Museum_Trail.jpg",
     "latitude": 33.8303,
     "longitude": -116.5453,

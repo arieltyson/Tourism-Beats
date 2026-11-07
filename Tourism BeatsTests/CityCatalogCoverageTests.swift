@@ -134,6 +134,15 @@ struct CityCatalogCoverageTests {
         }
     }
 
+    /// A city here is placed by its state, province, or territory. A missing
+    /// one also sends the fact lookup to the wrong article, as with Portland.
+    @Test func citiesInFederalCountriesNameTheirStateOrProvince() throws {
+        let unplaced = try Self.loadCityRows()
+            .filter { Self.countryCodesPlacedByState.contains($0.countryCode) && $0.administrativeArea == nil }
+
+        #expect(unplaced.isEmpty, "\(unplaced.map(\.name))")
+    }
+
     @Test func countryCatalogAndCityCatalogCountryCodesStayInSync() throws {
         let countryCodes = try Self.loadCountryCodes()
         let cityCountryCodes = try Self.loadCityCountryCodes()
@@ -157,6 +166,7 @@ struct CityCatalogCoverageTests {
     private struct CityRow: Decodable {
         let name: String
         let countryCode: String
+        let administrativeArea: String?
     }
 
     private struct CountryRow: Decodable {
@@ -167,6 +177,8 @@ struct CityCatalogCoverageTests {
         let city: String
         let countryCode: String
     }
+
+    private static let countryCodesPlacedByState: Set<String> = ["US", "CA", "AU"]
 
     private static let capitalCityByCountryCode: [String: String] = [
         "AD": "Andorra la Vella",
