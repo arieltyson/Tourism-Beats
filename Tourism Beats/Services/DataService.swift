@@ -20,6 +20,25 @@ private struct CityJSON: Decodable {
     let timeZoneIdentifier: String
     let featuredHeroEligible: Bool?
     let searchAliases: [String]?
+    let administrativeArea: String?
+    let curatedFunFacts: [CuratedFunFactJSON]?
+}
+
+// MARK: - CuratedFunFactJSON
+
+private struct CuratedFunFactJSON: Decodable {
+    let text: String
+    let sourceName: String
+    let sourceURL: URL
+
+    var fact: CityFunFact {
+        CityFunFact(
+            text: self.text,
+            sourceName: self.sourceName,
+            sourceURL: self.sourceURL,
+            isFallback: false
+        )
+    }
 }
 
 // MARK: - DataService
@@ -73,6 +92,7 @@ final class DataService {
                 id: "\(entry.name)-\(entry.countryCode)",
                 name: entry.name,
                 country: country,
+                administrativeArea: entry.administrativeArea,
                 imageURL: entry.imageURL,
                 coordinate: .init(
                     latitude: entry.latitude,
@@ -80,7 +100,8 @@ final class DataService {
                 ),
                 timeZoneIdentifier: entry.timeZoneIdentifier,
                 featuredHeroEligibleOverride: entry.featuredHeroEligible,
-                searchAliases: entry.searchAliases ?? []
+                searchAliases: entry.searchAliases ?? [],
+                curatedFunFacts: entry.curatedFunFacts?.map(\.fact) ?? []
             )
         }
         Self.cachedCities = cities
