@@ -4481,5 +4481,14 @@
     "latitude": 49.60055556,
     "longitude": -119.67777778,
     "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Beira",
+    "countryCode": "MZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Pra%C3%A7a_do_Munic%C3%ADpio%2C_Beira%2C_Mozambique_%2823864553149%29.jpg/1280px-Pra%C3%A7a_do_Munic%C3%ADpio%2C_Beira%2C_Mozambique_%2823864553149%29.jpg",
+    "latitude": -19.83333333,
+    "longitude": 34.85,
+    "timeZoneIdentifier": "Africa/Maputo",
+    "wikipediaTitle": "Beira, Mozambique"
   }
 ]
