@@ -17,6 +17,7 @@ struct CityCatalogCoverageTests {
             Self.lookupKey(city: "Beira", countryCode: "MZ"),
             Self.lookupKey(city: "Summerland", countryCode: "CA"),
             Self.lookupKey(city: "Penticton", countryCode: "CA"),
+            Self.lookupKey(city: "Vernon", countryCode: "CA"),
             Self.lookupKey(city: "New Haven", countryCode: "US"),
             Self.lookupKey(city: "Providence", countryCode: "US"),
             Self.lookupKey(city: "Manchester", countryCode: "US"),

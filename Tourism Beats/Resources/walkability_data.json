@@ -536,5 +536,6 @@
   {"city": "Charlottetown", "countryCode": "CA", "walkScore": 52, "transitScore": 22},
   {"city": "Summerland", "countryCode": "CA", "walkScore": 38, "transitScore": 12},
   {"city": "Beira", "countryCode": "MZ", "walkScore": 40, "transitScore": 12},
-  {"city": "Penticton", "countryCode": "CA", "walkScore": 45, "transitScore": 15}
+  {"city": "Penticton", "countryCode": "CA", "walkScore": 45, "transitScore": 15},
+  {"city": "Vernon", "countryCode": "CA", "walkScore": 40, "transitScore": 15}
 ]

@@ -4499,5 +4499,14 @@
     "latitude": 49.50083333,
     "longitude": -119.59388889,
     "timeZoneIdentifier": "America/Vancouver"
+  },
+  {
+    "name": "Vernon",
+    "countryCode": "CA",
+    "administrativeArea": "British Columbia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/da/Downtown_Vernon.jpg",
+    "latitude": 50.267,
+    "longitude": -119.272,
+    "timeZoneIdentifier": "America/Vancouver"
   }
 ]
