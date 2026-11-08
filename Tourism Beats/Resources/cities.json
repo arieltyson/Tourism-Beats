@@ -4490,5 +4490,14 @@
     "longitude": 34.85,
     "timeZoneIdentifier": "Africa/Maputo",
     "wikipediaTitle": "Beira, Mozambique"
+  },
+  {
+    "name": "Penticton",
+    "countryCode": "CA",
+    "administrativeArea": "British Columbia",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Penticton_British_Columbia.jpg/1280px-Penticton_British_Columbia.jpg",
+    "latitude": 49.50083333,
+    "longitude": -119.59388889,
+    "timeZoneIdentifier": "America/Vancouver"
   }
 ]
