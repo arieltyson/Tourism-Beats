@@ -423,3 +423,6 @@ Secrets.swift
 
 # Claude Code local settings
 .claude/
+
+# The App Store submission package is kept beside this repository, privately.
+/App_Store/

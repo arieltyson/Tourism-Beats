@@ -6,13 +6,14 @@ import XCTest
 /// so each starts from a fresh launch, and has `capture.sh` save it.
 ///
 /// Skipped unless an output folder is given, so ordinary test runs never
-/// touch the listing images. Run it through the script, which passes the
-/// folder and saves each screen from the display you name:
+/// touch the listing images. Run it through `capture.sh` in the App Store
+/// package, which is kept beside this repository rather than in it. The
+/// script passes the folder and saves each screen from the display you name:
 ///
 /// ```bash
-/// App_Store/Screenshots/capture.sh "iPhone 18 Pro" raw-iphone
-/// App_Store/Screenshots/capture.sh "iPhone Duo" raw-duo-outer
-/// App_Store/Screenshots/capture.sh "iPhone Duo" raw-duo-inner primary-1
+/// ../App_Store/Screenshots/capture.sh "iPhone 18 Pro" raw-iphone
+/// ../App_Store/Screenshots/capture.sh "iPhone Duo" raw-duo-outer
+/// ../App_Store/Screenshots/capture.sh "iPhone Duo" raw-duo-inner primary-1
 /// ```
 @MainActor
 final class AppStoreScreenshotUITests: XCTestCase {
@@ -142,7 +143,7 @@ final class AppStoreScreenshotUITests: XCTestCase {
         indicator.tap()
     }
 
-    /// Hands the screen to `App_Store/Screenshots/capture.sh`, which saves
+    /// Hands the screen to the App Store package's `capture.sh`, which saves
     /// the whole display with `simctl`, status bar included.
     ///
     /// The test can't take the picture itself: iPhone Duo has two displays,
