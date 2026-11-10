@@ -4517,5 +4517,14 @@
     "longitude": -1.5586,
     "timeZoneIdentifier": "Europe/Paris",
     "searchAliases": ["Basque Coast", "Pays Basque"]
+  },
+  {
+    "name": "Tel Aviv",
+    "countryCode": "IL",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Israel_Tel_Aviv_Skyline_%2834714425090%29.jpg/1280px-Israel_Tel_Aviv_Skyline_%2834714425090%29.jpg",
+    "latitude": 32.0853,
+    "longitude": 34.7818,
+    "timeZoneIdentifier": "Asia/Jerusalem",
+    "searchAliases": ["Tel Aviv-Yafo", "Jaffa"]
   }
 ]
