@@ -541,5 +541,6 @@
   {"city": "Biarritz", "countryCode": "FR", "walkScore": 78, "transitScore": 40},
   {"city": "Tel Aviv", "countryCode": "IL", "walkScore": 88, "transitScore": 65},
   {"city": "Thessaloniki", "countryCode": "GR", "walkScore": 82, "transitScore": 52},
-  {"city": "Zanzibar", "countryCode": "TZ", "walkScore": 62, "transitScore": 15}
+  {"city": "Zanzibar", "countryCode": "TZ", "walkScore": 62, "transitScore": 15},
+  {"city": "Mombasa", "countryCode": "KE", "walkScore": 52, "transitScore": 20}
 ]

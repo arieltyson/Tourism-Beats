@@ -4545,5 +4545,13 @@
     "timeZoneIdentifier": "Africa/Dar_es_Salaam",
     "searchAliases": ["Stone Town", "Zanzibar City", "Unguja"],
     "wikipediaTitle": "Stone Town"
+  },
+  {
+    "name": "Mombasa",
+    "countryCode": "KE",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Mombasa_Island.jpg/1280px-Mombasa_Island.jpg",
+    "latitude": -4.05,
+    "longitude": 39.6667,
+    "timeZoneIdentifier": "Africa/Nairobi"
   }
 ]

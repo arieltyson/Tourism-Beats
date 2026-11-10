@@ -19,6 +19,7 @@ struct CityCatalogCoverageTests {
             Self.lookupKey(city: "Penticton", countryCode: "CA"),
             Self.lookupKey(city: "Vernon", countryCode: "CA"),
             Self.lookupKey(city: "Biarritz", countryCode: "FR"),
+            Self.lookupKey(city: "Mombasa", countryCode: "KE"),
             Self.lookupKey(city: "Zanzibar", countryCode: "TZ"),
             Self.lookupKey(city: "Thessaloniki", countryCode: "GR"),
             Self.lookupKey(city: "Tel Aviv", countryCode: "IL"),
