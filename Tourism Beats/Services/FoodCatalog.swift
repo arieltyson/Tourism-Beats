@@ -42,4 +42,10 @@ struct FoodCatalog: Sendable {
             uniquingKeysWith: { first, _ in first }
         )
     }
+
+    /// The catalog city with this name in the country with this code.
+    func city(named name: String, countryCode: String) -> CityModel? {
+        self.citiesByNormalizedName[FoodJournalCityGroup.normalizedLookupValue(name)]?
+            .first { $0.country.code == countryCode }
+    }
 }
