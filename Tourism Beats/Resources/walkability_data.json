@@ -537,5 +537,6 @@
   {"city": "Summerland", "countryCode": "CA", "walkScore": 38, "transitScore": 12},
   {"city": "Beira", "countryCode": "MZ", "walkScore": 40, "transitScore": 12},
   {"city": "Penticton", "countryCode": "CA", "walkScore": 45, "transitScore": 15},
-  {"city": "Vernon", "countryCode": "CA", "walkScore": 40, "transitScore": 15}
+  {"city": "Vernon", "countryCode": "CA", "walkScore": 40, "transitScore": 15},
+  {"city": "Biarritz", "countryCode": "FR", "walkScore": 78, "transitScore": 40}
 ]

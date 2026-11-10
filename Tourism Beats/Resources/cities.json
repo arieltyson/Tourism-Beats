@@ -4508,5 +4508,14 @@
     "latitude": 50.267,
     "longitude": -119.272,
     "timeZoneIdentifier": "America/Vancouver"
+    },
+  {
+    "name": "Biarritz",
+    "countryCode": "FR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Biarritz%E2%80%94View_from_Esplanade_Elisabeth_II.jpg/1280px-Biarritz%E2%80%94View_from_Esplanade_Elisabeth_II.jpg",
+    "latitude": 43.4832,
+    "longitude": -1.5586,
+    "timeZoneIdentifier": "Europe/Paris",
+    "searchAliases": ["Basque Coast", "Pays Basque"]
   }
 ]
