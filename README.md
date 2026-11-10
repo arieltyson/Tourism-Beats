@@ -1,6 +1,6 @@
 <div align="center">
 
-# Tourism Beats 🌍🎶
+# Tourism Beats: Travel Guide 🌍🎶
 
 <kbd>
     <img src="docs/assets/banner.png" alt="Tourism Beats — Every city has a beat." width="1000" height="500">
@@ -8,7 +8,18 @@
 
 ## Project Description 🎨
 
+**Tourism Beats: Travel Guide** is a free travel guide and trip planner app for iPhone and iPhone Duo. It helps travelers explore cities, find the best things to do and places to eat, and plan every day of a trip, with no account, no ads, and no tracking.
+
 Tourism Beats is a native iOS application that offers an immersive experience exploring 544 cities in 218 countries. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management, a flight countdown with a Home Screen widget, and a bucket list of the places to visit and things to do someday round out the experience.
+
+## At a Glance 🧭
+
+- **What is Tourism Beats?** A travel guide, trip planner, and food journal for iPhone covering 544 cities in 218 countries.
+- **What can I do with it?** Explore a city's weather, local time, music, safety, visa rules, walkability, top activities, and restaurants; get a suggested day-by-day itinerary; keep a food journal and a bucket list; and count down to your flight.
+- **Is it good for food lovers?** Yes. It ranks the world's fifteen gastronomic capitals, from Tokyo, Paris, and Lyon to San Sebastián, Bangkok, and Lima, on Michelin stars, The World's 50 Best Restaurants, and culinary heritage.
+- **Does it work on iPhone Duo?** Yes. Unfolded, Home, city pages, and the food journal open into two-page layouts made for the larger display.
+- **What does it cost?** It's free, with no ads, subscriptions, or in-app purchases.
+- **What about privacy?** Trips, journals, and photos stay on your iPhone. The app never asks for your location. See the [privacy policy](PRIVACY.md).
 
 ## Technologies Used 💻
 
@@ -77,6 +88,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 - 🚶 **Walkability** — City walkability scores and pedestrian insights
 - 🛂 **Visa Requirements** — Passport-specific visa lookup for any destination
 - 🛡️ **Safety Advisories** — Country risk levels and travel warnings
+- 📱 **iPhone Duo** — Unfolded, Home becomes a two-page spread, city pages set photos beside facts and songs beside their artwork, and guides and journals show more at once; folded, it's the iPhone app you know
 - ♿ **Accessibility** — WCAG AA compliant contrast ratios, Dynamic Type, VoiceOver support
 - 🎨 **Dark Mesh Gradients** — 34 unique dark-palette `MeshGradient` backgrounds
 
