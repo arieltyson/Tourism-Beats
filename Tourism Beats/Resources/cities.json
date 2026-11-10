@@ -4535,5 +4535,15 @@
     "longitude": 22.9356,
     "timeZoneIdentifier": "Europe/Athens",
     "searchAliases": ["Salonica"]
+  },
+  {
+    "name": "Zanzibar",
+    "countryCode": "TZ",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Zanzibar_sultan_palace.jpg/1280px-Zanzibar_sultan_palace.jpg",
+    "latitude": -6.1624,
+    "longitude": 39.1913,
+    "timeZoneIdentifier": "Africa/Dar_es_Salaam",
+    "searchAliases": ["Stone Town", "Zanzibar City", "Unguja"],
+    "wikipediaTitle": "Stone Town"
   }
 ]
