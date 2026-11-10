@@ -83,6 +83,12 @@ def luminance(rgb: tuple[int, int, int]) -> float:
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
+def pixels(image: Image.Image) -> list[tuple[int, int, int]]:
+    """Every RGB pixel of `image`."""
+    data = image.convert("RGB").tobytes()
+    return [tuple(data[i:i + 3]) for i in range(0, len(data), 3)]
+
+
 def contrast(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
     la, lb = sorted((luminance(a), luminance(b)), reverse=True)
     return (la + 0.05) / (lb + 0.05)
@@ -93,7 +99,7 @@ def check_text_contrast(canvas: Image.Image, box: tuple[int, int, int, int],
     """Fails if a caption colour drops below AA on the brightest pixel behind
     the captions, so no glow can wash the text out."""
     region = canvas.crop(box).convert("RGB")
-    lightest = max(region.getdata(), key=luminance)
+    lightest = max(pixels(region), key=luminance)
     for name, colour in colours.items():
         ratio = contrast(colour, lightest)
         if ratio < MIN_CONTRAST:

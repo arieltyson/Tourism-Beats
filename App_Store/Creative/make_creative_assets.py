@@ -47,6 +47,12 @@ def luminance(rgb: tuple[int, int, int]) -> float:
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
+def pixels(image: Image.Image) -> list[tuple[int, int, int]]:
+    """Every RGB pixel of `image`."""
+    data = image.convert("RGB").tobytes()
+    return [tuple(data[i:i + 3]) for i in range(0, len(data), 3)]
+
+
 def contrast(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
     la, lb = sorted((luminance(a), luminance(b)), reverse=True)
     return (la + 0.05) / (lb + 0.05)
@@ -67,7 +73,7 @@ def backdrop(size: tuple[int, int]) -> Image.Image:
     for (cx, cy), colour in zip([(0.2, 0.75), (0.5, 0.95), (0.8, 0.75)], GLOWS):
         r = 0.35 * width
         draw.ellipse([(cx * width - r, cy * height - r), (cx * width + r, cy * height + r)],
-                     fill=tuple(min(255, c * 2) for c in colour))
+                     fill=colour)
     return ImageChops.add(canvas, glow.filter(ImageFilter.GaussianBlur(width * 0.08)))
 
 
@@ -118,7 +124,7 @@ def search_results(size: tuple[int, int]) -> Image.Image:
     subtitle_top = title_top + round(title_size * 1.25)
     text_bottom = subtitle_top + round(title_size * 0.75)
 
-    lightest = max(canvas.convert("RGB").crop((0, title_top, width, text_bottom)).getdata(), key=luminance)
+    lightest = max(pixels(canvas.convert("RGB").crop((0, title_top, width, text_bottom))), key=luminance)
     for name, colour in (("headline", TITLE), ("subtitle", SUBTITLE)):
         ratio = contrast(colour, lightest)
         if ratio < MIN_CONTRAST:
