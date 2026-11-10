@@ -49,4 +49,19 @@ struct CardGridLayoutTests {
     private static func layout(height: CGFloat) -> CardGridLayout {
         CardGridLayout(size: CGSize(width: Self.width, height: height), spacing: Self.spacing)
     }
+
+    @Test(arguments: [320.0, 390.0, 440.0])
+    func phoneWidthsKeepTwoColumns(width: CGFloat) {
+        #expect(CardGridLayout.columnCount(forWidth: width, spacing: Self.spacing) == 2)
+    }
+
+    @Test func aWideDisplayShowsMoreColumnsOfCardsNoNarrowerThanTheMinimum() {
+        let width: CGFloat = 880
+        let layout = CardGridLayout(size: CGSize(width: width, height: 500), spacing: Self.spacing)
+        let cardWidth = (width - Self.spacing * CGFloat(layout.columnCount - 1)) / CGFloat(layout.columnCount)
+
+        #expect(layout.columnCount == 4)
+        #expect(cardWidth >= CardGridLayout.minimumCardWidth)
+        #expect(layout.cardCount == layout.columnCount * layout.rowCount)
+    }
 }

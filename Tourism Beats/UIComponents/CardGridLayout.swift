@@ -2,15 +2,23 @@ import CoreGraphics
 
 // MARK: - CardGridLayout
 
-/// Fits a two-column grid of landscape cards to a space: as many rows as fit,
-/// with the cards stretched a little so the rows fill it exactly instead of
-/// leaving a gap below the last one.
+/// Fits a grid of landscape cards to a space: as many columns and rows as
+/// fit, with the cards stretched a little so the rows fill it exactly instead
+/// of leaving a gap below the last one.
+///
+/// A phone always gets two columns. A wider space, such as iPhone Duo's
+/// unfolded display, adds a column for every card's width it can hold, so
+/// it shows more places rather than the same two at twice the size.
 ///
 /// Cards keep close to their 4:3 shape. They may flatten to 3:2 to make room
 /// for another row, or deepen to 6:5 to close a gap; a gap too big for that
 /// stays, rather than turning the cards into towers.
 struct CardGridLayout: Equatable {
-    static let columnCount = 2
+    /// The fewest columns, which every phone width gets.
+    static let minimumColumnCount = 2
+
+    /// The narrowest a card gets before the grid drops a column.
+    static let minimumCardWidth: CGFloat = 200
 
     /// The shape cards are designed around (width over height).
     static let preferredAspectRatio: CGFloat = 4 / 3
@@ -21,15 +29,18 @@ struct CardGridLayout: Equatable {
     /// The deepest a card may get (width over height) to fill leftover space.
     static let tallestAspectRatio: CGFloat = 6 / 5
 
+    let columnCount: Int
     let rowCount: Int
     let cardHeight: CGFloat
 
     var cardCount: Int {
-        self.rowCount * Self.columnCount
+        self.rowCount * self.columnCount
     }
 
     init(size: CGSize, spacing: CGFloat) {
-        let columns = CGFloat(Self.columnCount)
+        let columnCount = Self.columnCount(forWidth: size.width, spacing: spacing)
+        self.columnCount = columnCount
+        let columns = CGFloat(columnCount)
         let cardWidth = max((size.width - spacing * (columns - 1)) / columns, 0)
         let shortestCard = cardWidth / Self.widestAspectRatio
         let tallestCard = cardWidth / Self.tallestAspectRatio
@@ -47,5 +58,11 @@ struct CardGridLayout: Equatable {
 
         self.rowCount = rowCount
         self.cardHeight = min(fillingHeight, tallestCard)
+    }
+
+    /// As many cards as fit at their narrowest, and never fewer than two.
+    static func columnCount(forWidth width: CGFloat, spacing: CGFloat) -> Int {
+        let fitting = ((width + spacing) / (Self.minimumCardWidth + spacing)).rounded(.down)
+        return max(Int(fitting), Self.minimumColumnCount)
     }
 }

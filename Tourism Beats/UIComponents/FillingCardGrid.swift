@@ -2,8 +2,8 @@ import SwiftUI
 
 // MARK: - FillingCardGrid
 
-/// A grid that fills the space it's given with as many rows of cards as fit,
-/// so taller screens show more and nothing is cut off. Larger text sizes
+/// A grid that fills the space it's given with as many rows and columns of
+/// cards as fit, so taller and wider screens show more and nothing is cut off. Larger text sizes
 /// leave less room above the grid, so fewer rows fit.
 ///
 /// At accessibility text sizes, a screenful would hold only a card or two
@@ -23,7 +23,7 @@ struct FillingCardGrid<Card: View>: View {
 
     /// Loading placeholders shown in the single column, enough to fill it.
     private static var accessibilityPlaceholderCount: Int {
-        CardGridLayout.columnCount
+        CardGridLayout.minimumColumnCount
     }
 
     private static var spacing: CGFloat {
@@ -61,7 +61,7 @@ struct FillingCardGrid<Card: View>: View {
         LazyVGrid(
             columns: Array(
                 repeating: GridItem(.flexible(), spacing: Self.spacing),
-                count: CardGridLayout.columnCount
+                count: self.layout?.columnCount ?? CardGridLayout.minimumColumnCount
             ),
             spacing: Self.spacing
         ) {
