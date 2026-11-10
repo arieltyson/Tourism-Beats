@@ -8,7 +8,7 @@
 
 ## Project Description 🎨
 
-Tourism Beats is a native iOS application that offers an immersive experience exploring 540 cities in 218 countries. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management, a flight countdown with a Home Screen widget, and a bucket list of the places to visit and things to do someday round out the experience.
+Tourism Beats is a native iOS application that offers an immersive experience exploring 544 cities in 218 countries. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management, a flight countdown with a Home Screen widget, and a bucket list of the places to visit and things to do someday round out the experience.
 
 ## Technologies Used 💻
 
@@ -63,7 +63,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 
 ## Features 🌟
 
-- 🌐 **540 Cities** — Explore destinations in 218 countries across every continent, and find any of them by name, country, or state and province
+- 🌐 **544 Cities** — Explore destinations in 218 countries across every continent, and find any of them by name, country, or state and province
 - 🗺️ **Interactive Map** — Full world map with city pins and search
 - 🌍 **3D Globe** — Animated Earth with featured city carousel on home screen
 - 🎵 **Trending Music** — City-specific Apple Music playlists via MusicKit
