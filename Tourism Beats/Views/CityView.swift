@@ -6,10 +6,32 @@ struct CityView: View {
     let city: CityModel
 
     var body: some View {
-        // Foreground content only (background provided by container)
-        VStack(spacing: 16) {
+        // Foreground content only (background provided by container).
+        // Stacked on a phone; on a wide display, such as iPhone Duo's unfolded
+        // one, the city's photo sits beside its clock, weather and fact.
+        VStack(spacing: SpacingTokens.medium) {
             Spacer(minLength: 0)
 
+            AdaptivePanes(panesHugContent: true) {
+                CityPortrait(city: self.city)
+            } trailing: {
+                CityAtAGlance(city: self.city)
+            }
+            .padding(.horizontal, 20)
+
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+// MARK: - CityPortrait
+
+/// The city's name over its photo.
+private struct CityPortrait: View {
+    let city: CityModel
+
+    var body: some View {
+        VStack(spacing: SpacingTokens.medium) {
             CityHeaderView(city: self.city)
 
             Color.clear
@@ -23,20 +45,25 @@ struct CityView: View {
                         .strokeBorder(.white.opacity(0.2), lineWidth: 0.5)
                 )
                 .shadow(color: .black.opacity(0.25), radius: 12, y: 6)
-                .padding(.horizontal, 20)
+        }
+    }
+}
 
-            VStack(spacing: 12) {
-                HStack(spacing: 12) {
-                    TimeView(city: self.city)
-                    WeatherView(city: self.city)
-                }
-                .fixedSize(horizontal: false, vertical: true)
+// MARK: - CityAtAGlance
 
-                CityFunFactCard(city: self.city)
+/// The city's local time and weather, and a fact worth knowing.
+private struct CityAtAGlance: View {
+    let city: CityModel
+
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 12) {
+                TimeView(city: self.city)
+                WeatherView(city: self.city)
             }
-            .padding(.horizontal, 20)
+            .fixedSize(horizontal: false, vertical: true)
 
-            Spacer(minLength: 0)
+            CityFunFactCard(city: self.city)
         }
     }
 }
@@ -54,7 +81,6 @@ private struct CityHeaderView: View {
         .font(.title2).bold().italic()
         .foregroundStyle(AppColors.onImagePrimary)
         .multilineTextAlignment(.center)
-        .padding(.horizontal, 20)
         .shadow(color: .black.opacity(0.30), radius: 8, y: 3)
         .accessibilityAddTraits(.isHeader)
     }

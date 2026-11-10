@@ -83,56 +83,62 @@ private struct AdvisoriesContent: View {
                     "Travel Advisories for \(self.city.name), \(self.city.country.name)"
                 )
 
-            // MARK: Safety
+            // Safety and visa beside getting around where there's width for
+            // both, as on iPhone Duo's unfolded display; one column on a phone.
+            AdaptivePanes(alignment: .top, stackSpacing: self.density.cardSpacing) {
+                VStack(spacing: self.density.cardSpacing) {
+                    // MARK: Safety
 
-            AdvisoryCard {
-                SectionHeader(
-                    title: "Safety Advisory",
-                    subtitle: "Global Peace Index 2026"
+                    AdvisoryCard {
+                        SectionHeader(
+                            title: "Safety Advisory",
+                            subtitle: "Global Peace Index 2026"
+                        )
+                        .padding(.bottom, 2)
+
+                        SafetyView(viewModel: self.safetyViewModel)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .transition(.opacity.combined(with: .scale))
+                    }
+                    .accessibilityHint(
+                        "Shows travel advisories for \(self.city.name)"
+                    )
+
+                    // MARK: Visa
+
+                    AdvisoryCard {
+                        SectionHeader(
+                            title: "Visa Entry",
+                            subtitle: "Verify with the passport of your choice"
+                        )
+                        .padding(.bottom, 2)
+
+                        VisaView(viewModel: self.visaViewModel)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .transition(.opacity.combined(with: .scale))
+                    }
+                    .accessibilityHint(
+                        "Shows visa information for travelers to \(self.city.name)"
+                    )
+                }
+            } trailing: {
+                // MARK: Getting Around
+
+                AdvisoryCard {
+                    SectionHeader(
+                        title: "Getting Around",
+                        subtitle: "Walk Score\u{00AE} Index"
+                    )
+                    .padding(.bottom, 2)
+
+                    WalkabilityView(viewModel: self.walkabilityViewModel)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .transition(.opacity.combined(with: .scale))
+                }
+                .accessibilityHint(
+                    "Shows walkability and transit scores for \(self.city.name)"
                 )
-                .padding(.bottom, 2)
-
-                SafetyView(viewModel: self.safetyViewModel)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .transition(.opacity.combined(with: .scale))
             }
-            .accessibilityHint(
-                "Shows travel advisories for \(self.city.name)"
-            )
-
-            // MARK: Visa
-
-            AdvisoryCard {
-                SectionHeader(
-                    title: "Visa Entry",
-                    subtitle: "Verify with the passport of your choice"
-                )
-                .padding(.bottom, 2)
-
-                VisaView(viewModel: self.visaViewModel)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .transition(.opacity.combined(with: .scale))
-            }
-            .accessibilityHint(
-                "Shows visa information for travelers to \(self.city.name)"
-            )
-
-            // MARK: Getting Around
-
-            AdvisoryCard {
-                SectionHeader(
-                    title: "Getting Around",
-                    subtitle: "Walk Score\u{00AE} Index"
-                )
-                .padding(.bottom, 2)
-
-                WalkabilityView(viewModel: self.walkabilityViewModel)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .transition(.opacity.combined(with: .scale))
-            }
-            .accessibilityHint(
-                "Shows walkability and transit scores for \(self.city.name)"
-            )
         }
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.top, SpacingTokens.small)

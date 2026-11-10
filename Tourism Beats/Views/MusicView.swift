@@ -58,28 +58,31 @@ extension MusicView {
 
                 // The song and its players read as one group, centered in the
                 // room below the header, so they stay together whether or not
-                // there's a song to play.
-                VStack(spacing: SpacingTokens.medium) {
+                // there's a song to play. On a wide display, such as iPhone
+                // Duo's unfolded one, the artwork sits beside them.
+                AdaptivePanes {
                     MusicPageArtwork(artworkURL: self.viewModel.songImage, fitsPage: self.fitsPage)
+                } trailing: {
+                    VStack(spacing: SpacingTokens.medium) {
+                        MusicSongHeader(
+                            title: self.viewModel.songTitle,
+                            artist: self.viewModel.artistName
+                        )
 
-                    MusicSongHeader(
-                        title: self.viewModel.songTitle,
-                        artist: self.viewModel.artistName
-                    )
-
-                    if self.viewModel.availability == .failed {
-                        Button("Try Again", systemImage: "arrow.clockwise") {
-                            Task { await self.viewModel.retry() }
+                        if self.viewModel.availability == .failed {
+                            Button("Try Again", systemImage: "arrow.clockwise") {
+                                Task { await self.viewModel.retry() }
+                            }
+                            .buttonStyle(.glass)
+                            .transition(.opacity)
                         }
-                        .buttonStyle(.glass)
-                        .transition(.opacity)
-                    }
 
-                    if self.viewModel.availability.showsPlayers {
-                        MusicPlayerCards(viewModel: self.viewModel)
-                    }
+                        if self.viewModel.availability.showsPlayers {
+                            MusicPlayerCards(viewModel: self.viewModel)
+                        }
 
-                    MusicFeedbackBanner(message: self.viewModel.userFeedbackMessage)
+                        MusicFeedbackBanner(message: self.viewModel.userFeedbackMessage)
+                    }
                 }
                 .frame(maxHeight: self.fitsPage ? .infinity : nil)
             }
