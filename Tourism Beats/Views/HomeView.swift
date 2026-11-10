@@ -11,53 +11,25 @@ struct HomeView: View {
 
     @State private var viewModel = HomeViewModel()
     @State private var haptic = HapticTrigger()
+    @State private var width: CGFloat = 0
 
     var body: some View {
-        ZStack {
-            EarthView()
-                .ignoresSafeArea()
-
-            AppGradients.vignette
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                Spacer()
-
-                HomeHeaderSection()
-
-                Spacer()
-                    .frame(height: 28)
-
-                // Featured city cards
-                if self.viewModel.isLoaded {
-                    TimelineView(.periodic(from: .now, by: 60)) { context in
-                        HomeFeaturedCitiesCarousel(
-                            viewModel: self.viewModel,
-                            date: context.date,
-                            scheme: self.scheme,
-                            onSelectCity: { city in
-                                self.haptic.fire(.citySelect)
-                                self.onCitySelected(city)
-                            }
-                        )
-                    }
-                }
-
-                Spacer()
-                    .frame(height: 20)
-
-                // Explore CTA
-                DiscoveryCTACard(scheme: self.scheme) {
-                    self.haptic.fire(.searchOpen)
-                    self.onExplore()
-                }
-                .padding(.horizontal, self.horizontalPadding)
-
-                Spacer()
-                    .frame(height: 16)
+        Group {
+            if self.isSpread {
+                HomeSpreadLayout(
+                    discovery: self.discovery,
+                    explore: self.explore
+                )
+            } else {
+                HomeStackedLayout(
+                    horizontalPadding: self.horizontalPadding,
+                    discovery: self.discovery,
+                    explore: self.explore
+                )
             }
-            .safeAreaPadding(.bottom, 16)
         }
+        .background(.black)
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { self.width = $0 }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
         .navigationBarBackButtonHidden(true)
         // The Earth behind this page is always at night, but the tab bar's
@@ -74,10 +46,148 @@ struct HomeView: View {
         }
     }
 
+    /// Whether the page opens out into two panes, as on iPhone Duo's unfolded
+    /// display. Accessibility text sizes keep the single column.
+    private var isSpread: Bool {
+        !self.typeSize.isAccessibilitySize && LayoutTokens.fitsPanes(self.width)
+    }
+
+    /// The featured cities, once they're dealt.
+    private var discovery: HomeDiscovery {
+        HomeDiscovery(
+            viewModel: self.viewModel,
+            scheme: self.scheme,
+            onSelectCity: { city in
+                self.haptic.fire(.citySelect)
+                self.onCitySelected(city)
+            }
+        )
+    }
+
+    private var explore: DiscoveryCTACard {
+        DiscoveryCTACard(scheme: self.scheme) {
+            self.haptic.fire(.searchOpen)
+            self.onExplore()
+        }
+    }
+
     // MARK: - Layout Constants
 
     private var horizontalPadding: CGFloat {
         self.typeSize >= .accessibility1 ? 20 : 24
+    }
+}
+
+// MARK: - HomeStackedLayout
+
+/// The phone layout: the title over the globe, the featured cities below
+/// it, and the way to explore every destination at the bottom.
+private struct HomeStackedLayout: View {
+    let horizontalPadding: CGFloat
+    let discovery: HomeDiscovery
+    let explore: DiscoveryCTACard
+
+    var body: some View {
+        ZStack {
+            HomeBackdrop()
+
+            VStack(spacing: 0) {
+                Spacer()
+
+                HomeHeaderSection()
+
+                Spacer()
+                    .frame(height: 28)
+
+                self.discovery
+
+                Spacer()
+                    .frame(height: 20)
+
+                self.explore
+                    .padding(.horizontal, self.horizontalPadding)
+
+                Spacer()
+                    .frame(height: 16)
+            }
+            .safeAreaPadding(.bottom, 16)
+        }
+    }
+}
+
+// MARK: - HomeSpreadLayout
+
+/// The unfolded layout, a two-page spread: the globe and title on one page,
+/// and the featured cities and the way to explore on the other, instead of
+/// the phone's column stretched across the display.
+private struct HomeSpreadLayout: View {
+    let discovery: HomeDiscovery
+    let explore: DiscoveryCTACard
+
+    /// How much smaller the globe turns here, so it rests within its page
+    /// and fades into the night instead of reaching across the spread.
+    private static let globeScale = 0.85
+
+    var body: some View {
+        ZStack {
+            // The Earth stays one whole scene, slid under the leading page.
+            HomeBackdrop()
+                .scaleEffect(Self.globeScale)
+                .visualEffect { content, proxy in
+                    content.offset(x: -proxy.size.width / 4)
+                }
+
+            HStack(spacing: LayoutTokens.paneSpacing) {
+                HomeHeaderSection()
+                    .padding(.horizontal, SpacingTokens.large)
+                    .frame(maxWidth: .infinity)
+
+                VStack(spacing: SpacingTokens.xLarge) {
+                    self.discovery
+                    self.explore
+                        .frame(maxWidth: LayoutTokens.paneWidth)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.trailing, SpacingTokens.large)
+            }
+        }
+    }
+}
+
+// MARK: - HomeBackdrop
+
+/// The turning Earth at night, darkened at its edges.
+private struct HomeBackdrop: View {
+    var body: some View {
+        ZStack {
+            EarthView()
+                .ignoresSafeArea()
+
+            AppGradients.vignette
+                .ignoresSafeArea()
+        }
+    }
+}
+
+// MARK: - HomeDiscovery
+
+/// The featured cities carousel, its clocks kept to the minute.
+private struct HomeDiscovery: View {
+    let viewModel: HomeViewModel
+    let scheme: ColorScheme
+    let onSelectCity: (CityModel) -> Void
+
+    var body: some View {
+        if self.viewModel.isLoaded {
+            TimelineView(.periodic(from: .now, by: 60)) { context in
+                HomeFeaturedCitiesCarousel(
+                    viewModel: self.viewModel,
+                    date: context.date,
+                    scheme: self.scheme,
+                    onSelectCity: self.onSelectCity
+                )
+            }
+        }
     }
 }
 
