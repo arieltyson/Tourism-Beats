@@ -3,30 +3,42 @@ import SwiftUI
 // MARK: - FoodEmptyState
 
 /// A new journal: one quiet pointer to the Add button, then the world's
-/// best cuisines to spark the first entry.
+/// gastronomic capitals to spark the first entry.
 struct FoodEmptyState: View {
+    let gastroCities: [FeaturedGastroCity]
+
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.large) {
             FoodJournalStartHint()
-            WorldCuisineRankingSection(cuisines: WorldCuisineRanking.top, source: WorldCuisineRanking.source)
+            GastroCityRankingSection(cities: self.gastroCities)
         }
     }
 }
 
 // MARK: - FoodJournalStartHint
 
-/// Points to the toolbar's Add button rather than repeating it.
+/// Says what the journal is for and points to the toolbar's Add button
+/// rather than repeating it.
 private struct FoodJournalStartHint: View {
     var body: some View {
-        Label {
-            Text("Tap \(Image(systemName: "plus")) to save your first restaurant.")
-        } icon: {
-            Image(systemName: "fork.knife")
-                .foregroundStyle(AppColors.coral)
+        GlassCard(cornerRadius: FoodJournalTokens.gastroCardCornerRadius) {
+            HStack(spacing: SpacingTokens.small) {
+                Image(systemName: "fork.knife")
+                    .font(TypographyTokens.sectionHeader)
+                    .foregroundStyle(AppColors.coral)
+                    .frame(minWidth: SpacingTokens.minimumTapTarget, minHeight: SpacingTokens.minimumTapTarget)
+                    .background(AppColors.coral.opacity(0.15), in: .circle)
+
+                VStack(alignment: .leading, spacing: SpacingTokens.xxSmall) {
+                    Text("Your journal starts here")
+                        .font(TypographyTokens.sectionHeader)
+                    Text("Tap \(Image(systemName: "plus")) to save a favourite meal.")
+                        .font(TypographyTokens.cardLabel)
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
-        .font(TypographyTokens.cardLabel)
-        .foregroundStyle(.secondary)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Use Add Restaurant to save your first restaurant.")
+        .accessibilityLabel("Your journal starts here. Use Add Restaurant to save a favourite meal.")
     }
 }

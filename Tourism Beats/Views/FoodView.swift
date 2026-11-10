@@ -26,8 +26,8 @@ struct FoodView: View {
                         .padding([.horizontal, .bottom], SpacingTokens.medium)
                 } else if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
                     // Adding lives in the toolbar alone; the empty journal
-                    // offers something to explore instead of a second button.
-                    FoodEmptyState()
+                    // offers somewhere to explore instead of a second button.
+                    FoodEmptyState(gastroCities: self.viewModel.gastroCities)
                         .padding([.horizontal, .bottom], SpacingTokens.medium)
                 } else {
                     FoodJournalContent(

@@ -2,8 +2,8 @@ import SwiftUI
 
 // MARK: - WorldCuisineRankingSection
 
-/// The world's five best-rated cuisines, to whet the appetite before the
-/// journal has restaurants of its own.
+/// The world's five best-rated cuisines, chosen from the journal's filters
+/// to whet the appetite.
 struct WorldCuisineRankingSection: View {
     let cuisines: [WorldCuisine]
     let source: String
