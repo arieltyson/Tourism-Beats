@@ -4526,5 +4526,14 @@
     "longitude": 34.7818,
     "timeZoneIdentifier": "Asia/Jerusalem",
     "searchAliases": ["Tel Aviv-Yafo", "Jaffa"]
+  },
+  {
+    "name": "Thessaloniki",
+    "countryCode": "GR",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Tessaloniki_BW_2017-10-05_18-22-47.jpg/1280px-Tessaloniki_BW_2017-10-05_18-22-47.jpg",
+    "latitude": 40.6403,
+    "longitude": 22.9356,
+    "timeZoneIdentifier": "Europe/Athens",
+    "searchAliases": ["Salonica"]
   }
 ]
