@@ -25,8 +25,8 @@ final class FlightCountdownUITests: XCTestCase {
         app.textFields["flightNumber"].tap()
         app.textFields["flightNumber"].typeText("901")
         XCTAssertTrue(app.keyboards.firstMatch.exists)
-        app.buttons["Done"].firstMatch.tap()
-        XCTAssertFalse(app.keyboards.firstMatch.waitForExistence(timeout: 2), "Done dismisses the number pad")
+        app.buttons["Hide Keyboard"].firstMatch.tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5), "Hide Keyboard didn't put the number pad away")
 
         app.buttons["flightOrigin"].tap()
         search(app, for: "Vancouver")
