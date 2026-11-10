@@ -8,37 +8,46 @@ import SwiftUI
 final class FoodViewModel {
     var searchText: String = ""
     private(set) var selectedFilter: RestaurantStatus?
-    /// Shows the world's best cuisines in place of the journal, so the
-    /// ranking stays a tap away once the journal has restaurants.
-    private(set) var showsTopCuisines = false
+    /// A ranking shown in place of the journal, so each stays a tap away
+    /// once the journal has restaurants.
+    private(set) var selectedShowcase: FoodShowcase?
     var isAddSheetPresented: Bool = false
     var restaurantToEdit: Restaurant?
+
+    /// The world's gastronomic capitals, each joined to the catalog city it
+    /// opens. A ranked city missing from the catalog is left out.
+    let gastroCities: [FeaturedGastroCity]
 
     private let catalog: FoodCatalog
 
     /// Uses the bundled catalog unless given another, such as in tests.
-    init(catalog: FoodCatalog = .bundled) {
+    init(catalog: FoodCatalog = .bundled, gastroRanking: [GastroCity] = GastroCityRanking.top) {
         self.catalog = catalog
+        self.gastroCities = gastroRanking.compactMap { ranking in
+            catalog.city(named: ranking.name, countryCode: ranking.countryCode)
+                .map { FeaturedGastroCity(ranking: ranking, city: $0) }
+        }
     }
 
     /// Shows the journal, narrowed to `filter` when there is one.
     func select(_ filter: RestaurantStatus?) {
         self.selectedFilter = filter
-        self.showsTopCuisines = false
+        self.selectedShowcase = nil
     }
 
-    func selectTopCuisines() {
-        self.showsTopCuisines = true
+    /// Shows `showcase` in place of the journal.
+    func select(_ showcase: FoodShowcase) {
+        self.selectedShowcase = showcase
     }
 
     /// Whether the journal is showing anything other than all of it.
     var isNarrowed: Bool {
-        self.selectedFilter != nil || self.showsTopCuisines
+        self.selectedFilter != nil || self.selectedShowcase != nil
     }
 
-    /// Searching always searches the journal itself.
-    var isShowingTopCuisines: Bool {
-        self.showsTopCuisines && self.searchText.isEmpty
+    /// The ranking to show now. Searching always searches the journal itself.
+    var visibleShowcase: FoodShowcase? {
+        self.searchText.isEmpty ? self.selectedShowcase : nil
     }
 
     func cityGroups(from restaurants: [Restaurant]) -> [FoodJournalCityGroup] {

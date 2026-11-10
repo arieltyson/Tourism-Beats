@@ -21,8 +21,8 @@ struct FoodView: View {
                 )
                 .padding(.horizontal, SpacingTokens.medium)
 
-                if self.viewModel.isShowingTopCuisines, !self.restaurants.isEmpty {
-                    WorldCuisineRankingSection(cuisines: WorldCuisineRanking.top, source: WorldCuisineRanking.source)
+                if let showcase = self.viewModel.visibleShowcase {
+                    FoodShowcaseContent(showcase: showcase, gastroCities: self.viewModel.gastroCities)
                         .padding([.horizontal, .bottom], SpacingTokens.medium)
                 } else if self.restaurants.isEmpty, self.viewModel.searchText.isEmpty {
                     // Adding lives in the toolbar alone; the empty journal
@@ -46,6 +46,9 @@ struct FoodView: View {
         }
         .scrollIndicators(.hidden)
         .background(Color.clear.ignoresSafeArea())
+        .navigationDestination(for: CityModel.self) { city in
+            CityContainerView(city: city)
+        }
         .navigationTitle("")
         .toolbar(removing: .title)
         .toolbarTitleDisplayMode(.inline)
@@ -87,6 +90,23 @@ struct FoodView: View {
 
         Task {
             try? await RestaurantMealPhotoStore.shared.deleteFiles(at: deletedPaths)
+        }
+    }
+}
+
+// MARK: - FoodShowcaseContent
+
+/// A world food ranking shown in place of the journal.
+private struct FoodShowcaseContent: View {
+    let showcase: FoodShowcase
+    let gastroCities: [FeaturedGastroCity]
+
+    var body: some View {
+        switch self.showcase {
+        case .topCuisines:
+            WorldCuisineRankingSection(cuisines: WorldCuisineRanking.top, source: WorldCuisineRanking.source)
+        case .gastroCities:
+            GastroCityRankingSection(cities: self.gastroCities)
         }
     }
 }

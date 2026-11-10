@@ -2,8 +2,8 @@ import SwiftUI
 
 // MARK: - FoodJournalFilterMenu
 
-/// Narrows the journal by status, or shows the world's best cuisines in
-/// its place.
+/// Narrows the journal by status, or shows one of the world food rankings
+/// in its place.
 struct FoodJournalFilterMenu: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -16,17 +16,20 @@ struct FoodJournalFilterMenu: View {
             }
 
             ForEach(RestaurantStatus.allCases) { status in
-                let isSelected = !self.viewModel.showsTopCuisines && self.viewModel.selectedFilter == status
+                let isSelected = self.viewModel.selectedShowcase == nil && self.viewModel.selectedFilter == status
                 Button(status.label, systemImage: isSelected ? "checkmark" : status.systemImage) {
                     self.viewModel.select(status)
                 }
             }
 
-            // Not a narrowing of the journal, so it stands apart.
+            // Not narrowings of the journal, so they stand apart.
             Divider()
 
-            Button("Top Cuisines", systemImage: self.viewModel.showsTopCuisines ? "checkmark" : "trophy") {
-                self.viewModel.selectTopCuisines()
+            ForEach(FoodShowcase.allCases) { showcase in
+                let isSelected = self.viewModel.selectedShowcase == showcase
+                Button(showcase.title, systemImage: isSelected ? "checkmark" : showcase.systemImage) {
+                    self.viewModel.select(showcase)
+                }
             }
         } label: {
             Image(
@@ -38,7 +41,7 @@ struct FoodJournalFilterMenu: View {
             .symbolEffectsRemoved(self.reduceMotion)
         }
         .accessibilityLabel("Filter restaurants")
-        .accessibilityInputLabels(["Filter Restaurants", "Restaurant Filter", "Top Cuisines"])
+        .accessibilityInputLabels(["Filter Restaurants", "Restaurant Filter", "Top Cuisines", "Top Gastro Cities"])
     }
 
     private var isShowingAll: Bool {
@@ -47,6 +50,6 @@ struct FoodJournalFilterMenu: View {
 
     /// Changes with every choice, so the icon acknowledges each one.
     private var selectionKey: String {
-        self.viewModel.showsTopCuisines ? "topCuisines" : self.viewModel.selectedFilter?.rawValue ?? "all"
+        self.viewModel.selectedShowcase?.rawValue ?? self.viewModel.selectedFilter?.rawValue ?? "all"
     }
 }

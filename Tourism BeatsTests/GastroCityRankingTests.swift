@@ -21,4 +21,9 @@ struct GastroCityRankingTests {
         }
     }
 
+    @Test @MainActor func eachCardIsSpokenAsOne() throws {
+        let tokyo = try #require(FoodViewModel().gastroCities.first)
+        let label = tokyo.accessibilityLabel
+        #expect(label.contains("1") && label.contains("Tokyo") && label.contains("Japan") && label.contains("160"))
+    }
 }
