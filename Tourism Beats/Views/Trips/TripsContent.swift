@@ -23,5 +23,9 @@ struct TripsContent: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listRowSpacing(SpacingTokens.small)
+        // A readable column, centred on a wide display such as iPhone Duo's
+        // unfolded one; every phone is narrower than this.
+        .frame(maxWidth: LayoutTokens.readableWidth)
+        .frame(maxWidth: .infinity)
     }
 }

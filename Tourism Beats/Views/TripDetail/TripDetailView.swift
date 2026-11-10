@@ -45,7 +45,10 @@ struct TripDetailView: View {
                     }
                 )
                 .padding(.vertical, SpacingTokens.small)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                // A readable column, centred on a wide display such as iPhone
+                // Duo's unfolded one; every phone is narrower than this.
+                .frame(maxWidth: LayoutTokens.readableWidth, alignment: .leading)
+                .frame(maxWidth: .infinity)
             }
             .scrollIndicators(.hidden)
             .contentMargins(.horizontal, SpacingTokens.medium, for: .scrollContent)
