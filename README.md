@@ -8,7 +8,7 @@
 
 ## Project Description 🎨
 
-Tourism Beats is a native iOS application that offers an immersive experience exploring 539 cities in 218 countries. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management, a flight countdown with a Home Screen widget, and a bucket list of the places to visit and things to do someday round out the experience.
+Tourism Beats is a native iOS application that offers an immersive experience exploring 540 cities in 218 countries. Users can browse a 3D interactive globe, discover cities on a full-screen map, dive into vertically pageable city profiles featuring real-time weather, local time, trending music, top activities, food journals, walkability scores, visa requirements, and safety advisories. The app integrates with Apple Music via MusicKit to surface trending songs by city and uses OpenStreetMap's Overpass API combined with Wikipedia and Wikidata enrichment for curated activity discovery with images. A personal food journal lets travelers track restaurants, dishes, and meal photos with SwiftData persistence. Trip planning with itinerary management, a flight countdown with a Home Screen widget, and a bucket list of the places to visit and things to do someday round out the experience.
 
 ## Technologies Used 💻
 
@@ -63,12 +63,12 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 
 ## Features 🌟
 
-- 🌐 **539 Cities** — Explore destinations in 218 countries across every continent, and find any of them by name, country, or state and province
+- 🌐 **540 Cities** — Explore destinations in 218 countries across every continent, and find any of them by name, country, or state and province
 - 🗺️ **Interactive Map** — Full world map with city pins and search
 - 🌍 **3D Globe** — Animated Earth with featured city carousel on home screen
 - 🎵 **Trending Music** — City-specific Apple Music playlists via MusicKit
 - 🏛️ **Top Activities** — Curated POIs from OpenStreetMap enriched with Wikipedia content, each a tap away in Google Maps
-- 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city; a new journal opens on the world's five best cuisines from the TasteAtlas Awards
+- 🍽️ **Food Journal** — Track restaurants, best dishes, and meal photos per city; a new journal opens on the world's fifteen gastronomic capitals, ranked on Michelin stars, The World's 50 Best Restaurants and culinary heritage, with the five best cuisines from the TasteAtlas Awards a filter away
 - ✈️ **Trip Planner** — Create and manage trip itineraries with activities, and fill any trip or day with suggested sights and restaurants from the city guide, grouped by area, centred on your hotel when you add one, and reviewed before they are added
 - ✈️ **Flight Countdown** — Settings → Tools; count down to any flight, yours or a loved one's, by searching airlines and airports by name or city, counted in months and days, then days and hours, then hours and minutes as departure nears, with five card designs or up to four of your own photos that take turns filling the card in a shuffled order, each framed by dragging and pinching it on the card, shown in a small or medium Home Screen widget that counts down to your next flight and moves on to the one after once it departs, and added to Apple, Google, Outlook, or Notion Calendar without calendar access
 - ✅ **Bucket List** — Settings → Tools; save the places you dream of and the things you want to do in one form, find a place with a single search across countries and the app's cities, add or remove a city straight from its page, and check items off as you go, with fireworks waiting on an empty list
