@@ -1,6 +1,6 @@
 # Tourism Beats Privacy Policy
 
-**Last updated:** November 2, 2026
+**Last updated:** November 10, 2026
 
 Tourism Beats is an iPhone app for destination discovery, travel research, food journaling, and trip planning. The app is designed to keep personal data handling narrow and local-first wherever possible.
 
@@ -10,13 +10,14 @@ The public privacy policy for App Store Connect is also available at [arieltyson
 
 Tourism Beats does **not** require you to create an account to use the app.
 
-Most information you create in the app, such as saved restaurants, trip plans, trip activities, flight countdowns, ratings, notes, and meal photos, is stored **locally on your device**. The app makes limited network requests to support features such as weather, city facts, activity and restaurant guides, Apple Music results, Spotify handoff, and remote city images.
+Most information you create in the app, such as saved restaurants, trip plans, trip activities, flight countdowns, your bucket list, ratings, notes, and meal photos, is stored **locally on your device**. The app makes limited network requests to support features such as weather, city facts, activity and restaurant guides, Apple Music results, Spotify handoff, and remote city images.
 
 ## What We Store
 
 | Data | Purpose | Stored Where | Shared With Tourism Beats Servers |
 |---|---|---|---|
 | **Saved restaurants, trip plans, trip days, trip activities, ratings, notes, and statuses** | Lets you keep a personal food journal and trip planner. | On-device using SwiftData. | No |
+| **Bucket list places and activities** | Lets you keep the places you want to visit and the things you want to do someday. | On-device using SwiftData. | No |
 | **Manually entered airlines, flight numbers, airports, departure times, and time zones** | Shows your flight countdown in the app and an optional Home Screen widget. Airport and airline search runs against directories bundled in the app, so searches never leave your device. | On-device in an App Group shared only by Tourism Beats and its widget extension. | No |
 | **Flights you add to a calendar** | Creates a calendar event for a flight. Tourism Beats fills in the system's New Event sheet, which runs outside the app: you choose the calendar and save, and the app is never given access to read or change your calendars. Shared event files contain only that flight. | In the calendar you choose, under that calendar's own privacy terms. Tourism Beats keeps no copy. | Only if you choose a third-party calendar or share the file |
 | **Card photos you choose for a flight** | Shows up to four of your photos, framed as you choose, behind that flight's countdown in the app and widget. Photos are chosen with the system photo picker, so the app never accesses your library; each one is downsized and re-encoded, which removes its location and other metadata. The picker's opaque identifier for each chosen photo is kept only so it shows as already chosen when you open the picker again; it can't be used to read your library. | On-device in the same App Group. Removed when the flight is deleted, the photo is taken out of the card, or the card is given a different background. | No |
@@ -72,6 +73,14 @@ To show a city's top activities and restaurants, and to suggest activities for y
 
 These requests contain the destination's name and catalog coordinates, never your location, trips, or other personal data. Results are cached locally on your device.
 
+### Google Maps
+
+When you choose to open a place in Google Maps, Tourism Beats opens a Google Maps search for that place's name, address, city, and country, in the Google Maps app if it's installed and in your browser otherwise.
+
+- Nothing is sent until you tap to open the place.
+- The search contains only the place you chose, never your location, trips, or other personal data.
+- Google handles the search under its own terms and privacy policy.
+
 ### Remote City Images
 
 Tourism Beats loads destination images from URLs in its city catalog and caches those images locally on your device for faster loading later. These image hosts may include public content hosts such as Wikimedia Commons.
@@ -113,13 +122,14 @@ When you use specific features, limited information may be handled by the servic
 - **Spotify** if you choose to authenticate and open music through Spotify
 - **Wikipedia**, **Wikivoyage**, and **Wikidata** for city facts and guide content
 - **OpenStreetMap** (through public Overpass API servers) and **Apple Maps** for nearby places
+- **Google** when you choose to open a place in Google Maps
 - **Remote image hosts** referenced by the app's destination catalog
 
 Those providers handle data under their own terms and privacy policies.
 
 ## Retention and Deletion
 
-- **Saved restaurants, trips, flight countdowns, notes, ratings, and statuses** remain on your device until you edit or delete them, or until you remove the app and its local data.
+- **Saved restaurants, trips, flight countdowns, bucket list items, notes, ratings, and statuses** remain on your device until you edit or delete them, or until you remove the app and its local data.
 - **Meal photos** remain on your device until you remove them from the app or delete the related restaurant entry.
 - **Caches** such as city facts and images may remain until the app or iOS clears them.
 - **Spotify tokens** remain in the device Keychain as needed to support the optional Spotify integration on that device.
