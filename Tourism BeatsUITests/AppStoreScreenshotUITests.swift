@@ -84,7 +84,9 @@ final class AppStoreScreenshotUITests: XCTestCase {
         let app = Self.launch()
         Self.selectTab("Trips", in: app)
 
-        let sampleTrip = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Trinidad and Tobago")).firstMatch
+        // The trip card is one element whose label starts with the trip's name.
+        let sampleTrip = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label BEGINSWITH %@", "Trinidad and Tobago")).firstMatch
         XCTAssertTrue(sampleTrip.waitForExistence(timeout: 15), "No sample trip")
         sampleTrip.tap()
 
@@ -156,10 +158,10 @@ final class AppStoreScreenshotUITests: XCTestCase {
         try Data().write(to: ready)
 
         let deadline = Date.now.addingTimeInterval(Self.captureTimeout)
-        while !FileManager.default.fileExists(atPath: done.path()), Date.now < deadline {
+        while !FileManager.default.fileExists(atPath: done.path(percentEncoded: false)), Date.now < deadline {
             Thread.sleep(forTimeInterval: 0.5)
         }
-        XCTAssertTrue(FileManager.default.fileExists(atPath: done.path()), "capture.sh didn't save \(name)")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: done.path(percentEncoded: false)), "capture.sh didn't save \(name)")
         try? FileManager.default.removeItem(at: done)
     }
 }
