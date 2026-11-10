@@ -18,4 +18,10 @@ enum FoodJournalTokens {
     static let gastroRankWidth: CGFloat = 32
     /// One width for every distinction symbol, so the facts align.
     static let gastroDistinctionIconWidth: CGFloat = 16
+
+    /// Journal cards: one column on every phone, and as many as fit at a
+    /// readable width on a wider display such as iPhone Duo's inner one.
+    static let journalColumns = [
+        GridItem(.adaptive(minimum: LayoutTokens.paneWidth), spacing: SpacingTokens.medium, alignment: .top)
+    ]
 }

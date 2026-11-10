@@ -27,13 +27,16 @@ struct FoodCityJournalView: View {
                 if cityRestaurants.isEmpty {
                     FoodCityJournalEmptyState(group: self.group)
                 } else {
-                    ForEach(cityRestaurants) { restaurant in
-                        FoodRestaurantCard(
-                            restaurant: restaurant,
-                            mealPhotos: restaurant.sortedMealPhotos,
-                            onEdit: { self.onEdit(restaurant) },
-                            onDelete: { self.onDelete(restaurant) }
-                        )
+                    // One column on a phone; side by side where cards fit.
+                    LazyVGrid(columns: FoodJournalTokens.journalColumns, spacing: SpacingTokens.large) {
+                        ForEach(cityRestaurants) { restaurant in
+                            FoodRestaurantCard(
+                                restaurant: restaurant,
+                                mealPhotos: restaurant.sortedMealPhotos,
+                                onEdit: { self.onEdit(restaurant) },
+                                onDelete: { self.onDelete(restaurant) }
+                            )
+                        }
                     }
                 }
             }

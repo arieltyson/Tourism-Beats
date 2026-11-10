@@ -136,45 +136,64 @@ private struct FoodJournalHeader: View {
 // MARK: - FoodJournalContent
 
 private struct FoodJournalContent: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
     let cityGroups: [FoodJournalCityGroup]
     let searchText: String
     let onEdit: (Restaurant) -> Void
     let onDelete: (Restaurant) -> Void
 
     var body: some View {
-        LazyVStack(spacing: SpacingTokens.medium) {
+        Group {
             if self.cityGroups.isEmpty {
                 FoodNoResults(searchText: self.searchText)
                     .padding(.top, SpacingTokens.xxLarge)
             } else {
-                ForEach(self.cityGroups.enumerated(), id: \.element.id) { index, group in
-                    NavigationLink {
-                        FoodCityJournalView(
-                            group: group,
-                            onEdit: self.onEdit,
-                            onDelete: self.onDelete
-                        )
-                    } label: {
-                        FoodCityCard(group: group)
-                    }
-                    .buttonStyle(.plain)
-                    .transition(
-                        self.reduceMotion
-                            ? .opacity
-                            : .opacity.combined(with: .scale(scale: 0.98))
-                    )
-                    .motionSensitiveAnimation(
-                        AnimationTokens.stagger(index: index),
-                        reduced: .linear(duration: 0.01),
-                        value: self.cityGroups.count
-                    )
-                }
+                FoodJournalCityGrid(
+                    cityGroups: self.cityGroups,
+                    onEdit: self.onEdit,
+                    onDelete: self.onDelete
+                )
             }
         }
         .padding(.horizontal, SpacingTokens.medium)
         .padding(.vertical, SpacingTokens.small)
+    }
+}
+
+// MARK: - FoodJournalCityGrid
+
+/// The journal's cities: one column on a phone, side by side where cards fit.
+private struct FoodJournalCityGrid: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    let cityGroups: [FoodJournalCityGroup]
+    let onEdit: (Restaurant) -> Void
+    let onDelete: (Restaurant) -> Void
+
+    var body: some View {
+        LazyVGrid(columns: FoodJournalTokens.journalColumns, spacing: SpacingTokens.medium) {
+            ForEach(self.cityGroups.enumerated(), id: \.element.id) { index, group in
+                NavigationLink {
+                    FoodCityJournalView(
+                        group: group,
+                        onEdit: self.onEdit,
+                        onDelete: self.onDelete
+                    )
+                } label: {
+                    FoodCityCard(group: group)
+                }
+                .buttonStyle(.plain)
+                .transition(
+                    self.reduceMotion
+                        ? .opacity
+                        : .opacity.combined(with: .scale(scale: 0.98))
+                )
+                .motionSensitiveAnimation(
+                    AnimationTokens.stagger(index: index),
+                    reduced: .linear(duration: 0.01),
+                    value: self.cityGroups.count
+                )
+            }
+        }
     }
 }
 

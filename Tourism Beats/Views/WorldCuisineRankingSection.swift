@@ -10,6 +10,7 @@ struct WorldCuisineRankingSection: View {
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var hasAppeared = false
+    @State private var width: CGFloat = 0
 
     var body: some View {
         VStack(alignment: .leading, spacing: SpacingTokens.small) {
@@ -36,11 +37,19 @@ struct WorldCuisineRankingSection: View {
             }
         }
         .onAppear { self.hasAppeared = true }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { self.width = $0 }
     }
 
-    /// One column at accessibility sizes, so names and dishes have room.
+    /// One column at accessibility sizes, so names and dishes have room, and
+    /// every runner-up in one row where there's width for it.
     private var columns: [GridItem] {
-        let count = self.dynamicTypeSize.isAccessibilitySize ? 1 : FoodJournalTokens.cuisineColumns
+        let count = if self.dynamicTypeSize.isAccessibilitySize {
+            1
+        } else if LayoutTokens.fitsPanes(self.width) {
+            max(self.cuisines.count - 1, FoodJournalTokens.cuisineColumns)
+        } else {
+            FoodJournalTokens.cuisineColumns
+        }
         return Array(repeating: GridItem(.flexible(), spacing: SpacingTokens.small), count: count)
     }
 }
