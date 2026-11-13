@@ -5,7 +5,9 @@ import SwiftUI
 @Observable
 final class CityActivitiesViewModel {
     private(set) var activities: [CityActivity] = []
-    private(set) var isLoading = false
+    /// Loading from the start, so the page's first frame shows placeholders
+    /// rather than saying there's nothing to show.
+    private(set) var isLoading = true
     private(set) var statusMessage: String?
 
     @ObservationIgnored private let city: CityModel

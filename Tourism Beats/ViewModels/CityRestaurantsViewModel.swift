@@ -5,7 +5,9 @@ import SwiftUI
 @Observable
 final class CityRestaurantsViewModel {
     private(set) var restaurants: [CityRestaurant] = []
-    private(set) var isLoading = false
+    /// Loading from the start, so the page's first frame shows placeholders
+    /// rather than saying there's nothing to show.
+    private(set) var isLoading = true
     private(set) var statusMessage: String?
 
     @ObservationIgnored private let city: CityModel
