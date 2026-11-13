@@ -19,8 +19,6 @@ struct FillingCardGrid<Card: View>: View {
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    @State private var availableSize: CGSize?
-
     /// Loading placeholders shown in the single column, enough to fill it.
     private static var accessibilityPlaceholderCount: Int {
         CardGridLayout.minimumColumnCount
@@ -44,37 +42,26 @@ struct FillingCardGrid<Card: View>: View {
                 }
             }
         } else {
-            self.fillingGrid
-        }
-    }
+            // The card count depends on both dimensions. Read the proposal
+            // directly so the pager never observes an empty measuring pass.
+            GeometryReader { geometry in
+                let layout = CardGridLayout(size: geometry.size, spacing: Self.spacing)
+                let visibleCount = min(self.itemCount ?? layout.cardCount, layout.cardCount)
 
-    private var layout: CardGridLayout? {
-        self.availableSize.map { CardGridLayout(size: $0, spacing: Self.spacing) }
-    }
-
-    private var visibleCount: Int {
-        guard let layout else { return 0 }
-        return min(self.itemCount ?? layout.cardCount, layout.cardCount)
-    }
-
-    private var fillingGrid: some View {
-        LazyVGrid(
-            columns: Array(
-                repeating: GridItem(.flexible(), spacing: Self.spacing),
-                count: self.layout?.columnCount ?? CardGridLayout.minimumColumnCount
-            ),
-            spacing: Self.spacing
-        ) {
-            if let layout {
-                ForEach(0 ..< self.visibleCount, id: \.self) { index in
-                    self.card(index)
-                        .frame(height: layout.cardHeight)
+                LazyVGrid(
+                    columns: Array(
+                        repeating: GridItem(.flexible(), spacing: Self.spacing),
+                        count: layout.columnCount
+                    ),
+                    spacing: Self.spacing
+                ) {
+                    ForEach(0 ..< visibleCount, id: \.self) { index in
+                        self.card(index)
+                            .frame(height: layout.cardHeight)
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .onGeometryChange(for: CGSize.self, of: \.size) { size in
-            self.availableSize = size
         }
     }
 }

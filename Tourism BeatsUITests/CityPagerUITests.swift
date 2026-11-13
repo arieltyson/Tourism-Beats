@@ -69,10 +69,47 @@ final class CityPagerUITests: XCTestCase {
         XCTAssertTrue(search.waitForExistence(timeout: 5))
         search.tap()
         search.typeText("zzzzzz")
-        XCTAssertTrue(app.staticTexts["No Results"].waitForExistence(timeout: 5))
-        app.buttons["Cancel"].firstMatch.tap()
+        let noResults = app.staticTexts.matching(
+            NSPredicate(format: "label CONTAINS %@", "No Results")
+        ).firstMatch
+        XCTAssertTrue(noResults.waitForExistence(timeout: 5))
+        app.buttons["passportPicker.cancel"].tap()
         XCTAssertTrue(search.waitForNonExistence(timeout: 5))
         XCTAssertEqual(passport.value as? String, "Canada")
+    }
+
+    func testRepeatedSwipesKeepEveryPageAligned() throws {
+        let app = Self.openCity(searchingFor: "Funchal", result: "Funchal, Portugal")
+        let sections = ["City", "Music", "Advisories", "Activities", "Restaurants"]
+
+        for _ in 0 ..< 2 {
+            for section in sections.dropFirst() {
+                app.swipeUp()
+                Self.waitUntilSelected(app.buttons[section])
+            }
+            for section in sections.dropLast().reversed() {
+                app.swipeDown()
+                Self.waitUntilSelected(app.buttons[section])
+            }
+        }
+    }
+
+    private static func waitUntilSelected(
+        _ element: XCUIElement,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let selected = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "value == %@", "Selected"),
+            object: element
+        )
+        XCTAssertEqual(
+            XCTWaiter.wait(for: [selected], timeout: 5),
+            .completed,
+            "The pager did not settle on \(element.label)",
+            file: file,
+            line: line
+        )
     }
 
     // MARK: - Helpers

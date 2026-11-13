@@ -10,8 +10,6 @@ struct CityContainerView: View {
     @State private var barInsets = EdgeInsets()
     @State private var bucketListConfirmation: BucketListConfirmation?
 
-    private let pages = PageDescriptor.defaults
-
     private var currentPageIndex: Int {
         self.pageIndex ?? 0
     }
@@ -32,25 +30,36 @@ struct CityContainerView: View {
                 )
 
             ScrollView(.vertical) {
-                LazyVStack(spacing: 0) {
-                    CityView(city: self.city)
+                // Five fixed pages need stable frames, not lazy height estimates.
+                VStack(spacing: 0) {
+                    CityPagerPage(index: 0, selectedIndex: self.currentPageIndex) {
+                        CityView(city: self.city)
+                    }
                         .cityPageFrame(index: 0, barInsets: self.barInsets)
 
-                    MusicView(city: self.city, fallbackView: FallbackMusicView())
+                    CityPagerPage(index: 1, selectedIndex: self.currentPageIndex) {
+                        MusicView(city: self.city, fallbackView: FallbackMusicView())
+                    }
                         .cityPageFrame(index: 1, barInsets: self.barInsets)
 
-                    AdvisoriesView(city: self.city)
+                    CityPagerPage(index: 2, selectedIndex: self.currentPageIndex) {
+                        AdvisoriesView(city: self.city)
+                    }
                         .cityPageFrame(index: 2, barInsets: self.barInsets)
 
-                    CityActivitiesView(city: self.city)
+                    CityPagerPage(index: 3, selectedIndex: self.currentPageIndex) {
+                        CityActivitiesView(city: self.city)
+                    }
                         .cityPageFrame(index: 3, barInsets: self.barInsets)
 
-                    CityRestaurantsView(city: self.city)
+                    CityPagerPage(index: 4, selectedIndex: self.currentPageIndex) {
+                        CityRestaurantsView(city: self.city)
+                    }
                         .cityPageFrame(index: 4, barInsets: self.barInsets)
                 }
                 .scrollTargetLayout()
             }
-            .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
+            .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
             .scrollPosition(id: self.$pageIndex)
             .scrollIndicators(.hidden)
             .ignoresSafeArea(.container, edges: .vertical)
@@ -66,6 +75,8 @@ struct CityContainerView: View {
                 CityRestaurantDetailView(city: route.city, restaurant: route.restaurant)
             }
         }
+        // A sheet's keyboard must not resize the underlying page viewport.
+        .ignoresSafeArea(.keyboard)
         .bucketListConfirmation(self.$bucketListConfirmation)
         // Every city backdrop is a dark gradient designed for light text, so
         // the pages always use the dark appearance. In Light Mode, glass cards
