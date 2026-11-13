@@ -18,7 +18,7 @@ struct CityActivitiesView: View {
 
             VStack(spacing: 0) {
                 if self.viewModel.isLoading, self.viewModel.activities.isEmpty {
-                    Self.LoadingState()
+                    CardGridLoadingState()
                 } else if self.viewModel.activities.isEmpty {
                     Self.EmptyState(
                         message: self.viewModel.statusMessage
@@ -103,29 +103,6 @@ extension CityActivitiesView {
         }
     }
 
-    private struct PlaceholderCard: View {
-        var body: some View {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(AppColors.surfaceSecondary.opacity(0.6))
-                .frame(maxWidth: .infinity)
-                .phaseAnimator([false, true]) { content, phase in
-                    content
-                        .opacity(phase ? 0.4 : 0.8)
-                } animation: { _ in
-                    .easeInOut(duration: 1.0)
-                }
-        }
-    }
-
-    private struct LoadingState: View {
-        var body: some View {
-            FillingCardGrid { _ in
-                PlaceholderCard()
-            }
-            .accessibilityHidden(true)
-        }
-    }
-
     private struct EmptyState: View {
         let message: String
         let refreshAction: () -> Void
@@ -200,23 +177,22 @@ extension CityActivitiesView {
                         .lineLimit(2)
                         .padding(SpacingTokens.small)
                 }
-                .clipShape(.rect(cornerRadius: 24, style: .continuous))
-                .background {
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                .strokeBorder(
-                                    AppColors.glassBorder(for: self.scheme),
-                                    lineWidth: 1
-                                )
-                        }
-                        .shadow(
-                            color: AppColors.glassShadow(for: self.scheme),
-                            radius: 16,
-                            y: 10
+                .clipShape(.rect(cornerRadius: GuideCardTokens.cornerRadius, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: GuideCardTokens.cornerRadius, style: .continuous)
+                        .strokeBorder(
+                            AppColors.glassBorder(for: self.scheme),
+                            lineWidth: GuideCardTokens.borderWidth
                         )
                 }
+                // The artwork covers the whole card, so a blur behind it
+                // would never show; an opaque outline casts the shadow.
+                .cardShadow(
+                    cornerRadius: GuideCardTokens.cornerRadius,
+                    color: AppColors.glassShadow(for: self.scheme),
+                    radius: GuideCardTokens.shadowRadius,
+                    y: GuideCardTokens.shadowY
+                )
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(self.activity.name)
                 .accessibilityHint("Opens the full activity details")
@@ -283,7 +259,7 @@ extension CityActivitiesView.ActivityCard {
         private static func placeholderBadge(symbolName: String) -> some View {
             ZStack {
                 Circle()
-                    .fill(.ultraThinMaterial)
+                    .fill(AppColors.imageBadgeFill)
 
                 Image(systemName: symbolName)
                     .font(.system(.headline, design: .rounded).weight(.semibold))
@@ -296,7 +272,7 @@ extension CityActivitiesView.ActivityCard {
             DelayedReveal {
                 ZStack {
                     Circle()
-                        .fill(.ultraThinMaterial)
+                        .fill(AppColors.imageBadgeFill)
 
                     ProgressView()
                         .controlSize(.small)

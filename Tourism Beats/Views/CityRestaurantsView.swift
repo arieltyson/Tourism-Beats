@@ -18,7 +18,7 @@ struct CityRestaurantsView: View {
 
             VStack(spacing: 0) {
                 if self.viewModel.isLoading, self.viewModel.restaurants.isEmpty {
-                    Self.LoadingState()
+                    CardGridLoadingState()
                 } else if self.viewModel.restaurants.isEmpty {
                     Self.EmptyState(
                         message: self.viewModel.statusMessage
@@ -99,29 +99,6 @@ extension CityRestaurantsView {
         }
     }
 
-    private struct PlaceholderCard: View {
-        var body: some View {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(AppColors.surfaceSecondary.opacity(0.6))
-                .frame(maxWidth: .infinity)
-                .phaseAnimator([false, true]) { content, phase in
-                    content
-                        .opacity(phase ? 0.4 : 0.8)
-                } animation: { _ in
-                    .easeInOut(duration: 1.0)
-                }
-        }
-    }
-
-    private struct LoadingState: View {
-        var body: some View {
-            FillingCardGrid { _ in
-                PlaceholderCard()
-            }
-            .accessibilityHidden(true)
-        }
-    }
-
     private struct EmptyState: View {
         let message: String
 
@@ -182,11 +159,13 @@ extension CityRestaurantsView {
                     Self.backgroundGradient(for: self.restaurant)
                 }
 
-                // Only the bottom darkens, behind the cuisine and name.
+                // The scrim alone keeps the cuisine and name legible over any
+                // photo or map, as on the activity cards.
                 LinearGradient(
-                    stops: [
-                        .init(color: .clear, location: 0.5),
-                        .init(color: AppColors.imageScrimBottom, location: 1.0)
+                    colors: [
+                        AppColors.imageScrimTop.opacity(0.02),
+                        AppColors.imageScrimMid.opacity(0.52),
+                        AppColors.imageScrimBottom
                     ],
                     startPoint: .top,
                     endPoint: .bottom
@@ -204,7 +183,6 @@ extension CityRestaurantsView {
                             .font(TypographyTokens.cardLabel)
                             .bold()
                             .foregroundStyle(AppColors.onImagePrimary)
-                            .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                     }
@@ -212,18 +190,19 @@ extension CityRestaurantsView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(SpacingTokens.medium)
             }
-            .clipShape(.rect(cornerRadius: 24, style: .continuous))
+            .clipShape(.rect(cornerRadius: GuideCardTokens.cornerRadius, style: .continuous))
             .overlay {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                RoundedRectangle(cornerRadius: GuideCardTokens.cornerRadius, style: .continuous)
                     .strokeBorder(
                         AppColors.glassBorder(for: self.scheme),
-                        lineWidth: 1
+                        lineWidth: GuideCardTokens.borderWidth
                     )
             }
-            .shadow(
+            .cardShadow(
+                cornerRadius: GuideCardTokens.cornerRadius,
                 color: AppColors.glassShadow(for: self.scheme),
-                radius: 16,
-                y: 10
+                radius: GuideCardTokens.shadowRadius,
+                y: GuideCardTokens.shadowY
             )
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
@@ -265,7 +244,6 @@ extension CityRestaurantsView.RestaurantCard {
                 .bold()
                 .textCase(.uppercase)
                 .foregroundStyle(AppColors.onImageSecondary)
-                .shadow(color: .black.opacity(0.5), radius: 2, y: 1)
                 .lineLimit(1)
         }
     }
