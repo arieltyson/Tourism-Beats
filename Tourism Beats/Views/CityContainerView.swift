@@ -1,11 +1,16 @@
 import SwiftUI
 
 struct CityContainerView: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
     let city: CityModel
 
+    /// The page the pager shows, updated as soon as a swipe crosses midway.
     @State private var pageIndex: Int? = 0
+    /// The page the pager last came to rest on.
+    @State private var settledPageIndex = 0
+    @State private var loadedPages = CityPagerLoading.pages(
+        around: 0,
+        pageCount: PageDescriptor.defaults.count
+    )
     @State private var haptic = HapticTrigger()
     @State private var barInsets = EdgeInsets()
     @State private var bucketListConfirmation: BucketListConfirmation?
@@ -16,51 +21,28 @@ struct CityContainerView: View {
 
     var body: some View {
         ZStack {
-            self.backgroundForCurrentPage
+            CityPageBackdrop(city: self.city, pageIndex: self.settledPageIndex)
                 .ignoresSafeArea()
                 .onGeometryChange(for: EdgeInsets.self) { proxy in
                     proxy.safeAreaInsets
                 } action: { insets in
                     self.barInsets = insets
                 }
-                .motionSensitiveAnimation(
-                    .easeInOut(duration: 0.4),
-                    reduced: .linear(duration: 0.01),
-                    value: self.currentPageIndex
-                )
 
             ScrollView(.vertical) {
-                // Five fixed pages need stable frames, not lazy height estimates.
-                VStack(spacing: 0) {
-                    CityPagerPage(index: 0, selectedIndex: self.currentPageIndex) {
-                        CityView(city: self.city)
-                    }
-                        .cityPageFrame(index: 0, barInsets: self.barInsets)
-
-                    CityPagerPage(index: 1, selectedIndex: self.currentPageIndex) {
-                        MusicView(city: self.city, fallbackView: FallbackMusicView())
-                    }
-                        .cityPageFrame(index: 1, barInsets: self.barInsets)
-
-                    CityPagerPage(index: 2, selectedIndex: self.currentPageIndex) {
-                        AdvisoriesView(city: self.city)
-                    }
-                        .cityPageFrame(index: 2, barInsets: self.barInsets)
-
-                    CityPagerPage(index: 3, selectedIndex: self.currentPageIndex) {
-                        CityActivitiesView(city: self.city)
-                    }
-                        .cityPageFrame(index: 3, barInsets: self.barInsets)
-
-                    CityPagerPage(index: 4, selectedIndex: self.currentPageIndex) {
-                        CityRestaurantsView(city: self.city)
-                    }
-                        .cityPageFrame(index: 4, barInsets: self.barInsets)
-                }
-                .scrollTargetLayout()
+                CityPagerPages(
+                    city: self.city,
+                    loadedPages: self.loadedPages,
+                    barInsets: self.barInsets
+                )
             }
             .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
             .scrollPosition(id: self.$pageIndex)
+            .onScrollPhaseChange { _, newPhase in
+                if newPhase == .idle {
+                    self.settle(on: self.currentPageIndex)
+                }
+            }
             .scrollIndicators(.hidden)
             .ignoresSafeArea(.container, edges: .vertical)
             // The pager is inset from the screen edges for the page indicator,
@@ -131,18 +113,17 @@ struct CityContainerView: View {
 
     private func selectPage(_ index: Int) {
         guard index != self.currentPageIndex else { return }
+        // The jump skips the pages between, so the destination is built
+        // before it is shown rather than after it lands.
+        self.settle(on: index)
         self.pageIndex = index
     }
 
-    // MARK: - Background
-
-    private var backgroundForCurrentPage: some View {
-        let all = GradientProvider.gradients
-        let base = UInt(bitPattern: self.city.id.hashValue)
-        let pageSeedValues: [UInt] = [31, 47, 59, 71, 83]
-        let multiplier = pageSeedValues[min(self.currentPageIndex, pageSeedValues.count - 1)]
-        let seed = base &* multiplier
-        let idx = Int(seed % UInt(all.count))
-        return all[idx]
+    /// Builds the pages around the one the pager rests on, while nothing moves.
+    private func settle(on index: Int) {
+        self.settledPageIndex = index
+        self.loadedPages.formUnion(
+            CityPagerLoading.pages(around: index, pageCount: PageDescriptor.defaults.count)
+        )
     }
 }

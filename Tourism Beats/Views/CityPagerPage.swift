@@ -1,29 +1,20 @@
 import SwiftUI
 
-/// Retains visited pages while deferring work for distant, unvisited sections.
+// MARK: - CityPagerPage
+
+/// One page of the city pager, drawn only once it has been loaded.
+///
+/// Until then it holds its place with an empty, full-height frame, so the
+/// pager's layout never changes when the page arrives.
 struct CityPagerPage<Content: View>: View {
-    let index: Int
-    let selectedIndex: Int
-    @ViewBuilder let content: () -> Content
-
-    @State private var hasLoaded = false
-
-    private var isNearSelection: Bool {
-        abs(self.index - self.selectedIndex) <= 1
-    }
+    let isLoaded: Bool
+    @ViewBuilder let content: Content
 
     var body: some View {
-        Group {
-            if self.hasLoaded || self.isNearSelection {
-                self.content()
-            } else {
-                Color.clear
-            }
-        }
-        .onChange(of: self.isNearSelection, initial: true) { _, isNear in
-            if isNear {
-                self.hasLoaded = true
-            }
+        if self.isLoaded {
+            self.content
+        } else {
+            Color.clear
         }
     }
 }
