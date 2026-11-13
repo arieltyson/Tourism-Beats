@@ -7,6 +7,9 @@ final class SafetyViewModel {
     private(set) var safetyData: SafetyModel?
     private(set) var isLoading = false
     private(set) var errorMessage: String?
+    /// Whether the index leaves this country unranked, as it does many small
+    /// island states. That's not a failure, so it isn't shown as one.
+    private(set) var isUnranked = false
 
     @ObservationIgnored private let city: CityModel
     @ObservationIgnored private let safetyService: SafetyProtocol
@@ -23,7 +26,7 @@ final class SafetyViewModel {
     /// page, or showing it in another layout, reuses what's loaded instead of
     /// flashing a spinner while fetching it again.
     func loadIfNeeded() async {
-        guard self.safetyData == nil, !self.isLoading else { return }
+        guard self.safetyData == nil, !self.isUnranked, !self.isLoading else { return }
         await self.fetchSafetyData()
     }
 
@@ -35,11 +38,28 @@ final class SafetyViewModel {
             self.safetyData = try await self.safetyService.fetchSafetyData(
                 for: self.city.country.code
             )
+        } catch SafetyError.countryNotFound {
+            self.isUnranked = true
         } catch {
             self.errorMessage = "Could not load Global Peace Index data."
         }
 
         self.isLoading = false
+    }
+
+    /// The country whose index stands in for a territory's, such as France
+    /// for Martinique; `nil` where the index is the country's own.
+    var governingCountryName: String? {
+        guard let safetyData,
+              safetyData.countryCode.uppercased() != self.city.country.code.uppercased()
+        else { return nil }
+        return safetyData.countryName
+    }
+
+    /// Where the score comes from, naming the governing country for a territory.
+    var sourceLabel: String {
+        guard let governingCountryName else { return String(localized: "Global Peace Index 2026") }
+        return String(localized: "Global Peace Index 2026 · \(governingCountryName)")
     }
 
     var riskLevelText: String? {

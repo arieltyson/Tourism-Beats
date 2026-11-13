@@ -125,7 +125,7 @@ private struct AdvisoriesContent: View {
                     AdvisoryCard {
                         SectionHeader(
                             title: "Safety Advisory",
-                            subtitle: "Global Peace Index 2026"
+                            subtitle: self.safetyViewModel.sourceLabel
                         )
                         .padding(.bottom, 2)
 

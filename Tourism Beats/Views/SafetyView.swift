@@ -13,7 +13,9 @@ struct SafetyView: View {
     var viewModel: SafetyViewModel
 
     var body: some View {
-        if let error = self.viewModel.errorMessage {
+        if self.viewModel.isUnranked {
+            SafetyUnrankedContent()
+        } else if let error = self.viewModel.errorMessage {
             SafetyErrorContent(message: error)
         } else if let safety = self.viewModel.safetyData {
             SafetyLoadedContent(
@@ -128,5 +130,16 @@ private struct SafetyErrorContent: View {
                 .foregroundStyle(.orange)
         }
         .foregroundStyle(.secondary)
+    }
+}
+
+// MARK: - SafetyUnrankedContent
+
+/// For a country the index doesn't rank: said plainly, not as a failure.
+private struct SafetyUnrankedContent: View {
+    var body: some View {
+        Label("Not ranked by the Global Peace Index", systemImage: "info.circle")
+            .font(TypographyTokens.caption)
+            .foregroundStyle(.secondary)
     }
 }
