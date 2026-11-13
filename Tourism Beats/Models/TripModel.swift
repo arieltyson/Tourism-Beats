@@ -25,6 +25,14 @@ final class Trip {
     var stayAddress: String?
     var stayLatitude: Double?
     var stayLongitude: Double?
+    /// The optional budget, read through `budget`; plain fields for the
+    /// same reason as the stay's.
+    var budgetTotal: Double?
+    var budgetCurrencyCode: String?
+    var budgetStayShare: Double?
+    var budgetFoodShare: Double?
+    var budgetFunShare: Double?
+    var budgetGettingAroundShare: Double?
 
     @Relationship(deleteRule: .cascade)
     var days: [TripDay]?
