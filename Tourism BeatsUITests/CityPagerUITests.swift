@@ -3,6 +3,9 @@ import XCTest
 // MARK: - CityPagerUITests
 
 final class CityPagerUITests: XCTestCase {
+    /// Half an indicator icon's visible width.
+    private static let indicatorHalfWidth: CGFloat = 23
+
     /// The Top Songs page sits between two pages of the vertical pager. One
     /// swipe up must move past it, however long the song's title runs.
     func testSwipingUpMovesPastTheSongsPage() throws {
@@ -73,7 +76,12 @@ final class CityPagerUITests: XCTestCase {
             NSPredicate(format: "label CONTAINS %@", "No Results")
         ).firstMatch
         XCTAssertTrue(noResults.waitForExistence(timeout: 5))
-        app.buttons["passportPicker.close"].tap()
+
+        // Ending the search brings back the sheet's own close button.
+        app.buttons["close"].firstMatch.tap()
+        let close = app.buttons["passportPicker.close"]
+        Self.waitUntilHittable(close)
+        close.tap()
         XCTAssertTrue(search.waitForNonExistence(timeout: 5))
         XCTAssertEqual(passport.value as? String, "Canada")
     }
@@ -110,6 +118,30 @@ final class CityPagerUITests: XCTestCase {
             file: file,
             line: line
         )
+    }
+
+    /// Every page keeps the pager inside the screen, with the page
+    /// indicator fully on it, whichever pages have been built so far.
+    func testPagesAndIndicatorStayInsideTheScreen() throws {
+        let app = Self.openCity(searchingFor: "Cannes", result: "Cannes, France")
+        let screen = app.windows.firstMatch.frame
+        let sections = ["City", "Music", "Advisories", "Activities", "Restaurants"]
+
+        for section in sections {
+            let button = app.buttons[section]
+            Self.waitUntilHittable(button)
+            button.tap()
+            Self.waitUntilSelected(button)
+
+            // An icon's frame reaches past its glyph to widen the tap target,
+            // so its centre, not its frame, must sit clear of the edge.
+            for indicator in sections.map({ app.buttons[$0] }) {
+                XCTAssertTrue(
+                    indicator.frame.midX <= screen.maxX - Self.indicatorHalfWidth,
+                    "On \(section), \(indicator.label) sits at \(indicator.frame), outside \(screen)"
+                )
+            }
+        }
     }
 
     // MARK: - Helpers

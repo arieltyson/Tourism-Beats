@@ -17,7 +17,12 @@ struct CityPageFrameModifier: ViewModifier {
         content
             .safeAreaPadding(.top, self.barInsets.top)
             .safeAreaPadding(.bottom, self.barInsets.bottom)
-            .containerRelativeFrame([.horizontal, .vertical])
+            // The width is the one the pager offers. Measured against the
+            // container instead, a page in a stack that isn't lazy took the
+            // window's full width, which widened the pager past the screen
+            // and pushed the page indicator off its edge.
+            .frame(maxWidth: .infinity)
+            .containerRelativeFrame(.vertical)
             .id(self.index)
     }
 }
