@@ -24,6 +24,7 @@ struct AddEditTripView: View {
     @State private var status: TripStatus
     @State private var notes: String
     @State private var stay: TripStay?
+    @State private var budget: TripBudget?
     @State private var isSearchingStay = false
     @State private var saveErrorMessage: String?
     @State private var catalog = TripsViewModel()
@@ -80,6 +81,25 @@ struct AddEditTripView: View {
         self.isEditing ? nil : self.catalogCity
     }
 
+    /// How long the trip runs: its dates' days, or the days it already has.
+    private var tripLength: TripLength {
+        if self.hasDates {
+            return TripLength(days: self.generatedDayDates.count)
+        }
+        return TripLength(days: self.trip?.dayCount ?? 1)
+    }
+
+    /// What a trip like this typically costs, in the budget's currency or
+    /// the traveller's own.
+    private var typicalBudget: TripBudget {
+        TravelCostEstimator().typicalBudget(
+            for: self.tripLength,
+            countryCode: self.catalogCity?.country.code ?? self.formViewModel.selectedCountryCode,
+            currencyCode: self.budget?.currencyCode ?? Locale.current.currency?.identifier
+                ?? TravelCostEstimator.fallbackCurrencyCode
+        )
+    }
+
     private var stayArea: TripStaySearchArea {
         TripStaySearchArea(
             cityName: self.catalogCity?.name ?? self.trimmedCity,
@@ -113,6 +133,7 @@ struct AddEditTripView: View {
         self._status = State(initialValue: trip?.status ?? .upcoming)
         self._notes = State(initialValue: trip?.notes ?? "")
         self._stay = State(initialValue: trip?.stay)
+        self._budget = State(initialValue: trip?.budget)
     }
 
     var body: some View {
@@ -150,6 +171,8 @@ struct AddEditTripView: View {
                     endDate: self.$endDate
                 )
 
+                TripBudgetSection(budget: self.budget)
+
                 if let plannableCity {
                     TripPlanSection(
                         suggestsPlan: self.$suggestsPlan,
@@ -163,6 +186,14 @@ struct AddEditTripView: View {
                 TripNotesSection(notes: self.$notes)
             }
             .keyboardDismissal()
+            .navigationDestination(for: TripBudgetRoute.self) { _ in
+                TripBudgetEditorView(
+                    budget: self.$budget,
+                    typicalBudget: self.typicalBudget,
+                    length: self.tripLength,
+                    placeName: self.catalogCity?.name ?? self.trimmedCity
+                )
+            }
             .navigationTitle(self.isEditing ? "Edit Trip" : "New Trip")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -235,6 +266,7 @@ struct AddEditTripView: View {
                 || self.status != trip.status
                 || self.normalizedNotes != trip.trimmedNotes
                 || self.stay != trip.stay
+                || self.budget != trip.budget
                 || self.hasDates != (trip.startDate != nil)
                 || !Self.sameDay(
                     self.hasDates ? self.startDate : nil,
@@ -253,6 +285,7 @@ struct AddEditTripView: View {
             || self.status != .upcoming
             || self.normalizedNotes != nil
             || self.stay != nil
+            || self.budget != nil
     }
 
     private var saveErrorPresented: Binding<Bool> {
@@ -326,6 +359,7 @@ struct AddEditTripView: View {
             trip.status = self.status
             trip.notes = self.normalizedNotes
             trip.stay = self.stay
+            trip.budget = self.budget
             self.synchronizeDays(for: trip)
             if self.modelContext.hasChanges {
                 try self.modelContext.save()
@@ -344,6 +378,7 @@ struct AddEditTripView: View {
                 status: self.status
             )
             newTrip.stay = self.stay
+            newTrip.budget = self.budget
             self.modelContext.insert(newTrip)
             self.createInitialDays(for: newTrip)
             if self.modelContext.hasChanges {
