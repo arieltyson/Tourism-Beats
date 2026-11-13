@@ -6,6 +6,9 @@ final class CityPagerUITests: XCTestCase {
     /// Half an indicator icon's visible width.
     private static let indicatorHalfWidth: CGFloat = 23
 
+    /// How long a person looks at a city before swiping on.
+    private static let glanceDuration: TimeInterval = 1.5
+
     /// The Top Songs page sits between two pages of the vertical pager. One
     /// swipe up must move past it, however long the song's title runs.
     func testSwipingUpMovesPastTheSongsPage() throws {
@@ -158,6 +161,57 @@ final class CityPagerUITests: XCTestCase {
         XCTAssertTrue(visaStatus.waitForExistence(timeout: 2), "The advisories page wasn't ready as it arrived")
         XCTAssertFalse(app.staticTexts["No advisory information available."].exists)
         XCTAssertFalse(app.staticTexts["No visa information available."].exists)
+    }
+
+    /// A quick run of swipes from the city, after a moment on it, reaches an
+    /// activities page that's already built rather than one built on arrival.
+    func testActivitiesAreReadyAfterAQuickRunOfSwipes() throws {
+        let app = Self.openCity(searchingFor: "Nassau", result: "Nassau, Bahamas")
+        // A moment on the city page, as a person takes in its photo.
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "A glance at the city")], timeout: Self.glanceDuration)
+
+        for _ in 0 ..< 3 {
+            app.swipeUp(velocity: .fast)
+        }
+
+        let activitiesPage = app.staticTexts["Top Activities"]
+        XCTAssertTrue(activitiesPage.waitForExistence(timeout: 1), "The activities page wasn't built ahead of time")
+        Self.waitUntilHittable(activitiesPage)
+        XCTAssertFalse(app.staticTexts["No Activities Yet"].exists)
+    }
+
+    /// Not a check: walks a city's pages the way a person does, for Time
+    /// Profiler to record. Runs only when PROFILE_PAGER is set, against an
+    /// app the profiler has already launched, so the trace covers the walk:
+    ///
+    /// ```bash
+    /// xcrun xctrace record --template "Time Profiler" --device <id> \
+    ///     --time-limit 40s --launch -- com.arieljtyson.Tourism-Beats &
+    /// TEST_RUNNER_PROFILE_PAGER=1 xcodebuild test-without-building ... \
+    ///     -only-testing:"Tourism BeatsUITests/CityPagerUITests/testProfilePagerSwipes"
+    /// ```
+    ///
+    /// UI testing reads the app's accessibility tree between steps, so leave
+    /// the accessibility frames out when reading the trace.
+    func testProfilePagerSwipes() throws {
+        try XCTSkipIf(ProcessInfo.processInfo.environment["PROFILE_PAGER"] == nil)
+        // The profiler launched the app; drive that instance rather than a new one.
+        let app = XCUIApplication()
+        app.activate()
+        let mapTab = app.tabBars.buttons["Map"].firstMatch
+        XCTAssertTrue(mapTab.waitForExistence(timeout: 30))
+        mapTab.tap()
+        let field = app.textFields["Search cities or countries"]
+        XCTAssertTrue(field.waitForExistence(timeout: 10))
+        field.tap()
+        field.typeText("Nassau")
+        app.buttons["Nassau, Bahamas"].tap()
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "A glance at the city")], timeout: 1.5)
+        app.swipeUp()
+        app.swipeUp()
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "Rest on advisories")], timeout: 0.4)
+        app.swipeUp()
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "Activities settle")], timeout: 6)
     }
 
     // MARK: - Helpers

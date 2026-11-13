@@ -52,7 +52,7 @@ struct TripStayRecommendationsViewModelTests {
         await viewModel.load()
 
         #expect(viewModel.hotelClass == .boutique)
-        #expect(viewModel.nightlyBudget == 300)
+        #expect(abs((viewModel.nightlyBudget ?? 0) - 300) < 0.001)
         #expect(viewModel.state == .loaded((1 ... 3).map { Self.stay("Boutique \($0)") }))
     }
 
