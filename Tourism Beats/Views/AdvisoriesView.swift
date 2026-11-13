@@ -7,6 +7,7 @@ struct AdvisoriesView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var appeared = false
+    @State private var showingCountryPicker = false
     @State private var visaViewModel: VisaViewModel
     @State private var safetyViewModel: SafetyViewModel
     @State private var walkabilityViewModel: WalkabilityViewModel
@@ -32,7 +33,8 @@ struct AdvisoriesView: View {
             city: self.city,
             safetyViewModel: self.safetyViewModel,
             visaViewModel: self.visaViewModel,
-            walkabilityViewModel: self.walkabilityViewModel
+            walkabilityViewModel: self.walkabilityViewModel,
+            showingCountryPicker: self.$showingCountryPicker
         )
 
         // This page sits inside the vertical city pager, where a page that
@@ -58,6 +60,13 @@ struct AdvisoriesView: View {
             value: self.appeared
         )
         .onAppear { self.appeared = true }
+        // Presentation must outlive the layout selected by ViewThatFits.
+        .sheet(isPresented: self.$showingCountryPicker) {
+            SearchableCountryPicker(selectedCode: self.$visaViewModel.passportCode)
+        }
+        .task(id: self.visaViewModel.passportCode) {
+            await self.visaViewModel.fetchRequirement()
+        }
     }
 }
 
@@ -70,6 +79,7 @@ private struct AdvisoriesContent: View {
     let safetyViewModel: SafetyViewModel
     let visaViewModel: VisaViewModel
     let walkabilityViewModel: WalkabilityViewModel
+    @Binding var showingCountryPicker: Bool
 
     @Environment(\.advisoriesDensity) private var density
 
@@ -113,7 +123,10 @@ private struct AdvisoriesContent: View {
                         )
                         .padding(.bottom, 2)
 
-                        VisaView(viewModel: self.visaViewModel)
+                        VisaView(
+                            viewModel: self.visaViewModel,
+                            showingCountryPicker: self.$showingCountryPicker
+                        )
                             .fixedSize(horizontal: false, vertical: true)
                             .transition(.opacity.combined(with: .scale))
                     }

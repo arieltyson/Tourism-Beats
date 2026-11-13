@@ -32,16 +32,15 @@ struct SearchableCountryPicker: View {
         }
     }
 
-    private var sectionLetters: [String] {
-        self.groupedCountries.keys.sorted()
-    }
-
     var body: some View {
+        let groups = self.groupedCountries
+        let letters = groups.keys.sorted()
+
         NavigationStack {
             List {
-                ForEach(self.sectionLetters, id: \.self) { letter in
+                ForEach(letters, id: \.self) { letter in
                     Section(header: PickerSectionHeader(letter: letter)) {
-                        ForEach(self.groupedCountries[letter] ?? [], id: \.id) { country in
+                        ForEach(groups[letter] ?? [], id: \.id) { country in
                             Button {
                                 self.selectedCode = country.code
                                 self.dismiss()
@@ -58,15 +57,25 @@ struct SearchableCountryPicker: View {
             }
             .overlay(alignment: .trailing) {
                 if self.searchText.isEmpty, !self.dynamicTypeSize.isAccessibilitySize {
-                    SectionIndexTitles(letters: self.sectionLetters)
+                    SectionIndexTitles(letters: letters)
                 }
             }
-            .searchable(text: self.$searchText, placement: .navigationBarDrawer)
+            .searchable(text: self.$searchText, prompt: "Search countries")
+            .overlay {
+                if groups.isEmpty {
+                    ContentUnavailableView.search(text: self.searchText)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", role: .cancel) { self.dismiss() }
+                }
+            }
             .navigationTitle("Select Country")
             .navigationBarTitleDisplayMode(.inline)
             .listStyle(.plain)
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.large])
     }
 }
 

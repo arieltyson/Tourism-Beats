@@ -34,16 +34,25 @@ final class VisaViewModel {
         self.isLoading = true
         self.errorMessage = nil
 
+        let requestedPassport = self.passportCode
         do {
-            self.requirement = try await self.service.fetchVisaRequirement(
-                passport: self.passportCode,
+            let requirement = try await self.service.fetchVisaRequirement(
+                passport: requestedPassport,
                 destination: self.destinationCode
             )
+            try Task.checkCancellation()
+            guard self.passportCode == requestedPassport else { return }
+            self.requirement = requirement
         } catch {
-            self.errorMessage = "Could not load visa requirements."
+            guard self.passportCode == requestedPassport else { return }
+            if !Task.isCancelled {
+                self.errorMessage = "Could not load visa requirements."
+            }
         }
 
-        self.isLoading = false
+        if self.passportCode == requestedPassport {
+            self.isLoading = false
+        }
     }
 
     func updatePassport(to newCode: String) {

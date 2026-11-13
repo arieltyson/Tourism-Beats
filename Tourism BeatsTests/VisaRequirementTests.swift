@@ -26,6 +26,21 @@ struct VisaRequirementTests {
         }
     }
 
+    @Test func cancelledRequestDoesNotPublishARequirementOrError() async {
+        let viewModel = VisaViewModel(
+            passportCode: "CA",
+            destinationCode: "PT",
+            service: FixedVisaService(requirement: "Visa-free")
+        )
+        let request = Task { await viewModel.fetchRequirement() }
+        request.cancel()
+        await request.value
+
+        #expect(viewModel.requirement == nil)
+        #expect(viewModel.errorMessage == nil)
+        #expect(!viewModel.isLoading)
+    }
+
     @Test(arguments: [
         ("Entry not permitted", Color.red),
         ("Visa required", .orange),

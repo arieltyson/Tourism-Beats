@@ -10,7 +10,7 @@ import SwiftUI
 
 struct VisaView: View {
     @Bindable var viewModel: VisaViewModel
-    @State private var showingCountryPicker = false
+    @Binding var showingCountryPicker: Bool
 
     private let allCountries: [CountryModel] =
         (try? DataService().loadCountries()) ?? []
@@ -25,14 +25,7 @@ struct VisaView: View {
                 currentCountry: self.currentCountry,
                 showingPicker: self.$showingCountryPicker
             )
-            .sheet(isPresented: self.$showingCountryPicker) {
-                SearchableCountryPicker(
-                    selectedCode: self.$viewModel.passportCode
-                )
-            }
-            .onChange(of: self.viewModel.passportCode) { _, newValue in
-                self.viewModel.updatePassport(to: newValue)
-            }
+
 
             VisaRequirementBadge(
                 isLoading: self.viewModel.isLoading,
@@ -43,9 +36,6 @@ struct VisaView: View {
             )
 
             VisaDisclaimer()
-        }
-        .task {
-            await self.viewModel.loadIfNeeded()
         }
     }
 }

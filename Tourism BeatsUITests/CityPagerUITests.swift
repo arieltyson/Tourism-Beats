@@ -44,6 +44,37 @@ final class CityPagerUITests: XCTestCase {
         Self.waitUntilHittable(songsPage)
     }
 
+    func testPassportSearchStaysPresentedAndSelectsCountry() throws {
+        let app = Self.openCity(searchingFor: "Funchal", result: "Funchal, Portugal")
+        app.buttons["Advisories"].tap()
+
+        let passport = app.buttons["Select passport country"]
+        Self.waitUntilHittable(passport)
+        passport.tap()
+
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("Canada")
+
+        let canada = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Canada")).firstMatch
+        Self.waitUntilHittable(canada)
+        XCTAssertTrue(app.keyboards.firstMatch.exists)
+        canada.tap()
+
+        XCTAssertTrue(search.waitForNonExistence(timeout: 5))
+        XCTAssertEqual(passport.value as? String, "Canada")
+
+        passport.tap()
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("zzzzzz")
+        XCTAssertTrue(app.staticTexts["No Results"].waitForExistence(timeout: 5))
+        app.buttons["Cancel"].firstMatch.tap()
+        XCTAssertTrue(search.waitForNonExistence(timeout: 5))
+        XCTAssertEqual(passport.value as? String, "Canada")
+    }
+
     // MARK: - Helpers
 
     /// Launches the app and opens a city from the map's search.
