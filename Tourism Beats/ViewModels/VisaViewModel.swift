@@ -56,6 +56,13 @@ final class VisaViewModel {
             guard self.passportCode == requestedPassport else { return }
             self.requirement = requirement
             self.loadedPassportCode = requestedPassport
+        } catch VisaError.requirementNotFound {
+            // Nothing is listed for this passport and destination, as for
+            // territories such as Martinique. That's not a failure: the card
+            // says so, and doesn't keep another passport's answer.
+            guard self.passportCode == requestedPassport else { return }
+            self.requirement = nil
+            self.loadedPassportCode = requestedPassport
         } catch {
             guard self.passportCode == requestedPassport else { return }
             if !Task.isCancelled {

@@ -131,7 +131,7 @@ private struct VisaRequirementBadge: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Visa status: \(self.summaryText)")
         } else {
-            Text("No visa information available.")
+            Label("No visa information for this passport and destination", systemImage: "info.circle")
                 .font(TypographyTokens.caption)
                 .foregroundStyle(.secondary)
         }

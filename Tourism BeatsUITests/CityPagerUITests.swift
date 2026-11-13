@@ -160,7 +160,7 @@ final class CityPagerUITests: XCTestCase {
         ).firstMatch
         XCTAssertTrue(visaStatus.waitForExistence(timeout: 2), "The advisories page wasn't ready as it arrived")
         XCTAssertFalse(app.staticTexts["No advisory information available."].exists)
-        XCTAssertFalse(app.staticTexts["No visa information available."].exists)
+        XCTAssertFalse(app.staticTexts["No visa information for this passport and destination"].exists)
     }
 
     /// A quick run of swipes from the city, after a moment on it, reaches an
