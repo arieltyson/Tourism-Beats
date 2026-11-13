@@ -5,12 +5,20 @@ import SwiftUI
 struct AdvisoriesView: View {
     let city: CityModel
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var showingCountryPicker = false
+    /// How tall the cards are at the regular density, once measured.
+    @State private var regularContentHeight: CGFloat?
+    @State private var pageHeight: CGFloat = 0
     @State private var viewModel: AdvisoriesViewModel
 
     init(city: CityModel) {
         self.city = city
         _viewModel = State(initialValue: AdvisoriesViewModel(city: city))
+    }
+
+    private var density: AdvisoriesDensity {
+        .fitting(regularContentHeight: self.regularContentHeight, in: self.pageHeight)
     }
 
     var body: some View {
@@ -23,19 +31,44 @@ struct AdvisoriesView: View {
         )
 
         // This page sits inside the vertical city pager, where a page that
-        // scrolls itself catches the swipe meant for the next page. So it
-        // fits the screen whenever it can: first as it is, then compact, and
-        // only when neither fits, at large text sizes, does it scroll.
-        ViewThatFits(in: .vertical) {
+        // scrolls itself catches the swipe meant for the next page. Its
+        // scroll view only scrolls once the cards overflow, so where they
+        // fit, every swipe still reaches the pager. Where the regular layout
+        // runs long, the page draws its cards closer, measured from one
+        // layout of the page rather than from laying out every alternative.
+        ScrollView(.vertical) {
             content
-
-            content
-                .environment(\.advisoriesDensity, .compact)
-
-            ScrollView(.vertical) {
-                content
+                .environment(\.advisoriesDensity, self.density)
+        }
+        .cityPageScrolling()
+        // The room for the cards: the scroll view sits between the bars, so
+        // its own height is what the cards may fill without scrolling.
+        .onGeometryChange(for: CGSize.self) { proxy in
+            proxy.size
+        } action: { old, new in
+            self.pageHeight = new.height
+            // A new width rewraps the cards, so they're measured again.
+            if new.width != old.width {
+                self.regularContentHeight = nil
             }
-            .cityPageScrolling()
+        }
+        .onScrollGeometryChange(for: CGFloat.self) { geometry in
+            geometry.contentSize.height
+        } action: { _, contentHeight in
+            if self.density == .regular {
+                self.regularContentHeight = contentHeight
+            }
+        }
+        // New text, or new cards in place of their placeholders, can change
+        // what fits, so the regular layout is measured again.
+        .onChange(of: self.dynamicTypeSize) { _, _ in
+            self.regularContentHeight = nil
+        }
+        .onChange(of: self.viewModel.hasLoaded) { _, _ in
+            self.regularContentHeight = nil
+        }
+        .onChange(of: self.viewModel.visa.isAwaitingRequirement) { _, _ in
+            self.regularContentHeight = nil
         }
         // Should the cards land while the page is on screen, their
         // placeholders give way to them smoothly, at the size they held.
@@ -45,7 +78,7 @@ struct AdvisoriesView: View {
             value: self.viewModel.hasLoaded
         )
         .cityPageArrival()
-        // Presentation must outlive the layout selected by ViewThatFits.
+        // The page presents the picker, so a change of density can't dismiss it.
         .sheet(isPresented: self.$showingCountryPicker) {
             SearchableCountryPicker(selectedCode: Bindable(self.viewModel.visa).passportCode)
         }
