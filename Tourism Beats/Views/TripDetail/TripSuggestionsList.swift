@@ -5,6 +5,8 @@ import SwiftUI
 struct TripSuggestionsList: View {
     let viewModel: TripSuggestionsViewModel
     let days: [TripSuggestionsViewModel.DaySuggestions]
+    /// Hotels to pick from, for a trip that has none.
+    var stayRecommendations: TripStayRecommendationsViewModel?
 
     var body: some View {
         List {
@@ -32,6 +34,10 @@ struct TripSuggestionsList: View {
                 } header: {
                     TripSuggestionDayHeader(day: entry.day)
                 }
+            }
+
+            if let stayRecommendations {
+                TripStayRecommendationsSection(viewModel: stayRecommendations)
             }
 
             Section {

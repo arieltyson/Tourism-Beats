@@ -10,8 +10,10 @@ struct TripSuggestionsView: View {
     @Environment(\.modelContext) private var modelContext
 
     @State private var viewModel: TripSuggestionsViewModel
+    @State private var stayRecommendations: TripStayRecommendationsViewModel?
     @State private var saveErrorMessage: String?
 
+    private let trip: Trip
     private let onApplied: (Int) -> Void
 
     init(
@@ -23,6 +25,13 @@ struct TripSuggestionsView: View {
         self._viewModel = State(
             initialValue: TripSuggestionsViewModel(trip: trip, city: city, scope: scope)
         )
+        // A whole-trip plan for a trip without a hotel also suggests where to stay.
+        if case .trip = scope, trip.stay == nil {
+            self._stayRecommendations = State(
+                initialValue: TripStayRecommendationsViewModel(trip: trip, city: city)
+            )
+        }
+        self.trip = trip
         self.onApplied = onApplied
     }
 
@@ -47,7 +56,11 @@ struct TripSuggestionsView: View {
         .task {
             await self.viewModel.load()
         }
+        .task {
+            await self.stayRecommendations?.load()
+        }
         .sensoryFeedback(.selection, trigger: self.viewModel.selectedSuggestionIDs)
+        .sensoryFeedback(.selection, trigger: self.stayRecommendations?.selectedStayID)
         .alert(
             "Couldn't Add Activities",
             isPresented: self.saveErrorPresented
@@ -87,14 +100,15 @@ struct TripSuggestionsView: View {
         case let .loaded(days):
             TripSuggestionsList(
                 viewModel: self.viewModel,
-                days: days
+                days: days,
+                stayRecommendations: self.stayRecommendations
             )
         }
     }
 
     private var canApply: Bool {
         guard case .loaded = self.viewModel.state else { return false }
-        return self.viewModel.selectedCount > 0
+        return self.viewModel.selectedCount > 0 || self.stayRecommendations?.selectedStay != nil
     }
 
     private var saveErrorPresented: Binding<Bool> {
@@ -110,6 +124,10 @@ struct TripSuggestionsView: View {
 
     private func apply() {
         do {
+            if let stay = self.stayRecommendations?.selectedStay {
+                self.trip.stay = stay
+            }
+            // Saving the activities saves the hotel with them.
             let addedCount = try self.viewModel.applySelection(in: self.modelContext)
             self.onApplied(addedCount)
             self.dismiss()
