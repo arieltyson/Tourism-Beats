@@ -7,6 +7,8 @@ struct CityContainerView: View {
     @State private var pageIndex: Int? = 0
     /// The page the pager last came to rest on.
     @State private var settledPageIndex = 0
+    /// Whether the pager is still, neither dragged nor gliding.
+    @State private var isPagerAtRest = true
     @State private var loadedPages = CityPagerLoading.pages(
         around: 0,
         pageCount: PageDescriptor.defaults.count
@@ -39,6 +41,7 @@ struct CityContainerView: View {
             .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
             .scrollPosition(id: self.$pageIndex)
             .onScrollPhaseChange { _, newPhase in
+                self.isPagerAtRest = newPhase == .idle
                 if newPhase == .idle {
                     self.settle(on: self.currentPageIndex)
                 }
@@ -74,6 +77,11 @@ struct CityContainerView: View {
             .padding(.trailing, PageIndicatorTokens.overlayTrailingPadding)
         }
         .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
+        // Builds the remaining pages one at a time while the pager is still,
+        // so a quick run of swipes never reaches a page that isn't ready.
+        .task(id: self.prebuildKey) {
+            await self.prebuildNextPage()
+        }
         // The guide pages are lazy and sit four and five pages down, so start
         // their fetches on arrival; the pages then join the in-flight requests.
         // The short wait skips the Apple Maps searches when a city is backed out of.
@@ -117,6 +125,28 @@ struct CityContainerView: View {
         // before it is shown rather than after it lands.
         self.settle(on: index)
         self.pageIndex = index
+    }
+
+    private var prebuildKey: CityPagerPrebuildKey {
+        CityPagerPrebuildKey(
+            loadedPages: self.loadedPages,
+            settledPageIndex: self.settledPageIndex,
+            isAtRest: self.isPagerAtRest
+        )
+    }
+
+    /// Builds the closest page not yet built, after a pause, if the pager is
+    /// still at rest. Building it changes the key, which starts the next.
+    private func prebuildNextPage() async {
+        guard self.isPagerAtRest,
+              let next = CityPagerLoading.nextPageToPrebuild(
+                  around: self.settledPageIndex,
+                  loadedPages: self.loadedPages,
+                  pageCount: PageDescriptor.defaults.count
+              ),
+              (try? await Task.sleep(for: CityPagerLoading.prebuildPause)) != nil
+        else { return }
+        self.loadedPages.insert(next)
     }
 
     /// Builds the pages around the one the pager rests on, while nothing moves.

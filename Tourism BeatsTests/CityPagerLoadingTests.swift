@@ -26,4 +26,15 @@ struct CityPagerLoadingTests {
             }
         }
     }
+
+    @Test func prebuildingTakesTheClosestUnbuiltPageFurtherOnFirst() {
+        #expect(CityPagerLoading.nextPageToPrebuild(around: 0, loadedPages: [0, 1, 2], pageCount: Self.pageCount) == 3)
+        #expect(CityPagerLoading.nextPageToPrebuild(around: 2, loadedPages: [2], pageCount: Self.pageCount) == 3)
+        #expect(CityPagerLoading.nextPageToPrebuild(around: 4, loadedPages: [2, 3, 4], pageCount: Self.pageCount) == 1)
+    }
+
+    @Test func prebuildingStopsOnceEveryPageIsBuilt() {
+        let everyPage = Set(0 ..< Self.pageCount)
+        #expect(CityPagerLoading.nextPageToPrebuild(around: 1, loadedPages: everyPage, pageCount: Self.pageCount) == nil)
+    }
 }
