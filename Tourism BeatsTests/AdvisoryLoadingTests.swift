@@ -41,6 +41,18 @@ struct AdvisoryLoadingTests {
         #expect(await service.fetchCount == 2)
         #expect(viewModel.requirement != nil)
     }
+
+    @Test func visaLoadsAgainForANewPassport() async {
+        let service = CountingVisaService()
+        let viewModel = VisaViewModel(passportCode: "CA", destinationCode: "MA", service: service)
+
+        await viewModel.loadIfNeeded()
+        viewModel.passportCode = "FR"
+        await viewModel.loadIfNeeded()
+        await viewModel.loadIfNeeded()
+
+        #expect(await service.fetchCount == 2)
+    }
 }
 
 // MARK: - CountingSafetyService

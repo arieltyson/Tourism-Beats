@@ -22,14 +22,20 @@ final class VisaViewModel {
         self.service = service
     }
 
-    /// Loads the requirement the first time the view appears. Coming back to
-    /// the page, or showing it in another layout, reuses what's loaded. A new
-    /// passport still fetches through ``updatePassport(to:)``.
+    /// The passport whose requirement is showing, once it has loaded.
+    @ObservationIgnored private var loadedPassportCode: String?
+
+    /// Loads the requirement for the chosen passport unless it's already
+    /// showing. Coming back to the page, or showing it in another layout,
+    /// reuses it; choosing another passport loads that one, and a failed load
+    /// is tried again.
     func loadIfNeeded() async {
-        guard self.requirement == nil, !self.isLoading else { return }
+        guard self.loadedPassportCode != self.passportCode else { return }
         await self.fetchRequirement()
     }
 
+    /// Fetches the requirement for the chosen passport. A request that's
+    /// cancelled, or overtaken by another passport, publishes nothing.
     func fetchRequirement() async {
         self.isLoading = true
         self.errorMessage = nil
@@ -43,6 +49,7 @@ final class VisaViewModel {
             try Task.checkCancellation()
             guard self.passportCode == requestedPassport else { return }
             self.requirement = requirement
+            self.loadedPassportCode = requestedPassport
         } catch {
             guard self.passportCode == requestedPassport else { return }
             if !Task.isCancelled {
@@ -52,13 +59,6 @@ final class VisaViewModel {
 
         if self.passportCode == requestedPassport {
             self.isLoading = false
-        }
-    }
-
-    func updatePassport(to newCode: String) {
-        self.passportCode = newCode
-        Task {
-            await self.fetchRequirement()
         }
     }
 

@@ -2,7 +2,8 @@
 // Tourism Beats
 //
 // Displays visa requirement data with a passport picker
-// inside the parent AdvisoryCard's glass container.
+// inside the parent AdvisoryCard's glass container. The page
+// presents the picker, so a change of layout can't dismiss it.
 
 import SwiftUI
 
@@ -25,7 +26,6 @@ struct VisaView: View {
                 currentCountry: self.currentCountry,
                 showingPicker: self.$showingCountryPicker
             )
-
 
             VisaRequirementBadge(
                 isLoading: self.viewModel.isLoading,

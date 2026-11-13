@@ -65,7 +65,7 @@ struct AdvisoriesView: View {
             SearchableCountryPicker(selectedCode: self.$visaViewModel.passportCode)
         }
         .task(id: self.visaViewModel.passportCode) {
-            await self.visaViewModel.fetchRequirement()
+            await self.visaViewModel.loadIfNeeded()
         }
     }
 }
@@ -165,7 +165,6 @@ private struct AdvisoriesContent: View {
 private struct HeroCard: View {
     let city: CityModel
     @Environment(\.colorScheme) private var scheme
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.advisoriesDensity) private var density
 
     var body: some View {
@@ -215,15 +214,6 @@ private struct HeroCard: View {
                     y: 8
                 )
         }
-        .scrollTransition(axis: .vertical) { [reduceMotion = self.reduceMotion] content, phase in
-            content
-                .opacity(
-                    phase.isIdentity ? 1 : (reduceMotion ? 0.92 : 0.85)
-                )
-                .scaleEffect(
-                    phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.98)
-                )
-        }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isHeader)
     }
@@ -231,9 +221,10 @@ private struct HeroCard: View {
 
 // MARK: - AdvisoryCard
 
+/// A glass card on the page. The cards move with the page rather than fading
+/// as it scrolls: fading a blurred card renders it again on every frame.
 private struct AdvisoryCard<Content: View>: View {
     @Environment(\.colorScheme) private var scheme
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.advisoriesDensity) private var density
     @ViewBuilder var content: Content
 
@@ -256,15 +247,6 @@ private struct AdvisoryCard<Content: View>: View {
                     color: AppColors.glassShadow(for: self.scheme),
                     radius: 14,
                     y: 8
-                )
-        }
-        .scrollTransition(axis: .vertical) { [reduceMotion = self.reduceMotion] view, phase in
-            view
-                .opacity(
-                    phase.isIdentity ? 1 : (reduceMotion ? 0.96 : 0.92)
-                )
-                .scaleEffect(
-                    phase.isIdentity ? 1 : (reduceMotion ? 1 : 0.995)
                 )
         }
         .accessibilityElement(children: .contain)

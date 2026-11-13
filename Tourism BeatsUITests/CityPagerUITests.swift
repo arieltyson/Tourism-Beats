@@ -73,7 +73,7 @@ final class CityPagerUITests: XCTestCase {
             NSPredicate(format: "label CONTAINS %@", "No Results")
         ).firstMatch
         XCTAssertTrue(noResults.waitForExistence(timeout: 5))
-        app.buttons["passportPicker.cancel"].tap()
+        app.buttons["passportPicker.close"].tap()
         XCTAssertTrue(search.waitForNonExistence(timeout: 5))
         XCTAssertEqual(passport.value as? String, "Canada")
     }

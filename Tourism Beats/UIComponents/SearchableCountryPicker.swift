@@ -68,8 +68,8 @@ struct SearchableCountryPicker: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel", role: .cancel) { self.dismiss() }
-                        .accessibilityIdentifier("passportPicker.cancel")
+                    Button(role: .close) { self.dismiss() }
+                        .accessibilityIdentifier("passportPicker.close")
                 }
             }
             .navigationTitle("Select Country")
