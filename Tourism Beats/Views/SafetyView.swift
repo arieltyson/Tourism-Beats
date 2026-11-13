@@ -9,33 +9,35 @@ import SwiftUI
 // MARK: - SafetyView
 
 struct SafetyView: View {
+    /// Owned and loaded by the page, so each of its layouts shows the same data.
     var viewModel: SafetyViewModel
 
     var body: some View {
-        Group {
-            if self.viewModel.isLoading {
-                ProgressView()
-                    .controlSize(.regular)
-                    .tint(.white)
-                    .frame(maxWidth: .infinity, minHeight: 60)
-            } else if let error = self.viewModel.errorMessage {
-                SafetyErrorContent(message: error)
-            } else if let safety = self.viewModel.safetyData {
-                SafetyLoadedContent(
-                    safety: safety,
-                    riskLevelText: self.viewModel.riskLevelText,
-                    riskLevelColor: self.viewModel.riskLevelColor,
-                    riskScoreText: self.viewModel.riskLevelScoreText
-                )
-            } else {
-                Text("No advisory information available.")
-                    .font(TypographyTokens.caption)
-                    .foregroundStyle(.secondary)
-            }
+        if let error = self.viewModel.errorMessage {
+            SafetyErrorContent(message: error)
+        } else if let safety = self.viewModel.safetyData {
+            SafetyLoadedContent(
+                safety: safety,
+                riskLevelText: self.viewModel.riskLevelText,
+                riskLevelColor: self.viewModel.riskLevelColor,
+                riskScoreText: self.viewModel.riskLevelScoreText
+            )
+        } else {
+            SafetyPlaceholder()
         }
-        .task {
-            await self.viewModel.loadIfNeeded()
-        }
+    }
+}
+
+// MARK: - SafetyPlaceholder
+
+/// The gauge, redacted, while the index loads, so the card already has the
+/// size it will keep.
+private struct SafetyPlaceholder: View {
+    var body: some View {
+        SafetyRiskGauge(score: 0, scoreText: "0.0 / 5", levelText: "LOW", levelColor: .secondary)
+            .redacted(reason: .placeholder)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Loading the safety advisory")
     }
 }
 

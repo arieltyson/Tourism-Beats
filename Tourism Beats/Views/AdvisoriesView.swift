@@ -5,35 +5,20 @@ import SwiftUI
 struct AdvisoriesView: View {
     let city: CityModel
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var appeared = false
     @State private var showingCountryPicker = false
-    @State private var visaViewModel: VisaViewModel
-    @State private var safetyViewModel: SafetyViewModel
-    @State private var walkabilityViewModel: WalkabilityViewModel
+    @State private var viewModel: AdvisoriesViewModel
 
     init(city: CityModel) {
         self.city = city
-        _visaViewModel = State(
-            initialValue: VisaViewModel(
-                passportCode: "TT",
-                destinationCode: city.country.code
-            )
-        )
-        _safetyViewModel = State(
-            initialValue: SafetyViewModel(city: city)
-        )
-        _walkabilityViewModel = State(
-            initialValue: WalkabilityViewModel(city: city)
-        )
+        _viewModel = State(initialValue: AdvisoriesViewModel(city: city))
     }
 
     var body: some View {
         let content = AdvisoriesContent(
             city: self.city,
-            safetyViewModel: self.safetyViewModel,
-            visaViewModel: self.visaViewModel,
-            walkabilityViewModel: self.walkabilityViewModel,
+            safetyViewModel: self.viewModel.safety,
+            visaViewModel: self.viewModel.visa,
+            walkabilityViewModel: self.viewModel.walkability,
             showingCountryPicker: self.$showingCountryPicker
         )
 
@@ -52,20 +37,25 @@ struct AdvisoriesView: View {
             }
             .cityPageScrolling()
         }
-        .opacity(self.appeared ? 1 : 0.9)
-        .scaleEffect(self.reduceMotion ? 1 : (self.appeared ? 1 : 0.98))
+        // Should the cards land while the page is on screen, their
+        // placeholders give way to them smoothly, at the size they held.
         .motionSensitiveAnimation(
-            .spring(response: 0.6, dampingFraction: 0.85),
-            reduced: .linear(duration: 0.01),
-            value: self.appeared
+            AnimationTokens.standard,
+            reduced: .linear(duration: AnimationTokens.reducedMotionDuration),
+            value: self.viewModel.hasLoaded
         )
-        .onAppear { self.appeared = true }
+        .cityPageArrival()
         // Presentation must outlive the layout selected by ViewThatFits.
         .sheet(isPresented: self.$showingCountryPicker) {
-            SearchableCountryPicker(selectedCode: self.$visaViewModel.passportCode)
+            SearchableCountryPicker(selectedCode: Bindable(self.viewModel.visa).passportCode)
         }
-        .task(id: self.visaViewModel.passportCode) {
-            await self.visaViewModel.loadIfNeeded()
+        // The page is built before it comes on screen, so its cards are
+        // ready by the time it arrives.
+        .task {
+            await self.viewModel.load()
+        }
+        .task(id: self.viewModel.visa.passportCode) {
+            await self.viewModel.visa.loadIfNeeded()
         }
     }
 }
@@ -108,7 +98,6 @@ private struct AdvisoriesContent: View {
 
                         SafetyView(viewModel: self.safetyViewModel)
                             .fixedSize(horizontal: false, vertical: true)
-                            .transition(.opacity.combined(with: .scale))
                     }
                     .accessibilityHint(
                         "Shows travel advisories for \(self.city.name)"
@@ -128,7 +117,6 @@ private struct AdvisoriesContent: View {
                             showingCountryPicker: self.$showingCountryPicker
                         )
                             .fixedSize(horizontal: false, vertical: true)
-                            .transition(.opacity.combined(with: .scale))
                     }
                     .accessibilityHint(
                         "Shows visa information for travelers to \(self.city.name)"
@@ -146,7 +134,6 @@ private struct AdvisoriesContent: View {
 
                     WalkabilityView(viewModel: self.walkabilityViewModel)
                         .fixedSize(horizontal: false, vertical: true)
-                        .transition(.opacity.combined(with: .scale))
                 }
                 .accessibilityHint(
                     "Shows walkability and transit scores for \(self.city.name)"

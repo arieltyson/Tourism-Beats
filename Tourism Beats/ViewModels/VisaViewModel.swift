@@ -23,7 +23,13 @@ final class VisaViewModel {
     }
 
     /// The passport whose requirement is showing, once it has loaded.
-    @ObservationIgnored private var loadedPassportCode: String?
+    private var loadedPassportCode: String?
+
+    /// Whether the chosen passport's requirement is still on its way, from
+    /// before its load starts until it lands.
+    var isAwaitingRequirement: Bool {
+        self.errorMessage == nil && self.loadedPassportCode != self.passportCode
+    }
 
     /// Loads the requirement for the chosen passport unless it's already
     /// showing. Coming back to the page, or showing it in another layout,

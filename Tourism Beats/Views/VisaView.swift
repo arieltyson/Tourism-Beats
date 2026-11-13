@@ -28,7 +28,7 @@ struct VisaView: View {
             )
 
             VisaRequirementBadge(
-                isLoading: self.viewModel.isLoading,
+                isAwaitingRequirement: self.viewModel.isAwaitingRequirement,
                 errorMessage: self.viewModel.errorMessage,
                 summaryText: self.viewModel.summaryText,
                 requirementColor: self.viewModel.requirementColor,
@@ -96,51 +96,44 @@ private struct VisaPassportPicker: View {
 // MARK: - VisaRequirementBadge
 
 private struct VisaRequirementBadge: View {
-    let isLoading: Bool
+    let isAwaitingRequirement: Bool
     let errorMessage: String?
     let summaryText: String
     let requirementColor: Color
     let hasRequirement: Bool
 
     var body: some View {
-        Group {
-            if self.isLoading {
-                ProgressView()
-                    .controlSize(.small)
-                    .tint(.white)
-                    .frame(maxWidth: .infinity, minHeight: 36)
-            } else if self.errorMessage != nil {
-                Label {
-                    Text("Could not load visa requirements.")
-                        .font(TypographyTokens.caption)
-                } icon: {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
-                }
-                .foregroundStyle(.secondary)
-            } else if self.hasRequirement {
-                HStack(spacing: SpacingTokens.xSmall) {
-                    Image(systemName: self.statusIcon)
-                        .font(TypographyTokens.caption)
-                        .foregroundStyle(self.requirementColor)
-
-                    Text(self.summaryText)
-                        .font(TypographyTokens.cardLabel.weight(.semibold))
-                        .foregroundStyle(self.requirementColor)
-                }
-                .padding(.vertical, SpacingTokens.xSmall)
-                .padding(.horizontal, SpacingTokens.small)
-                .background(
-                    self.requirementColor.opacity(0.12),
-                    in: Capsule(style: .continuous)
-                )
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Visa status: \(self.summaryText)")
-            } else {
-                Text("No visa information available.")
+        if self.isAwaitingRequirement {
+            // The status capsule, redacted, so the card keeps its size.
+            VisaStatusCapsule(
+                systemImage: "checkmark.circle.fill",
+                text: "Visa-free for 90 days",
+                color: .secondary
+            )
+            .redacted(reason: .placeholder)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Loading visa requirements")
+        } else if self.errorMessage != nil {
+            Label {
+                Text("Could not load visa requirements.")
                     .font(TypographyTokens.caption)
-                    .foregroundStyle(.secondary)
+            } icon: {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.orange)
             }
+            .foregroundStyle(.secondary)
+        } else if self.hasRequirement {
+            VisaStatusCapsule(
+                systemImage: self.statusIcon,
+                text: self.summaryText,
+                color: self.requirementColor
+            )
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Visa status: \(self.summaryText)")
+        } else {
+            Text("No visa information available.")
+                .font(TypographyTokens.caption)
+                .foregroundStyle(.secondary)
         }
     }
 
@@ -157,5 +150,28 @@ private struct VisaRequirementBadge: View {
         } else {
             return "info.circle.fill"
         }
+    }
+}
+
+// MARK: - VisaStatusCapsule
+
+/// The visa status as a tinted capsule.
+private struct VisaStatusCapsule: View {
+    let systemImage: String
+    let text: String
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: SpacingTokens.xSmall) {
+            Image(systemName: self.systemImage)
+                .font(TypographyTokens.caption)
+
+            Text(self.text)
+                .font(TypographyTokens.cardLabel.weight(.semibold))
+        }
+        .foregroundStyle(self.color)
+        .padding(.vertical, SpacingTokens.xSmall)
+        .padding(.horizontal, SpacingTokens.small)
+        .background(self.color.opacity(0.12), in: .capsule)
     }
 }

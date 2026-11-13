@@ -53,6 +53,53 @@ struct AdvisoryLoadingTests {
 
         #expect(await service.fetchCount == 2)
     }
+
+    @Test func pageLoadsSafetyAndWalkabilityOnceAndThenCountsAsLoaded() async {
+        let safety = CountingSafetyService()
+        let walkability = CountingWalkabilityService()
+        let viewModel = AdvisoriesViewModel(
+            city: TripPlanningFixtures.portOfSpain,
+            safetyService: safety,
+            visaService: CountingVisaService(),
+            walkabilityService: walkability
+        )
+        #expect(!viewModel.hasLoaded)
+
+        await viewModel.load()
+        await viewModel.load()
+
+        #expect(viewModel.hasLoaded)
+        #expect(await safety.fetchCount == 1)
+        #expect(await walkability.fetchCount == 1)
+        #expect(viewModel.safety.safetyData != nil)
+        #expect(viewModel.walkability.walkability != nil)
+    }
+
+    /// Before its first load the visa card waits for a requirement rather
+    /// than saying there is none.
+    @Test func visaAwaitsItsRequirementUntilItLoads() async {
+        let viewModel = VisaViewModel(passportCode: "CA", destinationCode: "MA", service: CountingVisaService())
+        #expect(viewModel.isAwaitingRequirement)
+
+        await viewModel.loadIfNeeded()
+        #expect(!viewModel.isAwaitingRequirement)
+
+        viewModel.passportCode = "FR"
+        #expect(viewModel.isAwaitingRequirement)
+    }
+
+    @Test func visaStopsAwaitingWhenItsLoadFails() async {
+        let viewModel = VisaViewModel(
+            passportCode: "CA",
+            destinationCode: "MA",
+            service: CountingVisaService(failuresBeforeSuccess: 1)
+        )
+
+        await viewModel.loadIfNeeded()
+
+        #expect(!viewModel.isAwaitingRequirement)
+        #expect(viewModel.errorMessage != nil)
+    }
 }
 
 // MARK: - CountingSafetyService
@@ -91,5 +138,26 @@ private actor CountingVisaService: VisaProtocol {
             throw URLError(.notConnectedToInternet)
         }
         return VisaModel(passport: passport, destination: destination, requirement: "Visa required")
+    }
+}
+
+// MARK: - CountingWalkabilityService
+
+private actor CountingWalkabilityService: WalkabilityProtocol {
+    private(set) var fetchCount = 0
+
+    func fetchWalkability(
+        city: String,
+        administrativeArea: String?,
+        countryCode: String
+    ) async throws -> WalkabilityModel {
+        self.fetchCount += 1
+        return WalkabilityModel(
+            city: city,
+            administrativeArea: administrativeArea,
+            countryCode: countryCode,
+            walkScore: 42,
+            transitScore: 22
+        )
     }
 }

@@ -144,6 +144,22 @@ final class CityPagerUITests: XCTestCase {
         }
     }
 
+    /// Two quick swipes from the city reach the advisories page with its
+    /// cards already in place, rather than a blank page that fills in late.
+    func testAdvisoriesAreReadyWhenTwoQuickSwipesArrive() throws {
+        let app = Self.openCity(searchingFor: "Asuncion", result: "Asuncion, Paraguay")
+
+        app.swipeUp(velocity: .fast)
+        app.swipeUp(velocity: .fast)
+
+        let visaStatus = app.descendants(matching: .any).matching(
+            NSPredicate(format: "label BEGINSWITH %@", "Visa status")
+        ).firstMatch
+        XCTAssertTrue(visaStatus.waitForExistence(timeout: 2), "The advisories page wasn't ready as it arrived")
+        XCTAssertFalse(app.staticTexts["No advisory information available."].exists)
+        XCTAssertFalse(app.staticTexts["No visa information available."].exists)
+    }
+
     // MARK: - Helpers
 
     /// Launches the app and opens a city from the map's search.

@@ -3,33 +3,38 @@ import SwiftUI
 // MARK: - WalkabilityView
 
 struct WalkabilityView: View {
-    /// Owned by the page, so each of its layouts shows the same loaded scores.
+    /// Owned and loaded by the page, so each of its layouts shows the same scores.
     let viewModel: WalkabilityViewModel
 
     var body: some View {
-        Group {
-            if self.viewModel.isLoading {
-                ProgressView()
-                    .controlSize(.regular)
-                    .tint(.white)
-                    .frame(maxWidth: .infinity, minHeight: 80)
-            } else if let error = self.viewModel.errorMessage {
-                WalkabilityErrorContent(message: error)
-            } else if let data = self.viewModel.walkability {
-                WalkabilityLoadedContent(
-                    data: data,
-                    walkColor: self.viewModel.walkScoreColor(data.walkScore),
-                    transitColor: self.viewModel.transitScoreColor(
-                        data.transitScore
-                    )
-                )
-            } else {
-                Text("No walkability data available.")
-                    .font(TypographyTokens.caption)
-                    .foregroundStyle(.secondary)
-            }
+        if let error = self.viewModel.errorMessage {
+            WalkabilityErrorContent(message: error)
+        } else if let data = self.viewModel.walkability {
+            WalkabilityLoadedContent(
+                data: data,
+                walkColor: self.viewModel.walkScoreColor(data.walkScore),
+                transitColor: self.viewModel.transitScoreColor(data.transitScore)
+            )
+        } else {
+            WalkabilityPlaceholder()
         }
-        .task { await self.viewModel.load() }
+    }
+}
+
+// MARK: - WalkabilityPlaceholder
+
+/// The tiles, redacted, while the scores load, so the card already has the
+/// size it will keep.
+private struct WalkabilityPlaceholder: View {
+    var body: some View {
+        WalkabilityLoadedContent(
+            data: .placeholder,
+            walkColor: .secondary,
+            transitColor: .secondary
+        )
+        .redacted(reason: .placeholder)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Loading walkability scores")
     }
 }
 
