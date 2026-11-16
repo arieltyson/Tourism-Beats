@@ -41,8 +41,8 @@ struct TripBudgetEditorView: View {
                 TripBudgetTypicalFooter(
                     typicalBudget: self.typicalBudget,
                     placeName: self.placeName,
-                    isTypical: self.draft == self.typicalBudget,
-                    onUseTypical: { self.draft = self.typicalBudget }
+                    isTypical: self.draft.hasSameAmounts(as: self.typicalBudget),
+                    onUseTypical: { self.draft = self.draft.keepingLocks(on: self.typicalBudget) }
                 )
             }
 

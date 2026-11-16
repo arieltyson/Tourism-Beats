@@ -3,6 +3,9 @@ import SwiftUI
 // MARK: - TripBudgetTypicalFooter
 
 /// What a trip like this typically costs, with a way back to it.
+///
+/// The way back keeps its place while it isn't needed, fading rather than
+/// folding away, so the sections below never shift as it comes and goes.
 struct TripBudgetTypicalFooter: View {
     let typicalBudget: TripBudget
     let placeName: String
@@ -13,10 +16,11 @@ struct TripBudgetTypicalFooter: View {
         VStack(alignment: .leading, spacing: SpacingTokens.xSmall) {
             Text(self.summary)
 
-            if !self.isTypical {
-                Button("Use Typical Budget", action: self.onUseTypical)
-                    .font(TypographyTokens.footnote.bold())
-            }
+            Button("Use Typical Budget", action: self.onUseTypical)
+                .font(TypographyTokens.footnote.bold())
+                .opacity(self.isTypical ? 0 : 1)
+                .disabled(self.isTypical)
+                .accessibilityHidden(self.isTypical)
         }
     }
 

@@ -173,6 +173,27 @@ struct TripBudgetTests {
         #expect(Self.isClose(trip.budget?.overage ?? 0, 300))
     }
 
+    @Test func lockingChangesNoAmounts() {
+        let typical = Self.evenBudget()
+        var budget = typical
+        budget.toggleLock(.stay)
+
+        #expect(budget.hasSameAmounts(as: typical))
+        #expect(budget != typical)
+    }
+
+    @Test func returningToTheTypicalBudgetKeepsTheLocks() {
+        let typical = Self.evenBudget()
+        var budget = typical
+        budget.setAmount(600, for: .food)
+        budget.toggleLock(.food)
+
+        let restored = budget.keepingLocks(on: typical)
+
+        #expect(restored.hasSameAmounts(as: typical))
+        #expect(restored.locked == [.food])
+    }
+
     @Test func staysAreCountedByTheNightAndTheRestByTheDay() {
         let budget = Self.evenBudget()
         let length = TripLength(days: 5)

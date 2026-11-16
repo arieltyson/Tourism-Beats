@@ -97,6 +97,20 @@ struct TripBudget: Hashable, Sendable {
         return self.amount(for: category) / Double(max(count, 1))
     }
 
+    /// Whether the two budgets hold the same amounts, however they're locked.
+    func hasSameAmounts(as other: Self) -> Bool {
+        self.currencyCode == other.currencyCode
+            && self.total == other.total
+            && TripBudgetCategory.allCases.allSatisfy {
+                abs(self.share(of: $0) - other.share(of: $0)) <= Self.shareTolerance
+            }
+    }
+
+    /// This budget's locks on `other`'s amounts.
+    func keepingLocks(on other: Self) -> Self {
+        Self(total: other.total, currencyCode: other.currencyCode, fractions: other.shares, locked: self.locked)
+    }
+
     // MARK: Changing
 
     /// Sets the total. Locked categories keep their amounts and the unlocked
@@ -148,12 +162,7 @@ struct TripBudget: Hashable, Sendable {
     static let shareTolerance = 1e-9
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.currencyCode == rhs.currencyCode
-            && lhs.total == rhs.total
-            && lhs.locked == rhs.locked
-            && TripBudgetCategory.allCases.allSatisfy {
-                abs(lhs.share(of: $0) - rhs.share(of: $0)) <= Self.shareTolerance
-            }
+        lhs.locked == rhs.locked && lhs.hasSameAmounts(as: rhs)
     }
 
     func hash(into hasher: inout Hasher) {
