@@ -2,6 +2,7 @@ import XCTest
 
 // MARK: - CityNavigationUITests
 
+@MainActor
 final class CityNavigationUITests: XCTestCase {
     func testSwipingFromTheLeftEdgeReturnsToTheMap() throws {
         let app = XCUIApplication()

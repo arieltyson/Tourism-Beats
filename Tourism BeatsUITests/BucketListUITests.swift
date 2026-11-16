@@ -2,6 +2,7 @@ import XCTest
 
 // MARK: - BucketListUITests
 
+@MainActor
 final class BucketListUITests: XCTestCase {
     /// From an empty list, an activity and then a city find their sections.
     func testAddingAnActivityAndACity() throws {

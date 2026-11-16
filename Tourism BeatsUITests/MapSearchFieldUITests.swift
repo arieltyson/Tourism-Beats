@@ -4,12 +4,16 @@ import XCTest
 
 /// Every part of the map's search capsule must start a search on the first
 /// tap, not only the text itself.
+@MainActor
 final class MapSearchFieldUITests: XCTestCase {
-    private var app: XCUIApplication!
+    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         continueAfterFailure = true
-        self.app = XCUIApplication()
+    }
+
+    /// Launches the app on its map.
+    private func openMap() {
         self.app.launch()
 
         let mapTab = self.app.tabBars.buttons["Map"]
@@ -18,6 +22,7 @@ final class MapSearchFieldUITests: XCTestCase {
     }
 
     func testEveryPartOfTheCapsuleFocusesOnTheFirstTap() throws {
+        self.openMap()
         let field = self.app.textFields["Search cities or countries"]
         XCTAssertTrue(field.waitForExistence(timeout: 10))
         // The field reports the whole capsule as its frame. Tap just inside

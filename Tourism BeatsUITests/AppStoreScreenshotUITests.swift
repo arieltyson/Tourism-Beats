@@ -23,14 +23,23 @@ final class AppStoreScreenshotUITests: XCTestCase {
     /// How long to wait for the capture script to save a screen.
     private static let captureTimeout: TimeInterval = 60
 
-    private var outputDirectory: URL!
+    /// Where the capture script collects the screens, from the environment.
+    private nonisolated static var outputPath: String {
+        ProcessInfo.processInfo.environment["SCREENSHOT_OUTPUT_DIR"] ?? ""
+    }
+
+    private var outputDirectory: URL {
+        URL(filePath: Self.outputPath, directoryHint: .isDirectory)
+    }
 
     override func setUpWithError() throws {
         continueAfterFailure = false
-        let path = ProcessInfo.processInfo.environment["SCREENSHOT_OUTPUT_DIR"] ?? ""
+        let path = Self.outputPath
         try XCTSkipIf(path.isEmpty, "Set TEST_RUNNER_SCREENSHOT_OUTPUT_DIR to capture the listing screens.")
-        self.outputDirectory = URL(filePath: path, directoryHint: .isDirectory)
-        try FileManager.default.createDirectory(at: self.outputDirectory, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(
+            at: URL(filePath: path, directoryHint: .isDirectory),
+            withIntermediateDirectories: true
+        )
     }
 
     func test01Home() throws {

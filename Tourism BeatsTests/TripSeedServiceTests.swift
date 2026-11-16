@@ -14,10 +14,10 @@ struct TripSeedServiceTests {
 
         let trips = try modelContext.fetch(FetchDescriptor<Trip>())
 
-        try #expect(trips.count == 3)
-        try #expect(Set(trips.map(\.name)) == ["Trinidad and Tobago", "Vancouver, BC", "San Francisco"])
-        try #expect(trips.allSatisfy(\.isSample))
-        try #expect(trips.allSatisfy { $0.activityCount > 0 })
+        #expect(trips.count == 3)
+        #expect(Set(trips.map(\.name)) == ["Trinidad and Tobago", "Vancouver, BC", "San Francisco"])
+        #expect(trips.allSatisfy { $0.isSample })
+        #expect(trips.allSatisfy { $0.activityCount > 0 })
     }
 
     @Test func sampleDateRangesMatchSeededDays() throws {
@@ -69,7 +69,7 @@ struct TripSeedServiceTests {
 
         let trips = try modelContext.fetch(FetchDescriptor<Trip>())
 
-        try #expect(trips.count == 3)
+        #expect(trips.count == 3)
     }
 
     @Test func registerUserCreatedTripRemovesSamples() throws {
@@ -89,8 +89,8 @@ struct TripSeedServiceTests {
         try TripSeedService.registerUserCreatedTrip(in: modelContext)
 
         let trips = try modelContext.fetch(FetchDescriptor<Trip>())
-        try #expect(trips.count == 1)
-        try #expect(trips.first?.name == "Tokyo Spring")
+        #expect(trips.count == 1)
+        #expect(trips.first?.name == "Tokyo Spring")
     }
 
     @Test func deleteTripRestoresSamplesWhenDeletingLastUserTrip() throws {
@@ -111,8 +111,8 @@ struct TripSeedServiceTests {
         try TripSeedService.deleteTrip(customTrip, in: modelContext)
 
         let trips = try modelContext.fetch(FetchDescriptor<Trip>())
-        try #expect(trips.count == 3)
-        try #expect(trips.allSatisfy(\.isSample))
+        #expect(trips.count == 3)
+        #expect(trips.allSatisfy { $0.isSample })
     }
 
     @Test func deleteTripDoesNotRestoreSamplesWhenDeletingSampleTrip() throws {
@@ -127,8 +127,8 @@ struct TripSeedServiceTests {
         try TripSeedService.deleteTrip(sampleTrip, in: modelContext)
 
         let remainingTrips = try modelContext.fetch(FetchDescriptor<Trip>())
-        try #expect(remainingTrips.count == 2)
-        try #expect(remainingTrips.allSatisfy(\.isSample))
+        #expect(remainingTrips.count == 2)
+        #expect(remainingTrips.allSatisfy { $0.isSample })
     }
 
     private func makeInMemoryContainer() throws -> ModelContainer {

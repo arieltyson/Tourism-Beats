@@ -7,6 +7,7 @@
 
 import XCTest
 
+@MainActor
 final class Tourism_BeatsUITestsLaunchTests: XCTestCase {
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

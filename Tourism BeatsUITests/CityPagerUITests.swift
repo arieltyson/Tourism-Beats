@@ -2,6 +2,7 @@ import XCTest
 
 // MARK: - CityPagerUITests
 
+@MainActor
 final class CityPagerUITests: XCTestCase {
     /// Half an indicator icon's visible width.
     private static let indicatorHalfWidth: CGFloat = 23
