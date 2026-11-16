@@ -27,6 +27,10 @@ enum AnimationTokens {
     /// A plane crossing its route: unhurried, easing in and out like a flight.
     static let journey: Animation = .easeInOut(duration: 1.6)
 
+    /// Brings a swiped pager to rest: quick, and without a bounce, so the page
+    /// is still and ready for a tap the moment it looks it.
+    static let pagerSettle: Animation = .smooth(duration: 0.24)
+
     /// Press feedback for interactive controls.
     static let press: Animation = .spring(response: 0.25, dampingFraction: 0.7)
 

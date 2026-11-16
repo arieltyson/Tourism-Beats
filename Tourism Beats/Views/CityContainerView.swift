@@ -4,7 +4,11 @@ struct CityContainerView: View {
     let city: CityModel
 
     /// The page the pager shows, updated as soon as a swipe crosses midway.
-    @State private var pageIndex: Int? = 0
+    @State private var pageIndex = 0
+    /// Where the pager is scrolled, set when the pager moves itself.
+    @State private var position = ScrollPosition(idType: Int.self)
+    /// Where the current swipe will come to rest.
+    @State private var destination = CityPagerDestination()
     /// The page the pager last came to rest on.
     @State private var settledPageIndex = 0
     /// Whether the pager is still, neither dragged nor gliding.
@@ -18,7 +22,7 @@ struct CityContainerView: View {
     @State private var bucketListConfirmation: BucketListConfirmation?
 
     private var currentPageIndex: Int {
-        self.pageIndex ?? 0
+        self.pageIndex
     }
 
     var body: some View {
@@ -38,12 +42,26 @@ struct CityContainerView: View {
                     barInsets: self.barInsets
                 )
             }
-            .scrollTargetBehavior(.viewAligned(limitBehavior: .alwaysByOne))
-            .scrollPosition(id: self.$pageIndex)
+            .scrollTargetBehavior(CityPagerScrollTargetBehavior(destination: self.destination))
+            .scrollPosition(self.$position)
+            .onScrollGeometryChange(for: Int.self) { geometry in
+                CityPagerGeometry.page(
+                    atOffset: geometry.contentOffset.y,
+                    pageHeight: geometry.containerSize.height,
+                    pageCount: PageDescriptor.defaults.count
+                )
+            } action: { _, page in
+                self.pageIndex = page
+            }
             .onScrollPhaseChange { _, newPhase in
                 self.isPagerAtRest = newPhase == .idle
-                if newPhase == .idle {
+                switch newPhase {
+                case .decelerating:
+                    self.finishGlide()
+                case .idle:
                     self.settle(on: self.currentPageIndex)
+                default:
+                    break
                 }
             }
             .scrollIndicators(.hidden)
@@ -124,7 +142,20 @@ struct CityContainerView: View {
         // The jump skips the pages between, so the destination is built
         // before it is shown rather than after it lands.
         self.settle(on: index)
-        self.pageIndex = index
+        self.position.scrollTo(id: index)
+    }
+
+    /// Takes over a swipe's glide and brings the page to rest at once.
+    ///
+    /// Left to glide, the page eases in at the rate made for long lists and
+    /// creeps the last few points for most of a second. A scroll view that's
+    /// still moving takes a touch as a request to stop, so a tap on a page
+    /// that looked settled was spent stopping it, and the button never saw it.
+    private func finishGlide() {
+        guard let offset = self.destination.take() else { return }
+        withAnimation(AnimationTokens.pagerSettle) {
+            self.position.scrollTo(y: offset)
+        }
     }
 
     private var prebuildKey: CityPagerPrebuildKey {
