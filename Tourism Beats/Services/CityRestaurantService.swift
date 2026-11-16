@@ -143,7 +143,7 @@ extension CityRestaurantService {
 
         Task {
             let labelled = await labelling.value
-            await self.storeLateCuisineLabels(labelled, key: key, diskURL: diskURL)
+            self.storeLateCuisineLabels(labelled, key: key, diskURL: diskURL)
         }
         return restaurants
     }

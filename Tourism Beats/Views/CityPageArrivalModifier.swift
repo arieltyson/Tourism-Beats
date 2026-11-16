@@ -11,7 +11,7 @@ import SwiftUI
 /// frame. With Reduce Motion the page simply slides.
 struct CityPageArrivalModifier: ViewModifier {
     /// How large a page is while it's still off screen.
-    static let arrivingScale: CGFloat = 0.98
+    nonisolated static let arrivingScale: CGFloat = 0.98
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

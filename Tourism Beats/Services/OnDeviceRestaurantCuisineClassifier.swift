@@ -39,7 +39,7 @@ struct OnDeviceRestaurantCuisineClassifier: RestaurantCuisineClassifying {
             let response = try await session.respond(
                 to: Self.prompt(for: restaurants, in: city),
                 generating: GeneratedRestaurantCuisines.self,
-                options: GenerationOptions(sampling: .greedy)
+                options: GenerationOptions(samplingMode: .greedy)
             )
             return Self.labels(from: response.content, for: restaurants)
         } catch {

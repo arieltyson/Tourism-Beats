@@ -87,7 +87,7 @@ struct CountdownFlight: Codable, Identifiable, Equatable, Sendable {
     func formattedDeparture(_ format: Date.FormatStyle) -> String {
         var format = format
         format.timeZone = timeZone
-        var text = departure.formatted(format.attributed)
+        var text = departure.formatted(format.attributedStyle)
         let periods = text.runs[\.dateField].filter { $0.0 == .amPM }.map(\.1)
         for range in periods.reversed() {
             let period = Self.dayPeriod(String(text[range].characters), locale: format.locale)
