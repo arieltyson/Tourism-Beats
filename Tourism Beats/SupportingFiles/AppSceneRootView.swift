@@ -67,6 +67,10 @@ struct AppSceneRootView: View {
             guard !self.hasPerformedStartupTasks else { return }
             self.hasPerformedStartupTasks = true
 
+            // Spotify no longer needs a sign-in, so a token kept from an
+            // earlier version has no use left on this device.
+            Keychain.delete("spotify.token")
+
             do {
                 try RestaurantMealPhotoOwnershipRepairService().repairIfNeeded(
                     in: self.modelContext

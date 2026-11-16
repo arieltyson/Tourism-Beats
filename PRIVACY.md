@@ -1,6 +1,6 @@
 # Tourism Beats Privacy Policy
 
-**Last updated:** November 10, 2026
+**Last updated:** November 16, 2026
 
 Tourism Beats is an iPhone app for destination discovery, travel research, food journaling, and trip planning. The app is designed to keep personal data handling narrow and local-first wherever possible.
 
@@ -25,7 +25,6 @@ Most information you create in the app, such as saved restaurants, trip plans, t
 | **City image cache** | Improves loading performance for destination imagery. | On-device in the app cache. | No |
 | **City fact cache** | Improves loading performance for city facts. | On-device in the app cache. | No |
 | **Activity and restaurant guide cache** | Improves loading performance for city guides and trip suggestions. | On-device in the app cache. | No |
-| **Spotify access token (optional)** | Supports the optional Spotify feature if you choose to authenticate with Spotify. | On-device in the iOS Keychain. | No |
 
 ## What Tourism Beats Sends Off Device
 
@@ -50,14 +49,7 @@ Tourism Beats does **not** store your Apple ID credentials.
 
 ### Spotify
 
-If you choose to use the optional Spotify handoff feature, Tourism Beats can:
-
-- present Spotify's sign-in flow using `ASWebAuthenticationSession`
-- receive an access token from Spotify after you authenticate
-- store that token securely in the iOS Keychain on your device
-- search Spotify for a matching track and open it in Spotify or the Spotify web experience
-
-Tourism Beats does **not** collect your Spotify password.
+When you choose to open a song in Spotify, Tourism Beats opens a Spotify search for that song's title and artist, in the Spotify app or on the Spotify website. Tourism Beats doesn't ask you to sign in to Spotify, doesn't contact Spotify itself, and keeps no Spotify data. Tokens saved by earlier versions of the app are removed from your device.
 
 ### City Facts
 
@@ -119,7 +111,7 @@ We do not sell your data or share it with advertising networks.
 When you use specific features, limited information may be handled by the service providers that power those features:
 
 - **Apple** for WeatherKit and Apple Music
-- **Spotify** if you choose to authenticate and open music through Spotify
+- **Spotify** when you choose to open a song in Spotify
 - **Wikipedia**, **Wikivoyage**, and **Wikidata** for city facts and guide content
 - **OpenStreetMap** (through public Overpass API servers) and **Apple Maps** for nearby places
 - **Google** when you choose to open a place in Google Maps
@@ -132,7 +124,6 @@ Those providers handle data under their own terms and privacy policies.
 - **Saved restaurants, trips, flight countdowns, bucket list items, notes, ratings, and statuses** remain on your device until you edit or delete them, or until you remove the app and its local data.
 - **Meal photos** remain on your device until you remove them from the app or delete the related restaurant entry.
 - **Caches** such as city facts and images may remain until the app or iOS clears them.
-- **Spotify tokens** remain in the device Keychain as needed to support the optional Spotify integration on that device.
 
 ## Children's Privacy
 

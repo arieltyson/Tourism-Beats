@@ -19,7 +19,6 @@ final class MusicViewModel {
 
     var isPlaying = false
     var userFeedbackMessage: String?
-    var isSpotifySearching = false
 
     // MARK: Dependencies
 
@@ -31,7 +30,6 @@ final class MusicViewModel {
     @ObservationIgnored private var hasLoadedData = false
     @ObservationIgnored private var playableSong: Song? // Apple Music playable item
     @ObservationIgnored private var appleSong: AppSong? // Apple Music chart result
-    @ObservationIgnored private var spotifyMirroredSong: AppSong? // Mirror of Apple result
 
     // MARK: Observers
 
@@ -129,7 +127,6 @@ final class MusicViewModel {
         self.isPlaying = false
         self.playableSong = nil
         self.userFeedbackMessage = nil
-        self.spotifyMirroredSong = nil
 
         do {
             let result = try await musicService.fetchTopSong(for: self.city)
@@ -232,191 +229,17 @@ final class MusicViewModel {
 
     // MARK: - Spotify
 
-    func handleSpotifyAction() async {
-        self.userFeedbackMessage = nil
+    /// Hands the song to Spotify, pausing Apple Music so the two don't play
+    /// over each other. Returns the links the view opens.
+    func spotifyHandoff() -> SpotifyHandoff? {
+        guard let apple = self.appleSong else { return nil }
 
-        guard let apple = appleSong else {
-            self.userFeedbackMessage = "No song available to play."
-            return
-        }
-
-        let isSpotifyInstalled = self.canOpenSpotifyApp()
-
-        // Reuse a previous successful mirror if we have one
-        if let mirrored = spotifyMirroredSong, let deep = mirrored.deepLinkURL {
-            await self.openSpotifyURL(deep, isAppInstalled: isSpotifyInstalled)
-            return
-        }
-
-        // Pause Apple Music before handing off to Spotify
         if ApplicationMusicPlayer.shared.state.playbackStatus == .playing {
             ApplicationMusicPlayer.shared.pause()
             self.isPlaying = false
         }
 
-        self.isSpotifySearching = true
-        defer { isSpotifySearching = false }
-
-        do {
-            let mirrored = try await SpotifyService().mirror(
-                title: apple.title,
-                artist: apple.artistName,
-                countryCode: self.city.country.code
-            )
-            self.spotifyMirroredSong = mirrored
-
-            if let deep = mirrored.deepLinkURL {
-                await self.openSpotifyURL(deep, isAppInstalled: isSpotifyInstalled)
-            } else {
-                await self.openSpotifySearchFallback(
-                    title: apple.title,
-                    artist: apple.artistName,
-                    isAppInstalled: isSpotifyInstalled
-                )
-            }
-        } catch {
-            await self.handleSpotifyError(
-                error,
-                title: apple.title,
-                artist: apple.artistName,
-                isAppInstalled: isSpotifyInstalled
-            )
-        }
-    }
-
-    // MARK: - Spotify Deep Linking
-
-    private func canOpenSpotifyApp() -> Bool {
-        guard let scheme = URL(string: "spotify://") else { return false }
-        return UIApplication.shared.canOpenURL(scheme)
-    }
-
-    private func openSpotifyURL(_ url: URL, isAppInstalled: Bool) async {
-        if isAppInstalled, let appURL = spotifyAppURLIfPossible(forWebURL: url) {
-            if await self.openURL(appURL) { return }
-        }
-
-        // Fall back to web (which may still universal-link into Spotify)
-        _ = await self.openURL(url)
-        if !(UIApplication.shared.canOpenURL(url)) {
-            await MainActor.run {
-                self.userFeedbackMessage =
-                    "Unable to open Spotify. Please check if the app is installed."
-            }
-        }
-    }
-
-    private func spotifyAppURLIfPossible(forWebURL webURL: URL) -> URL? {
-        guard webURL.host == "open.spotify.com" else { return nil }
-        let components = webURL.pathComponents
-        guard components.count >= 3, components[1] == "track" else {
-            return nil
-        }
-        let trackID = components[2]
-        return URL(string: "spotify://track/\(trackID)")
-    }
-
-    private func openSpotifySearchFallback(
-        title: String,
-        artist: String,
-        isAppInstalled: Bool
-    ) async {
-        let query = "\(title) \(artist)"
-        let encoded = self.encodeForURLPath(query)
-
-        if isAppInstalled,
-           let appURL = URL(string: "spotify://search/\(encoded)"),
-           await openURL(appURL)
-        {
-            return
-        }
-
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "open.spotify.com"
-        components.path = "/search/\(encoded)"
-
-        if let webURL = components.url {
-            if await self.openURL(webURL) { return }
-        }
-
-        await MainActor.run {
-            self.userFeedbackMessage =
-                "Unable to open Spotify search. Please try again."
-        }
-    }
-
-    private func handleSpotifyError(
-        _ error: Error,
-        title: String,
-        artist: String,
-        isAppInstalled: Bool
-    ) async {
-        if let spotifyError = error as? SpotifyService.ServiceError {
-            switch spotifyError {
-            case let .api(statusCode):
-                if statusCode == 401 {
-                    await MainActor.run {
-                        self.userFeedbackMessage =
-                            "Spotify authentication expired. Please try again."
-                    }
-                    return
-                } else if statusCode == 404 {
-                    // Not found → search
-                    await self.openSpotifySearchFallback(
-                        title: title,
-                        artist: artist,
-                        isAppInstalled: isAppInstalled
-                    )
-                    return
-                } else {
-                    await MainActor.run {
-                        self.userFeedbackMessage =
-                            "Spotify service unavailable. Trying search instead…"
-                    }
-                    await self.openSpotifySearchFallback(
-                        title: title,
-                        artist: artist,
-                        isAppInstalled: isAppInstalled
-                    )
-                    return
-                }
-            case .notFound:
-                await self.openSpotifySearchFallback(
-                    title: title,
-                    artist: artist,
-                    isAppInstalled: isAppInstalled
-                )
-                return
-            }
-        }
-
-        // Unknown error → search fallback
-        await MainActor.run {
-            self.userFeedbackMessage =
-                "Unable to connect to Spotify. Trying search instead…"
-        }
-        await self.openSpotifySearchFallback(
-            title: title,
-            artist: artist,
-            isAppInstalled: isAppInstalled
-        )
-    }
-
-    // MARK: - URL Opening
-
-    private func openURL(_ url: URL) async -> Bool {
-        guard UIApplication.shared.canOpenURL(url) else { return false }
-
-        if #available(iOS 17.0, *) {
-            return await UIApplication.shared.open(url)
-        } else {
-            return await withCheckedContinuation { continuation in
-                UIApplication.shared.open(url, options: [:]) { result in
-                    continuation.resume(returning: result)
-                }
-            }
-        }
+        return SpotifyHandoff(title: apple.title, artist: apple.artistName)
     }
 
     // MARK: - Storefront Resolution
@@ -471,15 +294,5 @@ final class MusicViewModel {
             return exact
         }
         return response.songs.first
-    }
-
-    // MARK: - Encoding
-
-    private func encodeForURLPath(_ value: String) -> String {
-        value.addingPercentEncoding(
-            withAllowedCharacters: CharacterSet.urlPathAllowed.union(
-                .urlQueryAllowed
-            )
-        ) ?? value
     }
 }

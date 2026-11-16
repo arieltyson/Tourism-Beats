@@ -10,13 +10,12 @@ import SwiftUI
 
 /// A glass-styled card for Spotify showing artwork and song metadata.
 ///
-/// The whole card is one button that opens the track in the Spotify app or
+/// The whole card is one button that opens the song in the Spotify app or
 /// on the web; the Spotify mark on the trailing edge signals where it goes.
 struct GlassSpotifyCard: View {
     let artworkURL: URL?
     let songTitle: String
     let artistName: String
-    let isSearching: Bool
     let onOpen: () -> Void
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -35,7 +34,8 @@ struct GlassSpotifyCard: View {
                             )
                         }
 
-                        GlassSpotifyCardAccessory(isSearching: self.isSearching)
+                        ProviderLogo.spotify.actionIcon
+                            .accessibilityHidden(true)
                     }
                 } else {
                     HStack(alignment: .top, spacing: SpacingTokens.small) {
@@ -49,17 +49,16 @@ struct GlassSpotifyCard: View {
 
                         Spacer(minLength: SpacingTokens.xxSmall)
 
-                        GlassSpotifyCardAccessory(isSearching: self.isSearching)
+                        ProviderLogo.spotify.actionIcon
                             .fixedSize()
+                            .accessibilityHidden(true)
                     }
                 }
             }
             .contentShape(.rect(cornerRadius: 20))
         }
         .buttonStyle(.cardPress)
-        .disabled(self.isSearching)
         .accessibilityLabel("Open \(self.songTitle) by \(self.artistName) in Spotify")
-        .accessibilityValue(self.isSearching ? "Searching Spotify" : "")
         .accessibilityHint("Opens Spotify")
         .accessibilityInputLabels(["Open in Spotify", "Spotify", "Open Spotify"])
     }
@@ -145,27 +144,6 @@ private struct GlassSpotifyCardInfo: View {
     }
 }
 
-// MARK: - GlassSpotifyCardAccessory
-
-/// The Spotify mark, or a spinner while the track is being looked up.
-private struct GlassSpotifyCardAccessory: View {
-    let isSearching: Bool
-
-    var body: some View {
-        Group {
-            if self.isSearching {
-                ProgressView()
-                    .controlSize(.small)
-                    .tint(.primary)
-            } else {
-                ProviderLogo.spotify.actionIcon
-            }
-        }
-        .frame(minWidth: 32, minHeight: 32)
-        .accessibilityHidden(true)
-    }
-}
-
 // MARK: - Preview
 
 #Preview {
@@ -182,15 +160,6 @@ private struct GlassSpotifyCardAccessory: View {
                 artworkURL: nil,
                 songTitle: "Bohemian Rhapsody",
                 artistName: "Queen",
-                isSearching: false,
-                onOpen: {}
-            )
-
-            GlassSpotifyCard(
-                artworkURL: nil,
-                songTitle: "Searching...",
-                artistName: "—",
-                isSearching: true,
                 onOpen: {}
             )
         }

@@ -178,6 +178,8 @@ private struct MusicPageArtwork: View {
 private struct MusicPlayerCards: View {
     let viewModel: MusicViewModel
 
+    @Environment(\.openURL) private var openURL
+
     var body: some View {
         VStack(spacing: SpacingTokens.small) {
             GlassMusicCard(
@@ -197,10 +199,7 @@ private struct MusicPlayerCards: View {
                 artworkURL: self.viewModel.songImage,
                 songTitle: self.viewModel.songTitle,
                 artistName: self.viewModel.artistName,
-                isSearching: self.viewModel.isSpotifySearching,
-                onOpen: {
-                    Task { await self.viewModel.handleSpotifyAction() }
-                }
+                onOpen: self.openInSpotify
             )
         }
         // The Apple Music card's tap area stretches to fill its card, so the
@@ -212,6 +211,15 @@ private struct MusicPlayerCards: View {
         .disabled(!self.viewModel.availability.showsSongDetails)
         .accessibilityHidden(!self.viewModel.availability.showsSongDetails)
         .transition(.opacity)
+    }
+
+    /// Opens the song in the Spotify app, or on the web without the app.
+    private func openInSpotify() {
+        guard let handoff = self.viewModel.spotifyHandoff() else { return }
+        let openURL = self.openURL
+        openURL(handoff.appURL) { opened in
+            if !opened { openURL(handoff.webURL) }
+        }
     }
 }
 
