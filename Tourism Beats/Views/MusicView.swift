@@ -36,6 +36,10 @@ struct MusicView: View {
         }
         .animation(self.reduceMotion ? nil : AnimationTokens.standard, value: self.viewModel.availability)
         .task { await self.viewModel.requestAccessAndLoadTopSong() }
+        .musicSubscriptionOffer(
+            isPresented: self.$viewModel.isShowingSubscriptionOffer,
+            options: MusicSubscriptionOffer.Options(messageIdentifier: .playMusic)
+        )
     }
 }
 
@@ -186,13 +190,10 @@ private struct MusicPlayerCards: View {
                 artworkURL: self.viewModel.songImage,
                 songTitle: self.viewModel.songTitle,
                 artistName: self.viewModel.artistName,
-                isPlaying: self.viewModel.isPlaying,
-                onPlayPause: {
-                    Task { await self.viewModel.handleAppleMusicAction() }
-                },
-                onRestart: {
-                    self.viewModel.skipBackward()
-                }
+                playback: self.viewModel.playback,
+                canRestart: self.viewModel.canRestart,
+                onPlayPause: self.viewModel.togglePlayback,
+                onRestart: self.viewModel.restart
             )
 
             GlassSpotifyCard(

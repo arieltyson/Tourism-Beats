@@ -39,7 +39,7 @@ struct HapticTrigger: Equatable, Sendable {
         case .searchOpen: .impactSoft
         case .searchClose: .impactSoft
         case .advisoryExpand: .selection
-        case .musicPlay: .impactHeavy
+        case .musicPlay: .impactLight
         case .none: .impactLight
         }
     }

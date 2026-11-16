@@ -1,9 +1,6 @@
-import AVFoundation
-@preconcurrency import Combine
+import Combine
 import Foundation
-@preconcurrency import MusicKit
-import SwiftUI
-import UIKit
+import Observation
 
 @MainActor
 @Observable
@@ -11,97 +8,52 @@ final class MusicViewModel {
     // MARK: Display
 
     private(set) var availability: MusicAvailability = .loading
-    var songTitle: String = "Loading…"
-    var artistName: String = ""
-    var songImage: URL?
+    private(set) var songTitle: String = "Loading…"
+    private(set) var artistName: String = ""
+    private(set) var songImage: URL?
 
     // MARK: Playback state
 
-    var isPlaying = false
-    var userFeedbackMessage: String?
+    private(set) var playback: MusicPlaybackPhase = .stopped
+
+    /// Whether the song can go back to its beginning: it's the player's song.
+    private(set) var canRestart = false
+
+    /// A short note the listener can act on, shown under the players.
+    private(set) var userFeedbackMessage: String?
+
+    /// Whether Apple Music's subscription offer is showing.
+    var isShowingSubscriptionOffer = false
+
+    /// Whether the controls show the song as playing.
+    var isPlaying: Bool { self.playback.showsPlaying }
 
     // MARK: Dependencies
 
     @ObservationIgnored let city: CityModel
     @ObservationIgnored private let musicService: MusicProtocol
+    @ObservationIgnored private let player: MusicPlaybackControlling
 
     // MARK: Internal state
 
     @ObservationIgnored private var hasLoadedData = false
-    @ObservationIgnored private var playableSong: Song? // Apple Music playable item
-    @ObservationIgnored private var appleSong: AppSong? // Apple Music chart result
-
-    // MARK: Observers
-
-    @ObservationIgnored private var cancellables = Set<AnyCancellable>()
+    @ObservationIgnored private var appleSong: AppSong?
+    @ObservationIgnored private var startTask: Task<Void, Never>?
+    @ObservationIgnored private var playerObservation: AnyCancellable?
 
     // MARK: Init
 
-    init(city: CityModel, musicService: MusicProtocol = MusicService.shared) {
+    init(
+        city: CityModel,
+        musicService: MusicProtocol = MusicService.shared,
+        player: MusicPlaybackControlling? = nil
+    ) {
         self.city = city
         self.musicService = musicService
-        self.setupPlaybackStateMonitoring()
-    }
-
-    // MARK: - Playback State Monitoring
-
-    private func setupPlaybackStateMonitoring() {
-        NotificationCenter.default.publisher(
-            for: UIApplication.didBecomeActiveNotification
-        )
-        .sink { [weak self] _ in
-            Task { @MainActor in await self?.handleAppBecameActive() }
+        self.player = player ?? AppleMusicPlayback.shared
+        self.playerObservation = self.player.observeChanges { [weak self] in
+            self?.syncPlaybackState()
         }
-        .store(in: &self.cancellables)
-
-        NotificationCenter.default.publisher(
-            for: AVAudioSession.interruptionNotification
-        )
-        .sink { [weak self] note in
-            Task { @MainActor in await self?.handleAudioInterruption(note) }
-        }
-        .store(in: &self.cancellables)
-
-        // The player announces each change, so the play button follows
-        // playback without waking every second to ask.
-        ApplicationMusicPlayer.shared.state.objectWillChange
-            .sink { [weak self] _ in
-                // The change lands after this announcement; read it once it has.
-                Task { @MainActor in await self?.syncPlaybackState() }
-            }
-            .store(in: &self.cancellables)
-    }
-
-    private func handleAppBecameActive() async {
-        await self.syncPlaybackState()
-    }
-
-    private func handleAudioInterruption(_ notification: Notification) async {
-        guard
-            let userInfo = notification.userInfo,
-            let rawType = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-            let type = AVAudioSession.InterruptionType(rawValue: rawType)
-        else { return }
-
-        switch type {
-        case .began:
-            if self.isPlaying { self.isPlaying = false }
-        case .ended:
-            if let rawOpts = userInfo[AVAudioSessionInterruptionOptionKey]
-                as? UInt
-            {
-                let opts = AVAudioSession.InterruptionOptions(rawValue: rawOpts)
-                if opts.contains(.shouldResume) { await self.syncPlaybackState() }
-            }
-        @unknown default:
-            break
-        }
-    }
-
-    private func syncPlaybackState() async {
-        guard self.appleSong != nil else { return }
-        let status = ApplicationMusicPlayer.shared.state.playbackStatus
-        self.isPlaying = (status == .playing)
     }
 
     // MARK: - Lifecycle
@@ -124,9 +76,9 @@ final class MusicViewModel {
         self.songTitle = "Loading Top Song…"
         self.artistName = "for \(self.city.name)"
         self.songImage = nil
-        self.isPlaying = false
-        self.playableSong = nil
+        self.appleSong = nil
         self.userFeedbackMessage = nil
+        self.syncPlaybackState()
 
         do {
             let result = try await musicService.fetchTopSong(for: self.city)
@@ -135,6 +87,9 @@ final class MusicViewModel {
             self.artistName = result.artistName
             self.songImage = result.artworkURL
             self.availability = .available
+            // Find it in the listener's catalog now, so play starts at once.
+            self.player.prefetch(result)
+            self.syncPlaybackState()
         } catch where Self.isCancellation(error) {
             // The page was scrolled away or closed mid-load. That isn't a
             // failure: load again the next time the page appears.
@@ -169,62 +124,86 @@ final class MusicViewModel {
 
     // MARK: - Apple Music
 
-    func handleAppleMusicAction() async {
+    /// Plays or pauses the song.
+    ///
+    /// The controls change the moment this is called; the music follows. A
+    /// second tap while the song is still on its way takes the first back,
+    /// so every tap does what the button showed.
+    func togglePlayback() {
+        guard let song = self.appleSong else { return }
         self.userFeedbackMessage = nil
 
-        let status = await MusicAuthorization.request()
-        guard status == .authorized else { return }
-
-        // Best-effort subscription check; if it throws, we still attempt play.
-        if let subscription = try? await MusicSubscription.current,
-           subscription.canPlayCatalogContent == false
-        {
-            return
+        if self.playback.showsPlaying {
+            self.stop(song)
+        } else {
+            self.playback = .starting
+            self.startTask = Task { await self.start(song) }
         }
-
-        await self.togglePlayback()
     }
 
-    private func togglePlayback() async {
-        let player = ApplicationMusicPlayer.shared
-        if player.state.playbackStatus == .playing {
-            player.pause()
-            self.isPlaying = false
-            return
-        }
-
-        if let cached = playableSong {
-            await self.play(cached)
-            return
-        }
-
-        // Resolve into the current storefront
-        guard let song = await resolvePlayableSongForCurrentStorefront() else {
-            self.userFeedbackMessage =
-                "This track isn't available in your Apple Music region."
-            return
-        }
-
-        self.playableSong = song
-        await self.play(song)
-    }
-
-    private func play(_ song: Song) async {
-        ApplicationMusicPlayer.shared.queue = [song]
+    private func start(_ song: AppSong) async {
         do {
-            try await ApplicationMusicPlayer.shared.play()
-            self.isPlaying = true
+            try await self.player.play(song)
+            if Task.isCancelled {
+                // Taken back while starting; the music mustn't begin anyway.
+                if self.player.isCurrent(song) { self.player.pause() }
+                return
+            }
+            self.playback = .playing
+            self.canRestart = true
         } catch {
-            self.isPlaying = false
+            guard !Task.isCancelled else { return }
+            self.playback = .stopped
+            self.present(error)
         }
     }
 
-    // MARK: - Playback Controls
+    private func stop(_ song: AppSong) {
+        self.startTask?.cancel()
+        self.startTask = nil
+        if self.player.isCurrent(song) { self.player.pause() }
+        self.playback = .stopped
+    }
 
-    /// Restarts the current song from the beginning.
-    func skipBackward() {
-        guard self.playableSong != nil else { return }
-        ApplicationMusicPlayer.shared.restartCurrentEntry()
+    private func present(_ error: MusicPlaybackError) {
+        switch error {
+        case .needsSubscription:
+            self.isShowingSubscriptionOffer = true
+        case .accessDenied:
+            self.userFeedbackMessage = "Allow Apple Music in Settings to play songs here."
+        case .notInCatalog:
+            self.userFeedbackMessage = "This song isn’t on Apple Music in your country or region."
+        case .failed:
+            self.userFeedbackMessage = "Couldn’t play this song. Try again."
+        case .cancelled:
+            break
+        }
+    }
+
+    /// Takes the song back to its beginning.
+    func restart() {
+        guard let song = self.appleSong, self.player.isCurrent(song) else { return }
+        self.player.restart()
+    }
+
+    /// Follows the player, which another page, Control Center or a call may
+    /// have changed. A song on its way stays shown as playing until it starts.
+    private func syncPlaybackState() {
+        guard let song = self.appleSong else {
+            self.playback = .stopped
+            self.canRestart = false
+            return
+        }
+
+        self.canRestart = self.player.isCurrent(song)
+        let isPlaying = self.player.isPlaying(song)
+
+        switch self.playback {
+        case .starting:
+            if isPlaying { self.playback = .playing }
+        case .stopped, .playing:
+            self.playback = isPlaying ? .playing : .stopped
+        }
     }
 
     // MARK: - Spotify
@@ -232,67 +211,8 @@ final class MusicViewModel {
     /// Hands the song to Spotify, pausing Apple Music so the two don't play
     /// over each other. Returns the links the view opens.
     func spotifyHandoff() -> SpotifyHandoff? {
-        guard let apple = self.appleSong else { return nil }
-
-        if ApplicationMusicPlayer.shared.state.playbackStatus == .playing {
-            ApplicationMusicPlayer.shared.pause()
-            self.isPlaying = false
-        }
-
-        return SpotifyHandoff(title: apple.title, artist: apple.artistName)
-    }
-
-    // MARK: - Storefront Resolution
-
-    private func resolvePlayableSongForCurrentStorefront() async -> Song? {
-        guard let app = appleSong else { return nil }
-
-        // 1) Best: look up by ISRC (storefront-agnostic)
-        if let isrc = app.isrc {
-            if let byISRC = try? await fetchSongByISRC(isrc) {
-                return byISRC
-            }
-        }
-
-        // 2) Fallback: search in the user's storefront
-        return try? await self.searchSongByTitleAndArtist(
-            title: app.title,
-            artist: app.artistName
-        )
-    }
-
-    private func fetchSongByISRC(_ isrc: String) async throws -> Song? {
-        let request = MusicCatalogResourceRequest<Song>(
-            matching: \.isrc,
-            equalTo: isrc
-        )
-        let response = try await request.response()
-        return response.items.first
-    }
-
-    private func searchSongByTitleAndArtist(title: String, artist: String)
-        async throws -> Song?
-    {
-        var search = MusicCatalogSearchRequest(
-            term: "\(title) \(artist)",
-            types: [Song.self]
-        )
-        search.limit = 5
-        let response = try await search.response()
-
-        // Prefer exact/near-exact matches
-        if let exact = response.songs.first(where: { song in
-            song.title.compare(
-                title,
-                options: [.caseInsensitive, .diacriticInsensitive]
-            ) == .orderedSame
-                && song.artistName.compare(
-                    artist,
-                    options: [.caseInsensitive, .diacriticInsensitive]
-                ) == .orderedSame
-        }) {
-            return exact
-        }
-        return response.songs.first
+        guard let song = self.appleSong else { return nil }
+        if self.playback.showsPlaying { self.stop(song) }
+        return SpotifyHandoff(title: song.title, artist: song.artistName)
     }
 }

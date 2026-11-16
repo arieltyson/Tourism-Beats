@@ -17,11 +17,13 @@ struct GlassMusicCard: View {
     let artworkURL: URL?
     let songTitle: String
     let artistName: String
-    let isPlaying: Bool
+    let playback: MusicPlaybackPhase
+    let canRestart: Bool
     let onPlayPause: () -> Void
     let onRestart: () -> Void
 
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var haptic = HapticTrigger()
 
     var body: some View {
         GlassCard(cornerRadius: 20, contentPadding: 0) {
@@ -31,14 +33,15 @@ struct GlassMusicCard: View {
                         artworkURL: self.artworkURL,
                         songTitle: self.songTitle,
                         artistName: self.artistName,
-                        isPlaying: self.isPlaying,
-                        onPlayPause: self.onPlayPause
+                        playback: self.playback,
+                        onPlayPause: self.playPause
                     )
 
                     GlassMusicCardControls(
-                        isPlaying: self.isPlaying,
+                        playback: self.playback,
+                        canRestart: self.canRestart,
                         onRestart: self.onRestart,
-                        onPlayPause: self.onPlayPause
+                        onPlayPause: self.playPause
                     )
                     .padding([.horizontal, .bottom], SpacingTokens.xSmall)
                 }
@@ -48,15 +51,16 @@ struct GlassMusicCard: View {
                         artworkURL: self.artworkURL,
                         songTitle: self.songTitle,
                         artistName: self.artistName,
-                        isPlaying: self.isPlaying,
-                        onPlayPause: self.onPlayPause
+                        playback: self.playback,
+                        onPlayPause: self.playPause
                     )
                     .layoutPriority(1)
 
                     GlassMusicCardControls(
-                        isPlaying: self.isPlaying,
+                        playback: self.playback,
+                        canRestart: self.canRestart,
                         onRestart: self.onRestart,
-                        onPlayPause: self.onPlayPause
+                        onPlayPause: self.playPause
                     )
                     .fixedSize()
                     .padding([.top, .trailing], SpacingTokens.xxSmall)
@@ -65,6 +69,13 @@ struct GlassMusicCard: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Apple Music")
+        .sensoryFeedback(self.haptic.feedback, trigger: self.haptic)
+    }
+
+    /// Answers the tap by touch at once, before the music has started.
+    private func playPause() {
+        self.haptic.fire(.musicPlay)
+        self.onPlayPause()
     }
 }
 
@@ -75,7 +86,7 @@ private struct GlassMusicCardPlaybackSurface: View {
     let artworkURL: URL?
     let songTitle: String
     let artistName: String
-    let isPlaying: Bool
+    let playback: MusicPlaybackPhase
     let onPlayPause: () -> Void
 
     var body: some View {
@@ -94,8 +105,8 @@ private struct GlassMusicCardPlaybackSurface: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("\(self.songTitle) by \(self.artistName)")
-        .accessibilityValue(self.isPlaying ? "Playing" : "Paused")
-        .accessibilityHint(self.isPlaying ? "Pauses playback" : "Plays the song in Apple Music")
+        .accessibilityValue(self.playback.accessibilityValue)
+        .accessibilityHint(self.playback.showsPlaying ? "Pauses playback" : "Plays the song in Apple Music")
         .accessibilityInputLabels([self.songTitle, "Apple Music"])
     }
 }
@@ -183,7 +194,8 @@ private struct GlassMusicCardInfo: View {
 // MARK: - GlassMusicCardControls
 
 private struct GlassMusicCardControls: View {
-    let isPlaying: Bool
+    let playback: MusicPlaybackPhase
+    let canRestart: Bool
     let onRestart: () -> Void
     let onPlayPause: () -> Void
 
@@ -195,21 +207,25 @@ private struct GlassMusicCardControls: View {
                 .font(.callout)
                 .frame(minWidth: self.minimumTapTarget, minHeight: self.minimumTapTarget)
                 .contentShape(.rect)
+                .disabled(!self.canRestart)
                 .accessibilityHint("Restarts the current song")
                 .accessibilityInputLabels(["Restart Song", "Restart"])
 
             Button(
-                self.isPlaying ? "Pause" : "Play",
-                systemImage: self.isPlaying ? "pause.fill" : "play.fill",
+                self.playback.showsPlaying ? "Pause" : "Play",
+                systemImage: self.playback.showsPlaying ? "pause.fill" : "play.fill",
                 action: self.onPlayPause
             )
             .font(.title3)
             .contentTransition(.symbolEffect(.replace))
+            // A gentle pulse while the song is on its way.
+            .symbolEffect(.pulse, isActive: self.playback == .starting)
+            .accessibilityValue(self.playback.accessibilityValue)
             .frame(minWidth: self.minimumTapTarget, minHeight: self.minimumTapTarget)
             .contentShape(.rect)
-            .accessibilityHint(self.isPlaying ? "Pauses playback" : "Plays the song")
+            .accessibilityHint(self.playback.showsPlaying ? "Pauses playback" : "Plays the song")
             .accessibilityInputLabels(
-                self.isPlaying ? ["Pause", "Pause Song"] : ["Play", "Play Song"]
+                self.playback.showsPlaying ? ["Pause", "Pause Song"] : ["Play", "Play Song"]
             )
         }
         .labelStyle(.iconOnly)
@@ -236,7 +252,8 @@ private struct GlassMusicCardControls: View {
                 artworkURL: nil,
                 songTitle: "Bohemian Rhapsody",
                 artistName: "Queen",
-                isPlaying: false,
+                playback: .stopped,
+                canRestart: false,
                 onPlayPause: {},
                 onRestart: {}
             )
@@ -245,7 +262,8 @@ private struct GlassMusicCardControls: View {
                 artworkURL: nil,
                 songTitle: "A Very Long Song Title That Might Truncate",
                 artistName: "Artist With A Long Name",
-                isPlaying: true,
+                playback: .playing,
+                canRestart: true,
                 onPlayPause: {},
                 onRestart: {}
             )
