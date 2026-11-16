@@ -33,8 +33,7 @@ final class Trip {
     var budgetFoodShare: Double?
     var budgetFunShare: Double?
     var budgetGettingAroundShare: Double?
-    /// The budget's locked categories, longest locked first, as
-    /// comma-separated raw values.
+    /// The budget's locked categories, as comma-separated raw values.
     var budgetLockedCategories: String?
 
     @Relationship(deleteRule: .cascade)

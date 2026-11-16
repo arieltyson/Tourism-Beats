@@ -11,15 +11,17 @@ extension Trip {
             return TripBudget(
                 total: budgetTotal,
                 currencyCode: budgetCurrencyCode,
-                shares: [
+                fractions: [
                     .stay: self.budgetStayShare ?? 0,
                     .food: self.budgetFoodShare ?? 0,
                     .fun: self.budgetFunShare ?? 0,
                     .gettingAround: self.budgetGettingAroundShare ?? 0
                 ],
-                locked: (self.budgetLockedCategories ?? "")
-                    .split(separator: ",")
-                    .compactMap { TripBudgetCategory(rawValue: String($0)) }
+                locked: Set(
+                    (self.budgetLockedCategories ?? "")
+                        .split(separator: ",")
+                        .compactMap { TripBudgetCategory(rawValue: String($0)) }
+                )
             )
         }
         set {
@@ -30,7 +32,9 @@ extension Trip {
             self.budgetFunShare = newValue?.share(of: .fun)
             self.budgetGettingAroundShare = newValue?.share(of: .gettingAround)
             self.budgetLockedCategories = newValue.flatMap { budget in
-                budget.locked.isEmpty ? nil : budget.locked.map(\.rawValue).joined(separator: ",")
+                budget.locked.isEmpty
+                    ? nil
+                    : TripBudgetCategory.allCases.filter(budget.isLocked).map(\.rawValue).joined(separator: ",")
             }
         }
     }

@@ -5,29 +5,32 @@ import Foundation
 /// How much a trip may cost, and how that total is split between what it's
 /// spent on.
 ///
-/// The split is kept as shares of the total. Setting a category's amount
-/// locks it there: later changes rebalance only the unlocked categories, so
-/// the total always holds and nothing the traveller set moves on its own.
+/// Each category's amount is kept as a share of the total. The traveller can
+/// lock any categories they like; a locked category never moves unless they
+/// unlock it. Changing a category rebalances only the unlocked ones, and when
+/// they can't make room, the split runs over the total rather than touching a
+/// lock, and `overage` says by how much.
 struct TripBudget: Hashable, Sendable {
     private(set) var total: Double
     let currencyCode: String
     private(set) var shares: [TripBudgetCategory: Double]
 
-    /// The categories whose amounts stay put, from the longest locked.
-    private(set) var locked: [TripBudgetCategory]
+    /// The categories the traveller has locked.
+    private(set) var locked: Set<TripBudgetCategory>
 
+    /// A budget split between its categories in proportion to `shares`.
     init(
         total: Double,
         currencyCode: String,
         shares: [TripBudgetCategory: Double],
-        locked: [TripBudgetCategory] = []
+        locked: Set<TripBudgetCategory> = []
     ) {
-        self.total = max(total, 0)
-        self.currencyCode = currencyCode
-        self.shares = Self.normalized(shares)
-        // Each category once, and at least one left free to take up the rest.
-        let distinct = locked.reduce(into: [TripBudgetCategory]()) { if !$0.contains($1) { $0.append($1) } }
-        self.locked = Array(distinct.suffix(TripBudgetCategory.allCases.count - 1))
+        self.init(
+            total: total,
+            currencyCode: currencyCode,
+            fractions: Self.normalized(shares),
+            locked: locked
+        )
     }
 
     /// A budget whose categories are each the given amount.
@@ -38,6 +41,22 @@ struct TripBudget: Hashable, Sendable {
             currencyCode: currencyCode,
             shares: amounts.mapValues { total > 0 ? $0 / total : 0 }
         )
+    }
+
+    /// A budget whose categories are each the given fraction of the total,
+    /// kept as they are, so a split that runs over the total stays over it.
+    init(
+        total: Double,
+        currencyCode: String,
+        fractions: [TripBudgetCategory: Double],
+        locked: Set<TripBudgetCategory>
+    ) {
+        let fractions = fractions.mapValues { max($0, 0) }
+        let isEmpty = fractions.values.allSatisfy { $0 == 0 }
+        self.total = max(total, 0)
+        self.currencyCode = currencyCode
+        self.shares = isEmpty ? Self.normalized([:]) : fractions
+        self.locked = locked
     }
 
     // MARK: Reading
@@ -54,20 +73,22 @@ struct TripBudget: Hashable, Sendable {
         self.locked.contains(category)
     }
 
-    /// The most the category can be set to without moving a locked category.
-    func maximumAmount(for category: TripBudgetCategory) -> Double {
-        let held = self.lockedOthers(whenSetting: category)
-        return max(self.total - held.reduce(0) { $0 + self.amount(for: $1) }, 0)
+    /// How far the categories together run over the total; zero within it.
+    var overage: Double {
+        let allocated = TripBudgetCategory.allCases.reduce(0) { $0 + self.amount(for: $1) }
+        let overage = allocated - self.total
+        return overage > self.total * Self.shareTolerance ? overage : 0
     }
 
-    /// Whether the category set last has stopped where the other locked
-    /// categories leave no more room.
-    func isHeldBack(_ category: TripBudgetCategory) -> Bool {
-        guard self.locked.last == category else { return false }
-        let maximum = self.maximumAmount(for: category)
-        let tolerance = self.total * Self.shareTolerance
-        return maximum < self.total - tolerance
-            && self.amount(for: category) >= maximum - tolerance
+    /// Whether the category is the one taking the split over the total: the
+    /// unlocked category that still has an amount, or, when only locked
+    /// categories have one, those.
+    func isOverBudget(_ category: TripBudgetCategory) -> Bool {
+        guard self.overage > 0, self.amount(for: category) > 0 else { return false }
+        let unlockedWithAmounts = TripBudgetCategory.allCases.filter {
+            !self.isLocked($0) && self.amount(for: $0) > 0
+        }
+        return unlockedWithAmounts.isEmpty ? self.isLocked(category) : !self.isLocked(category)
     }
 
     /// The category's amount for each night or day it covers.
@@ -78,48 +99,46 @@ struct TripBudget: Hashable, Sendable {
 
     // MARK: Changing
 
-    /// Sets the total. Locked categories keep their amounts and the rest
-    /// share what's left; when the total can't cover the locked amounts,
-    /// they're unlocked and the whole split scales instead.
+    /// Sets the total. Locked categories keep their amounts and the unlocked
+    /// ones share what's left, in proportion; with nothing left, the locked
+    /// amounts run over the total.
     mutating func setTotal(_ total: Double) {
         let total = max(total, 0)
-        let lockedAmounts = Dictionary(uniqueKeysWithValues: self.locked.map { ($0, self.amount(for: $0)) })
-        let lockedSum = lockedAmounts.values.reduce(0, +)
-
-        guard !lockedAmounts.isEmpty, total > 0, total >= lockedSum else {
+        guard !self.locked.isEmpty, total > 0 else {
             self.total = total
-            self.locked = []
             return
         }
 
-        let free = TripBudgetCategory.allCases.filter { lockedAmounts[$0] == nil }
-        var shares = lockedAmounts.mapValues { $0 / total }
-        shares.merge(self.split(1 - lockedSum / total, among: free)) { $1 }
+        var shares = Dictionary(uniqueKeysWithValues: self.locked.map { ($0, self.amount(for: $0) / total) })
+        let lockedShare = shares.values.reduce(0, +)
+        shares.merge(self.split(max(1 - lockedShare, 0), among: self.unlocked(except: nil))) { $1 }
         self.total = total
         self.shares = shares
     }
 
-    /// Sets one category's amount and locks it there. Only unlocked
-    /// categories make room, in proportion to what they have, so the total
-    /// stays the same; the amount stops where they run out. When every other
-    /// category is locked, the one locked longest gives way.
+    /// Sets one category's amount, up to the total. The other unlocked
+    /// categories make room, in proportion to what they have; locked ones
+    /// never move. Past what the unlocked ones can give, the split runs over
+    /// the total.
     mutating func setAmount(_ amount: Double, for category: TripBudgetCategory) {
         guard self.total > 0 else { return }
-        let held = self.lockedOthers(whenSetting: category)
-        let heldShare = held.reduce(0) { $0 + self.share(of: $1) }
-        let share = min(max(amount / self.total, 0), 1 - heldShare)
-        let free = TripBudgetCategory.allCases.filter { $0 != category && !held.contains($0) }
+        let share = min(max(amount / self.total, 0), 1)
+        let others = self.unlocked(except: category)
+        let fixedShare = TripBudgetCategory.allCases
+            .filter { $0 != category && !others.contains($0) }
+            .reduce(0) { $0 + self.share(of: $1) }
 
-        var shares = Dictionary(uniqueKeysWithValues: held.map { ($0, self.share(of: $0)) })
+        var shares = self.shares
         shares[category] = share
-        shares.merge(self.split(1 - heldShare - share, among: free)) { $1 }
+        shares.merge(self.split(max(1 - fixedShare - share, 0), among: others)) { $1 }
         self.shares = shares
-        self.locked = held + [category]
     }
 
-    /// Lets the category rebalance again.
-    mutating func unlock(_ category: TripBudgetCategory) {
-        self.locked.removeAll { $0 == category }
+    /// Locks the category, or unlocks it.
+    mutating func toggleLock(_ category: TripBudgetCategory) {
+        if self.locked.remove(category) == nil {
+            self.locked.insert(category)
+        }
     }
 
     // MARK: Equality
@@ -141,16 +160,14 @@ struct TripBudget: Hashable, Sendable {
         // Shares are left out: equal budgets may differ in their last bits.
         hasher.combine(self.currencyCode)
         hasher.combine(self.total)
+        hasher.combine(self.locked)
     }
 
     // MARK: Private
 
-    /// The locked categories that stay put while `category` is set: all but
-    /// `category` itself, less the longest locked when nothing else is free.
-    private func lockedOthers(whenSetting category: TripBudgetCategory) -> [TripBudgetCategory] {
-        let others = self.locked.filter { $0 != category }
-        let freeCount = TripBudgetCategory.allCases.count - 1 - others.count
-        return freeCount > 0 ? others : Array(others.dropFirst())
+    /// The unlocked categories, other than `category`.
+    private func unlocked(except category: TripBudgetCategory?) -> [TripBudgetCategory] {
+        TripBudgetCategory.allCases.filter { $0 != category && !self.isLocked($0) }
     }
 
     /// Splits a share between categories in proportion to what they have,

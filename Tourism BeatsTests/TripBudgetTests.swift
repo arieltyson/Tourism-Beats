@@ -72,48 +72,64 @@ struct TripBudgetTests {
         abs(lhs - rhs) < 0.001
     }
 
-    @Test func aCategoryYouSetStaysPutWhileOthersMove() {
+    @Test func aLockedCategoryStaysPutWhileOthersMove() {
         var budget = Self.evenBudget()
         budget.setAmount(200, for: .food)
+        budget.toggleLock(.food)
         budget.setAmount(500, for: .stay)
 
         #expect(Self.isClose(budget.amount(for: .food), 200))
         #expect(Self.isClose(budget.amount(for: .stay), 500))
         #expect(Self.isClose(budget.amount(for: .fun) + budget.amount(for: .gettingAround), 300))
-        #expect(budget.locked == [.food, .stay])
+        #expect(budget.overage == 0)
     }
 
-    @Test func aCategoryStopsWhereTheLockedOnesLeaveNoRoom() {
+    @Test func movingASliderNeverLocksOrUnlocksAnything() {
         var budget = Self.evenBudget()
-        budget.setAmount(200, for: .food)
-        budget.setAmount(500, for: .stay)
-        budget.setAmount(900, for: .fun)
+        budget.toggleLock(.food)
+        budget.toggleLock(.stay)
+        budget.toggleLock(.fun)
 
-        #expect(Self.isClose(budget.amount(for: .fun), 300))
+        budget.setAmount(100, for: .gettingAround)
+        budget.setAmount(400, for: .gettingAround)
+
+        #expect(budget.locked == [.food, .stay, .fun])
+        #expect(Self.isClose(budget.amount(for: .food), 250))
+        #expect(Self.isClose(budget.amount(for: .stay), 250))
+        #expect(Self.isClose(budget.amount(for: .fun), 250))
+    }
+
+    @Test func goingPastWhatTheUnlockedCanGiveRunsOverInsteadOfMovingALock() {
+        var budget = Self.evenBudget()
+        budget.toggleLock(.food)
+        budget.toggleLock(.stay)
+        budget.setAmount(700, for: .fun)
+
+        #expect(Self.isClose(budget.amount(for: .food), 250))
+        #expect(Self.isClose(budget.amount(for: .stay), 250))
         #expect(Self.isClose(budget.amount(for: .gettingAround), 0))
-        #expect(Self.isClose(Self.sum(budget), 1_000))
-        #expect(budget.isHeldBack(.fun))
-        #expect(!budget.isHeldBack(.food))
+        #expect(Self.isClose(budget.overage, 200))
+        #expect(budget.isOverBudget(.fun))
+        #expect(!budget.isOverBudget(.food))
+        #expect(!budget.isOverBudget(.gettingAround))
     }
 
-    @Test func whenEveryOtherCategoryIsLockedTheLongestLockedGivesWay() {
+    @Test func bringingItBackWithinTheTotalClearsTheOverage() {
         var budget = Self.evenBudget()
-        budget.setAmount(200, for: .food)
-        budget.setAmount(300, for: .stay)
-        budget.setAmount(100, for: .fun)
+        budget.toggleLock(.food)
+        budget.toggleLock(.stay)
+        budget.setAmount(700, for: .fun)
+        budget.setAmount(300, for: .fun)
 
-        budget.setAmount(500, for: .gettingAround)
-
-        #expect(Self.isClose(budget.amount(for: .stay), 300))
-        #expect(Self.isClose(budget.amount(for: .fun), 100))
-        #expect(Self.isClose(budget.amount(for: .food), 100))
-        #expect(budget.locked == [.stay, .fun, .gettingAround])
+        #expect(budget.overage == 0)
+        #expect(!budget.isOverBudget(.fun))
+        #expect(Self.isClose(budget.amount(for: .gettingAround), 200))
     }
 
-    @Test func anUnlockedCategoryRebalancesAgain() {
+    @Test func unlockingLetsACategoryRebalanceAgain() {
         var budget = Self.evenBudget()
-        budget.setAmount(200, for: .food)
-        budget.unlock(.food)
+        budget.toggleLock(.food)
+        budget.toggleLock(.food)
         budget.setAmount(1_000, for: .stay)
 
         #expect(budget.amount(for: .food) == 0)
@@ -123,6 +139,7 @@ struct TripBudgetTests {
     @Test func changingTheTotalKeepsLockedAmounts() {
         var budget = Self.evenBudget()
         budget.setAmount(200, for: .food)
+        budget.toggleLock(.food)
         budget.setTotal(2_000)
 
         #expect(Self.isClose(budget.amount(for: .food), 200))
@@ -130,36 +147,30 @@ struct TripBudgetTests {
         #expect(budget.isLocked(.food))
     }
 
-    @Test func aTotalTooSmallForTheLockedAmountsUnlocksThemAndScales() {
+    @Test func aTotalTooSmallForTheLockedAmountsKeepsThemAndRunsOver() {
         var budget = Self.evenBudget()
         budget.setAmount(700, for: .food)
+        budget.toggleLock(.food)
         budget.setTotal(500)
 
-        #expect(budget.locked.isEmpty)
-        #expect(Self.isClose(budget.amount(for: .food), 350))
+        #expect(budget.isLocked(.food))
+        #expect(Self.isClose(budget.amount(for: .food), 700))
+        #expect(Self.isClose(budget.overage, 200))
+        #expect(budget.isOverBudget(.food))
     }
 
-    @Test func atLeastOneCategoryIsAlwaysLeftFree() {
-        let budget = TripBudget(
-            total: 1_000,
-            currencyCode: "USD",
-            shares: [:],
-            locked: [.food, .food, .stay, .fun, .gettingAround]
-        )
-
-        #expect(budget.locked == [.stay, .fun, .gettingAround])
-    }
-
-    @Test func locksAreSavedWithTheTrip() {
+    @Test func locksAndAnOverageAreSavedWithTheTrip() {
         var budget = Self.evenBudget()
-        budget.setAmount(200, for: .food)
-        budget.setAmount(400, for: .stay)
+        budget.toggleLock(.food)
+        budget.toggleLock(.stay)
+        budget.setAmount(800, for: .fun)
         let trip = Trip(name: "Osaka", city: "Osaka", country: "Japan")
 
         trip.budget = budget
 
         #expect(trip.budget == budget)
         #expect(trip.budget?.locked == [.food, .stay])
+        #expect(Self.isClose(trip.budget?.overage ?? 0, 300))
     }
 
     @Test func staysAreCountedByTheNightAndTheRestByTheDay() {
