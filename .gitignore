@@ -426,3 +426,6 @@ Secrets.swift
 
 # The App Store submission package is kept beside this repository, privately.
 /App_Store/
+
+# Python bytecode from docs scripts
+__pycache__/
