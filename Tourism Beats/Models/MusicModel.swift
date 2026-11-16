@@ -1,64 +1,30 @@
 import Foundation
-import MusicKit
-
-// MARK: - AppSongSource
-
-/// The catalog a song came from.
-public enum AppSongSource: String, Codable, Sendable {
-    case appleMusic
-    case spotify
-}
 
 // MARK: - AppSong
 
-/// Provider-agnostic song model used by the UI and view models.
-/// - Note: `id` is the provider’s native identifier (Apple Music or Spotify).
-///         Keep it as `String` for portability. Convert to `MusicItemID` only
-///         at the point of Apple Music playback.
+/// A chart song, as the music page shows and plays it.
+/// - Note: `id` is the song's Apple Music ID in the chart's storefront.
 public struct AppSong: Sendable, Equatable, Hashable {
-    public let source: AppSongSource
-    public let id: String // Provider ID (AM/Spotify)
+    public let id: String
     public let title: String
     public let artistName: String
     public let artworkURL: URL?
-    /// For Spotify, this will usually be a ready-to-open link like
-    /// `https://open.spotify.com/track/{id}`. Apple Music playback is in-app
-    /// so this is typically `nil` for AM sources.
-    public let deepLinkURL: URL?
     /// International Standard Recording Code - storefront-agnostic identifier
     public let isrc: String?
 
     public init(
-        source: AppSongSource,
         id: String,
         title: String,
         artistName: String,
         artworkURL: URL?,
-        deepLinkURL: URL?,
         isrc: String? = nil
     ) {
-        self.source = source
         self.id = id
         self.title = title
         self.artistName = artistName
         self.artworkURL = artworkURL
-        self.deepLinkURL = deepLinkURL
         self.isrc = isrc
     }
-}
-
-// MARK: - Apple Music conveniences
-
-public extension AppSong {
-    /// Convenience for Apple Music playback: converts the provider `id`
-    /// to `MusicItemID` **iff** the source is Apple Music.
-    var musicKitID: MusicItemID? {
-        self.source == .appleMusic ? MusicItemID(self.id) : nil
-    }
-
-    /// Useful flags in UI/view models.
-    var isAppleMusic: Bool { self.source == .appleMusic }
-    var isSpotify: Bool { self.source == .spotify }
 }
 
 // MARK: - Apple Music API response models
@@ -144,12 +110,10 @@ extension AppSong {
     init?(appleNode: AppleMusicAPISong) {
         guard let attrs = appleNode.attributes else { return nil }
         self.init(
-            source: .appleMusic,
             id: appleNode.id,
             title: attrs.name,
             artistName: attrs.artistName,
             artworkURL: attrs.artwork?.artworkURL(),
-            deepLinkURL: nil,
             isrc: attrs.isrc
         )
     }

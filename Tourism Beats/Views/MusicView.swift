@@ -13,12 +13,10 @@ struct MusicView: View {
     let city: CityModel
     @State private var viewModel: MusicViewModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    let fallbackView: FallbackMusicView
 
-    init(city: CityModel, fallbackView: FallbackMusicView) {
+    init(city: CityModel) {
         self.city = city
         _viewModel = State(initialValue: MusicViewModel(city: city))
-        self.fallbackView = fallbackView
     }
 
     var body: some View {

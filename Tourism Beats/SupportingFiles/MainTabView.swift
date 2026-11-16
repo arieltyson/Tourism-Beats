@@ -40,10 +40,7 @@ struct MainTabView: View {
                         CityContainerView(city: city)
                     }
                     .navigationDestination(for: MusicRoute.self) { route in
-                        MusicView(
-                            city: route.city,
-                            fallbackView: FallbackMusicView()
-                        )
+                        MusicView(city: route.city)
                     }
                     .toolbarBackground(.hidden, for: .navigationBar)
                     .toolbarBackgroundVisibility(.hidden, for: .navigationBar)

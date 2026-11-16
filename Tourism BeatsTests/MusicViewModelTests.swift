@@ -186,12 +186,10 @@ private final class StubMusicService: MusicProtocol, @unchecked Sendable {
             throw error
         }
         return AppSong(
-            source: .appleMusic,
             id: "song",
             title: "Song Title",
             artistName: "Artist",
-            artworkURL: nil,
-            deepLinkURL: nil
+            artworkURL: nil
         )
     }
 }
@@ -203,6 +201,7 @@ private final class StubMusicService: MusicProtocol, @unchecked Sendable {
 private final class StubPlayer: MusicPlaybackControlling {
     private let playError: MusicPlaybackError?
     private var pendingPlay: CheckedContinuation<Void, Never>?
+    private var finishedPlays = 0
     private let changes = PassthroughSubject<Void, Never>()
 
     private(set) var prefetched: [String] = []
@@ -222,17 +221,21 @@ private final class StubPlayer: MusicPlaybackControlling {
     func play(_ song: AppSong) async throws(MusicPlaybackError) {
         self.playCount += 1
         await withCheckedContinuation { self.pendingPlay = $0 }
+        // The caller resumes in this same main-actor job, so once a test sees
+        // this count rise, the view model has finished reacting.
+        defer { self.finishedPlays += 1 }
         if let playError { throw playError }
         self.currentSongID = song.id
         self.isPlayerPlaying = true
     }
 
-    /// Lets the waiting play finish, then lets the view model react.
+    /// Lets the waiting play finish, and returns once the view model has reacted.
     func finishPlaying() async {
         while self.pendingPlay == nil { await Task.yield() }
+        let finished = self.finishedPlays
         self.pendingPlay?.resume()
         self.pendingPlay = nil
-        for _ in 0 ..< 10 { await Task.yield() }
+        while self.finishedPlays == finished { await Task.yield() }
     }
 
     func pause() {

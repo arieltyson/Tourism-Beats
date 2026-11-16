@@ -21,7 +21,7 @@ struct CityPagerPages: View {
             .cityPageFrame(index: 0, barInsets: self.barInsets)
 
             CityPagerPage(isLoaded: self.loadedPages.contains(1)) {
-                MusicView(city: self.city, fallbackView: FallbackMusicView())
+                MusicView(city: self.city)
             }
             .cityPageFrame(index: 1, barInsets: self.barInsets)
 
