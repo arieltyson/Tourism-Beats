@@ -46,7 +46,7 @@ Built with native Apple frameworks, Apple platform services, and lightweight web
 ### APIs & Web Services
 
 - [x] **Apple Music API** — Catalog charts, playlists, and track metadata surfaced through MusicKit-backed requests
-- [x] **Spotify Accounts + Web API** — Optional authenticated mirroring of the selected song for Spotify deep links
+- [x] **Spotify handoff** — Opens the selected song in the Spotify app or on the web, with no sign-in
 - [x] **MapKit Local Search / Apple Maps data** — City search, attraction demand signals, and restaurant candidate discovery
 - [x] **Overpass API (OpenStreetMap)** — Tourism POI and restaurant metadata enrichment
 - [x] **Wikipedia REST API** — Lead summaries and imagery for activity and city enrichment

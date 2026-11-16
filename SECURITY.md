@@ -29,7 +29,7 @@ In scope:
 
 - the Tourism Beats iOS app and the code in this repository
 - handling of data the app stores on device, such as trips, restaurants, and meal photos
-- the optional Spotify sign-in and how its token is stored in the iOS Keychain
+- links the app opens in other apps, such as the Spotify handoff
 
 Out of scope:
 
@@ -39,5 +39,5 @@ Out of scope:
 ## How the App Protects Data
 
 - Most user data stays on device; see [PRIVACY.md](PRIVACY.md) for details.
-- Credentials such as the Spotify access token are stored in the iOS Keychain.
+- The app keeps no third-party account credentials; a Spotify token left by an earlier version is removed from the Keychain at launch.
 - API keys and other secrets are kept out of the repository (`Secrets.swift` is git-ignored).
